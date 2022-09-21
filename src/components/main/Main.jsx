@@ -26,7 +26,7 @@ const Main = () => {
   // getMainInfoWithoutLogin();
   // };
 
-  getMainInfoWithoutLogin("leeseul !!!!");
+  // getMainInfoWithoutLogin("leeseul !!!!");
 
   // useEffect(() => {
   //   test();
