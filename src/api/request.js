@@ -11,9 +11,8 @@ export const instance = axios.create({
 
 instance.interceptors.request.use(
   function (config) {
-    const [cookies] = useCookies();
-    const accessToken = cookies.accessToken;
-    const refreshToken = cookies.refreshToken;
+    const accessToken = getCookie("accessToken");
+    const refreshToken = getCookie("refreshToken");
     if (accessToken !== null && refreshToken !== null) {
       config.headers.common["authorization"] = `${accessToken}`;
       config.headers.common["Refresh-token"] = `${refreshToken}`;
@@ -24,6 +23,11 @@ instance.interceptors.request.use(
     return Promise.reject(error);
   }
 );
+
+function getCookie(key) {
+  key = new RegExp(key + "=([^;]*)");
+  return key.test(document.cookie) ? unescape(RegExp.$1) : "";
+}
 
 export const kakaoLoginInstance = async (code) => {
   return await axios.get(
