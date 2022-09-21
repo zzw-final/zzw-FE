@@ -5,7 +5,7 @@ import { kakaoLoginInstance } from "../../../api/request";
 
 const KakaoRedirect = () => {
   const navigate = useNavigate();
-  const [cookies, setCookie] = useCookies([]);
+  const [cookies, setCookies] = useCookies([]);
 
   // 인가코드
   let code = new URL(window.location.href).searchParams.get("code");
@@ -16,27 +16,30 @@ const KakaoRedirect = () => {
   useEffect(() => {
     async function fetchData() {
       const result = await kakaoLoginInstance(code);
-      console.log("result :>> ", result);
+
       if (result.data.success && result.data.error === null) {
-        const ACCESS_TOKEN = result.headers["authorization"];
-        const REFRESH_TOKEN = result.headers["refresh-token"];
-        const KAKAO_TOKEN = result.data.data.kakaoToken;
-        const EMAIL = result.data.data.email;
-        const NICKNAME = result.data.data.nickname;
-        const PROFILE = result.data.data.profile;
-        const USERID = result.data.data.userId;
-        setCookie("accessToken", ACCESS_TOKEN);
-        setCookie("refreshToken", REFRESH_TOKEN);
-        setCookie("kakaoToken", KAKAO_TOKEN);
-        setCookie("loginEmail", EMAIL);
-        setCookie("loginNickname", NICKNAME);
-        // setCookie("loginNickname", "kakao");
-        setCookie("loginProfile", PROFILE);
-        setCookie("loginUserId", USERID);
-        // 회원가입 전, 카카오 로그인 유저는 기본 닉네임을 'kakao'로 갖는다.
-        if (NICKNAME === "kakao") {
+        const newUser = result.data.data.isFirst;
+        if (newUser === true) {
+          const EMAIL = result.data.data.email;
+          setCookies("loginEmail", EMAIL);
           navigate("/join");
         } else {
+          const ACCESS_TOKEN = `Bearer ${result.headers["authorization"]}`;
+          const REFRESH_TOKEN = result.headers["refresh-token"];
+          const KAKAO_TOKEN = result.data.data.kakaoToken;
+          const EMAIL = result.data.data.email;
+          const NICKNAME = result.data.data.nickname;
+          const PROFILE = result.data.data.profile;
+          const USERID = result.data.data.userId;
+          const GRADE = result.data.data.grade;
+          setCookies("accessToken", ACCESS_TOKEN);
+          setCookies("refreshToken", REFRESH_TOKEN);
+          setCookies("kakaoToken", KAKAO_TOKEN);
+          setCookies("loginEmail", EMAIL);
+          setCookies("loginNickname", NICKNAME);
+          setCookies("loginProfile", PROFILE);
+          setCookies("loginUserId", USERID);
+          setCookies("loginGrade", GRADE);
           navigate("/");
         }
       }

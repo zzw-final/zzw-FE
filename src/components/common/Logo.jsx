@@ -29,6 +29,7 @@ const Logo = () => {
     removeCookie("loginEmail");
     removeCookie("loginNickname");
     removeCookie("loginProfile");
+    removeCookie("loginGrade");
     alert("로그아웃");
   };
   return (
