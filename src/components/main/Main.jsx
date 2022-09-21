@@ -11,13 +11,6 @@ const Main = () => {
 
   const loginNickname = cookies.loginNickname;
 
-  // require("react-dom");
-  // window.React2 = require("react");
-  // console.log(
-  //   "window.React1 === window.React2 ?? > ",
-  //   window.React1 === window.React2
-  // );
-
   const ttt = getCookie("loginUserId");
 
   console.log("ttt >>> ", ttt);

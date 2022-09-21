@@ -40,18 +40,6 @@ export const kakaoLoginInstance = async (code) => {
   );
 };
 
-// export const kakaoLogout = async (code) => {
-//   return await axios.get(
-//     `${process.env.REACT_APP_API}/api/member/kakao/logout`,
-//     {
-//       headers: {
-//         "Content-Type": "application/json",
-//         kakaoToken: cookies.kakaoToken,
-//       },
-//     }
-//   );
-// };
-
-export const join = async (nickname) => {
-  return instance.put("/api/auth/member/signup", nickname);
+export const join = async (sendData) => {
+  return axios.post(`${process.env.REACT_APP_API}/api/member/signup`, sendData);
 };
