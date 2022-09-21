@@ -17,35 +17,24 @@ const JoinForm = (props) => {
   const [isNickname, setIsNickname] = useState(false);
   const [signup, setSignup] = useState(false);
 
-  const [cookies, setCookies] = useCookies([
-    "accessToken",
-    "refreshToken",
-    "loginNickname",
-  ]);
+  const [cookies, setCookies] = useCookies([]);
 
   const navigate = useNavigate();
   const dispatch = useDispatch();
 
   const handleSubmit = async (event) => {
     event.preventDefault();
+
     if (signup === false) {
       return;
     }
 
-    const result = await axios.put(
-      `${process.env.REACT_APP_API}/api/auth/member/signup`,
-      { nickname },
-      {
-        headers: {
-          Authorization: cookies.accessToken,
-          "Refresh-Token": cookies.refreshToken,
-          "Content-Type": "application/json",
-          withCredentials: true,
-        },
-      }
-    );
+    const loginEmail = cookies.loginEmail;
+
+    const result = await join({ email: loginEmail, nickname });
+    console.log("result joinForm > ", result);
     if (result.data.success && result.data.error === null) {
-      setCookies("loginNickname", nickname);
+      navigate("/authkakao");
     }
   };
 
