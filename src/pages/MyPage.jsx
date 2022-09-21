@@ -1,7 +1,16 @@
 import React from "react";
+import Profile from "../components/mypage/Profile";
+import TogglePosts from "../components/mypage/TogglePosts";
+import Recipe from "../components/posts/Recipe";
 
-function MyPage() {
-  return <div>MyPage</div>;
-}
+const MyPage = () => {
+  return (
+    <>
+      <Profile />
+      <TogglePosts />
+      <Recipe />
+    </>
+  );
+};
 
 export default MyPage;
