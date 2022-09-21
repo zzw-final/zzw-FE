@@ -25,7 +25,7 @@ function GoogleRedirect() {
           setCookie("loginEmail", EMAIL);
           navigate("/join");
         } else {
-          const ACCESS_TOKEN = `Bearer ${res.headers["authorization"]}`;
+          const ACCESS_TOKEN = res.headers["authorization"];
           const REFRESH_TOKEN = res.headers["refresh-token"];
           const EMAIL = res.data.data.email;
           const NICKNAME = res.data.data.nickname;

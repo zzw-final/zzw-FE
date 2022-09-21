@@ -3,18 +3,18 @@ import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
 import Button from "../Button";
 
-function Profile() {
+function Profile({ userData }) {
   const navigate = useNavigate();
-
+  // console.log(userData);
   return (
     <Container>
       <div>
         <TopBox>
-          <Img></Img>
+          <Img src={userData?.profile}></Img>
           <div>
             <NicknameBox>
-              <Nickname>다함께차차차</Nickname>
-              <Grade>사이트의 개발자</Grade>
+              <Nickname>{userData?.nickname}</Nickname>
+              <Grade>{userData?.grade}</Grade>
             </NicknameBox>
             <FollowBox>
               <Follow
@@ -23,7 +23,7 @@ function Profile() {
                 }}
               >
                 <p>팔로우</p>
-                <Num>56</Num>
+                <Num>{userData?.follow}</Num>
               </Follow>
               <Follow
                 onClick={() => {
@@ -31,7 +31,7 @@ function Profile() {
                 }}
               >
                 <p>팔로워</p>
-                <Num>70</Num>
+                <Num>{userData?.follower}</Num>
               </Follow>
             </FollowBox>
           </div>
@@ -72,7 +72,7 @@ const TopBox = styled.div`
   margin-bottom: 0.8rem;
 `;
 
-const Img = styled.div`
+const Img = styled.img`
   width: 7rem;
   height: 7rem;
   border-radius: 50%;
