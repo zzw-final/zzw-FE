@@ -5,6 +5,7 @@ import Button from "../Button";
 
 function Profile() {
   const navigate = useNavigate();
+
   return (
     <Container>
       <div>

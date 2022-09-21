@@ -29,7 +29,6 @@ function GoogleRedirect() {
         setCookie("refreshToken", REFRESH_TOKEN);
         setCookie("loginEmail", EMAIL);
         setCookie("loginNickname", NICKNAME);
-        setCookie("loginNickname", "google");
         setCookie("loginProfile", PROFILE);
         setCookie("loginUserId", USERID);
         if (NICKNAME === "google") {
