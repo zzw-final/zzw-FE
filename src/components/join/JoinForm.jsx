@@ -34,7 +34,7 @@ const JoinForm = (props) => {
     const result = await join({ email: loginEmail, nickname });
     console.log("result joinForm > ", result);
     if (result.data.success && result.data.error === null) {
-      navigate("/authkakao");
+      navigate("/login");
     }
   };
 
