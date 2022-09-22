@@ -6,6 +6,7 @@ import WriteContent from "./WriteContent";
 
 const Write = (props) => {
   // console.log(props);
+
   return (
     <div>
       <WriteHeader onSubmitHandler={props.onSubmitHandler} />
@@ -16,6 +17,7 @@ const Write = (props) => {
         setTime={props.setTime}
       />
       <WriteContent
+        content={props.content}
         setContent={props.setContent}
         setImage={props.setImage}
         image={props.image}
