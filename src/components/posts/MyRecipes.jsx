@@ -1,10 +1,12 @@
 import React from "react";
-import { instance } from "../../api/request";
+import Recipe from "./Recipe";
 
-function MyRecipes() {
+function MyRecipes({ myRecipes }) {
   return (
     <>
-      <div>MyRecipes</div>
+      {myRecipes?.map((myRecipe) => (
+        <Recipe key={myRecipe.postId} myRecipe={myRecipe}></Recipe>
+      ))}
     </>
   );
 }

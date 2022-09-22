@@ -1,54 +1,35 @@
 import React from "react";
 import styled from "styled-components";
 
-function Post() {
+function Recipe({ myRecipe }) {
+  const foodName = myRecipe?.ingredient.filter((title) => title.isName === true);
+  const tags = myRecipe?.ingredient.filter((title) => title.isName === false);
+
   return (
     <Container>
       <PostBox>
         <TopBox>
-          <div style={{ fontSize: `var(--font-small)` }}>#쌀국수</div>
-          {/* TODO: 더블클릭시 좋아요 되게 */}
-          <div style={{ fontSize: `11px` }}>🥄13</div>
+          <div style={{ fontSize: `var(--font-small)` }}>
+            #{foodName[0].ingredientName}
+          </div>
+          <div style={{ fontSize: `11px` }}>🥄{myRecipe?.likeNum}</div>
         </TopBox>
-        <img
-          alt="foodphoto"
-          width="100%"
-          height="60%"
-          src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSS0FgEhG5IkCIal5KX2oQowhJlaL9OfxSRQw&usqp=CAU"
-        />
-        <Title>국물맛이 일품! 쌀국수</Title>
+        <img alt="foodImg" width="100%" height="60%" src={myRecipe?.foodImg} />
+        <Title>{myRecipe?.title}</Title>
         <Tags>
+          {tags?.map((tag, i) => (
+            <Tag key={i}>#{tag.ingredientName}</Tag>
+          ))}
           <Tag>#양지</Tag>
           <Tag>#숙주나물</Tag>
           <Tag>#레몬</Tag>
-        </Tags>
-      </PostBox>
-      {/* DESC: 아래 부분은 나중엔 없어질 데이터 */}
-      <PostBox>
-        <TopBox>
-          <div style={{ fontSize: `var(--font-small)` }}>#순두부찌개</div>
-          <div style={{ fontSize: `11px` }}>🥄13</div>
-        </TopBox>
-        <img
-          alt="foodphoto"
-          width="100%"
-          height="60%"
-          src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSxmD2RH4ufh-eQQinAG4o5S7Ot7oSWkz0zeA&usqp=CAU"
-        />
-        <Title>계란이 들어간 순두부찌개</Title>
-        <Tags>
-          <Tag>#순두부</Tag>
-          <Tag>#계란</Tag>
-          <Tag>#바지락육수</Tag>
-          <Tag>#파</Tag>
-          <Tag>#청양고추</Tag>
         </Tags>
       </PostBox>
     </Container>
   );
 }
 
-export default Post;
+export default Recipe;
 
 const Container = styled.div`
   display: flex;
