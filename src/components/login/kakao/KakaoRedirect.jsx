@@ -5,18 +5,14 @@ import { kakaoLoginInstance } from "../../../api/request";
 
 const KakaoRedirect = () => {
   const navigate = useNavigate();
-  const [cookies, setCookies] = useCookies([]);
+  const [cookies, setCookies, removeCookies] = useCookies([]);
 
   // 인가코드
   let code = new URL(window.location.href).searchParams.get("code");
 
-  console.log("code :>> ", code);
-  // TODO: SetCookie 함수로 쿠키 셋업 하고 싶은데, hook은 함수형 컴포넌트 바로 아래에서만 사용가능 하다고 암됨.
-  // 방법 찾아봐야 함. 휵의 규칙이 틀렸다는 에러 뜸.
   useEffect(() => {
     async function fetchData() {
       const result = await kakaoLoginInstance(code);
-
       if (result.data.success && result.data.error === null) {
         const newUser = result.data.data.isFirst;
         if (newUser === true) {
@@ -44,7 +40,12 @@ const KakaoRedirect = () => {
         }
       }
     }
-    fetchData();
+    if (cookies.loginEmail === undefined) {
+      fetchData();
+    } else {
+      removeCookies("loginEmail");
+      navigate("/");
+    }
   }, [code, navigate]);
 };
 
