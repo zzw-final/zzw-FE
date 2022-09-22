@@ -1,11 +1,46 @@
-import React, { useEffect } from "react";
+import axios from "axios";
+import React, { useEffect, useState, useRef } from "react";
 import styled from "styled-components";
 
-const WriteContent = ({ setContent, setImage, Image }) => {
+const WriteContent = ({ setContent, setImage, image, content }) => {
+  const [imageURL, setImageURL] = useState([]);
+
+  useEffect(() => {
+    setImage(imageURL);
+  }, [setImage]);
+
+  const upLoadImg = useRef();
+
+  const openFile = () => {
+    upLoadImg.current.Click();
+  };
+
+  const onChange = (e) => {
+    e.preventDefault();
+    if (e.target.files) {
+      const img = e.target.files[0];
+      const formdata = new FormData();
+      formdata.append("image", img);
+    }
+  };
+
   return (
-    <Content>
-      <input type="file" accept="image/*" />
-    </Content>
+    <>
+      <input
+        type="file"
+        accept="image/jpg, image/png, image/jpeg, image/gif"
+        ref={upLoadImg}
+        // style={{ display: "none" }}
+        onChange={onChange}
+        value={image}
+      />
+      {/* <div onClick={openFile}></div> */}
+      <Content
+        onChange={(e) => {
+          setContent(e.target.value);
+        }}
+      ></Content>
+    </>
   );
 };
 export default WriteContent;
