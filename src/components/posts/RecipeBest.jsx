@@ -1,11 +1,14 @@
-import React from "react";
+import React, { useEffect } from "react";
 import styled from "styled-components";
 import Tag from "../common/Tag";
-import { likeRecipe } from "../../api/request";
+import { likeRecipe, getLikeRecipe } from "../../api/request";
+import { useNavigate } from "react-router-dom";
 
 function RecipeBest({ post }) {
   const { postId, title, nickname, likeNum, ingredient, foodImg, createAt } =
     post;
+
+  const navigate = useNavigate();
 
   const foodName = ingredient?.find(
     (ingredient) => ingredient.isName === true
@@ -17,31 +20,46 @@ function RecipeBest({ post }) {
     )
     .filter((ingredient) => ingredient !== undefined);
 
-  console.log("likeNum :>> ", likeNum);
+  const toggleLike = () => {
+    likeRecipe(postId).then((res) => console.log("res > ", res));
+  };
 
-  // const toggleLike = () => {
-  //   likeRecipe(postId);
-  // };
+  useEffect(() => {
+    getLikeRecipe();
+  }, []);
 
-  const delBtnClick = () => {
-    alert("click!");
+  useEffect(() => {
+    async function fetchData() {
+      const result = await getLikeRecipe();
+      if (result.data.success && result.data.error === null) {
+        console.log("cccc >", result.data);
+        console.log("cccc >", result.data.data[0].postId);
+      }
+    }
+    fetchData();
+  }, []);
+
+  const goToDetail = () => {
+    navigate(`/detail/${postId}`);
   };
 
   return (
     <PostBox>
       <TopBox>
         <div style={{ fontSize: `var(--font-small)` }}>
-          <Tag
-            tagName={`#${foodName}`}
-            isFoodName={true}
-            idDelBtn={true}
-            delBtnClick={delBtnClick}
-          />
+          <Tag tagName={`#${foodName}`} isFoodName={true} />
         </div>
-        {/* <div style={{ fontSize: `11px` }} onClick={toggleLike}> */}
-        <div style={{ fontSize: `11px` }}>🥄{likeNum}</div>
+        <div style={{ fontSize: `11px` }} onClick={toggleLike}>
+          ❤️ ♡{likeNum}
+        </div>
       </TopBox>
-      <img alt="foodphoto" width="100%" height="60%" src={foodImg} />
+      <img
+        alt="foodphoto"
+        width="100%"
+        height="60%"
+        src={foodImg}
+        onClick={goToDetail}
+      />
       <Title>{title}</Title>
       <Tags>
         {foodIngredientList.map((ingredient, idx) => (

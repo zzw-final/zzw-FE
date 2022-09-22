@@ -40,6 +40,7 @@ export const kakaoLoginInstance = async (code) => {
 };
 
 export const join = async (sendData) => {
+  sendData = { data: "", file: "" };
   return instance.post(`/api/member/signup`, sendData);
 };
 
@@ -48,6 +49,9 @@ export const getMainData = async () => {
 };
 
 export const likeRecipe = async (postId) => {
-  const res = await instance.post(`/api/auth/post/${postId}`);
-  console.log("like > ", res);
+  return await instance.post(`/api/auth/post/${postId}`);
+};
+
+export const getLikeRecipe = async () => {
+  return await instance.get(`/api/auth/mypage/likeposts`);
 };
