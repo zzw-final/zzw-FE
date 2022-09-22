@@ -19,9 +19,9 @@ function RecipeBest({ post }) {
 
   console.log("likeNum :>> ", likeNum);
 
-  const toggleLike = () => {
-    likeRecipe(postId);
-  };
+  // const toggleLike = () => {
+  //   likeRecipe(postId);
+  // };
 
   const delBtnClick = () => {
     alert("click!");
@@ -38,9 +38,8 @@ function RecipeBest({ post }) {
             delBtnClick={delBtnClick}
           />
         </div>
-        <div style={{ fontSize: `11px` }} onClick={toggleLike}>
-          🥄{likeNum}
-        </div>
+        {/* <div style={{ fontSize: `11px` }} onClick={toggleLike}> */}
+        <div style={{ fontSize: `11px` }}>🥄{likeNum}</div>
       </TopBox>
       <img alt="foodphoto" width="100%" height="60%" src={foodImg} />
       <Title>{title}</Title>
