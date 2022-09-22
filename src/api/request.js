@@ -1,5 +1,4 @@
 import axios from "axios";
-import { useCookies } from "react-cookie";
 
 export const instance = axios.create({
   baseURL: process.env.REACT_APP_API,
@@ -13,7 +12,7 @@ instance.interceptors.request.use(
   function (config) {
     const accessToken = getCookie("accessToken");
     const refreshToken = getCookie("refreshToken");
-    if (accessToken !== null && refreshToken !== null) {
+    if (accessToken !== undefined && refreshToken !== undefined) {
       config.headers.common["authorization"] = `${accessToken}`;
       config.headers.common["Refresh-token"] = `${refreshToken}`;
     }
@@ -41,5 +40,14 @@ export const kakaoLoginInstance = async (code) => {
 };
 
 export const join = async (sendData) => {
-  return axios.post(`${process.env.REACT_APP_API}/api/member/signup`, sendData);
+  return instance.post(`/api/member/signup`, sendData);
+};
+
+export const getMainData = async () => {
+  return instance.get(`/api/post`);
+};
+
+export const likeRecipe = async (postId) => {
+  const res = await instance.post(`/api/auth/post/${postId}`);
+  console.log("like > ", res);
 };

@@ -4,10 +4,8 @@ import Button from "@mui/material/Button";
 import TextField from "@mui/material/TextField";
 import Box from "@mui/material/Box";
 import ArrowForwardIcon from "@mui/icons-material/ArrowForward";
-import { useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { join } from "../../api/request";
-import axios from "axios";
 import { useCookies } from "react-cookie";
 
 const JoinForm = (props) => {
@@ -16,23 +14,19 @@ const JoinForm = (props) => {
   const [nickname, setNickname] = useState("");
   const [isNickname, setIsNickname] = useState(false);
   const [signup, setSignup] = useState(false);
-
-  const [cookies, setCookies] = useCookies([]);
+  const [cookies] = useCookies(["loginEmail"]);
 
   const navigate = useNavigate();
-  const dispatch = useDispatch();
 
   const handleSubmit = async (event) => {
     event.preventDefault();
-
     if (signup === false) {
       return;
     }
 
     const loginEmail = cookies.loginEmail;
-
     const result = await join({ email: loginEmail, nickname });
-    console.log("result joinForm > ", result);
+
     if (result.data.success && result.data.error === null) {
       navigate("/login");
     }
@@ -118,10 +112,6 @@ const Boxs = styled.div`
   margin: auto;
   padding: 2em;
   border-radius: 1em;
-`;
-
-const LoginImg = styled.img`
-  max-width: 300px;
 `;
 
 export default JoinForm;
