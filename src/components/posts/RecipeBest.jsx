@@ -4,8 +4,7 @@ import Tag from "../common/Tag";
 import { likeRecipe } from "../../api/request";
 
 function RecipeBest({ post }) {
-  const { postId, title, nickname, likeNum, ingredient, foodImg, createAt } =
-    post;
+  const { postId, title, nickname, likeNum, ingredient, foodImg, createAt } = post;
 
   const foodName = ingredient?.find(
     (ingredient) => ingredient.isName === true
@@ -30,7 +29,7 @@ function RecipeBest({ post }) {
           <Tag tagName={`#${foodName}`} />
         </div>
         <div style={{ fontSize: `11px` }} onClick={toggleLike}>
-          🥄{likeNum}
+          🥄
         </div>
       </TopBox>
       <img alt="foodphoto" width="100%" height="60%" src={foodImg} />
