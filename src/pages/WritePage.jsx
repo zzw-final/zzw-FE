@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import styled from "styled-components";
 import Write from "../components/write/Write";
-import axios from "axios";
+import { instance } from "../api/request";
 
 const WritePage = () => {
   const [title, setTitle] = useState("");
@@ -24,10 +24,7 @@ const WritePage = () => {
       image: image,
     };
     console.log(data);
-    await axios.post(
-      "https://5bba5794-6cae-4b98-83a1-edd9ebc9483a.mock.pstmn.io/api/auth/post",
-      data
-    );
+    await instance.post("http://15.164.216.199/api/auth/post", data);
   };
   return (
     <div>
