@@ -1,66 +1,78 @@
-import React from "react";
+import React, { useState } from "react";
 import { useEffect } from "react";
-import { useCookies } from "react-cookie";
-import { useNavigate } from "react-router-dom";
-// import styled from "styled-components";
-import { getMainInfoWithoutLogin, test } from "../../api/request";
+import styled from "styled-components";
+import { getMainData } from "../../api/request";
+import Tag from "../common/Tag";
+import RecipeBest from "../posts/RecipeBest";
 
 const Main = () => {
-  const navigate = useNavigate();
-  const [cookies, , removeCookie] = useCookies(["loginNickname"]);
+  const [bestPost, setBestPost] = useState();
+  const [recentPost, setRecentPost] = useState();
+  const [tagList, setTagList] = useState();
 
-  const loginNickname = cookies.loginNickname;
-
-  const ttt = getCookie("loginUserId");
-
-  console.log("ttt >>> ", ttt);
-
-  // const test = () => {
-  // getMainInfoWithoutLogin();
-  // };
-
-  // getMainInfoWithoutLogin("leeseul !!!!");
-
-  // useEffect(() => {
-  //   test();
-  // }, [loginNickname]);
-
-  // useEffect(() => {
-  //   async function fetchData() {
-  //     // if (loginNickname === undefined) {
-  //     // const result = await getMainInfoWithoutLogin();
-  //     // } else {
-  //     //   console.log("loginNickname:>> ", loginNickname);
-  //     // }
-  //   }
-
-  //   fetchData();
-  // }, [loginNickname]);
+  useEffect(() => {
+    async function fetchData() {
+      const result = await getMainData();
+      if (result.data.success && result.data.error === null) {
+        setBestPost(result.data.data.bestPost);
+        setRecentPost(result.data.data.recentPost);
+        setTagList(result.data.data.tagList);
+      }
+    }
+    fetchData();
+  }, []);
 
   return (
-    <></>
-    // <MainContainer>
-    //   <TagsContainer>tags..</TagsContainer>
-    //   <BestRecipeContainer>베스트 👍</BestRecipeContainer>
-    //   <NewRecipeContainer>new 레시피</NewRecipeContainer>
-    // </MainContainer>
+    <MainContainer>
+      <TagsContainer>
+        {tagList?.map((tag, idx) => (
+          <Tag tagName={tag.tagName} key={idx} />
+        ))}
+      </TagsContainer>
+      <BestRecipeContainer>
+        <div>베스트 👍</div>
+        <BestRecipeList>
+          {bestPost?.map((post) => (
+            <RecipeBest post={post} key={post.postId} />
+          ))}
+        </BestRecipeList>
+      </BestRecipeContainer>
+      <NewRecipeContainer>
+        <div>new 레시피 👍</div>
+        <RecentRecipeList>
+          {recentPost?.map((post) => (
+            <RecipeBest post={post} key={post.postId} />
+          ))}
+        </RecentRecipeList>
+      </NewRecipeContainer>
+    </MainContainer>
   ); // 태그, 베스트, 최신, 팔로우 목록 모두 가져옴.
 };
 
-// 쿠키 읽기
-function getCookie(key) {
-  key = new RegExp(key + "=([^;]*)"); // 쿠키들을 세미콘론으로 구분하는 정규표현식 정의
-  return key.test(document.cookie) ? unescape(RegExp.$1) : ""; // 인자로 받은 키에 해당하는 키가 있으면 값을 반환
-}
+const MainContainer = styled.div`
+  padding: 0 5px;
+`;
 
-// const MainContainer = styled.div`
-//   padding: 0 5px;
-// `;
+const TagsContainer = styled.section`
+  display: flex;
+`;
 
-// const TagsContainer = styled.section``;
+const BestRecipeContainer = styled.section`
+  overflow-y: scroll;
+`;
 
-// const BestRecipeContainer = styled.section``;
+const BestRecipeList = styled.section`
+  display: flex;
+  height: 240px;
+`;
 
-// const NewRecipeContainer = styled.section``;
+const NewRecipeContainer = styled.section`
+  overflow-y: scroll;
+`;
+
+const RecentRecipeList = styled.section`
+  display: flex;
+  height: 240px;
+`;
 
 export default Main;
