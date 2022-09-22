@@ -19,8 +19,13 @@ const WriteContent = ({ setContent, setImage, image, content }) => {
     e.preventDefault();
     if (e.target.files) {
       const img = e.target.files[0];
+      console.log(img);
       const formdata = new FormData();
       formdata.append("image", img);
+      // axios.upLoadImg(formdata).then((res) => {
+      //   const image = res.data;
+      //   console.log(image);
+      // });
     }
   };
 
