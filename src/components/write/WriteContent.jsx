@@ -1,6 +1,7 @@
 import axios from "axios";
 import React, { useEffect, useState, useRef } from "react";
 import styled from "styled-components";
+import { instance } from "../../api/request";
 
 const WriteContent = ({ setContent, setImage, image, content }) => {
   const [imageURL, setImageURL] = useState([]);
@@ -21,16 +22,20 @@ const WriteContent = ({ setContent, setImage, image, content }) => {
       const img = e.target.files[0];
       console.log(img);
       const formdata = new FormData();
-      formdata.append("image", img);
-      // axios.upLoadImg(formdata).then((res) => {
-      //   const image = res.data;
-      //   console.log(image);
-      // });
+      formdata.append("file", img);
+      // instance 수정필요함
+      const config = {
+        Headers: {
+          "content-type": "multipart/form-data",
+        },
+      };
+      instance.get("/api/auth/post/image", formdata, config);
     }
   };
 
   return (
     <>
+      {/* <image src={}></image> */}
       <input
         type="file"
         accept="image/jpg, image/png, image/jpeg, image/gif"

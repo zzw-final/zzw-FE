@@ -56,10 +56,10 @@ const WriteTitle = ({ setTitle, setFoodName, setIngredient, setTime }) => {
             setTime(e.target.value);
           }}
         >
-          <option value="5분">5분</option>
-          <option value="10분">10분</option>
-          <option value="15분">15분</option>
-          <option value="30분 이상">30분 이상</option>
+          <option value="0">5분</option>
+          <option value="1">10분</option>
+          <option value="2">15분</option>
+          <option value="3">30분 이상</option>
         </TimeSelect>
       </div>
       <TagBox>
