@@ -23,11 +23,20 @@ function RecipeBest({ post }) {
     likeRecipe(postId);
   };
 
+  const delBtnClick = () => {
+    alert("click!");
+  };
+
   return (
     <PostBox>
       <TopBox>
         <div style={{ fontSize: `var(--font-small)` }}>
-          <Tag tagName={`#${foodName}`} />
+          <Tag
+            tagName={`#${foodName}`}
+            isFoodName={true}
+            idDelBtn={true}
+            delBtnClick={delBtnClick}
+          />
         </div>
         <div style={{ fontSize: `11px` }} onClick={toggleLike}>
           🥄{likeNum}
