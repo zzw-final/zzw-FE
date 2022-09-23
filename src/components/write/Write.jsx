@@ -19,8 +19,8 @@ const Write = (props) => {
       <WriteContent
         content={props.content}
         setContent={props.setContent}
-        setImage={props.setImage}
-        image={props.image}
+        setFile={props.setFile}
+        file={props.file}
       />
     </div>
   );
