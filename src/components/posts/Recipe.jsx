@@ -134,6 +134,7 @@ const PostBox = styled.div`
   width: 175px;
   height: 240px;
   background-color: var(--color-light-white);
+  border-radius: 15px;
   box-shadow: 3px 3px 5px #dcdcdc;
   cursor: pointer;
   margin: 0px auto 10px auto;

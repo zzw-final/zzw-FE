@@ -1,5 +1,4 @@
 import React from "react";
-import RecipeBest from "./RecipeBest";
 import Recipe from "./Recipe";
 import styled from "styled-components";
 
@@ -16,7 +15,6 @@ function MyRecipes({ myRecipes }) {
 export default MyRecipes;
 
 const Container = styled.div`
-  display: flex;
-  flex-direction: row;
-  flex-wrap: wrap;
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(175px, 1fr));
 `;

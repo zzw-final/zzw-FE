@@ -39,7 +39,7 @@ function GoogleRedirect() {
           setCookie("loginProfile", PROFILE);
           setCookie("loginUserId", USERID);
           setCookie("loginGrade", GRADE);
-          navigate("/");
+          navigate("/", { replace: true });
         }
       }
     }
@@ -47,7 +47,7 @@ function GoogleRedirect() {
       googleLogin();
     } else {
       removeCookies("loginEmail");
-      navigate("/");
+      navigate("/", { replace: true });
     }
   }, [code, navigate, cookies, setCookie, removeCookies]);
 
