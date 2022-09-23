@@ -20,9 +20,10 @@ const KakaoRedirect = () => {
           setCookies("loginEmail", EMAIL);
           navigate("/join");
         } else {
+          console.log("result.data.data :>> ", result.data);
           const ACCESS_TOKEN = `Bearer ${result.headers["authorization"]}`;
           const REFRESH_TOKEN = result.headers["refresh-token"];
-          const KAKAO_TOKEN = result.data.data.kakaoToken;
+          const OAUTH_TOKEN = result.data.data.oauthToken;
           const EMAIL = result.data.data.email;
           const NICKNAME = result.data.data.nickname;
           const PROFILE = result.data.data.profile;
@@ -30,7 +31,7 @@ const KakaoRedirect = () => {
           const GRADE = result.data.data.grade;
           setCookies("accessToken", ACCESS_TOKEN);
           setCookies("refreshToken", REFRESH_TOKEN);
-          setCookies("kakaoToken", KAKAO_TOKEN);
+          setCookies("oauthToken", OAUTH_TOKEN);
           setCookies("loginEmail", EMAIL);
           setCookies("loginNickname", NICKNAME);
           setCookies("loginProfile", PROFILE);

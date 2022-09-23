@@ -9,7 +9,7 @@ const Logo = () => {
   const [cookies, , removeCookie] = useCookies([
     "accessToken",
     "refreshToken",
-    "kakaoToken",
+    "oauthToken",
     "loginUserId",
     "loginEmail",
     "loginNickname",
@@ -18,13 +18,13 @@ const Logo = () => {
   const kakaoLogout = () => {
     axios.get(`${process.env.REACT_APP_API}/api/member/kakao/logout`, {
       headers: {
-        kakaoToken: cookies.kakaoToken,
+        kakaoToken: cookies.oauthToken,
         withCredentials: true,
       },
     });
     removeCookie("accessToken");
     removeCookie("refreshToken");
-    removeCookie("kakaoToken");
+    removeCookie("oauthToken");
     removeCookie("loginUserId");
     removeCookie("loginEmail");
     removeCookie("loginNickname");
