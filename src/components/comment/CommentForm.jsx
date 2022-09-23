@@ -17,6 +17,10 @@ const CommentForm = ({ postId }) => {
   }, []);
 
   const post = () => {
+    if (loginProfile === undefined) {
+      alert("로그인 유저만 댓글을 달 수 있습니다.");
+      return;
+    }
     const sendData = {
       postId: postId,
       comment: commentRef.current.value,
