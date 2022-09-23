@@ -3,17 +3,19 @@ import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
 import Button from "../Button";
 
-function Profile() {
+function Profile({ userData }) {
   const navigate = useNavigate();
+  const grades = userData?.gradeList;
+
   return (
     <Container>
       <div>
         <TopBox>
-          <Img></Img>
+          <Img src={userData?.profile}></Img>
           <div>
             <NicknameBox>
-              <Nickname>다함께차차차</Nickname>
-              <Grade>사이트의 개발자</Grade>
+              <Nickname>{userData?.nickname}</Nickname>
+              <Grade>{userData?.grade}</Grade>
             </NicknameBox>
             <FollowBox>
               <Follow
@@ -22,7 +24,7 @@ function Profile() {
                 }}
               >
                 <p>팔로우</p>
-                <Num>56</Num>
+                <Num>{userData?.follow}</Num>
               </Follow>
               <Follow
                 onClick={() => {
@@ -30,22 +32,20 @@ function Profile() {
                 }}
               >
                 <p>팔로워</p>
-                <Num>70</Num>
+                <Num>{userData?.follower}</Num>
               </Follow>
             </FollowBox>
           </div>
         </TopBox>
-        {/* TODO: 보이는거 최대 개수 정해놔야 될 듯 나중에 펼치기를 넣든지 */}
+        {/* TODO: 칭호가 지나치게 많아지면 어떡할까 펼치기를 쓸까 */}
         <BottomBox>
-          <Grades>태초의 존재</Grades>
-          <Grades>사이트의 개발자</Grades>
-          <Grades>한식 외길 인생</Grades>
-          <Grades>레시피북 출간가능</Grades>
-          <Grades>쩝쩝박사</Grades>
-          <Grades>먹잘알</Grades>
+          {grades?.map((grade, i) => (
+            <Grades key={i}>{grade.gradeName}</Grades>
+          ))}
         </BottomBox>
       </div>
-      <Button name="ProfileBtn">팔로우 / 언팔로우</Button>
+      {/*TODO: 팔로우 / 언팔로우 전환 기능 필요 */}
+      <Button name="ProfileBtn">팔로우</Button>
     </Container>
   );
 }
@@ -71,7 +71,7 @@ const TopBox = styled.div`
   margin-bottom: 0.8rem;
 `;
 
-const Img = styled.div`
+const Img = styled.img`
   width: 7rem;
   height: 7rem;
   border-radius: 50%;

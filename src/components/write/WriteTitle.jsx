@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import styled from "styled-components";
 
 const WriteTitle = ({ setTitle, setFoodName, setIngredient, setTime }) => {
-  console.log(setTitle);
+  // console.log(setTitle);
 
   const [tagItem, setTagItem] = useState("");
   const [tagList, setTagList] = useState([]);
@@ -16,15 +16,24 @@ const WriteTitle = ({ setTitle, setFoodName, setIngredient, setTime }) => {
     setTagItem("");
   };
   console.log(tagList);
+
+  const deleteTag = (e) => {
+    const deleteItem = e.target.parentElement.firstChild.innerText;
+    // console.log("태그삭제", deleteItem);
+    const filterTag = tagList.filter((tagItem) => tagItem !== deleteItem);
+    // console.log("태그삭제필터", filterTag);
+    setTagList(filterTag);
+  };
+
   const onKeyPress = (e) => {
     if (e.target.value !== "" && e.key === "Enter") {
       submitTag();
     }
   };
 
-  // useEffect(()=>{
-  //     setFoodName(tagList)
-  // })
+  useEffect(() => {
+    setIngredient(tagList);
+  }, [setIngredient(tagList)]);
 
   return (
     <Stdiv>
@@ -36,12 +45,10 @@ const WriteTitle = ({ setTitle, setFoodName, setIngredient, setTime }) => {
       />
       <div styled={{ margin: "10px", display: "flex" }}>
         <FoodnameTag
-          value={tagItem}
           placeholder="요리이름 태그로 입력해주세요"
           onChange={(e) => {
-            setTagItem(e.target.value);
+            setFoodName(e.target.value);
           }}
-          onKeyPress={onKeyPress}
         />
         <TimeSelect
           placeholder="요리 시간을 선택해주세요"
@@ -55,12 +62,24 @@ const WriteTitle = ({ setTitle, setFoodName, setIngredient, setTime }) => {
           <option value="30분 이상">30분 이상</option>
         </TimeSelect>
       </div>
-      <IngredintTag
-        placeholder="재료를 태그로 입력해주세요"
-        onChange={(e) => {
-          setIngredient(e.target.value);
-        }}
-      />
+      <TagBox>
+        {tagList.map((tagItem, i) => {
+          return (
+            <Tagdiv key={i}>
+              <div>{tagItem}</div>
+              <Button onClick={deleteTag}>X</Button>
+            </Tagdiv>
+          );
+        })}
+        <IngredintTag
+          value={tagItem}
+          placeholder="재료를 태그로 입력해주세요"
+          onChange={(e) => {
+            setTagItem(e.target.value);
+          }}
+          onKeyPress={onKeyPress}
+        />
+      </TagBox>
     </Stdiv>
   );
 };
@@ -111,16 +130,52 @@ const TimeSelect = styled.select`
   border-radius: 10px;
 `;
 
+const TagBox = styled.div`
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  width: 340px;
+  min-height: 5vh;
+  margin: 8px;
+  padding: 0 10px;
+  border: 1px solid rgba(0, 0, 0, 0.3);
+  border-radius: 10px;
+
+  &:focus-within {
+    border-color: var(--color-light-blue);
+  }
+`;
+
 const IngredintTag = styled.input`
   box-sizing: border-box;
+  display: inline-flex;
+  min-width: 150px;
+  background: transparent;
+  border: none;
+  outline: none;
+  cursor: text;
+`;
 
-  /* position: absolute; */
-  width: 340px;
-  height: 5vh;
-  left: 26px;
-  top: 208px;
-  margin: 10px;
+const Tagdiv = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin: 5px;
+  padding: 5px;
+  background-color: var(--color-dark-pink);
+  border-radius: 5px;
+  color: white;
+  font-size: 13px;
+`;
 
-  border: 1px solid #9c9c9c;
-  border-radius: 10px;
+const Button = styled.button`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 15px;
+  height: 15px;
+  margin-left: 1px;
+  background-color: white;
+  border-radius: 50%;
+  color: black;
 `;

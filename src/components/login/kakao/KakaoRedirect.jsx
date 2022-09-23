@@ -36,7 +36,7 @@ const KakaoRedirect = () => {
           setCookies("loginProfile", PROFILE);
           setCookies("loginUserId", USERID);
           setCookies("loginGrade", GRADE);
-          navigate("/");
+          navigate("/", { replace: true });
         }
       }
     }
@@ -44,7 +44,7 @@ const KakaoRedirect = () => {
       fetchData();
     } else {
       removeCookies("loginEmail");
-      navigate("/");
+      navigate("/", { replace: true });
     }
   }, [code, navigate]);
 };

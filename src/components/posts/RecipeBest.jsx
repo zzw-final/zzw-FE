@@ -5,10 +5,13 @@ import { likeRecipe, getLikeRecipe } from "../../api/request";
 import { useNavigate } from "react-router-dom";
 
 function RecipeBest({ post }) {
+
   const { postId, title, nickname, likeNum, ingredient, foodImg, createAt } =
     post;
 
+
   const navigate = useNavigate();
+
 
   const foodName = ingredient?.find(
     (ingredient) => ingredient.isName === true
@@ -28,6 +31,7 @@ function RecipeBest({ post }) {
     getLikeRecipe();
   }, []);
 
+
   useEffect(() => {
     async function fetchData() {
       const result = await getLikeRecipe();
@@ -41,17 +45,20 @@ function RecipeBest({ post }) {
 
   const goToDetail = () => {
     navigate(`/detail/${postId}`);
+
   };
 
   return (
     <PostBox>
       <TopBox>
         <div style={{ fontSize: `var(--font-small)` }}>
+
           <Tag tagName={`#${foodName}`} isFoodName={true} />
         </div>
         <div style={{ fontSize: `11px` }} onClick={toggleLike}>
           ❤️ ♡{likeNum}
         </div>
+
       </TopBox>
       <img
         alt="foodphoto"

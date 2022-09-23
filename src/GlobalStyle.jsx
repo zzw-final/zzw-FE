@@ -12,9 +12,11 @@ const GlobalStyle = createGlobalStyle`
   --color-black: #000000;
   --color-blue: #73aace;
   --color-light-blue: #D1EEFC;
-  --color-pink: #fe918d;
+  --color-light-pink: #f7c1bf;
+  --color-pink: #ffa4a1;
   --color-dark-pink: #ff6863;
-  --color-yellow: #fff7d1;
+  --color-yellow: #fff7d1; 
+  --color-light-orange: #ffd9a1;
   --color-orange: #feb546;
   --color-dark-orange: #f4623a;
   --color-primary-green: #e8f5e9;

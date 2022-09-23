@@ -26,10 +26,7 @@ const Footer = () => {
 
   return (
     <FooterContainer>
-      <BottomNavigation
-        sx={{ width: 500 }}
-        value={window.location.pathname || "/"}
-      >
+      <BottomNavigation sx={{ width: 500 }} value={window.location.pathname || "/"}>
         <BottomNavigationAction
           label="Home"
           value="/"
@@ -55,11 +52,12 @@ const Footer = () => {
 };
 
 const FooterContainer = styled.div`
+  width: 100%;
   display: flex;
   justify-content: center;
   height: 56px;
-  position: relative;
-  transform: translateY(-100%);
+  position: fixed;
+  bottom: 0;
 `;
 
 export default Footer;
