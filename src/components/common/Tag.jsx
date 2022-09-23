@@ -1,19 +1,40 @@
 import React from "react";
 import styled from "styled-components";
 
-const Tag = ({ tagName }) => {
-  return <TagContainer color={randomColor()}>{tagName}</TagContainer>;
+
+const Tag = ({ tagName, isFoodName, idDelBtn, delBtnClick }) => {
+  return (
+    <TagContainer color={randomColor(isFoodName)}>
+      {tagName} {idDelBtn ? <DelBtn onClick={delBtnClick}>X</DelBtn> : ""}
+    </TagContainer>
+  );
 };
 
-const TagContainer = styled.p`
+const TagContainer = styled.div`
+
   font-size: var(--font-small);
   background-color: ${(props) => props.color};
   padding: 0.1rem 0.3rem;
   border-radius: 20px;
-  height: 20px;
+
+=======
+  height: 19px;
+  display: flex;
+  align-items: center;
 `;
 
-function randomColor() {
+const DelBtn = styled.div`
+  font-size: var(--font-small);
+  background-color: var(--color-light-white);
+  border-radius: 50%;
+  width: 17px;
+  height: 17px;
+  text-align: center;
+  margin-left: 2px;
+`;
+
+function randomColor(isFoodName) {
+
   const color = [
     "#f9a825",
     "#ffcdd2",
@@ -42,7 +63,12 @@ function randomColor() {
   const max = color.length;
   let randomColorNum = Math.floor(Math.random() * (max - min)) + min;
 
-  return color[randomColorNum];
-}
+
+  if (isFoodName) {
+    return "#ffffff";
+  } else {
+    return color[randomColorNum];
+  }
+
 
 export default Tag;

@@ -4,7 +4,10 @@ import Tag from "../common/Tag";
 import { likeRecipe } from "../../api/request";
 
 function RecipeBest({ post }) {
-  const { postId, title, nickname, likeNum, ingredient, foodImg, createAt } = post;
+
+  const { postId, title, nickname, likeNum, ingredient, foodImg, createAt } =
+    post;
+
 
   const foodName = ingredient?.find(
     (ingredient) => ingredient.isName === true
@@ -18,19 +21,31 @@ function RecipeBest({ post }) {
 
   console.log("likeNum :>> ", likeNum);
 
-  const toggleLike = () => {
-    likeRecipe(postId);
+
+  // const toggleLike = () => {
+  //   likeRecipe(postId);
+  // };
+
+  const delBtnClick = () => {
+    alert("click!");
+
   };
 
   return (
     <PostBox>
       <TopBox>
         <div style={{ fontSize: `var(--font-small)` }}>
-          <Tag tagName={`#${foodName}`} />
+
+          <Tag
+            tagName={`#${foodName}`}
+            isFoodName={true}
+            idDelBtn={true}
+            delBtnClick={delBtnClick}
+          />
         </div>
-        <div style={{ fontSize: `11px` }} onClick={toggleLike}>
-          🥄
-        </div>
+        {/* <div style={{ fontSize: `11px` }} onClick={toggleLike}> */}
+        <div style={{ fontSize: `11px` }}>🥄{likeNum}</div>
+
       </TopBox>
       <img alt="foodphoto" width="100%" height="60%" src={foodImg} />
       <Title>{title}</Title>
