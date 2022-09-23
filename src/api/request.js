@@ -12,7 +12,9 @@ instance.interceptors.request.use(
   function (config) {
     const accessToken = getCookie("accessToken");
     const refreshToken = getCookie("refreshToken");
-    if (accessToken !== null && refreshToken !== null) {
+
+    if (accessToken !== undefined && refreshToken !== undefined) {
+
       config.headers.common["Authorization"] = `${accessToken}`;
       config.headers.common["Refresh-Token"] = `${refreshToken}`;
     }
@@ -40,6 +42,7 @@ export const kakaoLoginInstance = async (code) => {
 };
 
 export const join = async (sendData) => {
+  sendData = { data: "", file: "" };
   return instance.post(`/api/member/signup`, sendData);
 };
 
@@ -48,6 +51,9 @@ export const getMainData = async () => {
 };
 
 export const likeRecipe = async (postId) => {
-  const res = await instance.post(`/api/auth/post/${postId}`);
-  console.log("like > ", res);
+  return await instance.post(`/api/auth/post/${postId}`);
+};
+
+export const getLikeRecipe = async () => {
+  return await instance.get(`/api/auth/mypage/likeposts`);
 };

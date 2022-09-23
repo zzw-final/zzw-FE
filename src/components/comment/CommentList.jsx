@@ -1,20 +1,22 @@
 import React, { useEffect, useState } from "react";
 import { useCookies } from "react-cookie";
 import { useDispatch, useSelector } from "react-redux";
+import { useParams } from "react-router-dom";
 import styled from "styled-components";
 import { getComments } from "../../redux/modules/commentSlice";
 import CommentForm from "./CommentForm";
 import CommentItem from "./CommentItem";
 
-const CommentList = ({ postId }) => {
+const CommentList = () => {
   const [commentList, setcommentList] = useState("");
   const dispatch = useDispatch();
 
   const comments = useSelector((store) => store.comment.comments);
 
+  const postId = useParams().id;
+
   useEffect(() => {
-    // dispatch(getComments(postId));
-    dispatch(getComments()); // 임시 🐥
+    dispatch(getComments(postId));
   }, []);
 
   useEffect(() => {
@@ -25,11 +27,11 @@ const CommentList = ({ postId }) => {
     <CommentsConatiner>
       <CommentForm postId={postId} />
       {commentList &&
-        Array.from(commentList).map((comment) => {
+        Array.from(commentList).map((commentItem) => {
           return (
             <CommentItem
-              commentItem={comment}
-              key={comment.commentId}
+              commentItem={commentItem}
+              key={commentItem.commentId}
               postId={postId}
             />
           );
