@@ -1,12 +1,18 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import styled from "styled-components";
 import Tag from "../common/Tag";
-import { likeRecipe, getLikeRecipe } from "../../api/request";
+import { likeRecipe, getLikeRecipeList } from "../../api/request";
 import { useNavigate } from "react-router-dom";
+import { useCookies } from "react-cookie";
 
 function RecipeBest({ post }) {
   const { postId, title, nickname, likeNum, ingredient, foodImg, createAt } =
     post;
+  const [likeList, setLikeList] = useState([]);
+  const [likeItem, setLikeItem] = useState(false);
+  const [cookies] = useCookies(["loginEmail"]);
+  const imgRef = useRef();
+  const loginNickname = cookies.loginNickname;
 
   const navigate = useNavigate();
 
@@ -21,27 +27,46 @@ function RecipeBest({ post }) {
     .filter((ingredient) => ingredient !== undefined);
 
   const toggleLike = () => {
-    likeRecipe(postId).then((res) => console.log("res > ", res));
+    if (loginNickname === undefined) {
+      alert("로그인 유저만 이용할 수 있는 서비스 입니다.");
+      return;
+    }
+    likeRecipe(postId).then((res) =>
+      res.data.data === "post like success"
+        ? setLikeItem(true)
+        : setLikeItem(false)
+    );
   };
 
   useEffect(() => {
-    getLikeRecipe();
-  }, []);
-
-  useEffect(() => {
     async function fetchData() {
-      const result = await getLikeRecipe();
+      const result = await getLikeRecipeList();
       if (result.data.success && result.data.error === null) {
-        console.log("cccc >", result.data);
-        console.log("cccc >", result.data.data[0].postId);
+        setLikeList(result.data.data);
       }
     }
-    fetchData();
-  }, []);
+    if (loginNickname !== undefined) {
+      fetchData();
+    }
+  }, [loginNickname]);
+
+  useEffect(() => {
+    const check = likeList.find((item) => item.postId === postId);
+    if (check) {
+      setLikeItem(true);
+    }
+  }, [likeList, postId]);
 
   const goToDetail = () => {
     navigate(`/detail/${postId}`);
   };
+
+  console.log("likeList :>> ", likeList);
+
+  // useEffect(() => {
+  //   imgRef?.current.addEventListener("dblclick", toggleLike());
+  //   return imgRef?.current.removeEventListener("dblclick", () => {});
+  // }, [imgRef]);
 
   return (
     <PostBox>
@@ -50,7 +75,7 @@ function RecipeBest({ post }) {
           <Tag tagName={`#${foodName}`} isFoodName={true} />
         </div>
         <div style={{ fontSize: `11px` }} onClick={toggleLike}>
-          ❤️ ♡{likeNum}
+          {likeItem ? "❤️" : "♡"}
         </div>
       </TopBox>
       <img
@@ -59,6 +84,7 @@ function RecipeBest({ post }) {
         height="60%"
         src={foodImg}
         onClick={goToDetail}
+        // ref={imgRef}
       />
       <Title>{title}</Title>
       <Tags>

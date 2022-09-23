@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { useEffect } from "react";
 import styled from "styled-components";
-import { getMainData, getLikeRecipe } from "../../api/request";
+import { getMainData } from "../../api/request";
 import Tag from "../common/Tag";
 import RecipeBest from "../posts/RecipeBest";
 
