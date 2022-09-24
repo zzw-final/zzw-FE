@@ -14,7 +14,6 @@ instance.interceptors.request.use(
     const refreshToken = getCookie("refreshToken");
 
     if (accessToken !== undefined && refreshToken !== undefined) {
-
       config.headers.common["Authorization"] = `${accessToken}`;
       config.headers.common["Refresh-Token"] = `${refreshToken}`;
     }
@@ -56,4 +55,8 @@ export const likeRecipe = async (postId) => {
 
 export const getLikeRecipe = async () => {
   return await instance.get(`/api/auth/mypage/likeposts`);
+};
+//상세페이지 get요청
+export const getDetailData = async (postId) => {
+  return await instance.get(`/api/post/${postId}`);
 };
