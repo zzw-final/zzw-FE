@@ -12,7 +12,9 @@ instance.interceptors.request.use(
   function (config) {
     const accessToken = getCookie("accessToken");
     const refreshToken = getCookie("refreshToken");
+
     if (accessToken !== undefined && refreshToken !== undefined) {
+
       config.headers.common["Authorization"] = `${accessToken}`;
       config.headers.common["Refresh-Token"] = `${refreshToken}`;
     }
