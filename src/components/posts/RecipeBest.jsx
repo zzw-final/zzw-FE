@@ -5,13 +5,10 @@ import { likeRecipe, getLikeRecipe } from "../../api/request";
 import { useNavigate } from "react-router-dom";
 
 function RecipeBest({ post }) {
-
   const { postId, title, nickname, likeNum, ingredient, foodImg, createAt } =
     post;
 
-
   const navigate = useNavigate();
-
 
   const foodName = ingredient?.find(
     (ingredient) => ingredient.isName === true
@@ -27,38 +24,34 @@ function RecipeBest({ post }) {
     likeRecipe(postId).then((res) => console.log("res > ", res));
   };
 
-  useEffect(() => {
-    getLikeRecipe();
-  }, []);
+  // useEffect(() => {
+  //   getLikeRecipe();
+  // }, []);
 
-
-  useEffect(() => {
-    async function fetchData() {
-      const result = await getLikeRecipe();
-      if (result.data.success && result.data.error === null) {
-        console.log("cccc >", result.data);
-        console.log("cccc >", result.data.data[0].postId);
-      }
-    }
-    fetchData();
-  }, []);
+  // useEffect(() => {
+  //   async function fetchData() {
+  //     const result = await getLikeRecipe();
+  //     if (result.data.success && result.data.error === null) {
+  //       console.log("cccc >", result.data);
+  //       console.log("cccc >", result.data.data[0].postId);
+  //     }
+  //   }
+  //   fetchData();
+  // }, []);
 
   const goToDetail = () => {
     navigate(`/detail/${postId}`);
-
   };
 
   return (
     <PostBox>
       <TopBox>
         <div style={{ fontSize: `var(--font-small)` }}>
-
           <Tag tagName={`#${foodName}`} isFoodName={true} />
         </div>
         <div style={{ fontSize: `11px` }} onClick={toggleLike}>
           ❤️ ♡{likeNum}
         </div>
-
       </TopBox>
       <img
         alt="foodphoto"

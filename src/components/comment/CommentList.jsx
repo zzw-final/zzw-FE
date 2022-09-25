@@ -1,38 +1,61 @@
 import React, { useEffect, useState } from "react";
-import { useCookies } from "react-cookie";
-import { useDispatch, useSelector } from "react-redux";
 import { useParams } from "react-router-dom";
 import styled from "styled-components";
-import { getComments } from "../../redux/modules/commentSlice";
 import CommentForm from "./CommentForm";
 import CommentItem from "./CommentItem";
+import {
+  getComments,
+  postComment,
+  deleteComment,
+  updateComment,
+} from "../../api/request";
 
 const CommentList = () => {
-  const [commentList, setcommentList] = useState("");
-  const dispatch = useDispatch();
-
-  const comments = useSelector((store) => store.comment.comments);
-
+  const [commentList, setCommentList] = useState([]);
   const postId = useParams().id;
 
   useEffect(() => {
-    dispatch(getComments(postId));
-  }, []);
+    async function fetchData() {
+      const comments = await getComments(postId);
+      setCommentList(comments);
+    }
+    fetchData();
+  }, [postId]);
 
-  useEffect(() => {
-    setcommentList(comments);
-  }, [comments]);
+  async function post(postInfo) {
+    const newPost = await postComment(postInfo);
+    setCommentList((prev) => [newPost, ...prev]);
+  }
+
+  async function remove(commentId) {
+    const deletedCommentId = await deleteComment(commentId);
+    setCommentList((prev) =>
+      prev.filter((comment) => comment.commentId !== deletedCommentId)
+    );
+  }
+
+  async function update(updatedInfo) {
+    const updatedPost = await updateComment(updatedInfo);
+    setCommentList((prev) =>
+      prev.map((item) =>
+        item.commentId === updatedPost.commentId
+          ? { ...item, comment: updatedPost.comment }
+          : item
+      )
+    );
+  }
 
   return (
     <CommentsConatiner>
-      <CommentForm postId={postId} />
+      <CommentForm postId={postId} post={post} />
       {commentList &&
-        Array.from(commentList).map((commentItem) => {
+        Array.from(commentList).map((comment) => {
           return (
             <CommentItem
-              commentItem={commentItem}
-              key={commentItem.commentId}
-              postId={postId}
+              commentItem={comment}
+              key={comment.commentId}
+              remove={remove}
+              update={update}
             />
           );
         })}

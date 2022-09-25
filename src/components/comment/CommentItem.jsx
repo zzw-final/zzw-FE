@@ -1,21 +1,17 @@
 import React, { useEffect, useRef, useState } from "react";
 import styled from "styled-components";
 import Avatar from "@mui/material/Avatar";
-import { useDispatch, useSelector } from "react-redux";
-import { deleteComment, updateComment } from "../../redux/modules/commentSlice";
 import { useCookies } from "react-cookie";
 
-const CommentItem = ({ commentItem, postId }) => {
+const CommentItem = ({ commentItem, remove, update }) => {
   const { commentId, userId, profile, nickname, comment, grade, createdAt } =
     commentItem;
   const [updatedComment, setUpdatedComment] = useState(comment);
   const [visibleEditBtns, setVisibleEditBtns] = useState("block");
   const [visibleEditCommentBox, setVisibleEditCommentBox] = useState("none");
-  const [cookies] = useCookies([]);
+  const [cookies] = useCookies(["loginNickname"]);
   const updateCommentRef = useRef();
   const loginNickname = cookies.loginNickname;
-
-  const dispatch = useDispatch();
 
   const openUpdateForm = () => {
     setVisibleEditCommentBox("block");
@@ -37,30 +33,29 @@ const CommentItem = ({ commentItem, postId }) => {
     updateCommentRef.current.value = comment;
   };
 
-  const update = () => {
-    const sendData = {
-      commentId: commentId,
-      comment: updateCommentRef.current.value,
-    };
-    dispatch(updateComment(sendData));
-    setVisibleEditCommentBox("none");
-    setVisibleEditBtns("block");
-  };
-
   useEffect(() => {
     updateCommentRef.current.addEventListener("keypress", logKey);
     function logKey(event) {
       if (event.code === "Enter") {
-        update();
+        updateComment();
       }
     }
   }, []);
 
-  const remove = () => {
+  const removeComment = () => {
     if (window.confirm("삭제 하시겠습니까?")) {
-      dispatch(deleteComment(commentId));
-    } else {
+      remove(commentId);
     }
+  };
+
+  const updateComment = () => {
+    const sendData = {
+      commentId: commentId,
+      comment: updateCommentRef.current.value,
+    };
+    update(sendData);
+    setVisibleEditCommentBox("none");
+    setVisibleEditBtns("block");
   };
 
   return (
@@ -83,7 +78,7 @@ const CommentItem = ({ commentItem, postId }) => {
         {loginNickname && loginNickname === nickname ? (
           <EditBtns visibleEditBtns={visibleEditBtns}>
             <UpdateBtn onClick={openUpdateForm}>수정</UpdateBtn>
-            <DeleteBtn onClick={remove}>X</DeleteBtn>
+            <DeleteBtn onClick={removeComment}>X</DeleteBtn>
           </EditBtns>
         ) : (
           ""
@@ -93,7 +88,9 @@ const CommentItem = ({ commentItem, postId }) => {
       <EditedCommentBox visibleEditCommentBox={visibleEditCommentBox}>
         <EditComment ref={updateCommentRef}></EditComment>
         <EditCommentBtns>
-          <UpdateComplateBtn onClick={update}>수정 완료</UpdateComplateBtn>
+          <UpdateComplateBtn onClick={updateComment}>
+            수정 완료
+          </UpdateComplateBtn>
           <CancleBtn onClick={cancleEdit}>취소</CancleBtn>
         </EditCommentBtns>
       </EditedCommentBox>
