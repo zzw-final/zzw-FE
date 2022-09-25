@@ -1,16 +1,12 @@
-import React, { useEffect, useRef } from "react";
+import React, { useCallback, useEffect, useRef } from "react";
 import styled from "styled-components";
 import Button from "@mui/material/Button";
 import { useCookies } from "react-cookie";
+import useInputRef from "../../hooks/useInputRef";
 
 const CommentForm = ({ postId, post }) => {
   const [cookies] = useCookies(["loginProfile"]);
-  const commentRef = useRef("");
   const loginProfile = cookies.loginProfile;
-
-  useEffect(() => {
-    commentRef.current.focus();
-  }, []);
 
   const postComment = () => {
     if (loginProfile === undefined) {
@@ -23,17 +19,9 @@ const CommentForm = ({ postId, post }) => {
       profile: loginProfile,
     };
     post(sendData);
-    commentRef.current.value = "";
   };
 
-  useEffect(() => {
-    commentRef.current.addEventListener("keypress", logKey);
-    function logKey(event) {
-      if (event.code === "Enter") {
-        postComment();
-      }
-    }
-  }, []);
+  const commentRef = useInputRef("", postComment);
 
   return (
     <FormContainer>

@@ -2,6 +2,7 @@ import React, { useEffect, useRef, useState } from "react";
 import styled from "styled-components";
 import Avatar from "@mui/material/Avatar";
 import { useCookies } from "react-cookie";
+import useInputRef from "../../hooks/useInputRef";
 
 const CommentItem = ({ commentItem, remove, update }) => {
   const { commentId, userId, profile, nickname, comment, grade, createdAt } =
@@ -10,37 +11,25 @@ const CommentItem = ({ commentItem, remove, update }) => {
   const [visibleEditBtns, setVisibleEditBtns] = useState("block");
   const [visibleEditCommentBox, setVisibleEditCommentBox] = useState("none");
   const [cookies] = useCookies(["loginNickname"]);
-  const updateCommentRef = useRef();
+
   const loginNickname = cookies.loginNickname;
 
   const openUpdateForm = () => {
     setVisibleEditCommentBox("block");
     setVisibleEditBtns("none");
     updateCommentRef.current.focus();
+    updateCommentRef.current.value = comment;
   };
 
   useEffect(() => {
     updateCommentRef.current.value = updatedComment;
   }, [updatedComment]);
 
-  useEffect(() => {
-    updateCommentRef.current.focus();
-  });
-
   const cancleEdit = () => {
     setVisibleEditCommentBox("none");
     setVisibleEditBtns("block");
     updateCommentRef.current.value = comment;
   };
-
-  useEffect(() => {
-    updateCommentRef.current.addEventListener("keypress", logKey);
-    function logKey(event) {
-      if (event.code === "Enter") {
-        updateComment();
-      }
-    }
-  }, []);
 
   const removeComment = () => {
     if (window.confirm("삭제 하시겠습니까?")) {
@@ -58,6 +47,12 @@ const CommentItem = ({ commentItem, remove, update }) => {
     setVisibleEditBtns("block");
   };
 
+  const updateCommentRef = useInputRef("", updateComment);
+
+  const userPage = () => {
+    // navigate 로 해당 유저 페이지로 이동
+  };
+
   return (
     <ItemContainer>
       <Info>
@@ -66,9 +61,10 @@ const CommentItem = ({ commentItem, remove, update }) => {
             alt="user_img"
             src={profile}
             sx={{ width: 28, height: 28, mr: 1 }}
+            onClick={userPage}
           />
           <div>
-            <Nickname>{nickname} &gt; </Nickname>
+            <Nickname onClick={userPage}>{nickname} &gt; </Nickname>
             <GradeCreatedAt>
               <Grade>{grade}</Grade>
               <CreatedAt>{createdAt}</CreatedAt>
