@@ -5,20 +5,29 @@ import { instance } from "../../api/request";
 import Tag from "../common/Tag";
 
 function Detail() {
-  const postId = useParams().id;
-  const [postDetail, setPostDetail] = useState();
+  const post_Id = useParams().id;
+  const [postDetail, setPostDetail] = useState({
+    postId: 0,
+    title: "",
+    nickname: "",
+    likeNum: 0,
+    time: "",
+    content: "",
+    ingredient: [],
+    createAt: "",
+    foodImg: "",
+    commentList: [],
+  });
   const [tagList, setTagList] = useState();
 
-  const getData = async () => {
-    const data = await instance.get(`/api/post/${postId}`);
-    console.log("get요청", data);
-    if (data.data.success && data.data.error === null) {
-      setPostDetail(data.data.data);
-      setTagList(data.data.data.ingredient);
-    }
-  };
-
   useEffect(() => {
+    const getData = async () => {
+      const data = await instance.get(`/api/post/${post_Id}`);
+      console.log("get요청", data);
+      setPostDetail(data.data.data);
+      setTagList(data?.data.data.ingredient);
+    };
+
     getData();
   }, []);
 
@@ -26,8 +35,6 @@ function Detail() {
 
   const { title, nickname, likeNum, ingredient, foodImg, createAt, content } =
     postDetail;
-
-  console.log("제목", title);
 
   const foodName = ingredient?.find(
     (ingredient) => ingredient.isName === true
@@ -39,11 +46,17 @@ function Detail() {
     )
     .filter((ingredient) => ingredient !== undefined);
 
+  // const onDeleteHandler = async () => {
+  //   if (window.confirm("작성 글을 삭제하시겠습니까?")) {
+  //     await instance.delete(`/api/auth/post/${postId}`);
+  //   }
+  // };
+
   return (
     <DetailContainer>
       <ButtonDiv>
         <button>수정</button>
-        <button>삭제</button>
+        {/* <button onClick={onDeleteHandler}>삭제</button> */}
       </ButtonDiv>
       <TitleDiv>
         <FoodnameDiv>{foodName}</FoodnameDiv>
@@ -52,14 +65,14 @@ function Detail() {
           <PostTitle>{title}</PostTitle>
 
           <Tags>
-            {foodIngredientList.map((ingredient, idx) => (
+            {foodIngredientList?.map((ingredient, idx) => (
               <Tag tagName={ingredient} key={idx} />
             ))}
           </Tags>
         </PostTitleDiv>
       </TitleDiv>
       <FoodImgBox>
-        <img scr={foodImg} />
+        <img alt="foodphoto" width="100%" height="60%" scr={foodImg} />
       </FoodImgBox>
 
       <LikeDiv>
@@ -131,7 +144,7 @@ const FoodImgBox = styled.div`
   margin-top: 8vw;
   width: 60vw;
   height: 20vh;
-  background-color: skyblue;
+  /* background-color: skyblue; */
   border-radius: 10px;
 `;
 
