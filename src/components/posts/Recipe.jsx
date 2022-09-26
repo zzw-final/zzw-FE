@@ -5,7 +5,8 @@ import Card from "../UI/Card";
 import { likeRecipe } from "../../api/request";
 
 function Recipe({ post, likeHandler }) {
-  const { postId, title, nickname, likeNum, ingredient, foodImg, createAt } = post;
+  const { postId, title, isLike, nickname, likeNum, ingredient, foodImg, createAt } =
+    post;
 
   const foodName = ingredient?.find(
     (ingredient) => ingredient.isName === true
@@ -32,7 +33,7 @@ function Recipe({ post, likeHandler }) {
           <div>#{foodName}</div>
         </div>
         <div style={{ fontSize: `12px`, margin: "0px" }} onClick={toggleLike}>
-          ❤️
+          {isLike ? "❤️" : "🤍"}
         </div>
       </TopBox>
       <img alt="foodphoto" width="100%" height="60%" src={foodImg} />
