@@ -20,14 +20,14 @@ instance.interceptors.request.use(
   function (config) {
     const accessToken = getCookie("accessToken");
     const refreshToken = getCookie("refreshToken");
-    if (refreshToken && accessToken) {
+
+    if (accessToken && refreshToken) {
       config.headers.common["Authorization"] = `${accessToken}`;
       config.headers.common["Refresh-Token"] = `${refreshToken}`;
     }
     return config;
   },
   function (error) {
-    console.log(error);
     return Promise.reject(error);
   }
 );
@@ -36,7 +36,7 @@ imgInstance.interceptors.request.use(
   function (config) {
     const accessToken = getCookie("accessToken");
     const refreshToken = getCookie("refreshToken");
-    if (refreshToken && accessToken) {
+    if (accessToken && refreshToken) {
       config.headers.common["Authorization"] = `${accessToken}`;
       config.headers.common["Refresh-Token"] = `${refreshToken}`;
     }
@@ -88,7 +88,10 @@ export const postComment = async (postInfo) => {
   const comment = {
     comment: postInfo.comment,
   };
-  const res = await instance.post(`/api/auth/post/${postInfo.postId}/comment`, comment);
+  const res = await instance.post(
+    `/api/auth/post/${postInfo.postId}/comment`,
+    comment
+  );
   const storeData = {
     ...res.data.data,
     postId: postInfo.postId,
