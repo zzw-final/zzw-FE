@@ -25,29 +25,10 @@ function DetailPage() {
   // }, []);
 
   return (
-    <div>
-      <div>
-        <div>#요리이름</div>
-        <button>수정</button>
-        <button>삭제</button>
-      </div>
-
-      <div>
-        <div>제목</div>
-        <div>작성자</div>
-      </div>
-
-      <Tag></Tag>
-
-      <div>
-        <img></img>
-      </div>
-      <div>작성날짜</div>
-      <div>조아요</div>
-      <div>{likeNum}</div>
-
-      <div></div>
-    </div>
+    <LayoutPage>
+      <Detail />
+      <CommentList />
+    </LayoutPage>
   );
 }
 

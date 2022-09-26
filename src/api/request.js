@@ -79,3 +79,7 @@ export const likeRecipe = async (postId) => {
 export const getLikeRecipe = async () => {
   return await instance.get(`/api/auth/mypage/likeposts`);
 };
+//상세페이지 get요청
+export const getDetailData = async (postId) => {
+  return await instance.get(`/api/post/${postId}`);
+};
