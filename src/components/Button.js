@@ -26,12 +26,12 @@ const MnBtn = styled.button`
           font-size: var(--font-midium);
           cursor: pointer;
 
-          &:focus {
+          /* &:focus {
             background-color: var(--color-orange);
             color: var(--color-white);
             border: 2.5px solid transparent;
             outline: none;
-          }
+          } */
         `;
 
       case "ProfileBtn":

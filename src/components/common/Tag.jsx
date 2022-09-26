@@ -14,6 +14,7 @@ const TagContainer = styled.div`
   background-color: ${(props) => props.color};
   padding: 0.1rem 0.3rem;
   border-radius: 20px;
+
   height: 19px;
   display: flex;
   align-items: center;
