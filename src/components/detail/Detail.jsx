@@ -5,7 +5,7 @@ import { instance } from "../../api/request";
 import Tag from "../common/Tag";
 import CommentList from "../comment/CommentList";
 
-function Detail({ postDetail, tagList }) {
+function Detail({ postDetail, tagList, post, remove, update, commentList }) {
   const foodName = postDetail?.ingredient?.find(
     (ingredient) => ingredient.isName === true
   ).ingredientName;
@@ -59,7 +59,13 @@ function Detail({ postDetail, tagList }) {
         </LikeDiv>
         <ContentBox>{postDetail?.content}</ContentBox>
       </DetailContainer>
-      <CommentList postId={postDetail?.postId} />
+      <CommentList
+        postId={postDetail?.postId}
+        post={post}
+        remove={remove}
+        update={update}
+        commentList={commentList}
+      />
     </>
   );
 }
