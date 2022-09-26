@@ -33,6 +33,7 @@ function App() {
             <Route path="/login" element={<LoginPage />} />
             <Route path="/Join" element={<JoinPage />} />
             <Route path="/mypage" element={<MyPage />} />
+            <Route path="/mypage/:id" element={<MyPage />} />
             <Route path="/write" element={<WritePage />} />
             <Route path="/detail/:id" element={<DetailPage />} />
             <Route path="/follow" element={<FollowPage />} />
