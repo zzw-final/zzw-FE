@@ -60,7 +60,7 @@ const MyPage = () => {
 
   return (
     <LayoutPage>
-      <Profile userData={userData} />
+      {userData && <Profile userData={userData} />}
       <TogglePosts
         onClickLikeRecipe={fetchLikeRecipe}
         onClickRecipeHandler={recipeHandler}
