@@ -5,19 +5,15 @@ import { kakaoLoginInstance } from "../../../api/request";
 
 const KakaoRedirect = () => {
   const navigate = useNavigate();
-  const location = useLocation();
   const [cookies, setCookies, removeCookies] = useCookies([]);
 
   // 인가코드
   let code = new URL(window.location.href).searchParams.get("code");
 
-  // if (location) {
-  //   console.log(" >>>> ", location.state.joinSuccess);
-  // }
-
   useEffect(() => {
     async function fetchData() {
       const result = await kakaoLoginInstance(code);
+      console.log("result.data.data.isFirst", result.data.data.isFirst);
       if (result.data.success && result.data.error === null) {
         const newUser = result.data.data.isFirst;
         if (newUser === true) {
@@ -25,7 +21,6 @@ const KakaoRedirect = () => {
           setCookies("loginEmail", EMAIL);
           navigate("/join");
         } else {
-          console.log("result.data.data :>> ", result.data);
           const ACCESS_TOKEN = `Bearer ${result.headers["authorization"]}`;
           const REFRESH_TOKEN = result.headers["refresh-token"];
           const OAUTH_TOKEN = result.data.data.oauthToken;

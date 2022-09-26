@@ -28,11 +28,7 @@ const JoinForm = (props) => {
     const result = await join({ email: loginEmail, nickname });
 
     if (result.data.success && result.data.error === null) {
-      navigate("/login", {
-        state: {
-          joinSuccess: true,
-        },
-      });
+      navigate("/");
     }
   };
 
