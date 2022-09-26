@@ -79,7 +79,40 @@ export const likeRecipe = async (postId) => {
 export const getLikeRecipe = async () => {
   return await instance.get(`/api/auth/mypage/likeposts`);
 };
-//상세페이지 get요청
-export const getDetailData = async (postId) => {
-  return await instance.get(`/api/post/${postId}`);
+
+export const getComments = async (postId) => {
+  const res = await instance.get(`/api/post/${postId}`);
+  return res.data.success ? res.data.data.commentList : res.data.error;
+};
+
+export const postComment = async (postInfo) => {
+  const comment = {
+    comment: postInfo.comment,
+  };
+  const res = await instance.post(
+    `/api/auth/post/${postInfo.postId}/comment`,
+    comment
+  );
+  const storeData = {
+    ...res.data.data,
+    postId: postInfo.postId,
+    profile: postInfo.profile,
+  };
+  return res.data.success ? storeData : res.data.error;
+};
+
+export const deleteComment = async (commentId) => {
+  const res = await instance.delete(`/api/auth/post/comment/${commentId}`);
+  return res.data.success ? commentId : res.data.error;
+};
+
+export const updateComment = async (updateInfo) => {
+  const comment = {
+    comment: updateInfo.comment,
+  };
+  const res = await instance.put(
+    `/api/auth/post/comment/${updateInfo.commentId}`,
+    comment
+  );
+  return res.data.success ? updateInfo : res.data.error;
 };

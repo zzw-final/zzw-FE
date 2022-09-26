@@ -1,22 +1,14 @@
-import React, { useEffect, useRef, useState } from "react";
+import React, { useCallback, useEffect, useRef } from "react";
 import styled from "styled-components";
-import TextField from "@mui/material/TextField";
 import Button from "@mui/material/Button";
-import { useDispatch } from "react-redux";
-import { postComment } from "../../redux/modules/commentSlice";
 import { useCookies } from "react-cookie";
+import useInputRef from "../../hooks/useInputRef";
 
-const CommentForm = ({ postId }) => {
+const CommentForm = ({ postId, post }) => {
   const [cookies] = useCookies(["loginProfile"]);
-  const dispatch = useDispatch();
-  const commentRef = useRef("");
   const loginProfile = cookies.loginProfile;
 
-  useEffect(() => {
-    commentRef.current.focus();
-  }, []);
-
-  const post = () => {
+  const postComment = () => {
     if (loginProfile === undefined) {
       alert("로그인 유저만 댓글을 달 수 있습니다.");
       return;
@@ -26,23 +18,15 @@ const CommentForm = ({ postId }) => {
       comment: commentRef.current.value,
       profile: loginProfile,
     };
-    dispatch(postComment(sendData));
-    commentRef.current.value = "";
+    post(sendData);
   };
 
-  useEffect(() => {
-    commentRef.current.addEventListener("keypress", logKey);
-    function logKey(event) {
-      if (event.code === "Enter") {
-        post();
-      }
-    }
-  }, []);
+  const commentRef = useInputRef("", postComment);
 
   return (
     <FormContainer>
       <CommentInput ref={commentRef} />
-      <Button variant="outlined" sx={{ p: 0, ml: 1 }} onClick={post}>
+      <Button variant="outlined" sx={{ p: 0, ml: 1 }} onClick={postComment}>
         댓글 달기
       </Button>
     </FormContainer>
