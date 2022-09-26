@@ -8,11 +8,13 @@ import { useCookies } from "react-cookie";
 function RecipeBest({ post }) {
   const { postId, title, nickname, likeNum, ingredient, foodImg, createAt } =
     post;
+
   const [likeList, setLikeList] = useState([]);
   const [likeItem, setLikeItem] = useState(false);
   const [cookies] = useCookies(["loginEmail"]);
   const imgRef = useRef();
   const loginNickname = cookies.loginNickname;
+
 
   const navigate = useNavigate();
 

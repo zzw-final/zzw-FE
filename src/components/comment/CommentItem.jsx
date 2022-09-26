@@ -1,35 +1,29 @@
 import React, { useEffect, useRef, useState } from "react";
 import styled from "styled-components";
 import Avatar from "@mui/material/Avatar";
-import { useDispatch, useSelector } from "react-redux";
-import { deleteComment, updateComment } from "../../redux/modules/commentSlice";
 import { useCookies } from "react-cookie";
+import useInputRef from "../../hooks/useInputRef";
 
-const CommentItem = ({ commentItem, postId }) => {
+const CommentItem = ({ commentItem, remove, update }) => {
   const { commentId, userId, profile, nickname, comment, grade, createdAt } =
     commentItem;
   const [updatedComment, setUpdatedComment] = useState(comment);
   const [visibleEditBtns, setVisibleEditBtns] = useState("block");
   const [visibleEditCommentBox, setVisibleEditCommentBox] = useState("none");
-  const [cookies] = useCookies([]);
-  const updateCommentRef = useRef();
-  const loginNickname = cookies.loginNickname;
+  const [cookies] = useCookies(["loginNickname"]);
 
-  const dispatch = useDispatch();
+  const loginNickname = cookies.loginNickname;
 
   const openUpdateForm = () => {
     setVisibleEditCommentBox("block");
     setVisibleEditBtns("none");
     updateCommentRef.current.focus();
+    updateCommentRef.current.value = comment;
   };
 
   useEffect(() => {
     updateCommentRef.current.value = updatedComment;
   }, [updatedComment]);
-
-  useEffect(() => {
-    updateCommentRef.current.focus();
-  });
 
   const cancleEdit = () => {
     setVisibleEditCommentBox("none");
@@ -37,30 +31,26 @@ const CommentItem = ({ commentItem, postId }) => {
     updateCommentRef.current.value = comment;
   };
 
-  const update = () => {
+  const removeComment = () => {
+    if (window.confirm("삭제 하시겠습니까?")) {
+      remove(commentId);
+    }
+  };
+
+  const updateComment = () => {
     const sendData = {
       commentId: commentId,
       comment: updateCommentRef.current.value,
     };
-    dispatch(updateComment(sendData));
+    update(sendData);
     setVisibleEditCommentBox("none");
     setVisibleEditBtns("block");
   };
 
-  useEffect(() => {
-    updateCommentRef.current.addEventListener("keypress", logKey);
-    function logKey(event) {
-      if (event.code === "Enter") {
-        update();
-      }
-    }
-  }, []);
+  const updateCommentRef = useInputRef("", updateComment);
 
-  const remove = () => {
-    if (window.confirm("삭제 하시겠습니까?")) {
-      dispatch(deleteComment(commentId));
-    } else {
-    }
+  const userPage = () => {
+    // navigate 로 해당 유저 페이지로 이동
   };
 
   return (
@@ -71,9 +61,10 @@ const CommentItem = ({ commentItem, postId }) => {
             alt="user_img"
             src={profile}
             sx={{ width: 28, height: 28, mr: 1 }}
+            onClick={userPage}
           />
           <div>
-            <Nickname>{nickname} &gt; </Nickname>
+            <Nickname onClick={userPage}>{nickname} &gt; </Nickname>
             <GradeCreatedAt>
               <Grade>{grade}</Grade>
               <CreatedAt>{createdAt}</CreatedAt>
@@ -83,7 +74,7 @@ const CommentItem = ({ commentItem, postId }) => {
         {loginNickname && loginNickname === nickname ? (
           <EditBtns visibleEditBtns={visibleEditBtns}>
             <UpdateBtn onClick={openUpdateForm}>수정</UpdateBtn>
-            <DeleteBtn onClick={remove}>X</DeleteBtn>
+            <DeleteBtn onClick={removeComment}>X</DeleteBtn>
           </EditBtns>
         ) : (
           ""
@@ -93,7 +84,9 @@ const CommentItem = ({ commentItem, postId }) => {
       <EditedCommentBox visibleEditCommentBox={visibleEditCommentBox}>
         <EditComment ref={updateCommentRef}></EditComment>
         <EditCommentBtns>
-          <UpdateComplateBtn onClick={update}>수정 완료</UpdateComplateBtn>
+          <UpdateComplateBtn onClick={updateComment}>
+            수정 완료
+          </UpdateComplateBtn>
           <CancleBtn onClick={cancleEdit}>취소</CancleBtn>
         </EditCommentBtns>
       </EditedCommentBox>

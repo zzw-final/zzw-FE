@@ -59,4 +59,5 @@ function randomColor(isFoodName) {
     return color[randomColorNum];
   }
 }
+
 export default Tag;
