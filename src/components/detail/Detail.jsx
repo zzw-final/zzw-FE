@@ -5,7 +5,7 @@ import { instance } from "../../api/request";
 import Tag from "../common/Tag";
 import CommentList from "../comment/CommentList";
 
-function Detail({ postDetail, tagList }) {
+function Detail({ postDetail, onDelete }) {
   const foodName = postDetail?.ingredient?.find(
     (ingredient) => ingredient.isName === true
   ).ingredientName;
@@ -16,18 +16,23 @@ function Detail({ postDetail, tagList }) {
     )
     .filter((ingredient) => ingredient !== undefined);
 
-  // const onDeleteHandler = async () => {
-  //   if (window.confirm("작성 글을 삭제하시겠습니까?")) {
-  //     await instance.delete(`/api/auth/post/${postId}`);
+  // export const deleteComment = async (commentId) => {
+  //   const res = await instance.delete(`/api/auth/post/comment/${commentId}`);
+  //   return res.data.success ? commentId : res.data.error;
+
+  //   async function remove(commentId) {
+  //     const deletedCommentId = await deleteComment(commentId);
+  //     setCommentList((prev) =>
+  //       prev.filter((comment) => comment.commentId !== deletedCommentId)
+  //     );
   //   }
-  // };
 
   return (
     <>
       <DetailContainer>
         <ButtonDiv>
           <button>수정</button>
-          <button>삭제</button>
+          <button onClick={onDelete}>삭제</button>
         </ButtonDiv>
         <TitleDiv>
           <FoodnameDiv>{foodName}</FoodnameDiv>

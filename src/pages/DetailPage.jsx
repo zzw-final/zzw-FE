@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import Tag from "../components/common/Tag";
 import { instance } from "../api/request";
 import axios from "axios";
@@ -9,6 +9,7 @@ import Detail from "../components/detail/Detail";
 function DetailPage() {
   const post_Id = useParams().id;
   const [postDetail, setPostDetail] = useState();
+  const navigate = useNavigate();
 
   useEffect(() => {
     const getData = async () => {
@@ -19,9 +20,16 @@ function DetailPage() {
     getData();
   }, []);
 
+  const onDeleteHandler = async () => {
+    if (window.confirm("작성 글을 삭제하시겠습니까?")) {
+      await instance.delete(`/api/auth/post/${post_Id}`);
+      navigate("/");
+    }
+  };
+
   return (
     <LayoutPage>
-      <Detail postDetail={postDetail} />
+      <Detail postDetail={postDetail} onDelete={onDeleteHandler} />
     </LayoutPage>
   );
 }
