@@ -76,7 +76,7 @@ export const likeRecipe = async (postId) => {
   return await instance.post(`/api/auth/post/${postId}`);
 };
 
-export const getLikeRecipe = async () => {
+export const getLikeRecipeList = async () => {
   return await instance.get(`/api/auth/mypage/likeposts`);
 };
 

@@ -31,27 +31,22 @@ const DelBtn = styled.div`
 
 function randomColor(isFoodName) {
   const color = [
-    "#f9a825",
+    "#fce4ec",
     "#ffcdd2",
-    "#bbdefb",
-    "#9fa8da",
     "#f8bbd0",
     "#e1bee7",
-    "#4fc3f7",
-    "#80deea",
+    "#d1c4e9",
+    "#b3e5fc",
+    "#bbdefb",
     "#b2dfdb",
     "#c8e6c9",
     "#dcedc8",
     "#f0f4c3",
-    "#ccff90",
-    "#f4ff81",
     "#fff9c4",
+    "#ffe0b2",
     "#ffe082",
-    "#ffcc80",
-    "#ffab91",
-    "#bcaaa4",
-    "#eeeeee",
-    "#cfd8dc",
+    "#ffd54f",
+    "#fdc7b7",
   ];
 
   const min = 0;
