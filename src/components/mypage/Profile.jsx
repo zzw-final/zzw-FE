@@ -1,7 +1,7 @@
 import React from "react";
 import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
-import Button from "../Button";
+import Button from "../UI/Button";
 
 function Profile({ userData }) {
   const navigate = useNavigate();
