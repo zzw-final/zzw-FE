@@ -15,7 +15,8 @@ const CommentList = () => {
   const [commentList, setCommentList] = useState();
   const postId = useParams().id;
 
-  const [commentData, commentDataFetcher] = useAxios();
+  const [postData, postDataFetcher] = useAxios();
+  // const [commentData, commentDataFetcher] = useAxios();
 
   useEffect(() => {
     async function fetchData() {
@@ -25,21 +26,28 @@ const CommentList = () => {
     fetchData();
   }, [postId]);
 
-  function post(postInfo) {
+  // useEffect(() => {
+  //   commentDataFetcher("get", `/api/post/${postId}`);
+  //   console.log("commentData1 :>> ", commentData?.commentList);
+  // }, []);
+
+  // console.log("commentData2", commentData);
+
+  const post = (postInfo) => {
     // const newPost = await postComment(postInfo);
     const comment = {
       comment: postInfo.comment,
     };
-    commentDataFetcher(
+    postDataFetcher(
       "post",
       `/api/auth/post/${postInfo.postId}/comment`,
       comment
     );
-
+    console.log("result >>> ", postData);
     // setCommentList((prev) => [newPost, ...prev]);
-  }
+  };
 
-  console.log("commentData2", commentData);
+  // console.log("commentData2", commentData);
 
   async function remove(commentId) {
     const deletedCommentId = await deleteComment(commentId);

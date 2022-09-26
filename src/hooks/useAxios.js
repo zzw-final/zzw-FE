@@ -14,6 +14,9 @@ const useAxios = (initialValue) => {
           break;
         case "post":
           setData(await (await instance.post(url, sendData)).data.data);
+          // const result = await (await instance.post(url, sendData)).data.data;
+          // setData(result);
+          // return result;
           break;
         case "delete":
           setData(await (await instance.delete(url)).data.data);
