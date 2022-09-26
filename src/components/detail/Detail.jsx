@@ -3,44 +3,14 @@ import styled from "styled-components";
 import { useNavigate, useParams } from "react-router-dom";
 import { instance } from "../../api/request";
 import Tag from "../common/Tag";
+import CommentList from "../comment/CommentList";
 
-function Detail() {
-  const post_Id = useParams().id;
-  const [postDetail, setPostDetail] = useState({
-    postId: 0,
-    title: "",
-    nickname: "",
-    likeNum: 0,
-    time: "",
-    content: "",
-    ingredient: [],
-    createAt: "",
-    foodImg: "",
-    commentList: [],
-  });
-  const [tagList, setTagList] = useState();
-
-  useEffect(() => {
-    const getData = async () => {
-      const data = await instance.get(`/api/post/${post_Id}`);
-      console.log("get요청", data);
-      setPostDetail(data.data.data);
-      setTagList(data?.data.data.ingredient);
-    };
-
-    getData();
-  }, []);
-
-  console.log("디테일정보값", postDetail);
-
-  const { title, nickname, likeNum, ingredient, foodImg, createAt, content } =
-    postDetail;
-
-  const foodName = ingredient?.find(
+function Detail({ postDetail, tagList, post, remove, update, commentList }) {
+  const foodName = postDetail?.ingredient?.find(
     (ingredient) => ingredient.isName === true
   ).ingredientName;
 
-  const foodIngredientList = ingredient
+  const foodIngredientList = postDetail?.ingredient
     ?.map((ingredient) =>
       ingredient.isName !== true ? ingredient.ingredientName : undefined
     )
@@ -53,56 +23,66 @@ function Detail() {
   // };
 
   return (
-    <DetailContainer>
-      <ButtonDiv>
-        <button>수정</button>
-        {/* <button onClick={onDeleteHandler}>삭제</button> */}
-      </ButtonDiv>
-      <TitleDiv>
-        <FoodnameDiv>{foodName}</FoodnameDiv>
-        <PostTitleDiv>
-          <NickNameDiv>{nickname}</NickNameDiv>
-          <PostTitle>{title}</PostTitle>
+    <>
+      <DetailContainer>
+        <ButtonDiv>
+          <button>수정</button>
+          <button>삭제</button>
+        </ButtonDiv>
+        <TitleDiv>
+          <FoodnameDiv>{foodName}</FoodnameDiv>
+          <PostTitleDiv>
+            <NickNameDiv>{postDetail?.nickname}</NickNameDiv>
+            <PostTitle>{postDetail?.title}</PostTitle>
 
-          <Tags>
-            {foodIngredientList?.map((ingredient, idx) => (
-              <Tag tagName={ingredient} key={idx} />
-            ))}
-          </Tags>
-        </PostTitleDiv>
-      </TitleDiv>
-      <FoodImgBox>
-        <img alt="foodphoto" width="100%" height="60%" scr={foodImg} />
-      </FoodImgBox>
+            <Tags>
+              {foodIngredientList?.map((ingredient, idx) => (
+                <Tag tagName={ingredient} key={idx} />
+              ))}
+            </Tags>
+          </PostTitleDiv>
+        </TitleDiv>
+        <FoodImgBox>
+          <img
+            alt="foodphoto"
+            width="100%"
+            height="60%"
+            scr={postDetail?.foodImg}
+          />
+        </FoodImgBox>
 
-      <LikeDiv>
-        <CreatDate>{createAt}</CreatDate>
-        <Like>
-          조아요<Likenumdiv>{likeNum}</Likenumdiv>
-        </Like>
-      </LikeDiv>
-      <ContentBox>{content}</ContentBox>
-    </DetailContainer>
+        <LikeDiv>
+          <CreatDate>{postDetail?.createAt}</CreatDate>
+          <Like>
+            조아요<Likenumdiv>{postDetail?.likeNum}</Likenumdiv>
+          </Like>
+        </LikeDiv>
+        <ContentBox>{postDetail?.content}</ContentBox>
+      </DetailContainer>
+      <CommentList
+        postId={postDetail?.postId}
+        post={post}
+        remove={remove}
+        update={update}
+        commentList={commentList}
+      />
+    </>
   );
 }
 
 export default Detail;
 
 const DetailContainer = styled.div`
-  /* background-color: green; */
   height: 70vh;
   width: 100vw;
 `;
 
 const TitleDiv = styled.div`
-  /* background-color: white; */
   height: 10vh;
   width: 100%;
-  /* display: inline-flex; */
 `;
 
 const ButtonDiv = styled.div`
-  /* background-color: red; */
   text-align: right;
   width: 100vw;
   height: 4vh;
@@ -111,7 +91,6 @@ const ButtonDiv = styled.div`
 `;
 
 const FoodnameDiv = styled.div`
-  /* background-color: pink; */
   width: 100vw;
   height: 4vh;
   padding-top: 1vh;
@@ -124,15 +103,12 @@ const PostTitleDiv = styled.div`
 `;
 
 const PostTitle = styled.div`
-  /* background-color: blue; */
-
   height: 4vh;
   font-size: var(--font-small);
   padding: 2vw 4vh;
 `;
 
 const NickNameDiv = styled.div`
-  /* background-color: skyblue; */
   color: var(--color-grey);
   padding: 0vh 10vw;
   font-size: var(--font-micro);
@@ -144,7 +120,7 @@ const FoodImgBox = styled.div`
   margin-top: 8vw;
   width: 60vw;
   height: 20vh;
-  /* background-color: skyblue; */
+
   border-radius: 10px;
 `;
 
@@ -154,7 +130,6 @@ const LikeDiv = styled.div`
 `;
 
 const Like = styled.div`
-  /* background-color: yellow; */
   width: 20vw;
   grid-column-start: 4;
   display: grid;
