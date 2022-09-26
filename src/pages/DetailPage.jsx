@@ -5,7 +5,6 @@ import { instance } from "../api/request";
 import axios from "axios";
 import LayoutPage from "../components/common/LayoutPage";
 import Detail from "../components/detail/Detail";
-import CommentList from "../components/comment/CommentList";
 
 function DetailPage() {
   const post_Id = useParams().id;
@@ -23,7 +22,6 @@ function DetailPage() {
   return (
     <LayoutPage>
       <Detail postDetail={postDetail} />
-      <CommentList postId={postDetail.postId} />
     </LayoutPage>
   );
 }

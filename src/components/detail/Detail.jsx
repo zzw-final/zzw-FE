@@ -3,7 +3,7 @@ import styled from "styled-components";
 import { useNavigate, useParams } from "react-router-dom";
 import { instance } from "../../api/request";
 import Tag from "../common/Tag";
-import CommentList from "../components/comment/CommentList";
+import CommentList from "../comment/CommentList";
 
 function Detail({ postDetail, tagList }) {
   const foodName = postDetail?.ingredient?.find(
