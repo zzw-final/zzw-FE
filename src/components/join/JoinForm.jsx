@@ -4,7 +4,7 @@ import Button from "@mui/material/Button";
 import TextField from "@mui/material/TextField";
 import Box from "@mui/material/Box";
 import ArrowForwardIcon from "@mui/icons-material/ArrowForward";
-import { useNavigate } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import { join } from "../../api/request";
 import { useCookies } from "react-cookie";
 
@@ -28,7 +28,7 @@ const JoinForm = (props) => {
     const result = await join({ email: loginEmail, nickname });
 
     if (result.data.success && result.data.error === null) {
-      navigate("/login");
+      navigate("/");
     }
   };
 

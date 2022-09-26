@@ -1,3 +1,84 @@
+import React from "react";
+import styled from "styled-components";
+import Tag from "../common/Tag";
+import Card from "../UI/Card";
+import { likeRecipe } from "../../api/request";
+
+function Recipe({ post, likeHandler }) {
+  const { postId, title, isLike, nickname, likeNum, ingredient, foodImg, createAt } =
+    post;
+
+  const foodName = ingredient?.find(
+    (ingredient) => ingredient.isName === true
+  ).ingredientName;
+
+  const foodIngredientList = ingredient
+    ?.map((ingredient) =>
+      ingredient.isName !== true ? ingredient.ingredientName : undefined
+    )
+    .filter((ingredient) => ingredient !== undefined);
+
+  console.log("likeNum :>> ", likeNum);
+
+  const toggleLike = () => {
+    likeRecipe(postId);
+    // console.log(likeRecipe(postId).data)
+    // if (likeRecipe(postId).data.data === "post like delete success") {likeHandler(postId)};
+  };
+
+  return (
+    <Card>
+      <TopBox>
+        <div style={{ fontSize: `var(--font-small)` }}>
+          <div>#{foodName}</div>
+        </div>
+        <div style={{ fontSize: `12px`, margin: "0px" }} onClick={toggleLike}>
+          {isLike ? "❤️" : "🤍"}
+        </div>
+      </TopBox>
+      <img alt="foodphoto" width="100%" height="60%" src={foodImg} />
+      <Title>{title}</Title>
+      <Tags>
+        {foodIngredientList.map((ingredient, idx) => (
+          <Tag tagName={ingredient} key={idx} />
+        ))}
+      </Tags>
+    </Card>
+  );
+}
+
+export default Recipe;
+
+const TopBox = styled.div`
+  display: flex;
+  justify-content: space-between;
+  padding: 0.4rem 0.5rem;
+`;
+
+const Title = styled.div`
+  padding: 0.1rem 0.3rem;
+  font-weight: var(--weight-semi-bold);
+  margin: 0.2rem 0.2rem;
+
+  //DESC: width 넘어가면 ...으로 생략되는 부분
+  width: 100%;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+`;
+
+const Tags = styled.div`
+  display: flex;
+  padding: 0.2rem;
+  gap: 0.15rem;
+  overflow: auto;
+  white-space: nowrap;
+
+  &::-webkit-scrollbar {
+    display: none;
+  }
+`;
+
 // import React from "react";
 // import styled from "styled-components";
 
@@ -81,91 +162,3 @@
 //   padding: 0.1rem 0.3rem;
 //   border-radius: 20px;
 // `;
-
-import React from "react";
-import styled from "styled-components";
-import Tag from "../common/Tag";
-import { likeRecipe } from "../../api/request";
-
-function RecipeBest({ post }) {
-  const { postId, title, nickname, likeNum, ingredient, foodImg, createAt } = post;
-
-  const foodName = ingredient?.find(
-    (ingredient) => ingredient.isName === true
-  ).ingredientName;
-
-  const foodIngredientList = ingredient
-    ?.map((ingredient) =>
-      ingredient.isName !== true ? ingredient.ingredientName : undefined
-    )
-    .filter((ingredient) => ingredient !== undefined);
-
-  console.log("likeNum :>> ", likeNum);
-
-  const toggleLike = () => {
-    likeRecipe(postId);
-  };
-
-  return (
-    <PostBox>
-      <TopBox>
-        <div style={{ fontSize: `var(--font-small)` }}>
-          <div>#{foodName}</div>
-        </div>
-        <div style={{ fontSize: `12px`, margin: "0px" }} onClick={toggleLike}>
-          ❤️
-        </div>
-      </TopBox>
-      <img alt="foodphoto" width="100%" height="60%" src={foodImg} />
-      <Title>{title}</Title>
-      <Tags>
-        {foodIngredientList.map((ingredient, idx) => (
-          <Tag tagName={ingredient} key={idx} />
-        ))}
-      </Tags>
-    </PostBox>
-  );
-}
-
-export default RecipeBest;
-
-const PostBox = styled.div`
-  max-width: 220px;
-  width: 175px;
-  height: 240px;
-  background-color: var(--color-light-white);
-  border-radius: 15px;
-  box-shadow: 3px 3px 5px #dcdcdc;
-  cursor: pointer;
-  margin: 0px auto 10px auto;
-`;
-
-const TopBox = styled.div`
-  display: flex;
-  justify-content: space-between;
-  padding: 0.4rem 0.5rem;
-`;
-
-const Title = styled.div`
-  padding: 0.1rem 0.3rem;
-  font-weight: var(--weight-semi-bold);
-  margin: 0.2rem 0.2rem;
-
-  //DESC: width 넘어가면 ...으로 생략되는 부분
-  width: 100%;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  white-space: nowrap;
-`;
-
-const Tags = styled.div`
-  display: flex;
-  padding: 0.2rem;
-  gap: 0.15rem;
-  overflow: auto;
-  white-space: nowrap;
-
-  &::-webkit-scrollbar {
-    display: none;
-  }
-`;

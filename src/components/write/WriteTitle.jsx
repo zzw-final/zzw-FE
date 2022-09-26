@@ -10,19 +10,17 @@ const WriteTitle = ({ setTitle, setFoodName, setIngredient, setTime }) => {
   const submitTag = (prevState) => {
     if (!tagList.includes(tagItem)) {
       setTagList((prevState) => {
-        return [...prevState, tagItem];
+        return [...prevState, { ingredientName: tagItem }];
       });
     }
     setTagItem("");
   };
   console.log(tagList);
 
-  const deleteTag = (e) => {
-    const deleteItem = e.target.parentElement.firstChild.innerText;
-    // console.log("태그삭제", deleteItem);
-    const filterTag = tagList.filter((tagItem) => tagItem !== deleteItem);
-    // console.log("태그삭제필터", filterTag);
-    setTagList(filterTag);
+  const deleteTag = (ingredientName) => {
+    setTagList(
+      tagList.filter((tagItem) => tagItem.ingredientName !== ingredientName)
+    );
   };
 
   const onKeyPress = (e) => {
@@ -33,7 +31,7 @@ const WriteTitle = ({ setTitle, setFoodName, setIngredient, setTime }) => {
 
   useEffect(() => {
     setIngredient(tagList);
-  }, [setIngredient(tagList)]);
+  }, [tagList]);
 
   return (
     <Stdiv>
@@ -45,7 +43,7 @@ const WriteTitle = ({ setTitle, setFoodName, setIngredient, setTime }) => {
       />
       <div styled={{ margin: "10px", display: "flex" }}>
         <FoodnameTag
-          placeholder="요리이름 태그로 입력해주세요"
+          placeholder="요리이름 입력해주세요"
           onChange={(e) => {
             setFoodName(e.target.value);
           }}
@@ -56,18 +54,20 @@ const WriteTitle = ({ setTitle, setFoodName, setIngredient, setTime }) => {
             setTime(e.target.value);
           }}
         >
-          <option value="5분">5분</option>
-          <option value="10분">10분</option>
-          <option value="15분">15분</option>
-          <option value="30분 이상">30분 이상</option>
+          <option value="0">5분</option>
+          <option value="1">10분</option>
+          <option value="2">15분</option>
+          <option value="3">30분 이상</option>
         </TimeSelect>
       </div>
       <TagBox>
         {tagList.map((tagItem, i) => {
           return (
             <Tagdiv key={i}>
-              <div>{tagItem}</div>
-              <Button onClick={deleteTag}>X</Button>
+              <div>{tagItem.ingredientName}</div>
+              <Button onClick={() => deleteTag(tagItem.ingredientName)}>
+                X
+              </Button>
             </Tagdiv>
           );
         })}

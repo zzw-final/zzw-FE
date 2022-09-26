@@ -1,46 +1,59 @@
 import axios from "axios";
 import React, { useEffect, useState, useRef } from "react";
 import styled from "styled-components";
+import { imgInstance } from "../../api/request";
 
-const WriteContent = ({ setContent, setImage, image, content }) => {
+const WriteContent = ({ setContent, setFile, file, content }) => {
   const [imageURL, setImageURL] = useState([]);
 
   useEffect(() => {
-    setImage(imageURL);
-  }, [setImage]);
+    setFile(imageURL);
+  }, [imageURL]);
 
-  const upLoadImg = useRef();
+  // const upLoadImg = useRef();
 
-  const openFile = () => {
-    upLoadImg.current.Click();
-  };
-
-  const onChange = (e) => {
+  const imgUpload = (e) => {
     e.preventDefault();
     if (e.target.files) {
-      const img = e.target.files[0];
-      console.log(img);
+      const file = e.target.files[0];
+      console.log("이미지 파일 받기", file);
       const formdata = new FormData();
-      formdata.append("image", img);
-      // axios.upLoadImg(formdata).then((res) => {
-      //   const image = res.data;
-      //   console.log(image);
-      // });
+      formdata.append("file", file);
+
+      // formdata console로 확인하기;
+      // for (let [key, value] of formdata) {
+      //   console.log(`${key}: ${value}`);
+      // }
+
+      imgInstance
+        .post("/api/post/image", formdata, {
+          headers: { "Content-Type": "multipart/form-data" },
+        })
+        .then((res) => {
+          console.log("이미지 업로드 완료됨", res.data);
+          console.log("이미지 URL확인", res.data.data.imageUrl);
+          setImageURL(res.data.data.imageUrl);
+        })
+        .catch((error) => {
+          console.log(error);
+        });
     }
   };
 
   return (
     <>
+      <img src={imageURL}></img>
       <input
         type="file"
-        accept="image/jpg, image/png, image/jpeg, image/gif"
-        ref={upLoadImg}
+        accept="image/*"
+        // ref={upLoadImg}
         // style={{ display: "none" }}
-        onChange={onChange}
-        value={image}
+        multiple="multiple"
+        onChange={imgUpload}
+        value={file}
       />
-      {/* <div onClick={openFile}></div> */}
       <Content
+        value={content}
         onChange={(e) => {
           setContent(e.target.value);
         }}

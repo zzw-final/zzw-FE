@@ -68,7 +68,9 @@ const MyPage = () => {
         likeVisible={likeVisible}
       />
       {myVisible && <MyRecipes myRecipes={myRecipes} />}
-      {likeVisible && <LikeRecipes likeRecipes={likeRecipes} />}
+      {likeVisible && (
+        <LikeRecipes likeRecipes={likeRecipes} setLikeRecipes={setLikeRecipes} />
+      )}
     </LayoutPage>
   );
 };
