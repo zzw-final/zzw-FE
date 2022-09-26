@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useCallback, useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import styled from "styled-components";
 import CommentForm from "./CommentForm";
@@ -12,8 +12,10 @@ import {
 import useAxios from "../../hooks/useAxios";
 
 const CommentList = () => {
-  const [commentList, setCommentList] = useState([]);
+  const [commentList, setCommentList] = useState();
   const postId = useParams().id;
+
+  const [commentData, commentDataFetcher] = useAxios();
 
   useEffect(() => {
     async function fetchData() {
@@ -23,18 +25,21 @@ const CommentList = () => {
     fetchData();
   }, [postId]);
 
-  async function post(postInfo) {
-    const newPost = await postComment(postInfo);
-    // const comment = {
-    //   comment: postInfo.comment,
-    // };
-    // const newPost = await useAxios(
-    //   "post",
-    //   `/api/auth/post/${postInfo.postId}/comment`,
-    //   comment
-    // );
-    setCommentList((prev) => [newPost, ...prev]);
+  function post(postInfo) {
+    // const newPost = await postComment(postInfo);
+    const comment = {
+      comment: postInfo.comment,
+    };
+    commentDataFetcher(
+      "post",
+      `/api/auth/post/${postInfo.postId}/comment`,
+      comment
+    );
+
+    // setCommentList((prev) => [newPost, ...prev]);
   }
+
+  console.log("commentData2", commentData);
 
   async function remove(commentId) {
     const deletedCommentId = await deleteComment(commentId);
