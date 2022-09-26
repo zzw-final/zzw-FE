@@ -21,7 +21,7 @@ instance.interceptors.request.use(
     const accessToken = getCookie("accessToken");
     const refreshToken = getCookie("refreshToken");
 
-    if (accessToken !== undefined && refreshToken !== undefined) {
+    if (accessToken && refreshToken) {
       config.headers.common["Authorization"] = `${accessToken}`;
       config.headers.common["Refresh-Token"] = `${refreshToken}`;
     }
@@ -36,10 +36,9 @@ imgInstance.interceptors.request.use(
   function (config) {
     const accessToken = getCookie("accessToken");
     const refreshToken = getCookie("refreshToken");
-    if (accessToken !== undefined && refreshToken !== undefined) {
+    if (accessToken && refreshToken) {
       config.headers.common["Authorization"] = `${accessToken}`;
       config.headers.common["Refresh-Token"] = `${refreshToken}`;
-
     }
     return config;
   },

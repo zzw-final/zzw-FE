@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import { useEffect } from "react";
 import styled from "styled-components";
 import { getMainData } from "../../api/request";
+import MakeList from "../common/MakeList";
 import Tag from "../common/Tag";
 import RecipeBest from "../posts/RecipeBest";
 
