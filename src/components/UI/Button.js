@@ -35,6 +35,16 @@ const MnBtn = styled.button`
               border: 2.5px solid transparent;
               outline: none;
             `}
+
+          ${({ likeVisible }) =>
+            likeVisible &&
+            css`
+              background-color: var(--color-pink);
+              font-weight: var(--weight-bolder);
+              color: var(--color-white);
+              border: 2.5px solid transparent;
+              outline: none;
+            `}
         `;
 
       case "ProfileBtn":

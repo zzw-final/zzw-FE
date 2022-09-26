@@ -26,7 +26,7 @@ function UserPage() {
   }, [id]);
 
   useEffect(() => {
-    async function fetchUserData() {
+    async function fetchUserRecipe() {
       try {
         const res = await instance.get(`/api/mypage/${id}/myposts`);
         const userData = res.data.data;
@@ -35,7 +35,7 @@ function UserPage() {
         console.log("에러", error);
       }
     }
-    fetchUserData();
+    fetchUserRecipe();
   }, [id]);
 
   return (
