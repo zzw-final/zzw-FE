@@ -3,6 +3,9 @@ import { useParams } from "react-router-dom";
 import Tag from "../components/common/Tag";
 import { instance } from "../api/request";
 import axios from "axios";
+import LayoutPage from "../components/common/LayoutPage";
+import Detail from "../components/detail/Detail";
+import CommentList from "../components/comment/CommentList";
 
 function DetailPage() {
   const postId = useParams().id;
