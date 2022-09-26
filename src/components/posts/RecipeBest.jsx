@@ -26,17 +26,17 @@ function RecipeBest({ post }) {
     )
     .filter((ingredient) => ingredient !== undefined);
 
-  const toggleLike = () => {
-    if (loginNickname === undefined) {
-      alert("로그인 유저만 이용할 수 있는 서비스 입니다.");
-      return;
-    }
-    likeRecipe(postId).then((res) =>
-      res.data.data === "post like success"
-        ? setLikeItem(true)
-        : setLikeItem(false)
-    );
-  };
+  // const toggleLike = () => {
+  //   if (loginNickname === undefined) {
+  //     alert("로그인 유저만 이용할 수 있는 서비스 입니다.");
+  //     return;
+  //   }
+  //   likeRecipe(postId).then((res) =>
+  //     res.data.data === "post like success"
+  //       ? setLikeItem(true)
+  //       : setLikeItem(false)
+  //   );
+  // };
 
   useEffect(() => {
     async function fetchData() {
@@ -61,8 +61,6 @@ function RecipeBest({ post }) {
     navigate(`/detail/${postId}`);
   };
 
-  console.log("likeList :>> ", likeList);
-
   // useEffect(() => {
   //   imgRef?.current.addEventListener("dblclick", toggleLike());
   //   return imgRef?.current.removeEventListener("dblclick", () => {});
@@ -74,9 +72,7 @@ function RecipeBest({ post }) {
         <div style={{ fontSize: `var(--font-small)` }}>
           <Tag tagName={`#${foodName}`} isFoodName={true} />
         </div>
-        <div style={{ fontSize: `11px` }} onClick={toggleLike}>
-          {likeItem ? "❤️" : "♡"}
-        </div>
+        <div style={{ fontSize: `11px` }}>{likeItem ? "❤️" : "♡"}</div>
       </TopBox>
       <img
         alt="foodphoto"
