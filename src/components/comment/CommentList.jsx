@@ -9,6 +9,7 @@ import {
   deleteComment,
   updateComment,
 } from "../../api/request";
+import useAxios from "../../hooks/useAxios";
 
 const CommentList = () => {
   const [commentList, setCommentList] = useState([]);
@@ -24,6 +25,14 @@ const CommentList = () => {
 
   async function post(postInfo) {
     const newPost = await postComment(postInfo);
+    // const comment = {
+    //   comment: postInfo.comment,
+    // };
+    // const newPost = await useAxios(
+    //   "post",
+    //   `/api/auth/post/${postInfo.postId}/comment`,
+    //   comment
+    // );
     setCommentList((prev) => [newPost, ...prev]);
   }
 
