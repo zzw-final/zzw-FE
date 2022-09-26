@@ -23,6 +23,7 @@ function DetailPage() {
   const onDeleteHandler = async () => {
     if (window.confirm("작성 글을 삭제하시겠습니까?")) {
       await instance.delete(`/api/auth/post/${post_Id}`);
+      alert("삭제되었습니다.");
       navigate("/");
     }
   };

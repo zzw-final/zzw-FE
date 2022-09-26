@@ -4,8 +4,12 @@ import { useNavigate, useParams } from "react-router-dom";
 import { instance } from "../../api/request";
 import Tag from "../common/Tag";
 import CommentList from "../comment/CommentList";
+import { useCookies } from "react-cookie";
 
 function Detail({ postDetail, onDelete }) {
+  const navigate = useNavigate();
+  const [cookies] = useCookies(["loginNickname"]);
+
   const foodName = postDetail?.ingredient?.find(
     (ingredient) => ingredient.isName === true
   ).ingredientName;
@@ -16,23 +20,32 @@ function Detail({ postDetail, onDelete }) {
     )
     .filter((ingredient) => ingredient !== undefined);
 
-  // export const deleteComment = async (commentId) => {
-  //   const res = await instance.delete(`/api/auth/post/comment/${commentId}`);
-  //   return res.data.success ? commentId : res.data.error;
-
-  //   async function remove(commentId) {
-  //     const deletedCommentId = await deleteComment(commentId);
-  //     setCommentList((prev) =>
-  //       prev.filter((comment) => comment.commentId !== deletedCommentId)
-  //     );
-  //   }
+  const loginNickname = cookies.loginNickname;
+  console.log("닉네임", loginNickname);
 
   return (
     <>
       <DetailContainer>
+        <button
+          onClikck={() => {
+            navigate("/");
+          }}
+        >
+          임시🏠
+        </button>
         <ButtonDiv>
-          <button>수정</button>
-          <button onClick={onDelete}>삭제</button>
+          {loginNickname === postDetail?.nickname ? (
+            <>
+              <button
+                onClick={() => {
+                  navigate(`/editpage/${postDetail.postId}`);
+                }}
+              >
+                수정
+              </button>
+              <button onClick={onDelete}>삭제</button>
+            </>
+          ) : null}
         </ButtonDiv>
         <TitleDiv>
           <FoodnameDiv>{foodName}</FoodnameDiv>
@@ -51,8 +64,8 @@ function Detail({ postDetail, onDelete }) {
           <img
             alt="foodphoto"
             width="100%"
-            height="60%"
-            scr={postDetail?.foodImg}
+            height="90%"
+            src={postDetail?.foodImg}
           />
         </FoodImgBox>
 

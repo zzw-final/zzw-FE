@@ -11,6 +11,7 @@ import {
 } from "./pages";
 import KakaoRedirect from "./components/login/kakao/KakaoRedirect";
 import GoogleRedirect from "./components/login/google/GoogleRedirect";
+import EditPage from "./pages/EditPage";
 
 const Desktop = ({ children }) => {
   const isDesktop = useMediaQuery({ minWidth: 768 });
@@ -38,6 +39,7 @@ function App() {
             <Route path="/follow" element={<FollowPage />} />
             <Route path="/authkakao" element={<KakaoRedirect />} />
             <Route path="/authgoogle" element={<GoogleRedirect />} />
+            <Route path="/editpage/:id" element={<EditPage />} />
           </Routes>
         </Mobile>
       </BrowserRouter>
