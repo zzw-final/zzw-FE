@@ -2,11 +2,15 @@ import React from "react";
 import Recipe from "./Recipe";
 import styled from "styled-components";
 
-function LikeRecipes({ likeRecipes }) {
+function LikeRecipes({ likeRecipes, setLikeRecipes }) {
+  // const cancelLike = (postId) => {
+  //   setLikeRecipes(likeRecipes?.filter((list) => list.id !== postId));
+  // };
+
   return (
     <Container>
       {likeRecipes?.map((likeRecipe) => (
-        <Recipe key={likeRecipe.postId} post={likeRecipe}></Recipe>
+        <Recipe key={likeRecipe.postId} post={likeRecipe} />
       ))}
     </Container>
   );

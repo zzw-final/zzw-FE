@@ -8,6 +8,14 @@ export const instance = axios.create({
   },
 });
 
+export const imgInstance = axios.create({
+  baseURL: process.env.REACT_APP_API,
+  headers: {
+    "Content-Type": "multipart/form-data",
+    // withCredentials: true,
+  },
+});
+
 instance.interceptors.request.use(
   function (config) {
     const accessToken = getCookie("accessToken");
@@ -16,6 +24,22 @@ instance.interceptors.request.use(
     if (accessToken !== undefined && refreshToken !== undefined) {
       config.headers.common["Authorization"] = `${accessToken}`;
       config.headers.common["Refresh-Token"] = `${refreshToken}`;
+    }
+    return config;
+  },
+  function (error) {
+    return Promise.reject(error);
+  }
+);
+
+imgInstance.interceptors.request.use(
+  function (config) {
+    const accessToken = getCookie("accessToken");
+    const refreshToken = getCookie("refreshToken");
+    if (accessToken !== undefined && refreshToken !== undefined) {
+      config.headers.common["Authorization"] = `${accessToken}`;
+      config.headers.common["Refresh-Token"] = `${refreshToken}`;
+
     }
     return config;
   },
@@ -41,7 +65,6 @@ export const kakaoLoginInstance = async (code) => {
 };
 
 export const join = async (sendData) => {
-  sendData = { data: "", file: "" };
   return instance.post(`/api/member/signup`, sendData);
 };
 
