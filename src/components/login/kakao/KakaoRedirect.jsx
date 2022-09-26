@@ -1,14 +1,19 @@
 import { useEffect } from "react";
 import { useCookies } from "react-cookie";
-import { useNavigate } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import { kakaoLoginInstance } from "../../../api/request";
 
 const KakaoRedirect = () => {
   const navigate = useNavigate();
+  const location = useLocation();
   const [cookies, setCookies, removeCookies] = useCookies([]);
 
   // 인가코드
   let code = new URL(window.location.href).searchParams.get("code");
+
+  // if (location) {
+  //   console.log(" >>>> ", location.state.joinSuccess);
+  // }
 
   useEffect(() => {
     async function fetchData() {
