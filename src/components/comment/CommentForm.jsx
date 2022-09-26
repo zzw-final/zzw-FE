@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect, useRef } from "react";
+import React from "react";
 import styled from "styled-components";
 import Button from "@mui/material/Button";
 import { useCookies } from "react-cookie";
@@ -13,14 +13,18 @@ const CommentForm = ({ postId, post }) => {
       alert("로그인 유저만 댓글을 달 수 있습니다.");
       return;
     }
+    if (commentRef.current.value === "") {
+      alert("빈 값은 입력할 수 없습니다.");
+      return;
+    }
     const sendData = {
       postId: postId,
       comment: commentRef.current.value,
       profile: loginProfile,
     };
     post(sendData);
+    commentRef.current.value = "";
   };
-
   const commentRef = useInputRef("", postComment);
 
   return (

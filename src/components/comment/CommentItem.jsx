@@ -1,16 +1,18 @@
-import React, { useEffect, useRef, useState } from "react";
+import React, { useEffect, useState } from "react";
 import styled from "styled-components";
 import Avatar from "@mui/material/Avatar";
 import { useCookies } from "react-cookie";
 import useInputRef from "../../hooks/useInputRef";
+import { useNavigate } from "react-router-dom";
 
 const CommentItem = ({ commentItem, remove, update }) => {
   const { commentId, userId, profile, nickname, comment, grade, createdAt } =
     commentItem;
-  const [updatedComment, setUpdatedComment] = useState(comment);
+  const [updatedComment] = useState(comment);
   const [visibleEditBtns, setVisibleEditBtns] = useState("block");
   const [visibleEditCommentBox, setVisibleEditCommentBox] = useState("none");
   const [cookies] = useCookies(["loginNickname"]);
+  const navigate = useNavigate();
 
   const loginNickname = cookies.loginNickname;
 
@@ -50,7 +52,7 @@ const CommentItem = ({ commentItem, remove, update }) => {
   const updateCommentRef = useInputRef("", updateComment);
 
   const userPage = () => {
-    // navigate 로 해당 유저 페이지로 이동
+    navigate(`/mypage/${userId}`);
   };
 
   return (
