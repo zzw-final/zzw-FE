@@ -26,12 +26,25 @@ const MnBtn = styled.button`
           font-size: var(--font-midium);
           cursor: pointer;
 
-          /* &:focus {
-            background-color: var(--color-orange);
-            color: var(--color-white);
-            border: 2.5px solid transparent;
-            outline: none;
-          } */
+          ${({ myVisible }) =>
+            myVisible &&
+            css`
+              background-color: var(--color-orange);
+              font-weight: var(--weight-bolder);
+              color: var(--color-white);
+              border: 2.5px solid transparent;
+              outline: none;
+            `}
+
+          ${({ likeVisible }) =>
+            likeVisible &&
+            css`
+              background-color: var(--color-pink);
+              font-weight: var(--weight-bolder);
+              color: var(--color-white);
+              border: 2.5px solid transparent;
+              outline: none;
+            `}
         `;
 
       case "ProfileBtn":
