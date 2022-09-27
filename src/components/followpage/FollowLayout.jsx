@@ -1,16 +1,38 @@
 import styled from "styled-components";
 import React from "react";
+import Button from "../UI/Button";
+import { getCookie } from "../../util/cookie";
 
-function FollowLayout() {
+// TODO: 닉네임 검색 기능
+
+function FollowLayout({
+  onFetchFollower,
+  onToggleHandler,
+  followVisible,
+  followerVisible,
+}) {
+  const nickname = getCookie("loginNickname");
+
   return (
     <>
       <Container>
-        {/* 여기 닉네임 검색 기능이 있어도 좋을 듯 */}
-        <Nickname>다함께차차차</Nickname>
+        <Nickname>{nickname}</Nickname>
       </Container>
       <Container>
-        <Follower autoFocus="autoFocus">팔로우</Follower>
-        <Follower>팔로잉</Follower>
+        <Button
+          name="followPageBtn"
+          onClick={onToggleHandler}
+          followVisible={followVisible}
+        >
+          팔로우
+        </Button>
+        <Button
+          name="followPageBtn"
+          onClick={onFetchFollower}
+          followerVisible={followerVisible}
+        >
+          팔로워
+        </Button>
       </Container>
     </>
   );
@@ -29,20 +51,4 @@ const Nickname = styled.div`
   border-bottom: 2px solid var(--color-light-white);
   font-weight: var(--weight-bolder);
   margin-bottom: 10px;
-`;
-
-const Follower = styled.button`
-  margin: 1rem auto;
-  background-color: transparent;
-  border: 3px solid transparent;
-  font-size: var(--font-regular);
-  font-weight: var(--weight-semi-bold);
-  color: var(--color-grey);
-  padding: 0rem 1rem;
-
-  &:focus {
-    color: var(--color-black);
-    outline: none;
-    background-color: var(--color-light-white);
-  }
 `;

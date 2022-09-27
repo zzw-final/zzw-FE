@@ -1,10 +1,11 @@
 import React from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import styled from "styled-components";
 import Button from "../UI/Button";
 
-function Profile({ userData }) {
+function Profile({ userData, onFollowHandler }) {
   const navigate = useNavigate();
+  const { id } = useParams();
   const { follow, follower, grade, gradeList, nickname, profile } = userData;
 
   return (
@@ -44,8 +45,13 @@ function Profile({ userData }) {
           ))}
         </BottomBox>
       </div>
-      {/*TODO: 팔로우 / 언팔로우 전환 기능 필요 */}
-      <Button name="ProfileBtn">팔로우</Button>
+      {!id ? (
+        <Button name="ProfileBtn">프로필 편집</Button>
+      ) : (
+        <Button onClick={onFollowHandler} name="ProfileBtn">
+          팔로우
+        </Button>
+      )}
     </Container>
   );
 }

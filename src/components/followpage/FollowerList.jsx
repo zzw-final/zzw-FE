@@ -1,7 +1,14 @@
 import React from "react";
+import Follow from "./Follow";
 
-function FollowerList() {
-  return <div>FollowerList</div>;
+function FollowerList({ followerList }) {
+  return (
+    <>
+      {followerList?.map((follow) => (
+        <Follow key={follow.userId} follow={follow} />
+      ))}
+    </>
+  );
 }
 
 export default FollowerList;

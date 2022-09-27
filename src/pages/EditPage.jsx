@@ -64,15 +64,17 @@ function EditPage() {
   return (
     <LayoutPage>
       <EditHeader onSubmit={onSubmitHandler} />
-      <EditTitle
-        postDetail={postDetail}
-        setTitle={editTitle}
-        setTime={editTime}
-        setFoodName={editfoodName}
-        setIngredient={editIngredient}
-        setContent={editContent}
-        setImage={editImageURL}
-      />
+      {postDetail && (
+        <EditTitle
+          postDetail={postDetail}
+          setTitle={editTitle}
+          setTime={editTime}
+          setFoodName={editfoodName}
+          setIngredient={editIngredient}
+          setContent={editContent}
+          setImage={editImageURL}
+        />
+      )}
     </LayoutPage>
   );
 }

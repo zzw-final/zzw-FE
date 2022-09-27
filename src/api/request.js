@@ -36,7 +36,7 @@ instance.interceptors.response.use(
   function (response) {
     // 2xx 범위에 있는 상태 코드는 이 함수를 트리거 합니다.
     // 응답 데이터가 있는 작업 수행
-    console.log("interceptor >", response);
+    // console.log("interceptor >", response);
     return response;
   },
   function (error) {

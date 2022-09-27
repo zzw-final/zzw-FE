@@ -1,17 +1,12 @@
 import React from "react";
 import Follow from "./Follow";
 
-//맵
-
-function FollowList() {
+function FollowList({ followList }) {
   return (
     <>
-      <Follow />
-      <Follow />
-      <Follow />
-      <Follow />
-      <Follow />
-      <Follow />
+      {followList?.map((follow) => (
+        <Follow key={follow.userId} follow={follow} />
+      ))}
     </>
   );
 }

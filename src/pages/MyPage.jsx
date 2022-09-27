@@ -46,6 +46,10 @@ const MyPage = () => {
     setLikeVisible(false);
   };
 
+  const likeToggle = async (postId) => {
+    return await instance.post(`/api/auth/post/${postId}`);
+  };
+
   return (
     <LayoutPage>
       {userData && <Profile userData={userData} />}
@@ -57,7 +61,11 @@ const MyPage = () => {
       />
       {myVisible && <MyRecipes myRecipes={myRecipes} />}
       {likeVisible && (
-        <LikeRecipes likeRecipes={likeRecipes} setLikeRecipes={setLikeRecipes} />
+        <LikeRecipes
+          likeRecipes={likeRecipes}
+          setLikeRecipes={setLikeRecipes}
+          onLikeHandler={likeToggle}
+        />
       )}
     </LayoutPage>
   );

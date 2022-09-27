@@ -4,19 +4,11 @@ import Tag from "../common/Tag";
 import Card from "../UI/Card";
 import { likeRecipe } from "../../api/request";
 import Like from "../common/Like";
+import { useNavigate } from "react-router-dom";
 
-function Recipe({ post, likeToggle }) {
-  const {
-    postId,
-    title,
-    isLike,
-    nickname,
-    likeNum,
-    ingredient,
-    foodImg,
-    createAt,
-  } = post;
-
+function Recipe({ post, onLikeHandler }) {
+  const navigate = useNavigate();
+  const { postId, title, isLike, likeNum, ingredient, foodImg } = post;
   const [likeToggleBtn, setLikeToggleBtn] = useState(isLike);
 
   const foodName = ingredient?.find(
@@ -29,25 +21,26 @@ function Recipe({ post, likeToggle }) {
     )
     .filter((ingredient) => ingredient !== undefined);
 
-  console.log("likeNum :>> ", likeNum);
-
   const like = async () => {
-    const resp = await likeToggle(postId);
+    const resp = await onLikeHandler(postId);
     const isVisible = resp.data.data;
+    console.log(resp);
     if (isVisible) {
       setLikeToggleBtn(!likeToggleBtn);
     }
   };
 
+  const goToDetail = () => {
+    navigate(`/detail/${postId}`);
+  };
+
   return (
     <Card>
       <TopBox>
-        <div style={{ fontSize: `var(--font-small)` }}>
-          <div>#{foodName}</div>
-        </div>
+        <Tag tagName={`#${foodName}`} isFoodName={true} height="24px" opacity={0.8} />
         <Like isLike={likeToggleBtn} btnClick={like} />
       </TopBox>
-      <img alt="foodphoto" width="100%" height="60%" src={foodImg} />
+      <Img alt="foodphoto" src={foodImg} onClick={goToDetail} />
       <Title>{title}</Title>
       <Tags>
         {foodIngredientList.map((ingredient, idx) => (
@@ -63,7 +56,16 @@ export default Recipe;
 const TopBox = styled.div`
   display: flex;
   justify-content: space-between;
+  width: 100%;
+  position: absolute;
   padding: 0.4rem 0.5rem;
+`;
+
+const Img = styled.img`
+  width: 100%;
+  height: 70%;
+  border-radius: 15px;
+  padding: 0.1rem;
 `;
 
 const Title = styled.div`

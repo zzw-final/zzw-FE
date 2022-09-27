@@ -2,19 +2,21 @@ import React from "react";
 import styled from "styled-components";
 import Button from "../UI/Button";
 
-function Follow() {
+function Follow({ follow }) {
+  const { profile, nickname, grade } = follow;
+
   return (
     <Container>
       <LeftBox>
-        <Char></Char>
+        <Char src={profile}></Char>
         <div>
-          <Nickname>가상의닉네임</Nickname>
-          <Grade>순두부찌개를 지배하는 자</Grade>
+          <Nickname>{nickname}</Nickname>
+          <Grade>{grade}</Grade>
         </div>
       </LeftBox>
       <RightBox>
         <div>
-          <Button name="FollowBtn">맞팔로우하기</Button>
+          <Button name="FollowBtn">팔로잉</Button>
         </div>
       </RightBox>
     </Container>
@@ -35,7 +37,7 @@ const LeftBox = styled.div`
   align-items: center;
 `;
 
-const Char = styled.div`
+const Char = styled.img`
   width: 4rem;
   height: 4rem;
   background-color: orange;

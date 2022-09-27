@@ -47,11 +47,38 @@ const MnBtn = styled.button`
             `}
         `;
 
+      case "followPageBtn":
+        return css`
+          margin: 1rem auto;
+          background-color: transparent;
+          border: 3px solid transparent;
+          font-size: var(--font-regular);
+          font-weight: var(--weight-semi-bold);
+          color: var(--color-grey);
+          padding: 0rem 0.7rem;
+
+          ${({ followVisible }) =>
+            followVisible &&
+            css`
+              color: black;
+              font-weight: var(--weight-bold);
+              border-bottom: 1.5px solid gray;
+            `}
+
+          ${({ followerVisible }) =>
+            followerVisible &&
+            css`
+              color: black;
+              border-bottom: 1.5px solid gray;
+              font-weight: var(--weight-bold);
+            `}
+        `;
+
       case "ProfileBtn":
         return css`
-          width: 100%;
-          height: 1.7rem;
-          background-color: var(--color-blue);
+          width: ${({ width }) => width || "100%"};
+          height: ${({ height }) => height || "1.7rem"};
+          background-color: ${({ background }) => background || "var(--color-blue)"};
           border: none;
           border-radius: 5px;
           color: var(--color-white);
@@ -62,15 +89,26 @@ const MnBtn = styled.button`
       case "FollowBtn":
         return css`
           height: 1.7rem;
-          padding: 1rem 0.7rem;
+          padding: 1rem 1rem;
           display: flex;
           align-items: center;
-          background-color: var(--color-blue);
+          background-color: var(--color-light-white);
           border: none;
-          border-radius: 20px;
-          color: var(--color-white);
-          font-size: var(--font-regular);
+          border-radius: 5px;
+          font-size: var(--font-small);
+          font-weight: var(--weight-semi-bold);
+        `;
+
+      case "EmptyBtn":
+        return css`
+          width: 10rem;
+          height: 2rem;
+          font-size: 15px;
+          color: white;
+          background-color: var(--color-dark-green);
           font-weight: var(--weight-bold);
+          border-radius: 5px;
+          border: none;
         `;
 
       default:
