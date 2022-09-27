@@ -42,7 +42,7 @@ const WriteContent = ({ setContent, setFile, file, content }) => {
 
   return (
     <>
-      <img src={imageURL}></img>
+      <ImgDiv src={imageURL}></ImgDiv>
       <input
         type="file"
         accept="image/*"
@@ -71,4 +71,9 @@ const Content = styled.textarea`
 
   border: 1px solid #afadad;
   border-radius: 10px;
+`;
+
+const ImgDiv = styled.img`
+  width: 50vw;
+  margin-left: 25%;
 `;

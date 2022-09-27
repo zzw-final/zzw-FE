@@ -68,6 +68,8 @@ function EditTitle({
           headers: { "Content-Type": "multipart/form-data" },
         })
         .then((res) => {
+          console.log("이미지 업로드 완료됨", res.data);
+          console.log("이미지 URL확인", res.data.data.imageUrl);
           setImageURL(res?.data?.data.imageUrl);
           console.log("이미지값", imageURL);
         })

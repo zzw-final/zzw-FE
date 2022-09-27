@@ -32,6 +32,7 @@ function EditPage() {
       ingredient: postDetail.ingredient,
       content: postDetail.content,
     };
+    console.log("수정된데이터 보내기", editData);
     await instance.put(`/api/auth/post/${post_Id}`, editData);
     navigate(`/detail/${post_Id}`);
   };
