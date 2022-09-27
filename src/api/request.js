@@ -82,10 +82,6 @@ export const join = async (sendData) => {
   return instance.post(`/api/member/signup`, sendData);
 };
 
-export const getMainData = async () => {
-  return instance.get(`/api/post`);
-};
-
 export const likeRecipe = async (postId) => {
   return await instance.post(`/api/auth/post/${postId}`);
 };

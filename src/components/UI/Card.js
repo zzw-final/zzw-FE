@@ -8,6 +8,7 @@ function Card({ children, ...props }) {
 export default Card;
 
 const PostBox = styled.div`
+  position: relative;
   max-width: 220px;
   min-width: 160px;
   width: ${({ width }) => width || "175px"};
