@@ -10,6 +10,9 @@ function Detail({ postDetail, onDelete }) {
   const navigate = useNavigate();
   const [cookies] = useCookies(["loginNickname"]);
 
+
+function Detail({ postDetail, tagList, post, remove, update, commentList }) {
+
   const foodName = postDetail?.ingredient?.find(
     (ingredient) => ingredient.isName === true
   ).ingredientName;
@@ -77,7 +80,13 @@ function Detail({ postDetail, onDelete }) {
         </LikeDiv>
         <ContentBox>{postDetail?.content}</ContentBox>
       </DetailContainer>
-      <CommentList postId={postDetail?.postId} />
+      <CommentList
+        postId={postDetail?.postId}
+        post={post}
+        remove={remove}
+        update={update}
+        commentList={commentList}
+      />
     </>
   );
 }
