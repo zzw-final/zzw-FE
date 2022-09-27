@@ -15,42 +15,30 @@ const MyPage = () => {
 
   useEffect(() => {
     async function fetchProfileData() {
-      try {
-        const res = await instance.get(`/api/auth/mypage`);
-        const userProfile = res.data.data;
-        setUserData(userProfile);
-      } catch (error) {
-        console.log("에러", error);
-      }
+      const res = await instance.get(`/api/auth/mypage`);
+      const userProfile = res.data.data;
+      setUserData(userProfile);
     }
     fetchProfileData();
   }, []);
 
   useEffect(() => {
     async function fetchMyRecipe() {
-      try {
-        const res = await instance.get(`/api/auth/mypage/myposts`);
-        const myRecipes = res.data.data;
-        setMyRecipes(myRecipes);
-      } catch (error) {
-        console.log("에러", error);
-      }
+      const res = await instance.get(`/api/auth/mypage/myposts`);
+      const myRecipes = res.data.data;
+      setMyRecipes(myRecipes);
     }
     fetchMyRecipe();
   }, []);
 
   const fetchLikeRecipe = async () => {
-    try {
-      if (likeRecipes === undefined) {
-        const res = await instance.get(`/api/auth/mypage/likeposts`);
-        const LikeRecipes = res.data.data;
-        setLikeRecipes(LikeRecipes);
-      }
-      setMyVisible(false);
-      setLikeVisible(true);
-    } catch (error) {
-      console.log("에러", error);
+    if (likeRecipes === undefined) {
+      const res = await instance.get(`/api/auth/mypage/likeposts`);
+      const LikeRecipes = res.data.data;
+      setLikeRecipes(LikeRecipes);
     }
+    setMyVisible(false);
+    setLikeVisible(true);
   };
 
   const recipeHandler = () => {
@@ -60,7 +48,7 @@ const MyPage = () => {
 
   return (
     <LayoutPage>
-      <Profile userData={userData} />
+      {userData && <Profile userData={userData} />}
       <TogglePosts
         onClickLikeRecipe={fetchLikeRecipe}
         onClickRecipeHandler={recipeHandler}

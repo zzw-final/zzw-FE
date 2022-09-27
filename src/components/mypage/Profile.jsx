@@ -5,17 +5,17 @@ import Button from "../UI/Button";
 
 function Profile({ userData }) {
   const navigate = useNavigate();
-  const grades = userData?.gradeList;
+  const { follow, follower, grade, gradeList, nickname, profile } = userData;
 
   return (
     <Container>
       <div>
         <TopBox>
-          <Img src={userData?.profile}></Img>
+          <Img src={profile}></Img>
           <div>
             <NicknameBox>
-              <Nickname>{userData?.nickname}</Nickname>
-              <Grade>{userData?.grade}</Grade>
+              <Nickname>{nickname}</Nickname>
+              <Grade>{grade}</Grade>
             </NicknameBox>
             <FollowBox>
               <Follow
@@ -24,7 +24,7 @@ function Profile({ userData }) {
                 }}
               >
                 <p>팔로우</p>
-                <Num>{userData?.follow}</Num>
+                <Num>{follow}</Num>
               </Follow>
               <Follow
                 onClick={() => {
@@ -32,14 +32,14 @@ function Profile({ userData }) {
                 }}
               >
                 <p>팔로워</p>
-                <Num>{userData?.follower}</Num>
+                <Num>{follower}</Num>
               </Follow>
             </FollowBox>
           </div>
         </TopBox>
         {/* TODO: 칭호가 지나치게 많아지면 어떡할까 펼치기를 쓸까 */}
         <BottomBox>
-          {grades?.map((grade, i) => (
+          {gradeList?.map((grade, i) => (
             <Grades key={i}>{grade.gradeName}</Grades>
           ))}
         </BottomBox>

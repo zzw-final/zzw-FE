@@ -8,6 +8,7 @@ import {
   LoginPage,
   MyPage,
   WritePage,
+  UserPage,
 } from "./pages";
 import KakaoRedirect from "./components/login/kakao/KakaoRedirect";
 import GoogleRedirect from "./components/login/google/GoogleRedirect";
@@ -34,7 +35,7 @@ function App() {
             <Route path="/login" element={<LoginPage />} />
             <Route path="/Join" element={<JoinPage />} />
             <Route path="/mypage" element={<MyPage />} />
-            <Route path="/mypage/:id" element={<MyPage />} />
+            <Route path="/mypage/:id" element={<UserPage />} />
             <Route path="/write" element={<WritePage />} />
             <Route path="/detail/:id" element={<DetailPage />} />
             <Route path="/follow" element={<FollowPage />} />
