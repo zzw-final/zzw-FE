@@ -35,30 +35,39 @@ const Logo = () => {
   return (
     <>
       <LogoContainer>zzw.</LogoContainer>
-      로그인 유저 : {cookies.loginNickname || "로그인 유저 없음"}
-      <button onClick={kakaoLogout}>로그아웃 임시</button>
-      <button
-        onClick={() => {
-          navigate("/login");
-        }}
-      >
-        로그인 임시
-      </button>
+      <LoginBox>
+        {cookies.loginNickname || "로그인 유저 없음"}
+        <button onClick={kakaoLogout}>로그아웃</button>
+        <button
+          onClick={() => {
+            navigate("/login");
+          }}
+        >
+          로그인
+        </button>
+      </LoginBox>
     </>
   );
 };
 
 const LogoContainer = styled.div`
-  /* background-color: lavender; */
+  position: relative;
   width: 100%;
   height: 50px;
   text-align: center;
   line-height: 50px;
   font-size: 32px;
   font-weight: bold;
-  color: var(--color-blue);
+  color: var(--color-white);
   /* text-shadow: 2px 2px 4px var(--color-light-blu); */
-  /* text-shadow: 1px 1px 2px black; */
+  text-shadow: 1px 1px 2px black;
+  margin-bottom: 0.8rem;
+`;
+
+const LoginBox = styled.div`
+  position: absolute;
+  top: 0;
+  right: 0;
 `;
 
 export default Logo;

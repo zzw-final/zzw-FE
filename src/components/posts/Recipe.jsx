@@ -1,12 +1,23 @@
-import React from "react";
+import React, { useState } from "react";
 import styled from "styled-components";
 import Tag from "../common/Tag";
 import Card from "../UI/Card";
 import { likeRecipe } from "../../api/request";
+import Like from "../common/Like";
 
-function Recipe({ post, likeHandler }) {
-  const { postId, title, isLike, nickname, likeNum, ingredient, foodImg, createAt } =
-    post;
+function Recipe({ post, likeToggle }) {
+  const {
+    postId,
+    title,
+    isLike,
+    nickname,
+    likeNum,
+    ingredient,
+    foodImg,
+    createAt,
+  } = post;
+
+  const [likeToggleBtn, setLikeToggleBtn] = useState(isLike);
 
   const foodName = ingredient?.find(
     (ingredient) => ingredient.isName === true
@@ -20,10 +31,12 @@ function Recipe({ post, likeHandler }) {
 
   console.log("likeNum :>> ", likeNum);
 
-  const toggleLike = () => {
-    likeRecipe(postId);
-    // console.log(likeRecipe(postId).data)
-    // if (likeRecipe(postId).data.data === "post like delete success") {likeHandler(postId)};
+  const like = async () => {
+    const resp = await likeToggle(postId);
+    const isVisible = resp.data.data;
+    if (isVisible) {
+      setLikeToggleBtn(!likeToggleBtn);
+    }
   };
 
   return (
@@ -32,9 +45,7 @@ function Recipe({ post, likeHandler }) {
         <div style={{ fontSize: `var(--font-small)` }}>
           <div>#{foodName}</div>
         </div>
-        <div style={{ fontSize: `12px`, margin: "0px" }} onClick={toggleLike}>
-          {isLike ? "❤️" : "🤍"}
-        </div>
+        <Like isLike={likeToggleBtn} btnClick={like} />
       </TopBox>
       <img alt="foodphoto" width="100%" height="60%" src={foodImg} />
       <Title>{title}</Title>
