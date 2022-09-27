@@ -6,7 +6,7 @@ import SearchForm from "../components/main/SearchForm";
 
 const MainPage = () => {
   return (
-    <LayoutPage>
+    <LayoutPage background={"1.jpeg"}>
       <Logo />
       <SearchForm />
       <Main />
