@@ -1,22 +1,18 @@
-import React, { useEffect, useRef, useState } from "react";
+import React, { useEffect, useState } from "react";
 import styled from "styled-components";
 import Tag from "../common/Tag";
-import { likeRecipe, getLikeRecipeList } from "../../api/request";
 import { useNavigate } from "react-router-dom";
+import Card from "../UI/Card";
+import Like from "../common/Like";
 import { useCookies } from "react-cookie";
+import Skeleton from "@mui/material/Skeleton";
 
-function RecipeBest({ post }) {
-  const { postId, title, nickname, likeNum, ingredient, foodImg, createAt } =
-    post;
-
-  const [likeList, setLikeList] = useState([]);
-  const [likeItem, setLikeItem] = useState(false);
-  const [cookies] = useCookies(["loginEmail"]);
-  const imgRef = useRef();
-  const loginNickname = cookies.loginNickname;
-
-
+function RecipeBest({ post, likeToggle, getLikeItem }) {
+  const { postId, title, isLike, ingredient, foodImg } = post;
+  const [likeToggleBtn, setLikeToggleBtn] = useState(isLike);
   const navigate = useNavigate();
+  const [cookies] = useCookies(["loginNickname"]);
+  const loginNickname = cookies.loginNickname;
 
   const foodName = ingredient?.find(
     (ingredient) => ingredient.isName === true
@@ -28,88 +24,71 @@ function RecipeBest({ post }) {
     )
     .filter((ingredient) => ingredient !== undefined);
 
-  // const toggleLike = () => {
-  //   if (loginNickname === undefined) {
-  //     alert("로그인 유저만 이용할 수 있는 서비스 입니다.");
-  //     return;
-  //   }
-  //   likeRecipe(postId).then((res) =>
-  //     res.data.data === "post like success"
-  //       ? setLikeItem(true)
-  //       : setLikeItem(false)
-  //   );
-  // };
-
-  useEffect(() => {
-    async function fetchData() {
-      const result = await getLikeRecipeList();
-      if (result.data.success && result.data.error === null) {
-        setLikeList(result.data.data);
-      }
-    }
-    if (loginNickname !== undefined) {
-      fetchData();
-    }
-  }, [loginNickname]);
-
-  useEffect(() => {
-    const check = likeList.find((item) => item.postId === postId);
-    if (check) {
-      setLikeItem(true);
-    }
-  }, [likeList, postId]);
-
   const goToDetail = () => {
     navigate(`/detail/${postId}`);
   };
 
-  // useEffect(() => {
-  //   imgRef?.current.addEventListener("dblclick", toggleLike());
-  //   return imgRef?.current.removeEventListener("dblclick", () => {});
-  // }, [imgRef]);
+  const like = async () => {
+    if (loginNickname === undefined) {
+      alert("로그인 유저만 사용 가능한 기능입니다.");
+      return;
+    }
+    const resp = await likeToggle(postId);
+    const isVisible = resp.data.data;
+    if (isVisible) {
+      setLikeToggleBtn(!likeToggleBtn);
+      // getLikeItem(postId);
+    }
+  };
+
+  // const like = async () => {
+  //   setLikeToggleBtn(await getLikeItem(postId, isLike));
+  // };
 
   return (
-    <PostBox>
-      <TopBox>
-        <div style={{ fontSize: `var(--font-small)` }}>
-          <Tag tagName={`#${foodName}`} isFoodName={true} />
-        </div>
-        <div style={{ fontSize: `11px` }}>{likeItem ? "❤️" : "♡"}</div>
-      </TopBox>
-      <img
-        alt="foodphoto"
-        width="100%"
-        height="60%"
-        src={foodImg}
-        onClick={goToDetail}
-        // ref={imgRef}
-      />
-      <Title>{title}</Title>
-      <Tags>
-        {foodIngredientList.map((ingredient, idx) => (
-          <Tag tagName={ingredient} key={idx} />
-        ))}
-      </Tags>
-    </PostBox>
+    <>
+      {foodName ? (
+        <Card width="160px" height="200px" margin="1px 6px">
+          <TopBox>
+            <Tag
+              tagName={`#${foodName}`}
+              isFoodName={true}
+              height="24px"
+              opacity={0.8}
+            />
+            <Like isLike={likeToggleBtn} btnClick={like} />
+          </TopBox>
+          <Img alt="foodphoto" src={foodImg} onClick={goToDetail}></Img>
+          <Title>{title}</Title>
+          <Tags>
+            {foodIngredientList.map((ingredient, idx) => (
+              <Tag tagName={ingredient} key={idx} />
+            ))}
+          </Tags>
+        </Card>
+      ) : (
+        // <Skeleton variant="rectangular" width={160} height={200} />
+        <></>
+      )}
+    </>
   );
 }
 
 export default RecipeBest;
 
-const PostBox = styled.div`
-  max-width: 220px;
-  width: 150px;
-  height: 220px;
-  background-color: var(--color-light-white);
-  box-shadow: 3px 3px 5px #dcdcdc;
-  cursor: pointer;
-  margin-right: 10px;
-`;
-
 const TopBox = styled.div`
   display: flex;
   justify-content: space-between;
-  padding: 0.5rem 0.5rem;
+  width: 100%;
+  position: absolute;
+  padding: 0.4rem 0.5rem;
+`;
+
+const Img = styled.img`
+  width: 100%;
+  height: 70%;
+  border-radius: 15px;
+  padding: 0.1rem;
 `;
 
 const Title = styled.div`

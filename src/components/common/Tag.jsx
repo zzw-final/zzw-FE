@@ -1,9 +1,9 @@
 import React from "react";
 import styled from "styled-components";
 
-const Tag = ({ tagName, isFoodName, idDelBtn, delBtnClick }) => {
+const Tag = ({ tagName, isFoodName, idDelBtn, delBtnClick, ...props }) => {
   return (
-    <TagContainer color={randomColor(isFoodName)}>
+    <TagContainer {...props} color={randomColor(isFoodName)}>
       {tagName} {idDelBtn ? <DelBtn onClick={delBtnClick}>X</DelBtn> : ""}
     </TagContainer>
   );
@@ -12,11 +12,14 @@ const Tag = ({ tagName, isFoodName, idDelBtn, delBtnClick }) => {
 const TagContainer = styled.div`
   font-size: var(--font-small);
   background-color: ${(props) => props.color};
-  padding: 0.1rem 0.3rem;
   border-radius: 20px;
-  height: 19px;
+  height: ${({ height }) => height || "19px"};
   display: flex;
   align-items: center;
+  margin: ${({ margin }) => margin || "0 0 0 0.15rem"};
+  padding: ${({ padding }) => padding || "0.1rem 0.3rem"};
+  opacity: ${({ opacity }) => opacity || ""};
+  box-shadow: ${({ boxShadow }) => boxShadow || ""};
 `;
 
 const DelBtn = styled.div`
