@@ -1,15 +1,16 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import styled from "styled-components";
 import { imgInstance } from "../../api/request";
 
 function EditTitle({
   setTitle,
-  setTime,
+  imgUpload,
   setIngredient,
+  foodIngredientList,
   setFoodName,
+  foodName,
   postDetail,
   setContent,
-  setImage,
 }) {
   //태그작성기능
   const [tagItem, setTagItem] = useState("");
@@ -37,47 +38,48 @@ function EditTitle({
     }
   };
   //음식이름 뽑기
-  const foodName = postDetail?.ingredient?.find(
-    (ingredient) => ingredient.isName === true
-  ).ingredientName;
+  // const foodName = postDetail?.ingredient?.find(
+  //   (ingredient) => ingredient.isName === true
+  // ).ingredientName;
   //재료이름만 뽑기
-  const foodIngredientList = postDetail?.ingredient
-    ?.map((ingredient) =>
-      ingredient.isName !== true ? ingredient.ingredientName : undefined
-    )
-    .filter((ingredient) => ingredient !== undefined);
+  // const foodIngredientList = postDetail?.ingredient
+  //   ?.map((ingredient) =>
+  //     ingredient.isName !== true ? ingredient.ingredientName : undefined
+  //   )
+  //   .filter((ingredient) => ingredient !== undefined);
 
   const [imageURL, setImageURL] = useState([]);
 
-  console.log("기존작성글", postDetail);
+  // console.log("기존작성글", postDetail);
+
+  //서버에서 이미지 url로 받아오는 요청
+  // const imgUpload = (e) => {
+  //   e.preventDefault();
+  //   if (e.target.files) {
+  //     const file = e.target.files[0];
+  //     const formdata = new FormData();
+  //     formdata.append("file", file);
+
+  //     imgInstance
+  //       .post("/api/post/image", formdata, {
+  //         headers: { "Content-Type": "multipart/form-data" },
+  //       })
+  //       .then((res) => {
+  //         console.log("이미지 업로드 완료됨", res.data);
+  //         console.log("이미지 URL확인", res.data.data.imageUrl);
+  //         setImageURL(res?.data?.data?.imageUrl);
+  //         setImage(imageURL);
+  //       })
+  //       .catch((error) => {
+  //         console.log(error);
+  //       });
+  //   }
+  // };
+  // console.log("이미지값", imageURL);
 
   // useEffect(() => {
   //   setImage(imageURL);
   // }, [imageURL]);
-
-  //서버에서 이미지 url로 받아오는 요청
-  const imgUpload = (e) => {
-    e.preventDefault();
-    if (e.target.files) {
-      const file = e.target.files[0];
-      const formdata = new FormData();
-      formdata.append("file", file);
-
-      imgInstance
-        .post("/api/post/image", formdata, {
-          headers: { "Content-Type": "multipart/form-data" },
-        })
-        .then((res) => {
-          console.log("이미지 업로드 완료됨", res.data);
-          console.log("이미지 URL확인", res.data.data.imageUrl);
-          setImageURL(res?.data?.data.imageUrl);
-          console.log("이미지값", imageURL);
-        })
-        .catch((error) => {
-          console.log(error);
-        });
-    }
-  };
 
   return (
     <>
@@ -97,7 +99,7 @@ function EditTitle({
               setFoodName(e.target.value);
             }}
           />
-          <TimeSelect
+          {/* <TimeSelect
             placeholder="요리 시간을 선택해주세요"
             defaultValue={postDetail?.time}
             onChange={(e) => {
@@ -108,7 +110,7 @@ function EditTitle({
             <option value="1">10분</option>
             <option value="2">15분</option>
             <option value="3">30분 이상</option>
-          </TimeSelect>
+          </TimeSelect> */}
         </div>
         <TagBox>
           {tagList.map((tagItem, i) => {
@@ -124,7 +126,7 @@ function EditTitle({
           <IngredintTag
             value={tagItem}
             placeholder="재료를 태그로 입력해주세요"
-            defaultValue={postDetail?.ingredientName}
+            defaultValue={foodIngredientList}
             onChange={(e) => {
               setTagItem(e.target.value);
             }}
