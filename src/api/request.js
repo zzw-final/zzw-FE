@@ -20,14 +20,14 @@ instance.interceptors.request.use(
   function (config) {
     const accessToken = getCookie("accessToken");
     const refreshToken = getCookie("refreshToken");
-    if (refreshToken && accessToken) {
+
+    if (accessToken && refreshToken) {
       config.headers.common["Authorization"] = `${accessToken}`;
       config.headers.common["Refresh-Token"] = `${refreshToken}`;
     }
     return config;
   },
   function (error) {
-    console.log(error);
     return Promise.reject(error);
   }
 );
@@ -51,7 +51,7 @@ imgInstance.interceptors.request.use(
   function (config) {
     const accessToken = getCookie("accessToken");
     const refreshToken = getCookie("refreshToken");
-    if (refreshToken && accessToken) {
+    if (accessToken && refreshToken) {
       config.headers.common["Authorization"] = `${accessToken}`;
       config.headers.common["Refresh-Token"] = `${refreshToken}`;
     }
@@ -92,38 +92,4 @@ export const likeRecipe = async (postId) => {
 
 export const getLikeRecipeList = async () => {
   return await instance.get(`/api/auth/mypage/likeposts`);
-};
-
-export const getComments = async (postId) => {
-  const res = await instance.get(`/api/post/${postId}`);
-  return res.data.success ? res.data.data.commentList : res.data.error;
-};
-
-export const postComment = async (postInfo) => {
-  const comment = {
-    comment: postInfo.comment,
-  };
-  const res = await instance.post(`/api/auth/post/${postInfo.postId}/comment`, comment);
-  const storeData = {
-    ...res.data.data,
-    postId: postInfo.postId,
-    profile: postInfo.profile,
-  };
-  return res.data.success ? storeData : res.data.error;
-};
-
-export const deleteComment = async (commentId) => {
-  const res = await instance.delete(`/api/auth/post/comment/${commentId}`);
-  return res.data.success ? commentId : res.data.error;
-};
-
-export const updateComment = async (updateInfo) => {
-  const comment = {
-    comment: updateInfo.comment,
-  };
-  const res = await instance.put(
-    `/api/auth/post/comment/${updateInfo.commentId}`,
-    comment
-  );
-  return res.data.success ? updateInfo : res.data.error;
 };
