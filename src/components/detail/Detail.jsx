@@ -6,13 +6,17 @@ import Tag from "../common/Tag";
 import CommentList from "../comment/CommentList";
 import { useCookies } from "react-cookie";
 
-function Detail({ postDetail, onDelete }) {
+function Detail({
+  postDetail,
+  tagList,
+  onDelete,
+  post,
+  remove,
+  update,
+  commentList,
+}) {
   const navigate = useNavigate();
   const [cookies] = useCookies(["loginNickname"]);
-
-
-function Detail({ postDetail, tagList, post, remove, update, commentList }) {
-
   const foodName = postDetail?.ingredient?.find(
     (ingredient) => ingredient.isName === true
   ).ingredientName;
@@ -30,7 +34,7 @@ function Detail({ postDetail, tagList, post, remove, update, commentList }) {
     <>
       <DetailContainer>
         <button
-          onClikck={() => {
+          onClick={() => {
             navigate("/");
           }}
         >
@@ -90,9 +94,6 @@ function Detail({ postDetail, tagList, post, remove, update, commentList }) {
     </>
   );
 }
-
-export default Detail;
-
 const DetailContainer = styled.div`
   height: 70vh;
   width: 100vw;
@@ -197,3 +198,5 @@ const Tags = styled.div`
     display: none;
   }
 `;
+
+export default Detail;

@@ -61,7 +61,7 @@ const LogoContainer = styled.div`
   color: var(--color-white);
   /* text-shadow: 2px 2px 4px var(--color-light-blu); */
   text-shadow: 1px 1px 2px black;
-  margin-bottom: 0.8rem;
+  margin-bottom: 0.3rem;
 `;
 
 const LoginBox = styled.div`

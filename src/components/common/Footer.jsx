@@ -7,8 +7,9 @@ import CreateIcon from "@mui/icons-material/Create";
 import PersonIcon from "@mui/icons-material/Person";
 import TagIcon from "@mui/icons-material/Tag";
 import { useNavigate } from "react-router-dom";
+import Tag from "../../components/common/Tag";
 
-const Footer = () => {
+const Footer = ({ topTenTagList, tagAllList }) => {
   const [toggleTagList, setToggleTagList] = useState(false);
   const navigate = useNavigate();
 
@@ -62,7 +63,22 @@ const Footer = () => {
           />
         </BottomNavigation>
       </FooterContainer>
-      <TagList id="tagList" top={toggleTagList}></TagList>
+      <TagList id="tagList" top={toggleTagList}>
+        <TagTitle>인기 Tags</TagTitle>
+        <TagBox>
+          {topTenTagList &&
+            topTenTagList?.map((tag, idx) => (
+              <Tag tagName={tag} key={idx} margin="5px" />
+            ))}
+        </TagBox>
+        <TagTitle>아래 태그도 검색해보세요</TagTitle>
+        <TagBox>
+          {tagAllList &&
+            tagAllList?.map((tag, idx) => (
+              <Tag tagName={tag} key={idx} margin="5px" />
+            ))}
+        </TagBox>
+      </TagList>
     </>
   );
 };
@@ -78,15 +94,29 @@ const FooterContainer = styled.div`
 `;
 
 const TagList = styled.div`
-  background-color: rgba(60, 60, 60, 0.888);
+  background-color: rgba(23, 23, 23, 0.888);
   width: 100%;
   height: 75%;
   margin: 0;
-  padding: 0;
+  padding: 2rem;
   transition: all 600ms cubic-bezier(0.86, 0, 0.07, 1);
-  top: ${({ top }) => (top ? "22%" : "100%")};
+  top: ${({ top }) => (top ? "20%" : "100%")};
   position: fixed;
   left: 0;
+  text-align: center;
+`;
+
+const TagTitle = styled.div`
+  color: var(--color-white);
+  font-size: var(--font-medium);
+  font-weight: bold;
+  margin-bottom: 1rem;
+`;
+
+const TagBox = styled.div`
+  display: flex;
+  flex-wrap: wrap;
+  margin-bottom: 3rem;
 `;
 
 export default Footer;

@@ -4,7 +4,7 @@ import List from "../common/List";
 import Tag from "../common/Tag";
 import Skeleton from "@mui/material/Skeleton";
 
-const Main = ({ bestPost, recentPost, tagList, followPost, likeToggle }) => {
+const MainSearch = ({ tagList, searchResultList, likeToggle }) => {
   return (
     <MainContainer>
       <TagsContainer>
@@ -29,22 +29,10 @@ const Main = ({ bestPost, recentPost, tagList, followPost, likeToggle }) => {
         )}
       </TagsContainer>
       <ListBox>
-        <Title>베스트 🍲</Title>
+        <Title>검색 결과</Title>
         <BestRecipeContainer>
-          <List list={bestPost} likeToggle={likeToggle} />
+          <List list={searchResultList} likeToggle={likeToggle} />
         </BestRecipeContainer>
-        <Title>NEW 레시피 🥦</Title>
-        <NewRecipeContainer>
-          <List list={recentPost} likeToggle={likeToggle} />
-        </NewRecipeContainer>
-        {followPost && (
-          <>
-            <Title>follow List 🥕</Title>
-            <FollowContainer>
-              <List list={followPost} likeToggle={likeToggle} />
-            </FollowContainer>
-          </>
-        )}
       </ListBox>
     </MainContainer>
   );
@@ -73,42 +61,8 @@ const ListBox = styled.div`
 `;
 
 const BestRecipeContainer = styled.section`
-  overflow-x: scroll;
-
-  ::-webkit-scrollbar {
-    height: 0.3rem;
-  }
-
-  ::-webkit-scrollbar-thumb {
-    background-color: var(--color-orange);
-    border-radius: 10px;
-  }
-
-  ::-webkit-scrollbar-track {
-    background-color: var(--color-white);
-    /* background-color: var(--color-light-orange); */
-  }
+  /* height: 100vh; */
+  /* background-color: lavender; */
 `;
 
-const NewRecipeContainer = styled.section`
-  overflow-x: scroll;
-
-  ::-webkit-scrollbar {
-    height: 0.3rem;
-  }
-
-  ::-webkit-scrollbar-thumb {
-    background-color: var(--color-orange);
-    border-radius: 10px;
-  }
-
-  ::-webkit-scrollbar-track {
-    background-color: var(--color-white);
-  }
-`;
-
-const FollowContainer = styled.section`
-  display: flex;
-`;
-
-export default Main;
+export default MainSearch;

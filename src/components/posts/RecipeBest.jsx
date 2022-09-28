@@ -7,7 +7,7 @@ import Like from "../common/Like";
 import { useCookies } from "react-cookie";
 import Skeleton from "@mui/material/Skeleton";
 
-function RecipeBest({ post, likeToggle, getLikeItem }) {
+function RecipeBest({ post, likeToggle }) {
   const { postId, title, isLike, ingredient, foodImg } = post;
   const [likeToggleBtn, setLikeToggleBtn] = useState(isLike);
   const navigate = useNavigate();
@@ -34,16 +34,9 @@ function RecipeBest({ post, likeToggle, getLikeItem }) {
       return;
     }
     const resp = await likeToggle(postId);
-    const isVisible = resp.data.data;
-    if (isVisible) {
-      setLikeToggleBtn(!likeToggleBtn);
-      // getLikeItem(postId);
-    }
+    console.log("resp.data.data", resp.data);
+    setLikeToggleBtn(!likeToggleBtn);
   };
-
-  // const like = async () => {
-  //   setLikeToggleBtn(await getLikeItem(postId, isLike));
-  // };
 
   return (
     <>
