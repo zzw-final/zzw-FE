@@ -3,18 +3,18 @@ import styled from "styled-components";
 import { imgInstance } from "../../api/request";
 
 function EditTitle({
-  setTitle,
-  imgUpload,
-  setIngredient,
-  foodIngredientList,
-  setFoodName,
-  foodName,
   postDetail,
-  setContent,
+  editTitle,
+  editFoodName,
+  editIngredient,
+  foodIngredientList,
+  tags,
+  foodName,
 }) {
-  //태그작성기능
+  console.log("기존태그값 빼오기", foodName);
   const [tagItem, setTagItem] = useState("");
-  const [tagList, setTagList] = useState([]);
+  // const [tagList, setTagList] = useState(foodIngredientList);
+  const [tagList, setTagList] = useState(tags);
 
   const submitTag = (prevState) => {
     if (!tagList.includes(tagItem)) {
@@ -27,9 +27,7 @@ function EditTitle({
 
   //태그 삭제기능
   const deleteTag = (ingredientName) => {
-    setTagList(
-      tagList.filter((tagItem) => tagItem.ingredientName !== ingredientName)
-    );
+    setTagList(tagList.filter((tagItem) => tagItem !== ingredientName));
   };
   //누르면 태그가 하나의 div
   const onKeyPress = (e) => {
@@ -37,49 +35,13 @@ function EditTitle({
       submitTag();
     }
   };
-  //음식이름 뽑기
-  // const foodName = postDetail?.ingredient?.find(
-  //   (ingredient) => ingredient.isName === true
-  // ).ingredientName;
-  //재료이름만 뽑기
-  // const foodIngredientList = postDetail?.ingredient
-  //   ?.map((ingredient) =>
-  //     ingredient.isName !== true ? ingredient.ingredientName : undefined
-  //   )
-  //   .filter((ingredient) => ingredient !== undefined);
 
-  const [imageURL, setImageURL] = useState([]);
+  useEffect(() => {
+    editIngredient(tagItem.ingredientName);
+  }, []);
 
+  // console.log("태그리스트", tagList);
   // console.log("기존작성글", postDetail);
-
-  //서버에서 이미지 url로 받아오는 요청
-  // const imgUpload = (e) => {
-  //   e.preventDefault();
-  //   if (e.target.files) {
-  //     const file = e.target.files[0];
-  //     const formdata = new FormData();
-  //     formdata.append("file", file);
-
-  //     imgInstance
-  //       .post("/api/post/image", formdata, {
-  //         headers: { "Content-Type": "multipart/form-data" },
-  //       })
-  //       .then((res) => {
-  //         console.log("이미지 업로드 완료됨", res.data);
-  //         console.log("이미지 URL확인", res.data.data.imageUrl);
-  //         setImageURL(res?.data?.data?.imageUrl);
-  //         setImage(imageURL);
-  //       })
-  //       .catch((error) => {
-  //         console.log(error);
-  //       });
-  //   }
-  // };
-  // console.log("이미지값", imageURL);
-
-  // useEffect(() => {
-  //   setImage(imageURL);
-  // }, [imageURL]);
 
   return (
     <>
@@ -88,7 +50,7 @@ function EditTitle({
           placeholder="제목을 입력해주세요"
           defaultValue={postDetail?.title}
           onChange={(e) => {
-            setTitle(e.target.value);
+            editTitle(e.target.value);
           }}
         />
         <div styled={{ margin: "10px", display: "flex" }}>
@@ -96,7 +58,7 @@ function EditTitle({
             placeholder="요리이름 입력해주세요"
             defaultValue={foodName}
             onChange={(e) => {
-              setFoodName(e.target.value);
+              editFoodName(e.target.value);
             }}
           />
           {/* <TimeSelect
@@ -113,20 +75,17 @@ function EditTitle({
           </TimeSelect> */}
         </div>
         <TagBox>
-          {tagList.map((tagItem, i) => {
+          {tagList?.map((tagItem, i) => {
+            console.log(tagItem);
             return (
               <Tagdiv key={i}>
                 <div>{tagItem.ingredientName}</div>
-                <Button onClick={() => deleteTag(tagItem.ingredientName)}>
-                  X
-                </Button>
+                <Button onClick={() => deleteTag(tagItem)}>X</Button>
               </Tagdiv>
             );
           })}
           <IngredintTag
             value={tagItem}
-            placeholder="재료를 태그로 입력해주세요"
-            defaultValue={foodIngredientList}
             onChange={(e) => {
               setTagItem(e.target.value);
             }}
@@ -134,19 +93,6 @@ function EditTitle({
           />
         </TagBox>
       </Stdiv>
-      <ImgDiv src={imageURL} defaultValue={postDetail?.foodImg}></ImgDiv>
-      <input
-        type="file"
-        accept="image/*"
-        multiple="multiple"
-        onChange={imgUpload}
-      />
-      <Content
-        defaultValue={postDetail?.content}
-        onChange={(e) => {
-          setContent(e.target.value);
-        }}
-      ></Content>
     </>
   );
 }
@@ -245,19 +191,4 @@ const Button = styled.button`
   background-color: white;
   border-radius: 50%;
   color: black;
-`;
-
-const ImgDiv = styled.img`
-  width: 50vw;
-  margin-left: 25%;
-`;
-
-const Content = styled.textarea`
-  box-sizing: border-box;
-  width: 340px;
-  height: 30vh;
-  margin-left: 20px;
-
-  border: 1px solid #afadad;
-  border-radius: 10px;
 `;
