@@ -34,7 +34,7 @@ function Detail({
     <>
       <DetailContainer>
         <button
-          onClikck={() => {
+          onClick={() => {
             navigate("/");
           }}
         >
