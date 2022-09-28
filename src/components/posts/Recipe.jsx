@@ -8,7 +8,7 @@ import { useNavigate } from "react-router-dom";
 
 function Recipe({ post, onLikeHandler }) {
   const navigate = useNavigate();
-  const { postId, title, isLike, likeNum, ingredient, foodImg } = post;
+  const { postId, title, isLike, ingredient, foodImg } = post;
   const [likeToggleBtn, setLikeToggleBtn] = useState(isLike);
 
   const foodName = ingredient?.find(

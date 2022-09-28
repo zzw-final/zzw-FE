@@ -78,12 +78,19 @@ const MnBtn = styled.button`
         return css`
           width: ${({ width }) => width || "100%"};
           height: ${({ height }) => height || "1.7rem"};
-          background-color: ${({ background }) => background || "var(--color-blue)"};
+          background-color: var(--color-dark-white);
           border: none;
           border-radius: 5px;
           color: var(--color-white);
           font-size: var(--font-regular);
           font-weight: var(--weight-bold);
+          ${({ isFollow }) =>
+            !isFollow &&
+            css`
+              background-color: var(--color-sky);
+              color: white;
+              font-weight: var(--weight-bolder);
+            `}
         `;
 
       case "FollowBtn":
@@ -97,15 +104,23 @@ const MnBtn = styled.button`
           border-radius: 5px;
           font-size: var(--font-small);
           font-weight: var(--weight-semi-bold);
+
+          ${({ isFollow }) =>
+            !isFollow &&
+            css`
+              background-color: var(--color-sky);
+              color: white;
+              font-weight: var(--weight-bolder);
+            `}
         `;
 
       case "EmptyBtn":
         return css`
-          width: 10rem;
+          width: 9rem;
           height: 2rem;
           font-size: 15px;
           color: white;
-          background-color: var(--color-dark-green);
+          background-color: var(--color-dark-white);
           font-weight: var(--weight-bold);
           border-radius: 5px;
           border: none;

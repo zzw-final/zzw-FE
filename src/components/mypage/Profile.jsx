@@ -1,12 +1,21 @@
-import React from "react";
+import React, { useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import styled from "styled-components";
 import Button from "../UI/Button";
+import { instance } from "../../api/request";
 
-function Profile({ userData, onFollowHandler }) {
+function Profile({ userData }) {
   const navigate = useNavigate();
   const { id } = useParams();
-  const { follow, follower, grade, gradeList, nickname, profile } = userData;
+  const { follow, follower, grade, gradeList, nickname, profile, isFollow } = userData;
+  const [greyButton, setGreyButton] = useState(isFollow);
+  console.log("팔로우", follow);
+  console.log("팔로워", follower);
+
+  const onFollowHandler = async () => {
+    setGreyButton((prev) => !prev);
+    return await instance.post(`/api/auth/mypage/follow/${id}`);
+  };
 
   return (
     <Container>
@@ -46,10 +55,12 @@ function Profile({ userData, onFollowHandler }) {
         </BottomBox>
       </div>
       {!id ? (
-        <Button name="ProfileBtn">프로필 편집</Button>
+        <Button name="ProfileBtn" isFollow={true}>
+          프로필 편집
+        </Button>
       ) : (
-        <Button onClick={onFollowHandler} name="ProfileBtn">
-          팔로우
+        <Button onClick={onFollowHandler} name="ProfileBtn" isFollow={greyButton}>
+          {greyButton ? "팔로잉" : "팔로우"}
         </Button>
       )}
     </Container>

@@ -10,7 +10,7 @@ function MyRecipes({ myRecipes }) {
   if (myRecipes?.length === 0) {
     return (
       <AlignBox>
-        <Text>아직 레시피가 없어요!</Text>
+        <Text>버튼을 눌러 레시피를 작성해보세요!</Text>
         <Button
           onClick={() => {
             navigate("/write");

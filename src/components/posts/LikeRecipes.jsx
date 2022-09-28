@@ -6,7 +6,7 @@ function LikeRecipes({ likeRecipes, onLikeHandler }) {
   if (likeRecipes?.length === 0) {
     return (
       <AlignBox>
-        <Text>아직 좋아요한 레시피가 없습니다.</Text>
+        <Text>좋아요 누르고 함께 요리해요!</Text>
       </AlignBox>
     );
   }

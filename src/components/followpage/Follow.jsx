@@ -1,9 +1,17 @@
-import React from "react";
+import React, { useState } from "react";
 import styled from "styled-components";
 import Button from "../UI/Button";
+import { instance } from "../../api/request";
 
 function Follow({ follow }) {
-  const { profile, nickname, grade } = follow;
+  const { profile, nickname, grade, isFollow, userId } = follow;
+  const [greyButton, setGreyButton] = useState(isFollow);
+  console.log(greyButton);
+
+  const onFollowHandler = async () => {
+    setGreyButton((prev) => !prev);
+    return await instance.post(`/api/auth/mypage/follow/${userId}`);
+  };
 
   return (
     <Container>
@@ -16,7 +24,9 @@ function Follow({ follow }) {
       </LeftBox>
       <RightBox>
         <div>
-          <Button name="FollowBtn">팔로잉</Button>
+          <Button onClick={onFollowHandler} name="FollowBtn" isFollow={greyButton}>
+            {greyButton ? "팔로잉" : "팔로우"}
+          </Button>
         </div>
       </RightBox>
     </Container>

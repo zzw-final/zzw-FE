@@ -10,6 +10,7 @@ const MyPage = () => {
   const [userData, setUserData] = useState();
   const [myRecipes, setMyRecipes] = useState();
   const [likeRecipes, setLikeRecipes] = useState();
+  const [heart, setHeart] = useState(0);
   const [myVisible, setMyVisible] = useState(true);
   const [likeVisible, setLikeVisible] = useState(false);
 
@@ -32,10 +33,11 @@ const MyPage = () => {
   }, []);
 
   const fetchLikeRecipe = async () => {
-    if (likeRecipes === undefined) {
+    if (likeRecipes === undefined || heart > 0) {
       const res = await instance.get(`/api/auth/mypage/likeposts`);
       const LikeRecipes = res.data.data;
       setLikeRecipes(LikeRecipes);
+      setHeart(0);
     }
     setMyVisible(false);
     setLikeVisible(true);
@@ -47,7 +49,9 @@ const MyPage = () => {
   };
 
   const likeToggle = async (postId) => {
-    return await instance.post(`/api/auth/post/${postId}`);
+    const res = await instance.post(`/api/auth/post/${postId}`);
+    res && setHeart((prev) => prev + 1);
+    return res;
   };
 
   return (
