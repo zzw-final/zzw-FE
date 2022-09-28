@@ -1,6 +1,6 @@
 // import { set } from "immer/dist/internal";
 import { ConstructionOutlined } from "@mui/icons-material";
-import React from "react";
+import React, { useCallback } from "react";
 import { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import { instance, imgInstance } from "../api/request";
@@ -11,34 +11,24 @@ import EditTitle from "../components/edit/EditTitle";
 
 function EditPage() {
   const post_Id = useParams().id;
-  const navigate = useNavigate();
   const [postDetail, setPostDetail] = useState();
+
+  const [editedIngredient, setEditedIngredient] = useState();
+  const [editedTitle, setEditedTitle] = useState();
+  const [editedFoodname, setEditedFoodname] = useState();
+  const [editedContent, setEditedContent] = useState();
+  const [editedImageUrl, setEditedImageUrl] = useState();
 
   useEffect(() => {
     const getData = async () => {
-      const data = await instance.get(`/api/post/${post_Id}`);
-      setPostDetail(data?.data.data);
+      await instance
+        .get(`/api/post/${post_Id}`)
+        .then((res) => setPostDetail(res.data.data));
     };
-
     getData();
-  }, []);
+  }, [post_Id]);
 
-  // const allIngredientList = postDetail?.ingredient;
-  // console.log("배열로", allIngredientList);
-
-  const foodName = postDetail?.ingredient.find(
-    (title) => title.isName === true
-  ).ingredientName;
-  const tags = postDetail?.ingredient.filter((title) => title.isName === false);
-
-  // const foodName = allIngredientList?.find((title) => title.isName === true);
-  // const tags = allIngredientList?.filter((title) => title.isName === false);
-
-  console.log("foodName", foodName, tags);
-
-  //서버에서 이미지 url로 받아오는 요청
-
-  const [imageURL, setImageURL] = useState([]);
+  const [imageURL, setImageURL] = useState();
 
   const imgUpload = (e) => {
     e.preventDefault();
@@ -52,84 +42,66 @@ function EditPage() {
           headers: { "Content-Type": "multipart/form-data" },
         })
         .then((res) => {
-          console.log("이미지 업로드 완료됨", res.data);
-          console.log("이미지 URL확인", res.data.data.imageUrl);
           setImageURL(res?.data?.data?.imageUrl);
-          editFoodImg(imageURL);
+          setEditedImageUrl(imageURL);
         })
         .catch((error) => {
           console.log(error);
         });
     }
   };
-  console.log("이미지값", imageURL);
 
   useEffect(() => {
-    editFoodImg(imageURL);
+    setEditedImageUrl(imageURL);
   }, [imageURL]);
-
-  // const foodName = postDetail?.ingredient.filter(
-  //   (title) => title.isName === true
-  // );
-  // const tags = postDetail?.ingredient.filter((title) => title.isName === false);
-
-  // console.log(postDetail?.ingredient[0]?.ingredientName);
-  // const foodName = postDetail?.ingredient[0]?.ingredientName;
-
-  // const foodIngredientList = postDetail?.ingredient?.slice(1);
-  // console.log("재료만 잘라온 값", foodIngredientList);
 
   const onSubmitHandler = async () => {
     const data = {
-      title: postDetail?.title,
-      // foodName: foodName,
-      // ingredient: tags,
-      content: postDetail?.content,
-      file: postDetail?.foodImg,
+      // 바뀐 값이 없으면 '' <- 이렇게 보내주고 싶을때 사용. 아래는 예시임.
+      // title: postDetail?.title === editedTitle ? "" : editedTitle,
+
+      // 수정이 되었다면, 수정된 값을 넣어줌. 수정 안되었다면, 기존 값을 넣어줌.
+      title: editedTitle || postDetail?.title,
+      foodName: editedFoodname || postDetail?.ingredient[0].ingredientName,
+      ingredient: editedIngredient,
+      content: editedContent || postDetail?.content,
+      imageUrl: editedImageUrl || postDetail?.foodImg,
     };
     console.log("보내는 수정데이터 확인", data);
     await instance.put(`/api/auth/post/${post_Id}`, data);
   };
 
-  const editTitle = (title) => {
-    setPostDetail((prev) => ({ ...prev, title }));
-  };
-
-  const editFoodName = (foodName) => {
-    setPostDetail((prev) => ({ ...prev, foodName }));
-  };
-
-  const editIngredient = (ingredient) => {
-    setPostDetail((prev) => ({ ...prev, ingredient }));
-  };
-
-  const editContent = (content) => {
-    setPostDetail((prev) => ({ ...prev, content }));
-  };
-
-  const editFoodImg = (foodImg) => {
-    setPostDetail((prev) => ({ ...prev, foodImg }));
+  const editForm = (type, data) => {
+    switch (type) {
+      case "title":
+        setEditedTitle(data);
+        break;
+      case "foodName":
+        setEditedFoodname(data);
+        break;
+      case "ingredient":
+        setEditedIngredient(data);
+        break;
+      case "content":
+        setEditedContent(data);
+        break;
+      case "imageUrl":
+        setEditedImageUrl(data);
+        break;
+      default:
+        break;
+    }
   };
 
   return (
     <LayoutPage>
       <EditHeader onSubmit={onSubmitHandler} />
-      {postDetail && (
-        <EditTitle
-          editTitle={editTitle}
-          editFoodName={editFoodName}
-          editIngredient={editIngredient}
-          foodName={foodName}
-          tags={tags}
-          // foodIngredientList={foodIngredientList}
-          postDetail={postDetail}
-        />
-      )}
+      {postDetail && <EditTitle editForm={editForm} postDetail={postDetail} />}
       {postDetail && (
         <EditContent
-          editContent={editContent}
-          postDetail={postDetail}
+          editForm={editForm}
           imgUpload={imgUpload}
+          postDetail={postDetail}
           imageURL={imageURL}
         />
       )}
