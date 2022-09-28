@@ -6,14 +6,20 @@ import Tag from "../common/Tag";
 import CommentList from "../comment/CommentList";
 import { useCookies } from "react-cookie";
 
-function Detail({ postDetail, onDelete, tagList, post, remove, update, commentList }) {
+function Detail({
+  postDetail,
+  tagList,
+  post,
+  remove,
+  update,
+  commentList,
+  onDelete,
+}) {
   const navigate = useNavigate();
   const [cookies] = useCookies(["loginNickname"]);
-
-  {
-    const foodName = postDetail?.ingredient?.find(
-      (ingredient) => ingredient.isName === true
-    ).ingredientName;
+  const foodName = postDetail?.ingredient?.find(
+    (ingredient) => ingredient.isName === true
+  ).ingredientName;
 
     const foodIngredientList = postDetail?.ingredient
       ?.map((ingredient) =>
