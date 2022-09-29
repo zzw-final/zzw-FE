@@ -1,8 +1,9 @@
-import React, { useEffect, useState } from "react";
+import React, { useCallback, useEffect, useRef, useState } from "react";
 import SearchIcon from "@mui/icons-material/Search";
 import styled from "styled-components";
 import { useCookies } from "react-cookie";
 import useInputRef from "../../hooks/useInputRef";
+import Tag from "../common/Tag";
 
 const SearchForm = ({ search }) => {
   const [cookies] = useCookies(["loginNickname"]);
@@ -15,6 +16,7 @@ const SearchForm = ({ search }) => {
   const onPeriodChange = (event) => {
     setSelectOption(event.target.value);
     inputRef.current.value = "";
+    setTagList([]);
   };
 
   const options = [
@@ -23,48 +25,53 @@ const SearchForm = ({ search }) => {
     { value: "nickname", label: "닉네임" },
   ];
 
-  console.log("period? 밖", selectOption);
-
   const searchHandler = () => {
     const searchText = inputRef.current.value;
-    console.log("들어와?");
-    console.log("searchText?", searchText);
-    console.log("period? 안", selectOption);
-    if (searchText === "") {
+
+    if (tagList === [] && searchText === "") {
       alert("빈 값은 입력할 수 없습니다.");
       return;
     }
-    switch (selectOption) {
-      case "tag":
-        // return search(period, { tagList: searchText });
-        break;
-      case "title":
-        return search(selectOption, { title: searchText });
-      case "nickname":
-        return search(selectOption, { nickname: searchText });
-      default:
-        break;
+    if (selectOption === "tag" && tagList !== []) {
+      search(selectOption, tagList.toString());
+      inputRef.current.value = "";
+      return;
     }
-    inputRef.current.value = "";
+    search(selectOption, searchText);
   };
 
-  const inputRef = useInputRef("", searchHandler);
+  // const inputRef = useInputRef("", searchHandler);
+  const inputRef = useRef("");
 
-  if (selectOption === "tag") {
-    console.log("tag 선택");
-  }
+  const makeTagList = useCallback(
+    (addedTag) => {
+      if (!tagList.includes(addedTag)) {
+        setTagList((prevState) => {
+          return [...prevState, addedTag];
+        });
+      }
+    },
+    [tagList]
+  );
 
   useEffect(() => {
+    console.log("selectOption 안 :>> ", selectOption);
     if (selectOption === "tag") {
-      console.log("selectOption > ", selectOption);
-      inputRef.current.addEventListener("keypress", logKey);
-    }
-    function logKey(event) {
-      if (event.code === "Space") {
-        console.log("tag space! 가 아니라 무조건 space 시 먹음");
+      inputRef?.current.addEventListener("keypress", logKey);
+      function logKey(event) {
+        if (inputRef?.current.value.trim() !== "" && event.code === "Enter") {
+          if (selectOption === "tag") {
+            makeTagList(inputRef?.current.value);
+            inputRef.current.value = "";
+          }
+        }
       }
     }
-  }, [inputRef, selectOption]);
+  }, [inputRef, selectOption, makeTagList]);
+
+  const deleteSelectedTag = (deleteTagName) => {
+    setTagList(tagList.filter((tag) => tag !== deleteTagName));
+  };
 
   return (
     <SearchContainer>
@@ -79,6 +86,18 @@ const SearchForm = ({ search }) => {
                 </option>
               ))}
             </SelectBox>
+            <TagList>
+              {tagList.map((tag, idx) => (
+                <Tag
+                  tagName={tag}
+                  key={idx}
+                  isDelBtn={true}
+                  delBtnClick={() => {
+                    deleteSelectedTag(tag);
+                  }}
+                />
+              ))}
+            </TagList>
             <InputForm ref={inputRef} />
             <SearchIcon onClick={searchHandler} />
           </InputBox>
@@ -118,6 +137,11 @@ const SelectBox = styled.select`
   outline: 0;
   background-color: transparent;
   cursor: pointer;
+`;
+
+const TagList = styled.div`
+  color: var(--color-black);
+  display: flex;
 `;
 
 const InputForm = styled.input`

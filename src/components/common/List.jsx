@@ -4,12 +4,17 @@ import styled from "styled-components";
 import Skeleton from "@mui/material/Skeleton";
 import Card from "../UI/Card";
 
-const List = ({ list, likeToggle }) => {
+const List = ({ list, likeToggle, ...props }) => {
   return (
-    <ListContainer>
+    <ListContainer {...props}>
       {list ? (
         list?.map((item) => (
-          <RecipeBest post={item} key={item.postId} likeToggle={likeToggle} />
+          <RecipeBest
+            post={item}
+            key={item.postId}
+            likeToggle={likeToggle}
+            {...props}
+          />
         ))
       ) : (
         // 3번 반복
@@ -27,9 +32,13 @@ const List = ({ list, likeToggle }) => {
 };
 
 const ListContainer = styled.section`
-  display: flex;
+  display: ${(props) => props.display || "flex"};
+  grid-template-columns: repeat(auto-fill, minmax(175px, 1fr));
+  grid-row-gap: 1rem;
+  justify-items: center;
   height: 220px;
-  margin-left: 0.5rem;
+  /* margin-left: 0.5rem; */
+  margin: ${(props) => props.margin};
 `;
 
 export default List;

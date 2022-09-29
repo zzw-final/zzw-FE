@@ -31,17 +31,32 @@ const Main = ({ bestPost, recentPost, tagList, followPost, likeToggle }) => {
       <ListBox>
         <Title>베스트 🍲</Title>
         <BestRecipeContainer>
-          <List list={bestPost} likeToggle={likeToggle} />
+          <List
+            list={bestPost}
+            likeToggle={likeToggle}
+            width="160px"
+            height="200px"
+          />
         </BestRecipeContainer>
         <Title>NEW 레시피 🥦</Title>
         <NewRecipeContainer>
-          <List list={recentPost} likeToggle={likeToggle} />
+          <List
+            list={recentPost}
+            likeToggle={likeToggle}
+            width="160px"
+            height="200px"
+          />
         </NewRecipeContainer>
         {followPost && (
           <>
             <Title>follow List 🥕</Title>
             <FollowContainer>
-              <List list={followPost} likeToggle={likeToggle} />
+              <List
+                list={followPost}
+                likeToggle={likeToggle}
+                width="160px"
+                height="200px"
+              />
             </FollowContainer>
           </>
         )}

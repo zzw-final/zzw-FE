@@ -64,6 +64,7 @@ const Footer = ({ topTenTagList, tagAllList }) => {
         </BottomNavigation>
       </FooterContainer>
       <TagList id="tagList" top={toggleTagList}>
+        <TagListFoldLine></TagListFoldLine>
         <TagTitle>인기 Tags</TagTitle>
         <TagBox>
           {topTenTagList &&
@@ -93,14 +94,22 @@ const FooterContainer = styled.div`
   z-index: 1;
 `;
 
+const TagListFoldLine = styled.div`
+  width: 20%;
+  height: 0.1rem;
+  background-color: var(--color-white);
+  margin: 0.5rem auto 2rem auto;
+`;
+
 const TagList = styled.div`
   background-color: rgba(23, 23, 23, 0.888);
   width: 100%;
   height: 75%;
   margin: 0;
-  padding: 2rem;
+  padding: 1rem 2rem 2rem 2rem;
   transition: all 600ms cubic-bezier(0.86, 0, 0.07, 1);
-  top: ${({ top }) => (top ? "20%" : "100%")};
+  top: ${({ top }) => (top ? "21%" : "100%")};
+  border-radius: 1.5rem 1.5rem 0 0;
   position: fixed;
   left: 0;
   text-align: center;

@@ -7,7 +7,7 @@ import Like from "../common/Like";
 import { useCookies } from "react-cookie";
 import Skeleton from "@mui/material/Skeleton";
 
-function RecipeBest({ post, likeToggle }) {
+function RecipeBest({ post, likeToggle, ...props }) {
   const { postId, title, isLike, ingredient, foodImg } = post;
   const [likeToggleBtn, setLikeToggleBtn] = useState(isLike);
   const navigate = useNavigate();
@@ -39,31 +39,24 @@ function RecipeBest({ post, likeToggle }) {
   };
 
   return (
-    <>
-      {foodName ? (
-        <Card width="160px" height="200px" margin="1px 6px">
-          <TopBox>
-            <Tag
-              tagName={`#${foodName}`}
-              isFoodName={true}
-              height="24px"
-              opacity={0.8}
-            />
-            <Like isLike={likeToggleBtn} btnClick={like} />
-          </TopBox>
-          <Img alt="foodphoto" src={foodImg} onClick={goToDetail}></Img>
-          <Title>{title}</Title>
-          <Tags>
-            {foodIngredientList.map((ingredient, idx) => (
-              <Tag tagName={ingredient} key={idx} />
-            ))}
-          </Tags>
-        </Card>
-      ) : (
-        // <Skeleton variant="rectangular" width={160} height={200} />
-        <></>
-      )}
-    </>
+    <Card {...props} margin="1px 6px">
+      <TopBox>
+        <Tag
+          tagName={`#${foodName}`}
+          isFoodName={true}
+          height="24px"
+          opacity={0.8}
+        />
+        <Like isLike={likeToggleBtn} btnClick={like} />
+      </TopBox>
+      <Img alt="foodphoto" src={foodImg} onClick={goToDetail}></Img>
+      <Title>{title}</Title>
+      <Tags>
+        {foodIngredientList.map((ingredient, idx) => (
+          <Tag tagName={ingredient} key={idx} />
+        ))}
+      </Tags>
+    </Card>
   );
 }
 
