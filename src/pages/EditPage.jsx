@@ -20,6 +20,7 @@ function EditPage() {
   const [editedImageUrl, setEditedImageUrl] = useState();
   const [editTime, setEditTime] = useState();
 
+  const navigate = useNavigate();
 
   useEffect(() => {
     const getData = async () => {
@@ -29,9 +30,6 @@ function EditPage() {
     };
     getData();
   }, [post_Id]);
-  }, []);
-
- 
 
   const [imageURL, setImageURL] = useState();
 
@@ -72,7 +70,6 @@ function EditPage() {
       content: editedContent || postDetail?.content,
       imageUrl: editedImageUrl || postDetail?.foodImg,
       time: editTime || postDetail.time,
-
     };
     console.log("보내는 수정데이터 확인", data);
     await instance.put(`/api/auth/post/${post_Id}`, data);
