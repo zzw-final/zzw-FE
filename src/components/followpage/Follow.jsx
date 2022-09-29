@@ -1,20 +1,36 @@
-import React from "react";
+import React, { useState } from "react";
+import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
 import Button from "../UI/Button";
 
-function Follow() {
+function Follow({ follow, onFollowHandler }) {
+  const { profile, nickname, grade, isFollow, userId } = follow;
+  const [greyButton, setGreyButton] = useState(isFollow);
+  const navigate = useNavigate();
+
+  const followHandler = async () => {
+    setGreyButton((prev) => !prev);
+    return await onFollowHandler(userId);
+  };
+
+  const onClickGoToProfile = () => {
+    navigate(`/mypage/${userId}`);
+  };
+
   return (
     <Container>
-      <LeftBox>
-        <Char></Char>
+      <LeftBox onClick={onClickGoToProfile}>
+        <Char src={profile}></Char>
         <div>
-          <Nickname>가상의닉네임</Nickname>
-          <Grade>순두부찌개를 지배하는 자</Grade>
+          <Nickname>{nickname}</Nickname>
+          <Grade>{grade}</Grade>
         </div>
       </LeftBox>
       <RightBox>
         <div>
-          <Button name="FollowBtn">맞팔로우하기</Button>
+          <Button onClick={followHandler} name="FollowBtn" isFollow={greyButton}>
+            {greyButton ? "팔로잉" : "팔로우"}
+          </Button>
         </div>
       </RightBox>
     </Container>
@@ -35,7 +51,7 @@ const LeftBox = styled.div`
   align-items: center;
 `;
 
-const Char = styled.div`
+const Char = styled.img`
   width: 4rem;
   height: 4rem;
   background-color: orange;

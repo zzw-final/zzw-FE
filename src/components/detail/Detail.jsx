@@ -6,15 +6,9 @@ import Tag from "../common/Tag";
 import CommentList from "../comment/CommentList";
 import { useCookies } from "react-cookie";
 
-function Detail({
-  postDetail,
-  tagList,
-  onDelete,
-  post,
-  remove,
-  update,
-  commentList,
-}) {
+
+function Detail({ postDetail, tagList, post, remove, update, commentList, onDelete }) {
+
   const navigate = useNavigate();
   const [cookies] = useCookies(["loginNickname"]);
   const foodName = postDetail?.ingredient?.find(
@@ -68,12 +62,7 @@ function Detail({
           </PostTitleDiv>
         </TitleDiv>
         <FoodImgBox>
-          <img
-            alt="foodphoto"
-            width="100%"
-            height="90%"
-            src={postDetail?.foodImg}
-          />
+          <img alt="foodphoto" width="100%" height="90%" src={postDetail?.foodImg} />
         </FoodImgBox>
 
         <LikeDiv>

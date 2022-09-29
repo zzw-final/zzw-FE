@@ -1,11 +1,27 @@
-import React from "react";
-import { useNavigate } from "react-router-dom";
+import React, { useState } from "react";
+import { useNavigate, useParams } from "react-router-dom";
 import styled from "styled-components";
 import Button from "../UI/Button";
+import { instance } from "../../api/request";
 
 function Profile({ userData }) {
   const navigate = useNavigate();
-  const { follow, follower, grade, gradeList, nickname, profile } = userData;
+  const { id } = useParams();
+  const { follow, follower, grade, gradeList, nickname, profile, isFollow } = userData;
+  const [greyButton, setGreyButton] = useState(isFollow);
+  const [followerNum, setFollowerNum] = useState(follower);
+
+  const onFollowHandler = async () => {
+    setGreyButton((prev) => !prev);
+    const res = await instance.post(`/api/auth/mypage/follow/${id}`);
+    if (res.data.data === "follow success") {
+      setFollowerNum((prev) => prev + 1);
+    }
+    if (res.data.data === "unfollow success") {
+      setFollowerNum((prev) => prev - 1);
+    }
+    return res;
+  };
 
   return (
     <Container>
@@ -20,7 +36,7 @@ function Profile({ userData }) {
             <FollowBox>
               <Follow
                 onClick={() => {
-                  navigate("/follow");
+                  navigate("/follow", { state: { isClick: false } });
                 }}
               >
                 <p>팔로우</p>
@@ -28,11 +44,11 @@ function Profile({ userData }) {
               </Follow>
               <Follow
                 onClick={() => {
-                  navigate("/follow");
+                  navigate("/follow", { state: { isClick: true } });
                 }}
               >
                 <p>팔로워</p>
-                <Num>{follower}</Num>
+                <Num>{followerNum}</Num>
               </Follow>
             </FollowBox>
           </div>
@@ -44,8 +60,15 @@ function Profile({ userData }) {
           ))}
         </BottomBox>
       </div>
-      {/*TODO: 팔로우 / 언팔로우 전환 기능 필요 */}
-      <Button name="ProfileBtn">팔로우</Button>
+      {!id ? (
+        <Button name="ProfileBtn" isFollow={true}>
+          프로필 편집
+        </Button>
+      ) : (
+        <Button onClick={onFollowHandler} name="ProfileBtn" isFollow={greyButton}>
+          {greyButton ? "팔로잉" : "팔로우"}
+        </Button>
+      )}
     </Container>
   );
 }

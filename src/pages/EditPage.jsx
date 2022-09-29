@@ -96,7 +96,9 @@ function EditPage() {
   return (
     <LayoutPage>
       <EditHeader onSubmit={onSubmitHandler} />
+
       {postDetail && <EditTitle editForm={editForm} postDetail={postDetail} />}
+
       {postDetail && (
         <EditContent
           editForm={editForm}

@@ -1,19 +1,25 @@
 import React from "react";
 import Follow from "./Follow";
+import styled from "styled-components";
 
-//맵
+function FollowList({ followList, onFollowHandler }) {
+  if (followList?.length === 0) {
+    return <Div>팔로우 목록이 여기에 표시됩니다.</Div>;
+  }
 
-function FollowList() {
   return (
     <>
-      <Follow />
-      <Follow />
-      <Follow />
-      <Follow />
-      <Follow />
-      <Follow />
+      {followList?.map((follow) => (
+        <Follow key={follow.userId} follow={follow} onFollowHandler={onFollowHandler} />
+      ))}
     </>
   );
 }
 
 export default FollowList;
+
+const Div = styled.div`
+  color: var(--color-grey);
+  margin-top: 5rem;
+  text-align: center;
+`;
