@@ -11,7 +11,6 @@ import EditTitle from "../components/edit/EditTitle";
 
 function EditPage() {
   const post_Id = useParams().id;
-  const navigate = useNavigate();
   const [postDetail, setPostDetail] = useState();
 
   const [editedIngredient, setEditedIngredient] = useState();
@@ -20,6 +19,7 @@ function EditPage() {
   const [editedContent, setEditedContent] = useState();
   const [editedImageUrl, setEditedImageUrl] = useState();
   const [editTime, setEditTime] = useState();
+
 
   useEffect(() => {
     const getData = async () => {
@@ -72,6 +72,7 @@ function EditPage() {
       content: editedContent || postDetail?.content,
       imageUrl: editedImageUrl || postDetail?.foodImg,
       time: editTime || postDetail.time,
+
     };
     console.log("보내는 수정데이터 확인", data);
     await instance.put(`/api/auth/post/${post_Id}`, data);
@@ -99,6 +100,7 @@ function EditPage() {
       case "time":
         setEditTime(data);
         break;
+
       default:
         break;
     }

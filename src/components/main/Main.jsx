@@ -4,14 +4,7 @@ import List from "../common/List";
 import Tag from "../common/Tag";
 import Skeleton from "@mui/material/Skeleton";
 
-const Main = ({
-  bestPost,
-  recentPost,
-  tagList,
-  followPost,
-  likeToggle,
-  getLikeItem,
-}) => {
+const Main = ({ bestPost, recentPost, tagList, followPost, likeToggle }) => {
   return (
     <MainContainer>
       <TagsContainer>
@@ -22,36 +15,17 @@ const Main = ({
               key={idx}
               isFoodName={true}
               margin="0 0.5rem 0 0.5rem"
-              boxShadow="0px 0px 5px #dcdcdc"
+              boxShadow="0px 2px 0px #868686"
             />
           ))
         ) : (
-          <>
-            <Skeleton
-              variant="rounded"
-              width={50}
-              height={19}
-              sx={{ marginLeft: 1, marginRight: 1 }}
-            />
-            <Skeleton
-              variant="rounded"
-              width={50}
-              height={19}
-              sx={{ marginLeft: 1, marginRight: 1 }}
-            />
-            <Skeleton
-              variant="rounded"
-              width={50}
-              height={19}
-              sx={{ marginLeft: 1, marginRight: 1 }}
-            />
-            <Skeleton
-              variant="rounded"
-              width={50}
-              height={19}
-              sx={{ marginLeft: 1, marginRight: 1 }}
-            />
-          </>
+          // 4번 반복
+          <Skeleton
+            variant="rounded"
+            width={50}
+            height={19}
+            sx={{ marginLeft: 1, marginRight: 1 }}
+          />
         )}
       </TagsContainer>
       <ListBox>
@@ -60,7 +34,8 @@ const Main = ({
           <List
             list={bestPost}
             likeToggle={likeToggle}
-            getLikeItem={getLikeItem}
+            width="160px"
+            height="200px"
           />
         </BestRecipeContainer>
         <Title>NEW 레시피 🥦</Title>
@@ -68,14 +43,20 @@ const Main = ({
           <List
             list={recentPost}
             likeToggle={likeToggle}
-            getLikeItem={getLikeItem}
+            width="160px"
+            height="200px"
           />
         </NewRecipeContainer>
         {followPost && (
           <>
             <Title>follow List 🥕</Title>
             <FollowContainer>
-              <List list={followPost} likeToggle={likeToggle} />
+              <List
+                list={followPost}
+                likeToggle={likeToggle}
+                width="160px"
+                height="200px"
+              />
             </FollowContainer>
           </>
         )}
@@ -102,7 +83,7 @@ const Title = styled.div`
 
 const ListBox = styled.div`
   background-color: var(--color-white);
-  border-radius: 1.3rem 1.3rem 0 0;
+  border-radius: 1.5rem 1.5rem 0 0;
   padding-top: 0.4rem;
 `;
 

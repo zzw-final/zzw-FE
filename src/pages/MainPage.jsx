@@ -1,19 +1,22 @@
 import React, { useEffect, useState } from "react";
-import { useCookies } from "react-cookie";
 import { instance } from "../api/request";
+import styled from "styled-components";
 import LayoutPage from "../components/common/LayoutPage";
 import Logo from "../components/common/Logo";
 import Main from "../components/main/Main";
 import SearchForm from "../components/main/SearchForm";
+import { useNavigate } from "react-router-dom";
 
 const MainPage = () => {
   const [bestPost, setBestPost] = useState();
   const [recentPost, setRecentPost] = useState();
   const [tagList, setTagList] = useState();
   const [followList, setFollowList] = useState();
-  const [likeToggleBtn, setLikeToggleBtn] = useState();
-  const [cookies] = useCookies(["loginNickname"]);
-  const loginNickname = cookies.loginNickname;
+  const [searchResultList, setSearchResultList] = useState([]);
+  // const [likeToggleBtn, setLikeToggleBtn] = useState();
+  // const [cookies] = useCookies(["loginNickname"]);
+  // const loginNickname = cookies.loginNickname;
+  const navigate = useNavigate();
 
   useEffect(() => {
     async function fetchData() {
@@ -28,45 +31,35 @@ const MainPage = () => {
     fetchData();
   }, []);
 
-  const getLikeItem = async (postId, isLike) => {
-    // setRecentPost(
-    //   bestPost.map((post) =>
-    //     post.postId === postId ? { ...post, isLike: !post.isLike } : { ...post }
-    //   )
-    // );
-    // setLikeToggleBtn(isLike);
-    // if (loginNickname === undefined) {
-    //   alert("로그인 유저만 사용 가능한 기능입니다.");
-    //   return;
-    // }
-    // const resp = await likeToggle(postId);
-    // const isVisible = resp.data.data;
-    // if (isVisible) {
-    //   setLikeToggleBtn(!likeToggleBtn);
-    // }
-    // return likeToggleBtn;
-  };
-
-  console.log("recentPost :>> ", recentPost);
-
   const likeToggle = async (postId) => {
     return await instance.post(`/api/auth/post/${postId}`);
   };
 
+  const search = async (searchOption, sendData) => {
+    navigate(`/search?${searchOption}=${sendData}`);
+  };
+
   return (
-    <LayoutPage background={"1.jpeg"}>
+    <LayoutPage background={"background.jpeg"}>
       <Logo />
-      <SearchForm />
-      <Main
-        bestPost={bestPost}
-        recentPost={recentPost}
-        tagList={tagList}
-        followList={followList}
-        likeToggle={likeToggle}
-        getLikeItem={getLikeItem}
-      />
+      <SearchForm search={search} />
+      <MainContainer>
+        <Main
+          bestPost={bestPost}
+          recentPost={recentPost}
+          tagList={tagList}
+          followList={followList}
+          likeToggle={likeToggle}
+        />
+      </MainContainer>
     </LayoutPage>
   );
 };
 
+const MainContainer = styled.div`
+  display: block;
+  /* display: none; */
+`;
+
 export default MainPage;
+//

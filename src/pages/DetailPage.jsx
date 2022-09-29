@@ -15,7 +15,6 @@ function DetailPage() {
 
   const [commentList, setCommentList] = useState();
 
-
   useEffect(() => {
     const getData = async () => {
       const data = await instance.get(`/api/post/${post_Id}`);
@@ -93,9 +92,14 @@ function DetailPage() {
 
   return (
     <LayoutPage>
-
-      <Detail postDetail={postDetail} onDelete={onDeleteHandler} />
-
+      <Detail
+        postDetail={postDetail}
+        onDelete={onDeleteHandler}
+        post={post}
+        remove={remove}
+        update={update}
+        commentList={commentList}
+      />
     </LayoutPage>
   );
 }

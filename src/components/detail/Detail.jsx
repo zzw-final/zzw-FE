@@ -6,7 +6,9 @@ import Tag from "../common/Tag";
 import CommentList from "../comment/CommentList";
 import { useCookies } from "react-cookie";
 
+
 function Detail({ postDetail, tagList, post, remove, update, commentList, onDelete }) {
+
   const navigate = useNavigate();
   const [cookies] = useCookies(["loginNickname"]);
   const foodName = postDetail?.ingredient?.find(
@@ -74,9 +76,6 @@ function Detail({ postDetail, tagList, post, remove, update, commentList, onDele
     </>
   );
 }
-
-export default Detail;
-
 const DetailContainer = styled.div`
   height: 70vh;
   width: 100vw;
@@ -181,3 +180,5 @@ const Tags = styled.div`
     display: none;
   }
 `;
+
+export default Detail;
