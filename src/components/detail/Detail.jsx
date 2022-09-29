@@ -27,13 +27,6 @@ function Detail({ postDetail, tagList, post, remove, update, commentList, onDele
   return (
     <>
       <DetailContainer>
-        <button
-          onClick={() => {
-            navigate("/");
-          }}
-        >
-          임시🏠
-        </button>
         <ButtonDiv>
           {loginNickname === postDetail?.nickname ? (
             <>

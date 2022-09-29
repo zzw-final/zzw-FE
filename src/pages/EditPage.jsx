@@ -18,6 +18,8 @@ function EditPage() {
   const [editedFoodname, setEditedFoodname] = useState();
   const [editedContent, setEditedContent] = useState();
   const [editedImageUrl, setEditedImageUrl] = useState();
+  const [editTime, setEditTime] = useState();
+
 
   useEffect(() => {
     const getData = async () => {
@@ -27,6 +29,9 @@ function EditPage() {
     };
     getData();
   }, [post_Id]);
+  }, []);
+
+ 
 
   const [imageURL, setImageURL] = useState();
 
@@ -66,9 +71,13 @@ function EditPage() {
       ingredient: editedIngredient,
       content: editedContent || postDetail?.content,
       imageUrl: editedImageUrl || postDetail?.foodImg,
+      time: editTime || postDetail.time,
+
     };
     console.log("보내는 수정데이터 확인", data);
     await instance.put(`/api/auth/post/${post_Id}`, data);
+    alert("글 수정이 완료되었습니다!");
+    navigate(`/detail/${post_Id}`);
   };
 
   const editForm = (type, data) => {
@@ -88,6 +97,10 @@ function EditPage() {
       case "imageUrl":
         setEditedImageUrl(data);
         break;
+      case "time":
+        setEditTime(data);
+        break;
+
       default:
         break;
     }
@@ -98,7 +111,6 @@ function EditPage() {
       <EditHeader onSubmit={onSubmitHandler} />
 
       {postDetail && <EditTitle editForm={editForm} postDetail={postDetail} />}
-
       {postDetail && (
         <EditContent
           editForm={editForm}
