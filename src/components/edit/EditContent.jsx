@@ -1,7 +1,7 @@
 import React from "react";
 import styled from "styled-components";
 
-function EditContent({ editContent, postDetail, imgUpload, imageURL }) {
+function EditContent({ editForm, postDetail, imgUpload, imageURL }) {
   return (
     <>
       <ImgDiv src={postDetail?.foodImg}></ImgDiv>
@@ -14,7 +14,7 @@ function EditContent({ editContent, postDetail, imgUpload, imageURL }) {
       <Content
         defaultValue={postDetail?.content}
         onChange={(e) => {
-          editContent(e.target.value);
+          editForm("content", e.target.value);
         }}
       ></Content>
     </>

@@ -1,25 +1,32 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useCallback, useRef } from "react";
 import styled from "styled-components";
-import { imgInstance } from "../../api/request";
 
-function EditTitle({
-  postDetail,
-  editTitle,
-  editFoodName,
-  editIngredient,
-  foodIngredientList,
-  tags,
-  foodName,
-}) {
-  console.log("기존태그값 빼오기", foodName);
+function EditTitle({ postDetail, editForm }) {
   const [tagItem, setTagItem] = useState("");
-  // const [tagList, setTagList] = useState(foodIngredientList);
-  const [tagList, setTagList] = useState(tags);
+  const [foodName, setFoodName] = useState();
 
-  const submitTag = (prevState) => {
+  useEffect(() => {
+    console.log("postDetial > ", postDetail);
+    const foodName = postDetail?.ingredient?.find(
+      (item) => item.isName === true
+    )?.ingredientName;
+    const ingredientList_d = postDetail.ingredient?.filter(
+      (item) => item.isName === false
+    );
+    setFoodName(foodName);
+    setTagList(ingredientList_d);
+  }, [postDetail]);
+
+  const [tagList, setTagList] = useState();
+
+  useEffect(() => {
+    editForm("ingredient", tagList);
+  }, [tagList, editForm]);
+
+  const submitTag = () => {
     if (!tagList.includes(tagItem)) {
       setTagList((prevState) => {
-        return [...prevState, { ingredientName: tagItem }];
+        return [...prevState, { ingredientName: tagItem, isName: false }];
       });
     }
     setTagItem("");
@@ -27,21 +34,17 @@ function EditTitle({
 
   //태그 삭제기능
   const deleteTag = (ingredientName) => {
-    setTagList(tagList.filter((tagItem) => tagItem !== ingredientName));
+    setTagList(
+      tagList.filter((tagItem) => tagItem.ingredientName !== ingredientName)
+    );
   };
+
   //누르면 태그가 하나의 div
   const onKeyPress = (e) => {
     if (e.target.value !== "" && e.key === "Enter") {
       submitTag();
     }
   };
-
-  useEffect(() => {
-    editIngredient(tagItem.ingredientName);
-  }, []);
-
-  // console.log("태그리스트", tagList);
-  // console.log("기존작성글", postDetail);
 
   return (
     <>
@@ -50,7 +53,7 @@ function EditTitle({
           placeholder="제목을 입력해주세요"
           defaultValue={postDetail?.title}
           onChange={(e) => {
-            editTitle(e.target.value);
+            editForm("title", e.target.value);
           }}
         />
         <div styled={{ margin: "10px", display: "flex" }}>
@@ -58,32 +61,33 @@ function EditTitle({
             placeholder="요리이름 입력해주세요"
             defaultValue={foodName}
             onChange={(e) => {
-              editFoodName(e.target.value);
+              editForm("foodName", e.target.value);
             }}
           />
-          {/* <TimeSelect
+          <TimeSelect
             placeholder="요리 시간을 선택해주세요"
-            defaultValue={postDetail?.time}
             onChange={(e) => {
-              setTime(e.target.value);
+              editForm("time", e.target.value);
             }}
           >
             <option value="0">5분</option>
             <option value="1">10분</option>
             <option value="2">15분</option>
             <option value="3">30분 이상</option>
-          </TimeSelect> */}
+          </TimeSelect>
         </div>
         <TagBox>
-          {tagList?.map((tagItem, i) => {
-            console.log(tagItem);
-            return (
-              <Tagdiv key={i}>
-                <div>{tagItem.ingredientName}</div>
-                <Button onClick={() => deleteTag(tagItem)}>X</Button>
-              </Tagdiv>
-            );
-          })}
+          {tagList &&
+            tagList.map((tagItem, i) => {
+              return (
+                <Tagdiv key={i}>
+                  <div>{tagItem.ingredientName}</div>
+                  <Button onClick={() => deleteTag(tagItem.ingredientName)}>
+                    X
+                  </Button>
+                </Tagdiv>
+              );
+            })}
           <IngredintTag
             value={tagItem}
             onChange={(e) => {
