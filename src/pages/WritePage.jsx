@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import styled from "styled-components";
 import Write from "../components/write/Write";
 import { instance } from "../api/request";
+import { useNavigate } from "react-router-dom";
 
 const WritePage = () => {
   const [title, setTitle] = useState("");
@@ -14,6 +15,7 @@ const WritePage = () => {
   // 그리고 그냥 상세보기햇을때에는 그냥 .... 어쩌구
   // 그런데 html을 서버로 그넝 넘기면 보안이슈가잇습니다 그래서 땡땡처리를하고넘겨주는디 직접찾아보시면좋겟
   const [content, setContent] = useState("");
+  const navigate = useNavigate();
 
   const onSubmitHandler = async (e) => {
     try {
@@ -29,6 +31,8 @@ const WritePage = () => {
       console.log(data);
 
       await instance.post("/api/auth/post", data);
+      alert("게시글 등록이 완료되었습니다!");
+      navigate("/");
     } catch (error) {
       console.log("에러..", error);
     }

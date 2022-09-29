@@ -2,7 +2,6 @@ import React, { useEffect, useState } from "react";
 import Profile from "../components/mypage/Profile";
 import Button from "../components/UI/Button";
 import MyRecipes from "../components/posts/MyRecipes";
-import LikeRecipes from "../components/posts/LikeRecipes";
 import { instance } from "../api/request";
 import LayoutPage from "../components/common/LayoutPage";
 import { useParams } from "react-router-dom";
@@ -14,26 +13,18 @@ function UserPage() {
 
   useEffect(() => {
     async function fetchUserData() {
-      try {
-        const res = await instance.get(`/api/mypage/${id}`);
-        const userData = res.data.data;
-        setAnotherUserData(userData);
-      } catch (error) {
-        console.log("에러", error);
-      }
+      const res = await instance.get(`/api/mypage/${id}`);
+      const userData = res.data.data;
+      setAnotherUserData(userData);
     }
     fetchUserData();
   }, [id]);
 
   useEffect(() => {
     async function fetchUserRecipe() {
-      try {
-        const res = await instance.get(`/api/mypage/${id}/myposts`);
-        const userData = res.data.data;
-        setUserRecipe(userData);
-      } catch (error) {
-        console.log("에러", error);
-      }
+      const res = await instance.get(`/api/mypage/${id}/myposts`);
+      const userData = res.data.data;
+      setUserRecipe(userData);
     }
     fetchUserRecipe();
   }, [id]);
@@ -44,7 +35,7 @@ function UserPage() {
       <Button style={{ margin: `0.7rem` }} name="MyToggleBtn" myVisible={true}>
         {anotherUserData?.nickname} 님의 레시피 🍳
       </Button>
-      <MyRecipes myRecipes={userRecipe} />
+      <MyRecipes myRecipes={userRecipe} userNickname={anotherUserData?.nickname} />
     </LayoutPage>
   );
 }

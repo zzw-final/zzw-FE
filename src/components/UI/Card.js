@@ -12,7 +12,7 @@ const PostBox = styled.div`
   max-width: 220px;
   min-width: 160px;
   width: ${({ width }) => width || "175px"};
-  height: ${({ height }) => height || "240px"};
+  height: ${({ height }) => height || "210px"};
   background-color: #fffffe;
   border-radius: 15px;
   box-shadow: 0px 0px 10px #dcdcdc;
