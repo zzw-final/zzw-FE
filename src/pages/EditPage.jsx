@@ -26,15 +26,15 @@ function EditPage() {
   // const allIngredientList = postDetail?.ingredient;
   // console.log("배열로", allIngredientList);
 
-  const foodName = postDetail?.ingredient.find(
-    (title) => title.isName === true
-  ).ingredientName;
-  const tags = postDetail?.ingredient.filter((title) => title.isName === false);
+  // const foodName = postDetail?.ingredient.find(
+  //   (title) => title.isName === true
+  // ).ingredientName;
+  // const tags = postDetail?.ingredient.filter((title) => title.isName === false);
 
   // const foodName = allIngredientList?.find((title) => title.isName === true);
   // const tags = allIngredientList?.filter((title) => title.isName === false);
 
-  console.log("foodName", foodName, tags);
+  // console.log("foodName", foodName, tags);
 
   //서버에서 이미지 url로 받아오는 요청
 
@@ -119,8 +119,8 @@ function EditPage() {
           editTitle={editTitle}
           editFoodName={editFoodName}
           editIngredient={editIngredient}
-          foodName={foodName}
-          tags={tags}
+          // foodName={foodName}
+          // tags={tags}
           // foodIngredientList={foodIngredientList}
           postDetail={postDetail}
         />

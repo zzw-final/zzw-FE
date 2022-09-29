@@ -1,21 +1,25 @@
 import React, { useState } from "react";
+import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
 import Button from "../UI/Button";
-import { instance } from "../../api/request";
 
-function Follow({ follow }) {
+function Follow({ follow, onFollowHandler }) {
   const { profile, nickname, grade, isFollow, userId } = follow;
   const [greyButton, setGreyButton] = useState(isFollow);
-  console.log(greyButton);
+  const navigate = useNavigate();
 
-  const onFollowHandler = async () => {
+  const followHandler = async () => {
     setGreyButton((prev) => !prev);
-    return await instance.post(`/api/auth/mypage/follow/${userId}`);
+    return await onFollowHandler(userId);
+  };
+
+  const onClickGoToProfile = () => {
+    navigate(`/mypage/${userId}`);
   };
 
   return (
     <Container>
-      <LeftBox>
+      <LeftBox onClick={onClickGoToProfile}>
         <Char src={profile}></Char>
         <div>
           <Nickname>{nickname}</Nickname>
@@ -24,7 +28,7 @@ function Follow({ follow }) {
       </LeftBox>
       <RightBox>
         <div>
-          <Button onClick={onFollowHandler} name="FollowBtn" isFollow={greyButton}>
+          <Button onClick={followHandler} name="FollowBtn" isFollow={greyButton}>
             {greyButton ? "팔로잉" : "팔로우"}
           </Button>
         </div>

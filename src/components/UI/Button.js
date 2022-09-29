@@ -57,16 +57,8 @@ const MnBtn = styled.button`
           color: var(--color-grey);
           padding: 0rem 0.7rem;
 
-          ${({ followVisible }) =>
-            followVisible &&
-            css`
-              color: black;
-              font-weight: var(--weight-bold);
-              border-bottom: 1.5px solid gray;
-            `}
-
-          ${({ followerVisible }) =>
-            followerVisible &&
+          ${({ view }) =>
+            view &&
             css`
               color: black;
               border-bottom: 1.5px solid gray;

@@ -5,12 +5,7 @@ import { getCookie } from "../../util/cookie";
 
 // TODO: 닉네임 검색 기능
 
-function FollowLayout({
-  onFetchFollower,
-  onToggleHandler,
-  followVisible,
-  followerVisible,
-}) {
+function FollowLayout({ onFetchFollower, onToggleHandler, followView, followerView }) {
   const nickname = getCookie("loginNickname");
 
   return (
@@ -19,18 +14,10 @@ function FollowLayout({
         <Nickname>{nickname}</Nickname>
       </Container>
       <Container>
-        <Button
-          name="followPageBtn"
-          onClick={onToggleHandler}
-          followVisible={followVisible}
-        >
+        <Button name="followPageBtn" onClick={onToggleHandler} view={followView}>
           팔로우
         </Button>
-        <Button
-          name="followPageBtn"
-          onClick={onFetchFollower}
-          followerVisible={followerVisible}
-        >
+        <Button name="followPageBtn" onClick={onFetchFollower} view={followerView}>
           팔로워
         </Button>
       </Container>

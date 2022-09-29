@@ -6,89 +6,80 @@ import Tag from "../common/Tag";
 import CommentList from "../comment/CommentList";
 import { useCookies } from "react-cookie";
 
-function Detail({
-  postDetail,
-  tagList,
-  post,
-  remove,
-  update,
-  commentList,
-  onDelete,
-}) {
+function Detail({ postDetail, tagList, post, remove, update, commentList, onDelete }) {
   const navigate = useNavigate();
   const [cookies] = useCookies(["loginNickname"]);
   const foodName = postDetail?.ingredient?.find(
     (ingredient) => ingredient.isName === true
   ).ingredientName;
 
-    const foodIngredientList = postDetail?.ingredient
-      ?.map((ingredient) =>
-        ingredient.isName !== true ? ingredient.ingredientName : undefined
-      )
-      .filter((ingredient) => ingredient !== undefined);
+  const foodIngredientList = postDetail?.ingredient
+    ?.map((ingredient) =>
+      ingredient.isName !== true ? ingredient.ingredientName : undefined
+    )
+    .filter((ingredient) => ingredient !== undefined);
 
-    const loginNickname = cookies.loginNickname;
-    console.log("닉네임", loginNickname);
+  const loginNickname = cookies.loginNickname;
+  console.log("닉네임", loginNickname);
 
-    return (
-      <>
-        <DetailContainer>
-          <button
-            onClick={() => {
-              navigate("/");
-            }}
-          >
-            임시🏠
-          </button>
-          <ButtonDiv>
-            {loginNickname === postDetail?.nickname ? (
-              <>
-                <button
-                  onClick={() => {
-                    navigate(`/editpage/${postDetail.postId}`);
-                  }}
-                >
-                  수정
-                </button>
-                <button onClick={onDelete}>삭제</button>
-              </>
-            ) : null}
-          </ButtonDiv>
-          <TitleDiv>
-            <FoodnameDiv>{foodName}</FoodnameDiv>
-            <PostTitleDiv>
-              <NickNameDiv>{postDetail?.nickname}</NickNameDiv>
-              <PostTitle>{postDetail?.title}</PostTitle>
+  return (
+    <>
+      <DetailContainer>
+        <button
+          onClick={() => {
+            navigate("/");
+          }}
+        >
+          임시🏠
+        </button>
+        <ButtonDiv>
+          {loginNickname === postDetail?.nickname ? (
+            <>
+              <button
+                onClick={() => {
+                  navigate(`/editpage/${postDetail.postId}`);
+                }}
+              >
+                수정
+              </button>
+              <button onClick={onDelete}>삭제</button>
+            </>
+          ) : null}
+        </ButtonDiv>
+        <TitleDiv>
+          <FoodnameDiv>{foodName}</FoodnameDiv>
+          <PostTitleDiv>
+            <NickNameDiv>{postDetail?.nickname}</NickNameDiv>
+            <PostTitle>{postDetail?.title}</PostTitle>
 
-              <Tags>
-                {foodIngredientList?.map((ingredient, idx) => (
-                  <Tag tagName={ingredient} key={idx} />
-                ))}
-              </Tags>
-            </PostTitleDiv>
-          </TitleDiv>
-          <FoodImgBox>
-            <img alt="foodphoto" width="100%" height="90%" src={postDetail?.foodImg} />
-          </FoodImgBox>
+            <Tags>
+              {foodIngredientList?.map((ingredient, idx) => (
+                <Tag tagName={ingredient} key={idx} />
+              ))}
+            </Tags>
+          </PostTitleDiv>
+        </TitleDiv>
+        <FoodImgBox>
+          <img alt="foodphoto" width="100%" height="90%" src={postDetail?.foodImg} />
+        </FoodImgBox>
 
-          <LikeDiv>
-            <CreatDate>{postDetail?.createAt}</CreatDate>
-            <Like>
-              조아요<Likenumdiv>{postDetail?.likeNum}</Likenumdiv>
-            </Like>
-          </LikeDiv>
-          <ContentBox>{postDetail?.content}</ContentBox>
-        </DetailContainer>
-        <CommentList
-          postId={postDetail?.postId}
-          post={post}
-          remove={remove}
-          update={update}
-          commentList={commentList}
-        />
-      </>
-    );
-  }
+        <LikeDiv>
+          <CreatDate>{postDetail?.createAt}</CreatDate>
+          <Like>
+            조아요<Likenumdiv>{postDetail?.likeNum}</Likenumdiv>
+          </Like>
+        </LikeDiv>
+        <ContentBox>{postDetail?.content}</ContentBox>
+      </DetailContainer>
+      <CommentList
+        postId={postDetail?.postId}
+        post={post}
+        remove={remove}
+        update={update}
+        commentList={commentList}
+      />
+    </>
+  );
 }
 
 export default Detail;

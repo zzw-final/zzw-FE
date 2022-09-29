@@ -49,9 +49,8 @@ const MyPage = () => {
   };
 
   const likeToggle = async (postId) => {
-    const res = await instance.post(`/api/auth/post/${postId}`);
-    res && setHeart((prev) => prev + 1);
-    return res;
+    setHeart((prev) => prev + 1);
+    return await instance.post(`/api/auth/post/${postId}`);
   };
 
   return (

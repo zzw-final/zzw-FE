@@ -4,19 +4,24 @@ import LayoutPage from "../components/common/LayoutPage";
 import FollowerList from "../components/followpage/FollowerList";
 import FollowLayout from "../components/followpage/FollowLayout";
 import FollowList from "../components/followpage/FollowList";
+import { useLocation } from "react-router-dom";
 
 const FollowPage = () => {
   const [followList, setFollowList] = useState();
   const [followerList, setFollowerList] = useState();
-  const [followVisible, setfollowVisible] = useState(true);
-  const [followerVisible, setFollowerVisible] = useState(false);
+  const location = useLocation();
+  const isClick = location.state.isClick;
+  const [click, setClick] = useState(isClick);
+  const [followView, setFollowView] = useState(true);
+  const [followerView, setFollowerView] = useState(false);
+
+  async function fetchFollow() {
+    const res = await instance.get(`/api/auth/mypage/follow`);
+    const follow = res.data.data;
+    setFollowList(follow);
+  }
 
   useEffect(() => {
-    async function fetchFollow() {
-      const res = await instance.get(`/api/auth/mypage/follow`);
-      const follow = res.data.data;
-      setFollowList(follow);
-    }
     fetchFollow();
   }, []);
 
@@ -26,13 +31,22 @@ const FollowPage = () => {
       const follower = res.data.data;
       setFollowerList(follower);
     }
-    setfollowVisible(false);
-    setFollowerVisible(true);
+    setFollowView(false);
+    setFollowerView(true);
   };
 
+  if (click) {
+    fetchFollower();
+    setClick(false);
+  }
+
   const toggleHandler = () => {
-    setfollowVisible(true);
-    setFollowerVisible(false);
+    setFollowView(true);
+    setFollowerView(false);
+  };
+
+  const followHandler = async (userId) => {
+    return await instance.post(`/api/auth/mypage/follow/${userId}`);
   };
 
   return (
@@ -40,11 +54,15 @@ const FollowPage = () => {
       <FollowLayout
         onFetchFollower={fetchFollower}
         onToggleHandler={toggleHandler}
-        followVisible={followVisible}
-        followerVisible={followerVisible}
+        followView={followView}
+        followerView={followerView}
       />
-      {followVisible && <FollowList followList={followList} />}
-      {followerVisible && <FollowerList followerList={followerList} />}
+      {followView && (
+        <FollowList followList={followList} onFollowHandler={followHandler} />
+      )}
+      {followerView && (
+        <FollowerList followerList={followerList} onFollowHandler={followHandler} />
+      )}
     </LayoutPage>
   );
 };

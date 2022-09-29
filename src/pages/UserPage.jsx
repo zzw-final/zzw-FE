@@ -35,7 +35,7 @@ function UserPage() {
       <Button style={{ margin: `0.7rem` }} name="MyToggleBtn" myVisible={true}>
         {anotherUserData?.nickname} 님의 레시피 🍳
       </Button>
-      <MyRecipes myRecipes={userRecipe} />
+      <MyRecipes myRecipes={userRecipe} userNickname={anotherUserData?.nickname} />
     </LayoutPage>
   );
 }
