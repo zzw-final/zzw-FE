@@ -9,14 +9,11 @@ function GoogleRedirect() {
   const navigate = useNavigate();
   const code = new URL(window.location.href).searchParams.get("code");
 
-  console.log("구글코드", code);
-
   useEffect(() => {
     async function googleLogin() {
       const res = await axios.get(
         process.env.REACT_APP_API + `/api/member/login/google?code=${code}`
       );
-      console.log(res);
 
       if (res.data.success && res.data.error === null) {
         const newUser = res.data.data.isFirst;

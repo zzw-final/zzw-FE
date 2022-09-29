@@ -4,21 +4,29 @@ import LayoutPage from "../components/common/LayoutPage";
 import FollowerList from "../components/followpage/FollowerList";
 import FollowLayout from "../components/followpage/FollowLayout";
 import FollowList from "../components/followpage/FollowList";
-import { useLocation } from "react-router-dom";
+import { useLocation, useParams } from "react-router-dom";
 
 const FollowPage = () => {
   const [followList, setFollowList] = useState();
   const [followerList, setFollowerList] = useState();
   const location = useLocation();
   const isClick = location.state.isClick;
+  const nickname = location.state.nickname;
   const [click, setClick] = useState(isClick);
   const [followView, setFollowView] = useState(true);
   const [followerView, setFollowerView] = useState(false);
+  const { id } = useParams();
 
   async function fetchFollow() {
-    const res = await instance.get(`/api/auth/mypage/follow`);
-    const follow = res.data.data;
-    setFollowList(follow);
+    if (!id) {
+      const res = await instance.get(`/api/auth/mypage/follow`);
+      const follow = res.data.data;
+      setFollowList(follow);
+    } else {
+      const res = await instance.get(`/api/mypage/${id}/follow`);
+      const follow = res.data.data;
+      setFollowList(follow);
+    }
   }
 
   useEffect(() => {
@@ -27,9 +35,15 @@ const FollowPage = () => {
 
   const fetchFollower = async () => {
     if (followerList === undefined) {
-      const res = await instance.get(`/api/auth/mypage/follower`);
-      const follower = res.data.data;
-      setFollowerList(follower);
+      if (!id) {
+        const res = await instance.get(`/api/auth/mypage/follower`);
+        const follower = res.data.data;
+        setFollowerList(follower);
+      } else {
+        const res = await instance.get(`/api/mypage/${id}/follower`);
+        const follower = res.data.data;
+        setFollowerList(follower);
+      }
     }
     setFollowView(false);
     setFollowerView(true);
@@ -56,6 +70,7 @@ const FollowPage = () => {
         onToggleHandler={toggleHandler}
         followView={followView}
         followerView={followerView}
+        nickname={nickname}
       />
       {followView && (
         <FollowList followList={followList} onFollowHandler={followHandler} />

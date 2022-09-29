@@ -40,6 +40,7 @@ function App() {
             <Route path="/write" element={<WritePage />} />
             <Route path="/detail/:id" element={<DetailPage />} />
             <Route path="/follow" element={<FollowPage />} />
+            <Route path="/follow/:id" element={<FollowPage />} />
             <Route path="/authkakao" element={<KakaoRedirect />} />
             <Route path="/authgoogle" element={<GoogleRedirect />} />
             <Route path="/editpage/:id" element={<EditPage />} />
