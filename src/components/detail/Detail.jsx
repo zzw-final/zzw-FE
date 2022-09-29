@@ -33,13 +33,6 @@ function Detail({
   return (
     <>
       <DetailContainer>
-        <button
-          onClick={() => {
-            navigate("/");
-          }}
-        >
-          임시🏠
-        </button>
         <ButtonDiv>
           {loginNickname === postDetail?.nickname ? (
             <>

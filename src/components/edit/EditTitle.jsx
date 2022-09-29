@@ -64,6 +64,17 @@ function EditTitle({ postDetail, editForm }) {
               editForm("foodName", e.target.value);
             }}
           />
+          <TimeSelect
+            placeholder="요리 시간을 선택해주세요"
+            onChange={(e) => {
+              editForm("time", e.target.value);
+            }}
+          >
+            <option value="0">5분</option>
+            <option value="1">10분</option>
+            <option value="2">15분</option>
+            <option value="3">30분 이상</option>
+          </TimeSelect>
         </div>
         <TagBox>
           {tagList &&

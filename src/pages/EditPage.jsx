@@ -19,6 +19,7 @@ function EditPage() {
   const [editedFoodname, setEditedFoodname] = useState();
   const [editedContent, setEditedContent] = useState();
   const [editedImageUrl, setEditedImageUrl] = useState();
+  const [editTime, setEditTime] = useState();
 
   useEffect(() => {
     const getData = async () => {
@@ -67,6 +68,7 @@ function EditPage() {
       ingredient: editedIngredient,
       content: editedContent || postDetail?.content,
       imageUrl: editedImageUrl || postDetail?.foodImg,
+      time: editTime || postDetail.time,
     };
     console.log("보내는 수정데이터 확인", data);
     await instance.put(`/api/auth/post/${post_Id}`, data);
@@ -90,6 +92,9 @@ function EditPage() {
         break;
       case "imageUrl":
         setEditedImageUrl(data);
+        break;
+      case "time":
+        setEditTime(data);
         break;
       default:
         break;
