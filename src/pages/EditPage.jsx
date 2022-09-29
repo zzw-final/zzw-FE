@@ -29,6 +29,9 @@ function EditPage() {
     };
     getData();
   }, [post_Id]);
+  }, []);
+
+ 
 
   const [imageURL, setImageURL] = useState();
 
@@ -104,6 +107,7 @@ function EditPage() {
   return (
     <LayoutPage>
       <EditHeader onSubmit={onSubmitHandler} />
+
       {postDetail && <EditTitle editForm={editForm} postDetail={postDetail} />}
       {postDetail && (
         <EditContent

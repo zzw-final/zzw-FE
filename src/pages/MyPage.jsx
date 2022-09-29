@@ -10,6 +10,7 @@ const MyPage = () => {
   const [userData, setUserData] = useState();
   const [myRecipes, setMyRecipes] = useState();
   const [likeRecipes, setLikeRecipes] = useState();
+  const [heart, setHeart] = useState(0);
   const [myVisible, setMyVisible] = useState(true);
   const [likeVisible, setLikeVisible] = useState(false);
 
@@ -32,10 +33,11 @@ const MyPage = () => {
   }, []);
 
   const fetchLikeRecipe = async () => {
-    if (likeRecipes === undefined) {
+    if (likeRecipes === undefined || heart > 0) {
       const res = await instance.get(`/api/auth/mypage/likeposts`);
       const LikeRecipes = res.data.data;
       setLikeRecipes(LikeRecipes);
+      setHeart(0);
     }
     setMyVisible(false);
     setLikeVisible(true);
@@ -44,6 +46,11 @@ const MyPage = () => {
   const recipeHandler = () => {
     setMyVisible(true);
     setLikeVisible(false);
+  };
+
+  const likeToggle = async (postId) => {
+    setHeart((prev) => prev + 1);
+    return await instance.post(`/api/auth/post/${postId}`);
   };
 
   return (
@@ -57,7 +64,11 @@ const MyPage = () => {
       />
       {myVisible && <MyRecipes myRecipes={myRecipes} />}
       {likeVisible && (
-        <LikeRecipes likeRecipes={likeRecipes} setLikeRecipes={setLikeRecipes} />
+        <LikeRecipes
+          likeRecipes={likeRecipes}
+          setLikeRecipes={setLikeRecipes}
+          onLikeHandler={likeToggle}
+        />
       )}
     </LayoutPage>
   );
