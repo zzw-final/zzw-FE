@@ -1,5 +1,6 @@
 import { useMediaQuery } from "react-responsive";
 import { BrowserRouter, Route, Routes } from "react-router-dom";
+import { QueryClientProvider, QueryClient } from "react-query";
 import {
   MainPage,
   DetailPage,
@@ -25,9 +26,11 @@ const Mobile = ({ children }) => {
   return isMobile ? children : null;
 };
 
+const queryClient = new QueryClient();
+
 function App() {
   return (
-    <>
+    <QueryClientProvider client={queryClient}>
       <BrowserRouter>
         <Desktop>웹사이트를 이용하려면 화면을 줄여 주세요</Desktop>
         <Mobile>
@@ -48,7 +51,7 @@ function App() {
           </Routes>
         </Mobile>
       </BrowserRouter>
-    </>
+    </QueryClientProvider>
   );
 }
 

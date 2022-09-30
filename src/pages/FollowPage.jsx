@@ -1,10 +1,11 @@
 import React, { useState, useEffect } from "react";
+import { useLocation, useParams } from "react-router-dom";
+import { useMutation } from "react-query";
 import { instance } from "../api/request";
 import LayoutPage from "../components/common/LayoutPage";
 import FollowerList from "../components/followpage/FollowerList";
 import FollowLayout from "../components/followpage/FollowLayout";
 import FollowList from "../components/followpage/FollowList";
-import { useLocation, useParams } from "react-router-dom";
 
 const FollowPage = () => {
   const [followList, setFollowList] = useState();
@@ -17,21 +18,21 @@ const FollowPage = () => {
   const [followerView, setFollowerView] = useState(false);
   const { id } = useParams();
 
-  async function fetchFollow() {
-    if (!id) {
-      const res = await instance.get(`/api/auth/mypage/follow`);
-      const follow = res.data.data;
-      setFollowList(follow);
-    } else {
-      const res = await instance.get(`/api/mypage/${id}/follow`);
-      const follow = res.data.data;
-      setFollowList(follow);
-    }
-  }
-
   useEffect(() => {
+    console.log("데이터 페칭 테스트");
+    async function fetchFollow() {
+      if (!id) {
+        const res = await instance.get(`/api/auth/mypage/follow`);
+        const follow = res.data.data;
+        setFollowList(follow);
+      } else {
+        const res = await instance.get(`/api/mypage/${id}/follow`);
+        const follow = res.data.data;
+        setFollowList(follow);
+      }
+    }
     fetchFollow();
-  }, []);
+  }, [id]);
 
   const fetchFollower = async () => {
     if (followerList === undefined) {
