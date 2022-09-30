@@ -8,6 +8,7 @@ function Follow({ follow, onFollowHandler }) {
   const { profile, nickname, grade, isFollow, userId } = follow;
   const [greyButton, setGreyButton] = useState(isFollow);
   const navigate = useNavigate();
+  const cookies = getCookie("loginUserId");
 
   const followHandler = async () => {
     setGreyButton((prev) => !prev);
@@ -15,7 +16,8 @@ function Follow({ follow, onFollowHandler }) {
   };
 
   const onClickGoToProfile = () => {
-    navigate(`/mypage/${userId}`);
+    if (+cookies === userId) navigate(`/mypage`);
+    else navigate(`/mypage/${userId}`);
   };
 
   return (

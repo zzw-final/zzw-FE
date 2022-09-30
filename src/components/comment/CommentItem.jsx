@@ -51,9 +51,8 @@ const CommentItem = ({ commentItem, remove, update }) => {
   const updateCommentRef = useInputRef("", updateComment);
 
   const userPage = () => {
-    if (+cookies.loginUserId === userId) {
-      navigate(`/mypage`);
-    } else navigate(`/mypage/${userId}`);
+    if (+cookies.loginUserId === userId) navigate(`/mypage`);
+    else navigate(`/mypage/${userId}`);
   };
 
   return (
