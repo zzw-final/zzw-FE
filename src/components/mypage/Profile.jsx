@@ -25,17 +25,21 @@ function Profile({ userData }) {
 
   const followClick = () => {
     if (!id) {
-      navigate(`/follow`, { state: { isClick: false } });
+      navigate(`/follow`, { state: { isClick: false, follow: true, follower: false } });
     } else {
-      navigate(`/follow/${id}`, { state: { isClick: false, nickname } });
+      navigate(`/follow/${id}`, {
+        state: { isClick: false, follow: true, follower: false, nickname },
+      });
     }
   };
 
   const followerClick = () => {
     if (!id) {
-      navigate(`/follow`, { state: { isClick: true } });
+      navigate(`/follow`, { state: { isClick: true, follow: false, follower: true } });
     } else {
-      navigate(`/follow/${id}`, { state: { isClick: true, nickname } });
+      navigate(`/follow/${id}`, {
+        state: { isClick: true, follow: false, follower: true, nickname },
+      });
     }
   };
 
