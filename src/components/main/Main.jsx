@@ -52,7 +52,7 @@ const Main = ({
             height="200px"
           />
         </BestRecipeContainer>
-        {followPost.length === 0 ? (
+        {followPost && followPost.length === 0 ? (
           <>
             <Title>NEW 레시피 🥦</Title>
             <NewRecipeScrollContainer>

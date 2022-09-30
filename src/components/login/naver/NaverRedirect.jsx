@@ -29,7 +29,7 @@ function NaverRedirect() {
           const PROFILE = res.data.data.profile;
           const USERID = res.data.data.userId;
           const GRADE = res.data.data.grade;
-          setCookie("accessToken", ACCESS_TOKEN);
+          setCookie("accessToken", `Bearer ` + ACCESS_TOKEN);
           setCookie("refreshToken", REFRESH_TOKEN);
           setCookie("loginEmail", EMAIL);
           setCookie("loginNickname", NICKNAME);
