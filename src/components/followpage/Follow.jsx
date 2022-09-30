@@ -2,11 +2,13 @@ import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
 import Button from "../UI/Button";
+import { getCookie } from "../../util/cookie";
 
 function Follow({ follow, onFollowHandler }) {
   const { profile, nickname, grade, isFollow, userId } = follow;
   const [greyButton, setGreyButton] = useState(isFollow);
   const navigate = useNavigate();
+  const cookies = getCookie("loginUserId");
 
   const followHandler = async () => {
     setGreyButton((prev) => !prev);
@@ -14,7 +16,8 @@ function Follow({ follow, onFollowHandler }) {
   };
 
   const onClickGoToProfile = () => {
-    navigate(`/mypage/${userId}`);
+    if (+cookies === userId) navigate(`/mypage`);
+    else navigate(`/mypage/${userId}`);
   };
 
   return (
@@ -26,13 +29,15 @@ function Follow({ follow, onFollowHandler }) {
           <Grade>{grade}</Grade>
         </div>
       </LeftBox>
-      <RightBox>
-        <div>
-          <Button onClick={followHandler} name="FollowBtn" isFollow={greyButton}>
-            {greyButton ? "팔로잉" : "팔로우"}
-          </Button>
-        </div>
-      </RightBox>
+      {userId !== +getCookie("loginUserId") && (
+        <RightBox>
+          <div>
+            <Button onClick={followHandler} name="FollowBtn" isFollow={greyButton}>
+              {greyButton ? "팔로잉" : "팔로우"}
+            </Button>
+          </div>
+        </RightBox>
+      )}
     </Container>
   );
 }
