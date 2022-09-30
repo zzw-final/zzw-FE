@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { useLocation, useParams } from "react-router-dom";
-import { useMutation } from "react-query";
+import { useQuery, useMutation } from "react-query";
 import { instance } from "../api/request";
 import LayoutPage from "../components/common/LayoutPage";
 import FollowerList from "../components/followpage/FollowerList";
@@ -10,13 +10,25 @@ import FollowList from "../components/followpage/FollowList";
 const FollowPage = () => {
   const [followList, setFollowList] = useState();
   const [followerList, setFollowerList] = useState();
+  const { id } = useParams();
   const location = useLocation();
   const isClick = location.state.isClick;
   const nickname = location.state.nickname;
   const [click, setClick] = useState(isClick);
   const [followView, setFollowView] = useState(true);
   const [followerView, setFollowerView] = useState(false);
-  const { id } = useParams();
+
+  const followTest = async () => {
+    console.log("몇번이나 찍히고있나 :>> ");
+    if (!id) {
+      return await instance.get(`/api/auth/mypage/follow`);
+    } else {
+      return await instance.get(`/api/mypage/${id}/follow`);
+    }
+  };
+
+  const { data } = useQuery("follow", followTest);
+  console.log("data", data);
 
   useEffect(() => {
     console.log("데이터 페칭 테스트");
