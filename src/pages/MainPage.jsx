@@ -11,11 +11,7 @@ const MainPage = () => {
   const [bestPost, setBestPost] = useState();
   const [recentPost, setRecentPost] = useState();
   const [tagList, setTagList] = useState();
-  const [followList, setFollowList] = useState();
-  const [searchResultList, setSearchResultList] = useState([]);
-  // const [likeToggleBtn, setLikeToggleBtn] = useState();
-  // const [cookies] = useCookies(["loginNickname"]);
-  // const loginNickname = cookies.loginNickname;
+  const [followPost, setFollowPost] = useState();
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -25,7 +21,7 @@ const MainPage = () => {
         setBestPost(result.data.data.bestPost);
         setRecentPost(result.data.data.recentPost);
         setTagList(result.data.data.tagList);
-        setFollowList(result.data.data.followPost);
+        setFollowPost(result.data.data.followPost);
       }
     }
     fetchData();
@@ -36,19 +32,20 @@ const MainPage = () => {
   };
 
   const search = async (searchOption, sendData) => {
+    // console.log("main search :>> ", searchOption, sendData);
     navigate(`/search?${searchOption}=${sendData}`);
   };
 
   return (
     <LayoutPage background={"background.jpeg"}>
       <Logo />
-      <SearchForm search={search} />
+      <SearchForm mainSearch={search} />
       <MainContainer>
         <Main
           bestPost={bestPost}
           recentPost={recentPost}
           tagList={tagList}
-          followList={followList}
+          followPost={followPost}
           likeToggle={likeToggle}
         />
       </MainContainer>
@@ -58,7 +55,6 @@ const MainPage = () => {
 
 const MainContainer = styled.div`
   display: block;
-  /* display: none; */
 `;
 
 export default MainPage;

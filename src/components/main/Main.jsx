@@ -54,8 +54,9 @@ const Main = ({ bestPost, recentPost, tagList, followPost, likeToggle }) => {
               <List
                 list={followPost}
                 likeToggle={likeToggle}
-                width="160px"
-                height="200px"
+                display="grid"
+                height="210px"
+                margin="0 0.5rem 0 0.5rem"
               />
             </FollowContainer>
           </>
