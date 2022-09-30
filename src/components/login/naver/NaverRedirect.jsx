@@ -3,15 +3,16 @@ import { useEffect } from "react";
 import { useCookies } from "react-cookie";
 import { useNavigate } from "react-router-dom";
 
-function GoogleRedirect() {
+function NaverRedirect() {
   const [cookies, setCookie, removeCookies] = useCookies();
   const navigate = useNavigate();
   const code = new URL(window.location.href).searchParams.get("code");
 
   useEffect(() => {
-    async function googleLogin() {
+    async function NaverLogin() {
       const res = await axios.get(
-        process.env.REACT_APP_API + `/api/member/login/google?code=${code}`
+        process.env.REACT_APP_API +
+          `/api/member/login/naver?code=${code}&state=${process.env.NAVER_STATE}`
       );
 
       if (res.data.success && res.data.error === null) {
@@ -19,7 +20,7 @@ function GoogleRedirect() {
         if (newUser === true) {
           const EMAIL = res.data.data.email;
           setCookie("loginEmail", EMAIL);
-          navigate("/join");
+          navigate("/join", { replace: true });
         } else {
           const ACCESS_TOKEN = res.headers["authorization"];
           const REFRESH_TOKEN = res.headers["refresh-token"];
@@ -40,7 +41,7 @@ function GoogleRedirect() {
       }
     }
     if (cookies.loginEmail === undefined) {
-      googleLogin();
+      NaverLogin();
     } else {
       removeCookies("loginEmail");
       navigate("/", { replace: true });
@@ -50,4 +51,4 @@ function GoogleRedirect() {
   return;
 }
 
-export default GoogleRedirect;
+export default NaverRedirect;

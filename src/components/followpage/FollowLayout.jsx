@@ -2,16 +2,24 @@ import styled from "styled-components";
 import React from "react";
 import Button from "../UI/Button";
 import { getCookie } from "../../util/cookie";
+import { useParams } from "react-router-dom";
 
 // TODO: 닉네임 검색 기능
 
-function FollowLayout({ onFetchFollower, onToggleHandler, followView, followerView }) {
-  const nickname = getCookie("loginNickname");
+function FollowLayout({
+  onFetchFollower,
+  onToggleHandler,
+  followView,
+  followerView,
+  nickname,
+}) {
+  const myName = getCookie("loginNickname");
+  const { id } = useParams();
 
   return (
     <>
       <Container>
-        <Nickname>{nickname}</Nickname>
+        <Nickname>{id ? nickname : myName}</Nickname>
       </Container>
       <Container>
         <Button name="followPageBtn" onClick={onToggleHandler} view={followView}>

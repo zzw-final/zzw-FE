@@ -2,6 +2,7 @@ import React from "react";
 import styled from "styled-components";
 import GoogleLogin from "../components/login/google/GoogleLogin";
 import KakaoLogin from "../components/login/kakao/KakaoLogin";
+import NaverLogin from "../components/login/naver/NaverLogin";
 
 const LoginPage = () => {
   return (
@@ -19,6 +20,7 @@ const LoginPage = () => {
         <Line>Login with</Line>
         <LoginSelect>
           <KakaoLogin />
+          <NaverLogin />
           <GoogleLogin />
         </LoginSelect>
       </LoginBox>
@@ -85,7 +87,7 @@ const Line = styled.div`
 const LoginSelect = styled.div`
   display: flex;
   justify-content: space-evenly;
-  margin: 4rem;
+  margin: 3rem;
 `;
 
 export default LoginPage;

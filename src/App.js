@@ -1,5 +1,6 @@
 import { useMediaQuery } from "react-responsive";
 import { BrowserRouter, Route, Routes } from "react-router-dom";
+import { QueryClientProvider, QueryClient } from "react-query";
 import {
   MainPage,
   DetailPage,
@@ -14,6 +15,7 @@ import KakaoRedirect from "./components/login/kakao/KakaoRedirect";
 import GoogleRedirect from "./components/login/google/GoogleRedirect";
 import EditPage from "./pages/EditPage";
 import SearchPage from "./pages/SearchPage";
+import NaverRedirect from "./components/login/naver/NaverRedirect";
 
 const Desktop = ({ children }) => {
   const isDesktop = useMediaQuery({ minWidth: 768 });
@@ -25,9 +27,11 @@ const Mobile = ({ children }) => {
   return isMobile ? children : null;
 };
 
+const queryClient = new QueryClient();
+
 function App() {
   return (
-    <>
+    <QueryClientProvider client={queryClient}>
       <BrowserRouter>
         <Desktop>웹사이트를 이용하려면 화면을 줄여 주세요</Desktop>
         <Mobile>
@@ -40,14 +44,16 @@ function App() {
             <Route path="/write" element={<WritePage />} />
             <Route path="/detail/:id" element={<DetailPage />} />
             <Route path="/follow" element={<FollowPage />} />
+            <Route path="/follow/:id" element={<FollowPage />} />
             <Route path="/authkakao" element={<KakaoRedirect />} />
             <Route path="/authgoogle" element={<GoogleRedirect />} />
+            <Route path="/authnaver" element={<NaverRedirect />} />
             <Route path="/editpage/:id" element={<EditPage />} />
             <Route path="/search" element={<SearchPage />} />
           </Routes>
         </Mobile>
       </BrowserRouter>
-    </>
+    </QueryClientProvider>
   );
 }
 

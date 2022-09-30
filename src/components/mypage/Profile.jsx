@@ -23,6 +23,22 @@ function Profile({ userData }) {
     return res;
   };
 
+  const followClick = () => {
+    if (!id) {
+      navigate(`/follow`, { state: { isClick: false } });
+    } else {
+      navigate(`/follow/${id}`, { state: { isClick: false, nickname } });
+    }
+  };
+
+  const followerClick = () => {
+    if (!id) {
+      navigate(`/follow`, { state: { isClick: true } });
+    } else {
+      navigate(`/follow/${id}`, { state: { isClick: true, nickname } });
+    }
+  };
+
   return (
     <Container>
       <div>
@@ -34,19 +50,11 @@ function Profile({ userData }) {
               <Grade>{grade}</Grade>
             </NicknameBox>
             <FollowBox>
-              <Follow
-                onClick={() => {
-                  navigate("/follow", { state: { isClick: false } });
-                }}
-              >
+              <Follow onClick={followClick}>
                 <p>팔로우</p>
                 <Num>{follow}</Num>
               </Follow>
-              <Follow
-                onClick={() => {
-                  navigate("/follow", { state: { isClick: true } });
-                }}
-              >
+              <Follow onClick={followerClick}>
                 <p>팔로워</p>
                 <Num>{followerNum}</Num>
               </Follow>
