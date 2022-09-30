@@ -46,6 +46,7 @@ const SearchForm = ({ mainSearch, searchPageSearch }) => {
     }
     if (selectOptionRef === "tag") {
       makeTagList(searchText);
+      console.log("검색페이지에서 tagList 안", tagList);
       inputRef.current.value = "";
       tagSearchHandler(selectOptionRef, searchText, tagList);
       return;
@@ -56,7 +57,6 @@ const SearchForm = ({ mainSearch, searchPageSearch }) => {
   };
 
   const tagSearchHandler = (selectOptionRef, searchText, tagList) => {
-    console.log("검색페이지에서 tagList", tagList);
     if (window.location.pathname === "/") {
       if (tagList !== [] && searchText === "") {
         mainSearch(selectOptionRef, tagList.toString());
@@ -66,28 +66,30 @@ const SearchForm = ({ mainSearch, searchPageSearch }) => {
     searchPageSearch(selectOptionRef, tagList.toString());
   };
 
-  const inputRef = useInputRef("", searchHandler);
+  const ss = () => {
+    searchHandler();
+    console.log("검색페이지에서 tagList ss > ", tagList);
+  };
 
-  const makeTagList = useCallback(
-    (addedTag) => {
-      if (addedTag === "") {
-        return;
-      }
-      if (!tagList.includes(addedTag)) {
-        setTagList((prevState) => {
-          return [...prevState, addedTag];
-        });
-      }
-    },
-    [tagList]
-  );
+  const inputRef = useInputRef("", ss);
+
+  const makeTagList = (addedTag) => {
+    if (addedTag === "") {
+      return;
+    }
+    if (!tagList.includes(addedTag)) {
+      setTagList((prevState) => {
+        return [...prevState, addedTag];
+      });
+    }
+  };
 
   useEffect(() => {
     if (searchedTag !== null) {
       setSelectOption("tag");
       inputRef.current.value = searchedTag;
       searchedTag.split(",").map((item) => {
-        makeTagList(item);
+        return makeTagList(item);
       });
       inputRef.current.value = "";
     } else if (searchedTitle !== null) {
