@@ -34,9 +34,7 @@ const Wrapper = styled.div`
   height: auto;
   min-height: 100vh;
   padding-bottom: 56px;
-  background-image: url(${({ background }) => background});
-  background-repeat: no-repeat;
-  background-size: cover;
+  background-color: var(${({ background }) => background});
 `;
 
 export default LayoutPage;

@@ -8,10 +8,11 @@ import SearchForm from "../components/main/SearchForm";
 import { useNavigate } from "react-router-dom";
 
 const MainPage = () => {
-  const [bestPost, setBestPost] = useState();
-  const [recentPost, setRecentPost] = useState();
-  const [tagList, setTagList] = useState();
-  const [followPost, setFollowPost] = useState();
+  const [bestPost, setBestPost] = useState([]);
+  const [recentPost, setRecentPost] = useState([]);
+  const [tagList, setTagList] = useState([]);
+  const [followPost, setFollowPost] = useState([]);
+
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -32,12 +33,11 @@ const MainPage = () => {
   };
 
   const search = async (searchOption, sendData) => {
-    // console.log("main search :>> ", searchOption, sendData);
     navigate(`/search?${searchOption}=${sendData}`);
   };
 
   return (
-    <LayoutPage background={"background.jpeg"}>
+    <LayoutPage background={"--color-orange"}>
       <Logo />
       <SearchForm mainSearch={search} />
       <MainContainer>
@@ -47,6 +47,7 @@ const MainPage = () => {
           tagList={tagList}
           followPost={followPost}
           likeToggle={likeToggle}
+          search={search}
         />
       </MainContainer>
     </LayoutPage>

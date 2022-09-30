@@ -9,13 +9,12 @@ import styled from "styled-components";
 
 const SearchPage = () => {
   const [searchResultList, setSearchResultList] = useState([]);
+  const navigate = useNavigate();
 
   const [searchParams] = useSearchParams();
   const searchedTitle = searchParams.get("title");
   const searchedTag = searchParams.get("tag");
   const searchedNickname = searchParams.get("nickname");
-
-  const navigate = useNavigate();
 
   const search = async (searchOption, sendData) => {
     console.log("들어와???");
@@ -40,8 +39,10 @@ const SearchPage = () => {
   };
 
   return (
-    <LayoutPage background={"background.jpeg"}>
-      <SearchForm searchPageSearch={search} />
+    <LayoutPage>
+      <SearchBox>
+        <SearchForm searchPageSearch={search} />
+      </SearchBox>
       <SearchListBox>
         <List
           list={searchResultList}
@@ -60,6 +61,10 @@ const SearchListBox = styled.section`
   padding: 1rem 0;
   margin: 1rem 0;
   height: 100%;
+`;
+const SearchBox = styled.div`
+  background-color: var(--color-orange);
+  padding: 1rem 0;
 `;
 
 export default SearchPage;

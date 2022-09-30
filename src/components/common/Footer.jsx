@@ -29,6 +29,10 @@ const Footer = ({ topTenTagList, tagAllList }) => {
     setToggleTagList(!toggleTagList);
   };
 
+  const onClickTagHandler = (tagName) => {
+    navigate(`/search?tag=${tagName}`);
+  };
+
   return (
     <>
       <FooterContainer>
@@ -69,14 +73,28 @@ const Footer = ({ topTenTagList, tagAllList }) => {
         <TagBox>
           {topTenTagList &&
             topTenTagList?.map((tag, idx) => (
-              <Tag tagName={tag} key={idx} margin="5px" />
+              <Tag
+                tagName={tag}
+                key={idx}
+                margin="5px"
+                onClickHandler={() => {
+                  onClickTagHandler(tag);
+                }}
+              />
             ))}
         </TagBox>
         <TagTitle>아래 태그도 검색해보세요</TagTitle>
         <TagBox>
           {tagAllList &&
             tagAllList?.map((tag, idx) => (
-              <Tag tagName={tag} key={idx} margin="5px" />
+              <Tag
+                tagName={tag}
+                key={idx}
+                margin="5px"
+                onClickHandler={() => {
+                  onClickTagHandler(tag);
+                }}
+              />
             ))}
         </TagBox>
       </TagList>

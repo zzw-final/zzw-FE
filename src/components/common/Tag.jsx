@@ -1,9 +1,20 @@
 import React from "react";
 import styled from "styled-components";
 
-const Tag = ({ tagName, isFoodName, isDelBtn, delBtnClick, ...props }) => {
+const Tag = ({
+  tagName,
+  isFoodName,
+  onClickHandler,
+  isDelBtn,
+  delBtnClick,
+  ...props
+}) => {
   return (
-    <TagContainer {...props} color={randomColor(isFoodName)}>
+    <TagContainer
+      {...props}
+      color={randomColor(isFoodName)}
+      onClick={onClickHandler}
+    >
       {tagName} {isDelBtn ? <DelBtn onClick={delBtnClick}>X</DelBtn> : ""}
     </TagContainer>
   );

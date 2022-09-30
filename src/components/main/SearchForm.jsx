@@ -8,8 +8,7 @@ import { useSearchParams } from "react-router-dom";
 
 const SearchForm = ({ mainSearch, searchPageSearch }) => {
   const [cookies] = useCookies(["loginNickname"]);
-  const [selectOption, setSelectOption] = useState("");
-  const [prevSelectOption, setPrevSelectOption] = useState("");
+  const [selectOption, setSelectOption] = useState("tag");
   const [tagList, setTagList] = useState([]);
 
   const loginNickname = cookies.loginNickname || `반가운 손`;
@@ -28,6 +27,15 @@ const SearchForm = ({ mainSearch, searchPageSearch }) => {
     { value: "title", label: "제목" },
     { value: "nickname", label: "닉네임" },
   ];
+
+  const [searchParams] = useSearchParams();
+  const searchedTitle = searchParams.get("title");
+  const searchedTag = searchParams.get("tag");
+  const searchedNickname = searchParams.get("nickname");
+
+  useEffect(() => {
+    inputRef.current.value = searchedTitle;
+  }, []);
 
   const searchHandler = () => {
     const searchText = inputRef?.current.value;
@@ -59,17 +67,6 @@ const SearchForm = ({ mainSearch, searchPageSearch }) => {
   };
 
   const inputRef = useInputRef("", searchHandler);
-  // const inputRef = useRef("");
-
-  // useEffect(() => {
-  //   inputRef.current.addEventListener("keypress", logKey);
-  //   function logKey(event) {
-  //     if (event.code === "Enter") {
-  //       searchHandler();
-  //       inputRef.current.value = "";
-  //     }
-  //   }
-  // }, []);
 
   const makeTagList = useCallback(
     (addedTag) => {
@@ -84,6 +81,23 @@ const SearchForm = ({ mainSearch, searchPageSearch }) => {
     },
     [tagList]
   );
+
+  useEffect(() => {
+    if (searchedTag !== null) {
+      setSelectOption("tag");
+      inputRef.current.value = searchedTag;
+      searchedTag.split(",").map((item) => {
+        makeTagList(item);
+      });
+      inputRef.current.value = "";
+    } else if (searchedTitle !== null) {
+      setSelectOption("title");
+      inputRef.current.value = searchedTitle;
+    } else if (searchedNickname !== null) {
+      setSelectOption("nickname");
+      inputRef.current.value = searchedNickname;
+    }
+  }, [inputRef, searchedTag, searchedTitle, searchedNickname]);
 
   const deleteSelectedTag = (deleteTagName) => {
     setTagList(tagList.filter((tag) => tag !== deleteTagName));
