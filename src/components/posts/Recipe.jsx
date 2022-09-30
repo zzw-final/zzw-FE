@@ -2,7 +2,6 @@ import React, { useState } from "react";
 import styled from "styled-components";
 import Tag from "../common/Tag";
 import Card from "../UI/Card";
-import { likeRecipe } from "../../api/request";
 import Like from "../common/Like";
 import { useNavigate } from "react-router-dom";
 
@@ -24,7 +23,6 @@ function Recipe({ post, onLikeHandler }) {
   const like = async () => {
     const resp = await onLikeHandler(postId);
     const isVisible = resp.data.data;
-    console.log(resp);
     if (isVisible) {
       setLikeToggleBtn(!likeToggleBtn);
     }
