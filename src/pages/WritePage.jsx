@@ -1,32 +1,33 @@
-import React, { useState } from "react";
-import styled from "styled-components";
-import Write from "../components/write/Write";
-import { instance } from "../api/request";
+import React from "react";
+import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
+import styled from "styled-components";
+import { instance, imgInstance } from "../api/request";
+import Footer from "../components/common/Footer";
+import LayoutPage from "../components/common/LayoutPage";
+import WriteHeader from "../components/write/WriteHeader";
+import WriteTitle from "../components/write/WriteTitle";
 
-const WritePage = () => {
+function WritePage() {
   const [title, setTitle] = useState("");
   const [foodname, setFoodName] = useState("");
   const [ingredient, setIngredient] = useState([]);
-  const [file, setFile] = useState([]);
   const [time, setTime] = useState("");
-  //이미지랑 같이 보낼려면 ! -> html을 고대로 넘겨주시며누되시거든요?
-  // 그다음에 어차피 에디터로띄워줄거잖아요? 수정할때에는?
-  // 그리고 그냥 상세보기햇을때에는 그냥 .... 어쩌구
-  // 그런데 html을 서버로 그넝 넘기면 보안이슈가잇습니다 그래서 땡땡처리를하고넘겨주는디 직접찾아보시면좋겟
   const [content, setContent] = useState("");
+  const [imageURL, setImageURL] = useState([]);
   const navigate = useNavigate();
 
+  //post
   const onSubmitHandler = async (e) => {
     try {
       e.preventDefault();
       const data = {
         title: title,
         foodName: foodname,
+        imageUrl: imageURL,
         ingredient: ingredient,
-        time: Number(time),
+        time: time,
         content: content,
-        imageUrl: file,
       };
       console.log(data);
 
@@ -37,19 +38,48 @@ const WritePage = () => {
       console.log("에러..", error);
     }
   };
+  //img URL가져오는 요청
+
+  const imgUpload = (e) => {
+    e.preventDefault();
+    if (e.target.files) {
+      const file = e.target.files[0];
+      console.log("이미지 파일 받기", file);
+      const formdata = new FormData();
+      formdata.append("file", file);
+
+      imgInstance
+        .post("/api/post/image", formdata, {
+          headers: { "Content-Type": "multipart/form-data" },
+        })
+        .then((res) => {
+          console.log("이미지 업로드 완료됨", res.data);
+          console.log("이미지 URL확인", res.data.data.imageUrl);
+          setImageURL(res.data.data.imageUrl);
+        })
+        .catch((error) => {
+          console.log(error);
+        });
+    }
+  };
+
   return (
-    <div>
-      <Write
+    <LayoutPage>
+      <WriteHeader
+        styled={{ position: "fixed" }}
         onSubmitHandler={onSubmitHandler}
+      />
+      <WriteTitle
         setTitle={setTitle}
         setFoodName={setFoodName}
         setIngredient={setIngredient}
         setTime={setTime}
-        setContent={setContent}
-        setFile={setFile}
+        setImageURL={setImageURL}
+        imageURL={imageURL}
+        imgUpload={imgUpload}
       />
-    </div>
+    </LayoutPage>
   );
-};
+}
 
 export default WritePage;

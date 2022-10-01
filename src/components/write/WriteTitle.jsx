@@ -1,7 +1,15 @@
 import React, { useEffect, useState } from "react";
 import styled from "styled-components";
 
-const WriteTitle = ({ setTitle, setFoodName, setIngredient, setTime }) => {
+const WriteTitle = ({
+  setTitle,
+  setFoodName,
+  setIngredient,
+  setTime,
+  setImageURL,
+  imageURL,
+  imgUpload,
+}) => {
   // console.log(setTitle);
 
   const [tagItem, setTagItem] = useState("");
@@ -10,7 +18,7 @@ const WriteTitle = ({ setTitle, setFoodName, setIngredient, setTime }) => {
   const submitTag = (prevState) => {
     if (!tagList.includes(tagItem)) {
       setTagList((prevState) => {
-        return [...prevState, { ingredientName: tagItem }];
+        return [...prevState, tagItem];
       });
     }
     setTagItem("");
@@ -34,32 +42,9 @@ const WriteTitle = ({ setTitle, setFoodName, setIngredient, setTime }) => {
   }, [tagList]);
 
   return (
-    <Stdiv>
-      <WriteTitleinput
-        placeholder="제목을 입력해주세요"
-        onChange={(e) => {
-          setTitle(e.target.value);
-        }}
-      />
-      <div styled={{ margin: "10px", display: "flex" }}>
-        <FoodnameTag
-          placeholder="요리이름 입력해주세요"
-          onChange={(e) => {
-            setFoodName(e.target.value);
-          }}
-        />
-        <TimeSelect
-          placeholder="요리 시간을 선택해주세요"
-          onChange={(e) => {
-            setTime(e.target.value);
-          }}
-        >
-          <option value="0">5분</option>
-          <option value="1">10분</option>
-          <option value="2">15분</option>
-          <option value="3">30분 이상</option>
-        </TimeSelect>
-      </div>
+    <WriteTitleContainer>
+      <Title placeholder="제목을 입력해주세요" />
+      <FoodNameInput placeholder="요리이름 입력해주세요" />
       <TagBox>
         {tagList.map((tagItem, i) => {
           return (
@@ -80,72 +65,81 @@ const WriteTitle = ({ setTitle, setFoodName, setIngredient, setTime }) => {
           onKeyPress={onKeyPress}
         />
       </TagBox>
-    </Stdiv>
+      <SelectDiv>조리시간 </SelectDiv>
+      <TimeSelect
+        placeholder="요리 시간을 선택해주세요"
+        onChange={(e) => {
+          setTime(e.target.value);
+        }}
+      >
+        <option value="0">5분</option>
+        <option value="1">10분</option>
+        <option value="2">15분</option>
+        <option value="3">30분 이상</option>
+      </TimeSelect>
+      <PreviewImg
+        // src={imageURL}
+        src={"https://cdn-icons-png.flaticon.com/512/149/149092.png"}
+      />
+      <ImgInput
+        type="file"
+        accept="image/*"
+        multiple="multiple"
+        onChange={imgUpload}
+        value={imageURL}
+      />
+    </WriteTitleContainer>
   );
 };
 
 export default WriteTitle;
 
-const Stdiv = styled.div`
-  margin: 10px;
-  height: 50%;
+const WriteTitleContainer = styled.div`
+  background-color: white;
+  margin: auto auto;
+  width: 80vw;
+  height: 60vh;
+  border-radius: 20px;
+  display: grid;
+  gap: 5px;
+  grid-template-columns: 1rem 1fr 1rem;
+  grid-template-rows: 8vh 5vh 1fr 5vh 1fr 1fr 1fr; */
+  align-items: stretch;
+`;
+const Title = styled.input`
+width 60vw;
+height:4vh;
+border-radius: 5px;
+grid-column-start:2;
+grid-row-start:1;
+margin:4vh 1rem 0px 1rem;
+
 `;
 
-const WriteTitleinput = styled.input`
-  box-sizing: border-box;
-  /* position: absolute; */
-  width: 340px;
-  height: 5vh;
-  left: 26px;
-  top: 90px;
-  border: 1px solid #a8a8a8;
-  border-radius: 10px;
-  margin: 9px;
+const FoodNameInput = styled.input`
+  width 60vw;
+height:4vh;
+border-radius: 5px;
+grid-column-start:2;
+grid-row-start:2;
+margin:1vh 1rem 0rem 1rem;
 `;
-
-const FoodnameTag = styled.input`
-  box-sizing: border-box;
-  /* position: absolute; */
-  width: 220px;
-  height: 5vh;
-  left: 26px;
-  top: 149px;
-  margin-left: 8px;
-
-  border: 1px solid #acacac;
-  border-radius: 10px;
-`;
-
-const TimeSelect = styled.select`
-  box-sizing: border-box;
-
-  /* position: absolute; */
-  width: 110px;
-  height: 5vh;
-  left: 273px;
-  top: 149px;
-  margin-left: 5px;
-
-  border: 1px solid #9c9c9c;
-  border-radius: 10px;
-`;
-
 const TagBox = styled.div`
   display: flex;
   align-items: center;
   flex-wrap: wrap;
-  width: 340px;
+  width: 60vw;
   min-height: 5vh;
-  margin: 8px;
+  margin: 1vh 1rem 0rem 1rem;
   padding: 0 10px;
   border: 1px solid rgba(0, 0, 0, 0.3);
   border-radius: 10px;
-
+  grid-column-start: 2;
+  grid-row-start: 3;
   &:focus-within {
     border-color: var(--color-light-blue);
   }
 `;
-
 const IngredintTag = styled.input`
   box-sizing: border-box;
   display: inline-flex;
@@ -155,7 +149,6 @@ const IngredintTag = styled.input`
   outline: none;
   cursor: text;
 `;
-
 const Tagdiv = styled.div`
   display: flex;
   align-items: center;
@@ -179,3 +172,46 @@ const Button = styled.button`
   border-radius: 50%;
   color: black;
 `;
+
+const SelectDiv = styled.div`
+  grid-column-start: 2;
+  grid-row-start: 4;
+  margin: 1vh 1rem 1rem 1rem;
+`;
+
+const TimeSelect = styled.select`
+  box-sizing: border-box;
+  width: 20vw;
+  height: 3vh;
+  margin: 2vw 2px 0rem 5rem;
+  border: 1px solid #9c9c9c;
+  border-radius: 10px;
+  grid-column-start: 2;
+  grid-row-start: 4;
+`;
+const PreviewImg = styled.img`
+  /* background-color: blue; */
+  width: 60vw;
+  height 20vh;
+  margin: 0rem 1rem 0rem 1rem;
+  grid-column-start: 2;
+  grid-row-start: 5;
+`;
+
+const ImgInput = styled.input`
+  grid-column-start: 2;
+  grid-row-start: 6;
+`;
+// const Tagdiv = styled.div`
+//   display: flex;
+//   align-items: center;
+//   justify-content: space-between;
+//   margin: 5px;
+//   padding: 5px;
+//   background-color: var(--color-dark-pink);
+//   border-radius: 5px;
+//   color: white;
+//   font-size: 13px;
+//   grid-column-start: 2;
+//   grid-row-start: 3;
+// `;
