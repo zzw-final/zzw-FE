@@ -8,7 +8,7 @@ const Write = (props) => {
   // console.log(props);
 
   return (
-    <div>
+    <WriteContanier>
       <WriteHeader onSubmitHandler={props.onSubmitHandler} />
       <WriteTitle
         setTitle={props.setTitle}
@@ -22,8 +22,10 @@ const Write = (props) => {
         setFile={props.setFile}
         file={props.file}
       />
-    </div>
+    </WriteContanier>
   );
 };
 
 export default Write;
+
+const WriteContanier = styled.div;

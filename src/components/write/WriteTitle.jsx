@@ -16,7 +16,7 @@ const WriteTitle = ({}) => {
   const submitTag = (prevState) => {
     if (!tagList.includes(tagItem)) {
       setTagList((prevState) => {
-        return [...prevState, { ingredientName: tagItem }];
+        return [...prevState, tagItem];
       });
     }
     setTagItem("");
@@ -40,32 +40,9 @@ const WriteTitle = ({}) => {
   }, [tagList]);
 
   return (
-    <Stdiv>
-      <WriteTitleinput
-        placeholder="제목을 입력해주세요"
-        onChange={(e) => {
-          setTitle(e.target.value);
-        }}
-      />
-      <div styled={{ margin: "10px", display: "flex" }}>
-        <FoodnameTag
-          placeholder="요리이름 입력해주세요"
-          onChange={(e) => {
-            setFoodName(e.target.value);
-          }}
-        />
-        <TimeSelect
-          placeholder="요리 시간을 선택해주세요"
-          onChange={(e) => {
-            setTime(e.target.value);
-          }}
-        >
-          <option value="0">5분</option>
-          <option value="1">10분</option>
-          <option value="2">15분</option>
-          <option value="3">30분 이상</option>
-        </TimeSelect>
-      </div>
+    <WriteTitleContainer>
+      <Title placeholder="제목을 입력해주세요" />
+      <FoodNameInput placeholder="요리이름 입력해주세요" />
       <TagBox>
         {tagList.map((tagItem, i) => {
           return (
@@ -86,7 +63,30 @@ const WriteTitle = ({}) => {
           onKeyPress={onKeyPress}
         />
       </TagBox>
-    </Stdiv>
+      <SelectDiv>조리시간 </SelectDiv>
+      <TimeSelect
+        placeholder="요리 시간을 선택해주세요"
+        onChange={(e) => {
+          setTime(e.target.value);
+        }}
+      >
+        <option value="0">5분</option>
+        <option value="1">10분</option>
+        <option value="2">15분</option>
+        <option value="3">30분 이상</option>
+      </TimeSelect>
+      <PreviewImg
+        // src={imageURL}
+        src={"https://cdn-icons-png.flaticon.com/512/149/149092.png"}
+      />
+      <ImgInput
+        type="file"
+        accept="image/*"
+        multiple="multiple"
+        onChange={imgUpload}
+        value={imageURL}
+      />
+    </WriteTitleContainer>
   );
 };
 
@@ -95,15 +95,12 @@ export default WriteTitle;
 const Stdiv = styled.div`
   margin: 10px;
   height: 50%;
-  width: 100%;
-  background-color: red;
 `;
 
 const WriteTitleinput = styled.input`
   box-sizing: border-box;
   /* position: absolute; */
-  /* width: 340px; */
-  width: 100%;
+  width: 340px;
   height: 5vh;
   left: 26px;
   top: 90px;
@@ -120,41 +117,32 @@ const FoodnameTag = styled.input`
   left: 26px;
   top: 149px;
   margin-left: 8px;
-
-  border: 1px solid #acacac;
-  border-radius: 10px;
 `;
 
-const TimeSelect = styled.select`
-  box-sizing: border-box;
-
-  /* position: absolute; */
-  width: 110px;
-  height: 5vh;
-  left: 273px;
-  top: 149px;
-  margin-left: 5px;
-
-  border: 1px solid #9c9c9c;
-  border-radius: 10px;
+const FoodNameInput = styled.input`
+  width 60vw;
+height:4vh;
+border-radius: 5px;
+grid-column-start:2;
+grid-row-start:2;
+margin:1vh 1rem 0rem 1rem;
 `;
-
 const TagBox = styled.div`
   display: flex;
   align-items: center;
   flex-wrap: wrap;
-  width: 340px;
+  width: 60vw;
   min-height: 5vh;
-  margin: 8px;
+  margin: 1vh 1rem 0rem 1rem;
   padding: 0 10px;
   border: 1px solid rgba(0, 0, 0, 0.3);
   border-radius: 10px;
-
+  grid-column-start: 2;
+  grid-row-start: 3;
   &:focus-within {
     border-color: var(--color-light-blue);
   }
 `;
-
 const IngredintTag = styled.input`
   box-sizing: border-box;
   display: inline-flex;
@@ -164,7 +152,6 @@ const IngredintTag = styled.input`
   outline: none;
   cursor: text;
 `;
-
 const Tagdiv = styled.div`
   display: flex;
   align-items: center;
@@ -187,4 +174,34 @@ const Button = styled.button`
   background-color: white;
   border-radius: 50%;
   color: black;
+`;
+
+const SelectDiv = styled.div`
+  grid-column-start: 2;
+  grid-row-start: 4;
+  margin: 1vh 1rem 1rem 1rem;
+`;
+
+const TimeSelect = styled.select`
+  box-sizing: border-box;
+  width: 20vw;
+  height: 3vh;
+  margin: 2vw 2px 0rem 5rem;
+  border: 1px solid #9c9c9c;
+  border-radius: 10px;
+  grid-column-start: 2;
+  grid-row-start: 4;
+`;
+const PreviewImg = styled.img`
+  /* background-color: blue; */
+  width: 60vw;
+  height 20vh;
+  margin: 0rem 1rem 0rem 1rem;
+  grid-column-start: 2;
+  grid-row-start: 5;
+`;
+
+const ImgInput = styled.input`
+  grid-column-start: 2;
+  grid-row-start: 6;
 `;
