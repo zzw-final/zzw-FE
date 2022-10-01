@@ -1,38 +1,35 @@
 import React, { useEffect, useState } from "react";
-
+import { useQuery } from "react-query";
 import { useNavigate, useParams } from "react-router-dom";
-import Tag from "../components/common/Tag";
-
 import { instance } from "../api/request";
 import LayoutPage from "../components/common/LayoutPage";
 import Detail from "../components/detail/Detail";
 
 function DetailPage() {
-  const post_Id = useParams().id;
-  const [postDetail, setPostDetail] = useState();
-
   const navigate = useNavigate();
-
+  const { id } = useParams();
   const [commentList, setCommentList] = useState();
 
-  useEffect(() => {
-    const getData = async () => {
-      const data = await instance.get(`/api/post/${post_Id}`);
-      setPostDetail(data.data.data);
-    };
+  const fetchDetail = async () => {
+    return await instance.get(`/api/post/${id}`);
+  };
 
-    getData();
-  }, [post_Id]);
+  const detail = useQuery(["detail", id], fetchDetail, {
+    staleTime: Infinity, // 항상 신선한 데이터로 취급
+    select: (data) => data.data.data, // 요청 성공시 데이터 가공
+  });
+
+  const postDetail = detail.data;
 
   useEffect(() => {
     async function fetchData() {
       const comments = await (
-        await instance.get(`/api/post/${post_Id}`)
+        await instance.get(`/api/post/${id}`)
       ).data.data.commentList;
       setCommentList(comments);
     }
     fetchData();
-  }, [post_Id]);
+  }, [id]);
 
   async function post(postInfo) {
     const comment = {
@@ -88,14 +85,14 @@ function DetailPage() {
 
   const onDeleteHandler = async () => {
     if (window.confirm("작성 글을 삭제하시겠습니까?")) {
-      await instance.delete(`/api/auth/post/${post_Id}`);
+      await instance.delete(`/api/auth/post/${id}`);
       alert("삭제되었습니다.");
       navigate("/");
     }
   };
 
   return (
-    <LayoutPage>
+    <LayoutPage background={"#fbd499"}>
       <Detail
         postDetail={postDetail}
         onDelete={onDeleteHandler}

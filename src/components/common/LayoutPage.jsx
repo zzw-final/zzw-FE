@@ -34,6 +34,7 @@ const Wrapper = styled.div`
   height: auto;
   min-height: 100vh;
   padding-bottom: 56px;
+  background-color: ${({ background }) => background || "white"};
   background: linear-gradient(
     var(${({ backgroundMain }) => backgroundMain}) 50%,
     var(--color-white) 50%
