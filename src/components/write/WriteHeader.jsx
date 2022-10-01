@@ -4,7 +4,6 @@ import styled from "styled-components";
 const WriteHeader = ({ onSubmitHandler }) => {
   return (
     <WriteHeaderdiv>
-      <Logo>로고</Logo>
       <SubmitBtn onClick={onSubmitHandler}>등록</SubmitBtn>
     </WriteHeaderdiv>
   );
@@ -13,23 +12,18 @@ const WriteHeader = ({ onSubmitHandler }) => {
 export default WriteHeader;
 
 const WriteHeaderdiv = styled.div`
-  display: flex;
-  margin: 20px;
-`;
-
-const Logo = styled.div`
-  margin: 16px;
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  gap: 2rem;
+  margin: 2rem;
 `;
 
 const SubmitBtn = styled.button`
-  width: 50px;
-  height: 30px;
-  left: 332px;
-  top: 16px;
-  margin-left: 220px;
-  margin-right: 10px;
-  margin-top: 10px;
-
-  background: var(--color-light-white);
+  grid-column-start: 3;
+  width: 15vw;
+  height: 4vh;
   border-radius: 10px;
+  border: 0;
+  outline: 0;
+  margin: auto;
 `;
