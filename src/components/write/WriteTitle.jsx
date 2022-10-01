@@ -1,18 +1,22 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import styled from "styled-components";
-
-const WriteTitle = ({}) => {
-  // console.log(setTitle);
-
+const WriteTitle = ({ postData }) => {
   const [title, setTitle] = useState("");
   const [foodname, setFoodName] = useState("");
   const [ingredient, setIngredient] = useState([]);
   const [time, setTime] = useState("");
-  const [file, setFile] = useState([]);
 
+  const foodnameRef = useRef("");
+
+  const getfoodname = foodnameRef?.current.value;
+  const getingredients = document.querySelector("#ingredients")?.value;
+  const getcookTime = document.querySelector("#cookTime")?.value;
+
+  console.log("getfoodname > ", getfoodname);
+
+  // console.log(setTitle);
   const [tagItem, setTagItem] = useState("");
   const [tagList, setTagList] = useState([]);
-
   const submitTag = (prevState) => {
     if (!tagList.includes(tagItem)) {
       setTagList((prevState) => {
@@ -21,6 +25,11 @@ const WriteTitle = ({}) => {
     }
     setTagItem("");
   };
+
+  // useEffect(() => {
+  //   postData(getfoodname, getingredients, getcookTime);
+  // }, [getfoodname, getingredients, getcookTime]);
+
   console.log(tagList);
 
   const deleteTag = (ingredientName) => {
@@ -42,7 +51,7 @@ const WriteTitle = ({}) => {
   return (
     <WriteTitleContainer>
       <Title placeholder="제목을 입력해주세요" />
-      <FoodNameInput placeholder="요리이름 입력해주세요" />
+      <FoodNameInput defaultValue="임시요리명" ref={foodnameRef} />
       <TagBox>
         {tagList.map((tagItem, i) => {
           return (
@@ -57,19 +66,12 @@ const WriteTitle = ({}) => {
         <IngredintTag
           value={tagItem}
           placeholder="재료를 태그로 입력해주세요"
-          onChange={(e) => {
-            setTagItem(e.target.value);
-          }}
+          id="ingredients"
           onKeyPress={onKeyPress}
         />
       </TagBox>
       <SelectDiv>조리시간 </SelectDiv>
-      <TimeSelect
-        placeholder="요리 시간을 선택해주세요"
-        onChange={(e) => {
-          setTime(e.target.value);
-        }}
-      >
+      <TimeSelect placeholder="요리 시간을 선택해주세요" id="cookTime">
         <option value="0">5분</option>
         <option value="1">10분</option>
         <option value="2">15분</option>
@@ -83,49 +85,42 @@ const WriteTitle = ({}) => {
         type="file"
         accept="image/*"
         multiple="multiple"
-        onChange={imgUpload}
-        value={imageURL}
+        // onChange={imgUpload}
+        // value={imageURL}
       />
     </WriteTitleContainer>
   );
 };
-
 export default WriteTitle;
-
-const Stdiv = styled.div`
-  margin: 10px;
-  height: 50%;
+const WriteTitleContainer = styled.div`
+  background-color: white;
+  margin: auto auto;
+  width: 80vw;
+  height: 60vh;
+  border-radius: 20px;
+  display: grid;
+  justify-items: center;
+  gap: 5px;
+  grid-template-columns: 1rem 1fr 1rem;
+  grid-template-rows: 8vh 5vh 1fr 5vh 1fr 1fr 1fr;
+  align-items: stretch;
 `;
 
-const WriteTitleinput = styled.input`
-  box-sizing: border-box;
-  /* position: absolute; */
-  width: 340px;
-  height: 5vh;
-  left: 26px;
-  top: 90px;
-  border: 1px solid #a8a8a8;
-  border-radius: 10px;
-  margin: 9px;
+const Title = styled.input`
+  width: 60vw;
+  height: 4vh;
+  border-radius: 5px;
+  grid-column-start: 2;
+  grid-row-start: 1;
+  margin: 4vh 1rem 0px 1rem;
 `;
-
-const FoodnameTag = styled.input`
-  box-sizing: border-box;
-  /* position: absolute; */
-  width: 220px;
-  height: 5vh;
-  left: 26px;
-  top: 149px;
-  margin-left: 8px;
-`;
-
 const FoodNameInput = styled.input`
-  width 60vw;
-height:4vh;
-border-radius: 5px;
-grid-column-start:2;
-grid-row-start:2;
-margin:1vh 1rem 0rem 1rem;
+  width: 60vw;
+  height: 4vh;
+  border-radius: 5px;
+  grid-column-start: 2;
+  grid-row-start: 2;
+  margin: 1vh 1rem 0rem 1rem;
 `;
 const TagBox = styled.div`
   display: flex;
@@ -163,7 +158,6 @@ const Tagdiv = styled.div`
   color: white;
   font-size: 13px;
 `;
-
 const Button = styled.button`
   display: flex;
   justify-content: center;
@@ -175,13 +169,11 @@ const Button = styled.button`
   border-radius: 50%;
   color: black;
 `;
-
 const SelectDiv = styled.div`
   grid-column-start: 2;
   grid-row-start: 4;
   margin: 1vh 1rem 1rem 1rem;
 `;
-
 const TimeSelect = styled.select`
   box-sizing: border-box;
   width: 20vw;
@@ -195,12 +187,11 @@ const TimeSelect = styled.select`
 const PreviewImg = styled.img`
   /* background-color: blue; */
   width: 60vw;
-  height 20vh;
+  height: 20vh;
   margin: 0rem 1rem 0rem 1rem;
   grid-column-start: 2;
   grid-row-start: 5;
 `;
-
 const ImgInput = styled.input`
   grid-column-start: 2;
   grid-row-start: 6;
