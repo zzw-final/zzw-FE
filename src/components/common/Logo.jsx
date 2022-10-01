@@ -3,6 +3,7 @@ import React from "react";
 import { useCookies } from "react-cookie";
 import { Navigate, useNavigate } from "react-router-dom";
 import styled from "styled-components";
+import { instance } from "../../api/request";
 
 const Logo = () => {
   const navigate = useNavigate();
@@ -15,7 +16,8 @@ const Logo = () => {
     "loginNickname",
     "loginProfile",
   ]);
-  const kakaoLogout = () => {
+
+  const logout = () => {
     axios.get(`${process.env.REACT_APP_API}/api/member/kakao/logout`, {
       headers: {
         kakaoToken: cookies.oauthToken,
@@ -32,12 +34,23 @@ const Logo = () => {
     removeCookie("loginGrade");
     alert("로그아웃");
   };
+
+  const unregister = async () => {
+    const loginUserId = cookies.loginUserId;
+    if (loginUserId && window.confirm("탈퇴 하시겠습니까?")) {
+      const result = await instance.delete(`/api/member/resign/${loginUserId}`);
+      logout();
+      console.log("result unregister :>> ", result);
+    } else return;
+  };
+
   return (
     <>
       <LogoContainer>zzw.</LogoContainer>
       <LoginBox>
         {cookies.loginNickname || "로그인 유저 없음"}
-        <button onClick={kakaoLogout}>로그아웃</button>
+        <button onClick={unregister}>회원탈퇴</button>
+        <button onClick={logout}>로그아웃</button>
         <button
           onClick={() => {
             navigate("/login");

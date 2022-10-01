@@ -4,7 +4,7 @@ import styled from "styled-components";
 import { instance } from "../../api/request";
 import { useState } from "react";
 
-const LayoutPage = ({ children, background }) => {
+const LayoutPage = ({ children, background, backgroundMain }) => {
   const [topTenTagList, setTopTenTagList] = useState();
   const [tagAllList, setTagAllList] = useState();
 
@@ -22,7 +22,7 @@ const LayoutPage = ({ children, background }) => {
 
   return (
     <>
-      <Wrapper background={background}>
+      <Wrapper background={background} backgroundMain={backgroundMain}>
         <div>{children}</div>
       </Wrapper>
       <Footer topTenTagList={topTenTagList} tagAllList={tagAllList} />
@@ -35,7 +35,7 @@ const Wrapper = styled.div`
   min-height: 100vh;
   padding-bottom: 56px;
   background: linear-gradient(
-    var(${({ background }) => background}) 50%,
+    var(${({ backgroundMain }) => backgroundMain}) 50%,
     var(--color-white) 50%
   );
 `;

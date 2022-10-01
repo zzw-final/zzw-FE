@@ -37,7 +37,7 @@ const MainPage = () => {
   };
 
   return (
-    <LayoutPage background={"--color-orange"}>
+    <LayoutPage backgroundMain={"--color-orange"}>
       <Logo />
       <SearchForm mainSearch={search} />
       <MainContainer>
