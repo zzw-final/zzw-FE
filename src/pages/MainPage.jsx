@@ -6,6 +6,7 @@ import Logo from "../components/common/Logo";
 import Main from "../components/main/Main";
 import SearchForm from "../components/main/SearchForm";
 import { useNavigate } from "react-router-dom";
+import SwiperRecipe from "../components/common/SwiperRecipe";
 
 const MainPage = () => {
   const [bestPost, setBestPost] = useState([]);
@@ -49,6 +50,7 @@ const MainPage = () => {
           likeToggle={likeToggle}
           search={search}
         />
+        <SwiperRecipe />
       </MainContainer>
     </LayoutPage>
   );
