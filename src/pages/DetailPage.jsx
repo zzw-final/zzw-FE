@@ -38,15 +38,19 @@ function DetailPage() {
     const comment = {
       comment: postInfo.comment,
     };
+    console.log("comment > ", comment);
     const res = await instance.post(
       `/api/auth/post/${postInfo.postId}/comment`,
       comment
     );
+    console.log("res > ", res);
     const newPost = {
       ...res.data.data,
       postId: postInfo.postId,
       profile: postInfo.profile,
     };
+    console.log("newPost > ", newPost);
+    console.log("commentList > ", commentList);
     setCommentList((prev) => [newPost, ...prev]);
   }
 

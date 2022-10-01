@@ -134,7 +134,7 @@ const BestRecipeContainer = styled.section`
 `;
 
 const NewRecipeScrollContainer = styled.section`
-  height: 110vh;
+  /* height: 40vh; */
 `;
 
 const NewRecipeContainer = styled.section`

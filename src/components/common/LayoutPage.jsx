@@ -34,7 +34,10 @@ const Wrapper = styled.div`
   height: auto;
   min-height: 100vh;
   padding-bottom: 56px;
-  background-color: var(${({ background }) => background});
+  background: linear-gradient(
+    var(${({ background }) => background}) 50%,
+    var(--color-white) 50%
+  );
 `;
 
 export default LayoutPage;
