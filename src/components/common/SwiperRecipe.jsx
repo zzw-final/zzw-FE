@@ -7,12 +7,20 @@ import "swiper/css/effect-cards";
 import "swiper/css/pagination";
 import { EffectCards } from "swiper";
 import SwiperRecipeItem from "./SwiperRecipeItem";
+import WriteTitle from "../write/WriteTitle";
+import WritePage from "../../pages/WritePage";
 
 const SwiperRecipe = () => {
   const [slide, setSlide] = useState([]);
 
   const makeSlide = () => {
-    setSlide(slide.concat(<SwiperSlide>슬라이드</SwiperSlide>));
+    setSlide(
+      slide.concat(
+        <SwiperSlide>
+          <WriteTitle></WriteTitle>
+        </SwiperSlide>
+      )
+    );
   };
 
   // 레시피 소개 페이지

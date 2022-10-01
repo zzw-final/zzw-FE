@@ -1,8 +1,14 @@
 import React, { useEffect, useState } from "react";
 import styled from "styled-components";
 
-const WriteTitle = ({ setTitle, setFoodName, setIngredient, setTime }) => {
+const WriteTitle = ({}) => {
   // console.log(setTitle);
+
+  const [title, setTitle] = useState("");
+  const [foodname, setFoodName] = useState("");
+  const [ingredient, setIngredient] = useState([]);
+  const [time, setTime] = useState("");
+  const [file, setFile] = useState([]);
 
   const [tagItem, setTagItem] = useState("");
   const [tagList, setTagList] = useState([]);
@@ -89,12 +95,15 @@ export default WriteTitle;
 const Stdiv = styled.div`
   margin: 10px;
   height: 50%;
+  width: 100%;
+  background-color: red;
 `;
 
 const WriteTitleinput = styled.input`
   box-sizing: border-box;
   /* position: absolute; */
-  width: 340px;
+  /* width: 340px; */
+  width: 100%;
   height: 5vh;
   left: 26px;
   top: 90px;
