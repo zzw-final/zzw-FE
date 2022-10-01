@@ -101,6 +101,7 @@ const WriteTitleContainer = styled.div`
   height: 60vh;
   border-radius: 20px;
   display: grid;
+  justify-items:center;
   gap: 5px;
   grid-template-columns: 1rem 1fr 1rem;
   grid-template-rows: 8vh 5vh 1fr 5vh 1fr 1fr 1fr; */
@@ -113,6 +114,7 @@ border-radius: 5px;
 grid-column-start:2;
 grid-row-start:1;
 margin:4vh 1rem 0px 1rem;
+
 
 `;
 
@@ -202,16 +204,3 @@ const ImgInput = styled.input`
   grid-column-start: 2;
   grid-row-start: 6;
 `;
-// const Tagdiv = styled.div`
-//   display: flex;
-//   align-items: center;
-//   justify-content: space-between;
-//   margin: 5px;
-//   padding: 5px;
-//   background-color: var(--color-dark-pink);
-//   border-radius: 5px;
-//   color: white;
-//   font-size: 13px;
-//   grid-column-start: 2;
-//   grid-row-start: 3;
-// `;

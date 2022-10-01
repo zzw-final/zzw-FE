@@ -1,9 +1,20 @@
 import React from "react";
 import styled from "styled-components";
 
-const Tag = ({ tagName, isFoodName, isDelBtn, delBtnClick, ...props }) => {
+const Tag = ({
+  tagName,
+  isFoodName,
+  onClickHandler,
+  isDelBtn,
+  delBtnClick,
+  ...props
+}) => {
   return (
-    <TagContainer {...props} color={randomColor(isFoodName)}>
+    <TagContainer
+      {...props}
+      color={randomColor(isFoodName)}
+      onClick={onClickHandler}
+    >
       {tagName} {isDelBtn ? <DelBtn onClick={delBtnClick}>X</DelBtn> : ""}
     </TagContainer>
   );
@@ -15,14 +26,13 @@ const TagContainer = styled.div`
   border-radius: 20px;
   height: ${({ height }) => height || "19px"};
   display: flex;
-  /* overflow: visible; */
+  white-space: nowrap;
   align-items: center;
   margin: ${({ margin }) => margin || "0 0 0 0.15rem"};
   padding: ${({ padding }) => padding || "0.1rem 0.3rem"};
   opacity: ${({ opacity }) => opacity || ""};
   box-shadow: ${({ boxShadow }) => boxShadow || ""};
   cursor: pointer;
-  /* overflow: visible; */
 `;
 
 const DelBtn = styled.div`

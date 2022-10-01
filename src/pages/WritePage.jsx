@@ -6,6 +6,7 @@ import { instance, imgInstance } from "../api/request";
 import Footer from "../components/common/Footer";
 import LayoutPage from "../components/common/LayoutPage";
 import WriteHeader from "../components/write/WriteHeader";
+import WriteSwiper from "../components/write/WriteSwiper";
 import WriteTitle from "../components/write/WriteTitle";
 
 function WritePage() {
@@ -69,7 +70,16 @@ function WritePage() {
         styled={{ position: "fixed" }}
         onSubmitHandler={onSubmitHandler}
       />
-      <WriteTitle
+      {/* <WriteTitle
+        setTitle={setTitle}
+        setFoodName={setFoodName}
+        setIngredient={setIngredient}
+        setTime={setTime}
+        setImageURL={setImageURL}
+        imageURL={imageURL}
+        imgUpload={imgUpload}
+      /> */}
+      <WriteSwiper
         setTitle={setTitle}
         setFoodName={setFoodName}
         setIngredient={setIngredient}

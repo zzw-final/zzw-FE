@@ -18,7 +18,7 @@ const GlobalStyle = createGlobalStyle`
   --color-dark-pink: #ff6863;
   --color-yellow: #fff7d1; 
   --color-light-orange: #FACE8E;
-  --color-orange: #feb546;
+  --color-orange: #FFBB56;
   /* --color-dark-orange: #ffa113; */
   --color-dark-orange: #f4623a;
   --color-primary-green: #e8f5e9;

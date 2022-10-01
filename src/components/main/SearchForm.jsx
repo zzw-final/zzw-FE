@@ -4,8 +4,9 @@ import styled from "styled-components";
 import { useCookies } from "react-cookie";
 import useInputRef from "../../hooks/useInputRef";
 import Tag from "../common/Tag";
+import { useSearchParams } from "react-router-dom";
 
-const SearchForm = ({ search }) => {
+const SearchForm = ({ mainSearch, searchPageSearch }) => {
   const [cookies] = useCookies(["loginNickname"]);
   const [selectOption, setSelectOption] = useState("tag");
   const [tagList, setTagList] = useState([]);
@@ -13,8 +14,10 @@ const SearchForm = ({ search }) => {
   const loginNickname = cookies.loginNickname || `반가운 손`;
   const welcomeText = `🥘 ${loginNickname}님, 오늘의 식재료를 입력해보세요!`;
 
+  const selectRef = useRef();
+
   const onPeriodChange = (event) => {
-    setSelectOption(event.target.value);
+    setSelectOption(event.target?.value);
     inputRef.current.value = "";
     setTagList([]);
   };
@@ -25,49 +28,78 @@ const SearchForm = ({ search }) => {
     { value: "nickname", label: "닉네임" },
   ];
 
-  const searchHandler = () => {
-    const searchText = inputRef.current.value;
+  const [searchParams] = useSearchParams();
+  const searchedTitle = searchParams.get("title");
+  const searchedTag = searchParams.get("tag");
+  const searchedNickname = searchParams.get("nickname");
 
-    if (tagList === [] && searchText === "") {
+  useEffect(() => {
+    inputRef.current.value = searchedTitle;
+  }, []);
+
+  const searchHandler = () => {
+    const searchText = inputRef?.current.value;
+    const selectOptionRef = selectRef?.current.value;
+    if ((selectOptionRef !== "tag" && searchText === "") || tagList === []) {
       alert("빈 값은 입력할 수 없습니다.");
       return;
     }
-    if (selectOption === "tag" && tagList !== []) {
-      search(selectOption, tagList.toString());
+    if (selectOptionRef === "tag") {
+      makeTagList(searchText);
+      console.log("검색페이지에서 tagList 안", tagList);
       inputRef.current.value = "";
+      tagSearchHandler(selectOptionRef, searchText, tagList);
       return;
     }
-    search(selectOption, searchText);
+    window.location.pathname === "/"
+      ? mainSearch(selectOptionRef, searchText)
+      : searchPageSearch(selectOptionRef, searchText);
   };
 
-  // const inputRef = useInputRef("", searchHandler);
-  const inputRef = useRef("");
-
-  const makeTagList = useCallback(
-    (addedTag) => {
-      if (!tagList.includes(addedTag)) {
-        setTagList((prevState) => {
-          return [...prevState, addedTag];
-        });
+  const tagSearchHandler = (selectOptionRef, searchText, tagList) => {
+    if (window.location.pathname === "/") {
+      if (tagList !== [] && searchText === "") {
+        mainSearch(selectOptionRef, tagList.toString());
       }
-    },
-    [tagList]
-  );
+      return;
+    }
+    searchPageSearch(selectOptionRef, tagList.toString());
+  };
+
+  const ss = () => {
+    searchHandler();
+    console.log("검색페이지에서 tagList ss > ", tagList);
+  };
+
+  const inputRef = useInputRef("", ss);
+
+  const makeTagList = (addedTag) => {
+    if (addedTag === "") {
+      return;
+    }
+    if (!tagList.includes(addedTag)) {
+      setTagList((prevState) => {
+        return [...prevState, addedTag];
+      });
+    }
+  };
 
   useEffect(() => {
-    console.log("selectOption 안 :>> ", selectOption);
-    if (selectOption === "tag") {
-      inputRef?.current.addEventListener("keypress", logKey);
-      function logKey(event) {
-        if (inputRef?.current.value.trim() !== "" && event.code === "Enter") {
-          if (selectOption === "tag") {
-            makeTagList(inputRef?.current.value);
-            inputRef.current.value = "";
-          }
-        }
-      }
+    if (searchedTag !== null) {
+      setSelectOption("tag");
+      inputRef.current.value = searchedTag;
+      searchedTag.split(",").map((item) => {
+        return makeTagList(item);
+      });
+      inputRef.current.value = "";
+    } else if (searchedTitle !== null) {
+      setSelectOption("title");
+      inputRef.current.value = searchedTitle;
+    } else if (searchedNickname !== null) {
+      setSelectOption("nickname");
+      inputRef.current.value = searchedNickname;
     }
-  }, [inputRef, selectOption, makeTagList]);
+  }, [inputRef, searchedTag, searchedTitle, searchedNickname]);
 
   const deleteSelectedTag = (deleteTagName) => {
     setTagList(tagList.filter((tag) => tag !== deleteTagName));
@@ -79,7 +111,11 @@ const SearchForm = ({ search }) => {
       <SearchBox>
         <Form>
           <InputBox>
-            <SelectBox value={selectOption} onChange={onPeriodChange}>
+            <SelectBox
+              value={selectOption}
+              ref={selectRef}
+              onChange={onPeriodChange}
+            >
               {options.map((option, idx) => (
                 <option value={option.value} key={idx}>
                   {option.label}
@@ -142,6 +178,7 @@ const SelectBox = styled.select`
 const TagList = styled.div`
   color: var(--color-black);
   display: flex;
+  /* background-color: red; */
 `;
 
 const InputForm = styled.input`
@@ -151,6 +188,7 @@ const InputForm = styled.input`
   outline: 0;
   border: 0;
   background-color: transparent;
+  min-width: 100px;
 `;
 
 export default SearchForm;

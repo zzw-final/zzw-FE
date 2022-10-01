@@ -33,8 +33,7 @@ function RecipeBest({ post, likeToggle, ...props }) {
       alert("로그인 유저만 사용 가능한 기능입니다.");
       return;
     }
-    const resp = await likeToggle(postId);
-    console.log("resp.data.data", resp.data);
+    await likeToggle(postId);
     setLikeToggleBtn(!likeToggleBtn);
   };
 

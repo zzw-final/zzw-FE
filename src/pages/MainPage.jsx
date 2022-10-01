@@ -6,16 +6,14 @@ import Logo from "../components/common/Logo";
 import Main from "../components/main/Main";
 import SearchForm from "../components/main/SearchForm";
 import { useNavigate } from "react-router-dom";
+import SwiperRecipe from "../components/common/SwiperRecipe";
 
 const MainPage = () => {
-  const [bestPost, setBestPost] = useState();
-  const [recentPost, setRecentPost] = useState();
-  const [tagList, setTagList] = useState();
-  const [followList, setFollowList] = useState();
-  const [searchResultList, setSearchResultList] = useState([]);
-  // const [likeToggleBtn, setLikeToggleBtn] = useState();
-  // const [cookies] = useCookies(["loginNickname"]);
-  // const loginNickname = cookies.loginNickname;
+  const [bestPost, setBestPost] = useState([]);
+  const [recentPost, setRecentPost] = useState([]);
+  const [tagList, setTagList] = useState([]);
+  const [followPost, setFollowPost] = useState([]);
+
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -25,7 +23,7 @@ const MainPage = () => {
         setBestPost(result.data.data.bestPost);
         setRecentPost(result.data.data.recentPost);
         setTagList(result.data.data.tagList);
-        setFollowList(result.data.data.followPost);
+        setFollowPost(result.data.data.followPost);
       }
     }
     fetchData();
@@ -40,17 +38,19 @@ const MainPage = () => {
   };
 
   return (
-    <LayoutPage background={"background.jpeg"}>
+    <LayoutPage background={"--color-orange"}>
       <Logo />
-      <SearchForm search={search} />
+      <SearchForm mainSearch={search} />
       <MainContainer>
         <Main
           bestPost={bestPost}
           recentPost={recentPost}
           tagList={tagList}
-          followList={followList}
+          followPost={followPost}
           likeToggle={likeToggle}
+          search={search}
         />
+        <SwiperRecipe />
       </MainContainer>
     </LayoutPage>
   );
@@ -58,7 +58,6 @@ const MainPage = () => {
 
 const MainContainer = styled.div`
   display: block;
-  /* display: none; */
 `;
 
 export default MainPage;
