@@ -7,8 +7,8 @@ import { useParams } from "react-router-dom";
 // TODO: 닉네임 검색 기능
 
 function FollowLayout({
-  onFetchFollower,
-  onToggleHandler,
+  onClickFollower,
+  onClickfollow,
   followView,
   followerView,
   nickname,
@@ -22,10 +22,10 @@ function FollowLayout({
         <Nickname>{id ? nickname : myName}</Nickname>
       </Container>
       <Container>
-        <Button name="followPageBtn" onClick={onToggleHandler} view={followView}>
+        <Button name="followPageBtn" onClick={onClickfollow} view={followView}>
           팔로우
         </Button>
-        <Button name="followPageBtn" onClick={onFetchFollower} view={followerView}>
+        <Button name="followPageBtn" onClick={onClickFollower} view={followerView}>
           팔로워
         </Button>
       </Container>

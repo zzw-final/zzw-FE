@@ -1,10 +1,29 @@
-import React from "react";
+import React, { useEffect } from "react";
 import styled from "styled-components";
 import List from "../common/List";
 import Tag from "../common/Tag";
 import Skeleton from "@mui/material/Skeleton";
+import { useCookies } from "react-cookie";
 
-const Main = ({ bestPost, recentPost, tagList, followPost, likeToggle }) => {
+const Main = ({
+  bestPost,
+  recentPost,
+  tagList,
+  followPost,
+  likeToggle,
+  search,
+}) => {
+  const onClickTagHandler = (tagName) => {
+    search("tag", tagName);
+  };
+
+  const [cookies] = useCookies(["loginNickname"]);
+
+  const loginNickname = cookies.loginNickname;
+
+  console.log("loginNickname :>> ", loginNickname);
+  console.log("followPost :>> ", followPost);
+
   return (
     <MainContainer>
       <TagsContainer>
@@ -14,6 +33,9 @@ const Main = ({ bestPost, recentPost, tagList, followPost, likeToggle }) => {
               tagName={tag.tagName}
               key={idx}
               isFoodName={true}
+              onClickHandler={() => {
+                onClickTagHandler(tag.tagName);
+              }}
               margin="0 0.5rem 0 0.5rem"
               boxShadow="0px 2px 0px #868686"
             />
@@ -38,24 +60,39 @@ const Main = ({ bestPost, recentPost, tagList, followPost, likeToggle }) => {
             height="200px"
           />
         </BestRecipeContainer>
-        <Title>NEW 레시피 🥦</Title>
-        <NewRecipeContainer>
-          <List
-            list={recentPost}
-            likeToggle={likeToggle}
-            width="160px"
-            height="200px"
-          />
-        </NewRecipeContainer>
-        {followPost && (
+        {/* {followPost && followPost.length === 0 ? ( */}
+        {followPost === null ? (
           <>
+            <Title>NEW 레시피 🥦</Title>
+            <NewRecipeScrollContainer>
+              <List
+                list={recentPost}
+                likeToggle={likeToggle}
+                display="grid"
+                height="210px"
+                margin="0 0.5rem 0 0.5rem"
+              />
+            </NewRecipeScrollContainer>
+          </>
+        ) : (
+          <>
+            <Title>NEW 레시피 🥦</Title>
+            <NewRecipeContainer>
+              <List
+                list={recentPost}
+                likeToggle={likeToggle}
+                width="160px"
+                height="200px"
+              />
+            </NewRecipeContainer>
             <Title>follow List 🥕</Title>
             <FollowContainer>
               <List
                 list={followPost}
                 likeToggle={likeToggle}
-                width="160px"
-                height="200px"
+                display="grid"
+                height="210px"
+                margin="0 0.5rem 0 0.5rem"
               />
             </FollowContainer>
           </>
@@ -105,8 +142,13 @@ const BestRecipeContainer = styled.section`
   }
 `;
 
+const NewRecipeScrollContainer = styled.section`
+  /* height: 40vh; */
+`;
+
 const NewRecipeContainer = styled.section`
   overflow-x: scroll;
+  overflow-y: auto;
 
   ::-webkit-scrollbar {
     height: 0.3rem;

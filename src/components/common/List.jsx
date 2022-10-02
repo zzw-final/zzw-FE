@@ -37,7 +37,6 @@ const ListContainer = styled.section`
   grid-row-gap: 1rem;
   justify-items: center;
   height: 220px;
-  /* margin-left: 0.5rem; */
   margin: ${(props) => props.margin};
 `;
 
