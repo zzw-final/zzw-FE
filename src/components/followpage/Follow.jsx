@@ -4,7 +4,7 @@ import styled from "styled-components";
 import Button from "../UI/Button";
 import { getCookie } from "../../util/cookie";
 
-function Follow({ follow, onFollowHandler }) {
+function Follow({ follow, mutate }) {
   const { profile, nickname, grade, isFollow, userId } = follow;
   const [greyButton, setGreyButton] = useState(isFollow);
   const navigate = useNavigate();
@@ -12,7 +12,7 @@ function Follow({ follow, onFollowHandler }) {
 
   const followHandler = async () => {
     setGreyButton((prev) => !prev);
-    return await onFollowHandler(userId);
+    return await mutate(userId);
   };
 
   const onClickGoToProfile = () => {

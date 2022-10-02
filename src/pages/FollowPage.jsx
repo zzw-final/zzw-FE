@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { useQuery } from "react-query";
+import { useQuery, useMutation, useQueryClient } from "react-query";
 import { useLocation, useParams } from "react-router-dom";
 import { instance } from "../api/request";
 import LayoutPage from "../components/common/LayoutPage";
@@ -62,9 +62,44 @@ const FollowPage = () => {
     setClick(true); // 클릭 상태는 true로(follower data fetch enabled option)
   };
 
-  const followHandler = async (userId) => {
-    return await instance.post(`/api/auth/mypage/follow/${userId}`);
-  };
+  const queryClient = useQueryClient(); // Optimistic Update 하려면 필요해요.
+
+  // const followHandler = async (userId) => {
+  //   return await instance.post(`/api/auth/mypage/follow/${userId}`);
+  // };
+
+  const { mutate, isError, isSuccess } = useMutation(
+    (userId) => {
+      return instance.post(`/api/auth/mypage/follow/${userId}`);
+    }
+    // {
+    //   onMutate: async () => {
+    //     if (!click) {
+    //       await queryClient.cancelQueries(["follow", id]);
+    //       const prevFollow = queryClient.getQueryData(["follow", id]);
+    //       queryClient.setQueryData(["follow", id]);
+    //       return { prevFollow };
+    //     }
+    //     if (!!click) {
+    //       await queryClient.cancelQueries(["follower", id]);
+    //       const prevFollower = queryClient.getQueryData(["follower", id]);
+    //       queryClient.setQueryData(["follower", id]);
+    //       return { prevFollower };
+    //     }
+    //   },
+    // }
+  );
+
+  // const { mutate } = useMutation(followHandler, {
+  //   onMutate: async () => {
+  //     await queryClient.cancelQueries("followpage");
+  //     const oldFollowData = queryClient.getQueryData("followpage");
+  //     queryClient.setQueryData("followpage", (prev) => {
+  //       console.log(prev);
+  //     });
+  //     return { oldFollowData };
+  //   },
+  // });
 
   return (
     <LayoutPage>
@@ -76,10 +111,18 @@ const FollowPage = () => {
         nickname={nickname}
       />
       {followView && (
-        <FollowList followList={followList} onFollowHandler={followHandler} />
+        <FollowList
+          followList={followList}
+          mutate={mutate}
+          // onFollowHandler={followHandler}
+        />
       )}
       {followerView && (
-        <FollowerList followerList={followerList} onFollowHandler={followHandler} />
+        <FollowerList
+          followerList={followerList}
+          mutate={mutate}
+          // onFollowHandler={followHandler}
+        />
       )}
     </LayoutPage>
   );
