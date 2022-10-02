@@ -9,11 +9,11 @@ import { EffectCards } from "swiper";
 import SwiperRecipeItem from "./SwiperRecipeItem";
 
 const SwiperRecipe = () => {
-  const [slide, setSlide] = useState([]);
+  // const [slide, setSlide] = useState([]);
 
-  const makeSlide = () => {
-    setSlide(slide.concat(<SwiperSlide>슬라이드</SwiperSlide>));
-  };
+  // const makeSlide = () => {
+  //   setSlide(slide.concat(<SwiperSlide>슬라이드</SwiperSlide>));
+  // };
 
   // 레시피 소개 페이지
   // 사진, 좋아요(수, 기능), 작성자 닉네임, 작성자 칭호, 작성일, 제목
@@ -77,26 +77,6 @@ const SwiperRecipe = () => {
         </Swiper>
       </SwiperBox>
       <PageNav> * * * * *</PageNav>
-      <SwiperBox>
-        <Swiper
-          effect={"cards"}
-          grabCursor={true}
-          modules={[EffectCards]}
-          className="mySwiper"
-        >
-          <SwiperSlide>
-            <SwiperRecipeItem
-              IMSIdata={IMSIdata}
-              IMSIdataDetail={IMSIdataDetail}
-              isFirstPage={true}
-            />
-          </SwiperSlide>
-          {slide}
-          <SwiperSlide>
-            <button onClick={makeSlide}> + </button>
-          </SwiperSlide>
-        </Swiper>
-      </SwiperBox>
     </SwiperContainer>
   );
 };

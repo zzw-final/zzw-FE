@@ -3,6 +3,7 @@ import styled from "styled-components";
 import List from "../common/List";
 import Tag from "../common/Tag";
 import Skeleton from "@mui/material/Skeleton";
+import { useCookies } from "react-cookie";
 
 const Main = ({
   bestPost,
@@ -15,6 +16,13 @@ const Main = ({
   const onClickTagHandler = (tagName) => {
     search("tag", tagName);
   };
+
+  const [cookies] = useCookies(["loginNickname"]);
+
+  const loginNickname = cookies.loginNickname;
+
+  console.log("loginNickname :>> ", loginNickname);
+  console.log("followPost :>> ", followPost);
 
   return (
     <MainContainer>
@@ -52,7 +60,8 @@ const Main = ({
             height="200px"
           />
         </BestRecipeContainer>
-        {followPost && followPost.length === 0 ? (
+        {/* {followPost && followPost.length === 0 ? ( */}
+        {followPost === null ? (
           <>
             <Title>NEW 레시피 🥦</Title>
             <NewRecipeScrollContainer>

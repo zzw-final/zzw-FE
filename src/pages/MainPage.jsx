@@ -50,7 +50,6 @@ const MainPage = () => {
           likeToggle={likeToggle}
           search={search}
         />
-        <SwiperRecipe />
       </MainContainer>
     </LayoutPage>
   );
