@@ -91,6 +91,10 @@ function DetailPage() {
     }
   };
 
+  const likeToggle = async (postId) => {
+    return await instance.post(`/api/auth/post/${postId}`);
+  };
+
   return (
     <LayoutPage background={"#fbd499"}>
       <Detail
@@ -100,6 +104,7 @@ function DetailPage() {
         remove={remove}
         update={update}
         commentList={commentList}
+        likeToggle={likeToggle}
       />
     </LayoutPage>
   );
