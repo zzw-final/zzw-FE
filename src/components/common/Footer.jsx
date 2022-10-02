@@ -103,13 +103,14 @@ const Footer = ({ topTenTagList, tagAllList }) => {
 };
 
 const FooterContainer = styled.div`
-  width: 100%;
+  width: 100vw;
   display: flex;
   justify-content: center;
   height: 56px;
   position: fixed;
   bottom: 0;
   z-index: 1;
+  background-color: var(--color-white);
 `;
 
 const TagListFoldLine = styled.div`
