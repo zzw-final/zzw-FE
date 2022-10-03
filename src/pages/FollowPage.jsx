@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { useQuery } from "react-query";
+import { useQuery, useMutation, useQueryClient } from "react-query";
 import { useLocation, useParams } from "react-router-dom";
 import { instance } from "../api/request";
 import LayoutPage from "../components/common/LayoutPage";
@@ -34,19 +34,16 @@ const FollowPage = () => {
     }
   };
 
-  const follow = useQuery(["follow", id], fetchFollow, {
+  const { data: followList } = useQuery(["follow", id], fetchFollow, {
     enabled: !click, // 팔로우 진입시에만 받아옴
-    staleTime: Infinity, // 항상 신선한 데이터로 취급
+    staleTime: 300000,
     select: (data) => data.data.data, // 요청 성공시 데이터 가공
   });
-  const follower = useQuery(["follower", id], fetchFollower, {
+  const { data: followerList } = useQuery(["follower", id], fetchFollower, {
     enabled: !!click, // 팔로워 진입시에만 받아옴
-    staleTime: Infinity, // 항상 신선한 데이터로 취급
+    staleTime: 300000,
     select: (data) => data.data.data, // 요청 성공시 데이터 가공
   });
-
-  const followList = follow?.data; // follow 가공 data를 followList로 선언
-  const followerList = follower?.data; // follower 가공 data를 followerList로 선언
 
   // 팔로우 버튼을 눌렀다면
   const followBtn = () => {
@@ -62,9 +59,22 @@ const FollowPage = () => {
     setClick(true); // 클릭 상태는 true로(follower data fetch enabled option)
   };
 
+  const queryClient = useQueryClient(); // Optimistic Update 하려면 필요.
+
   const followHandler = async (userId) => {
     return await instance.post(`/api/auth/mypage/follow/${userId}`);
   };
+
+  const { mutate } = useMutation(followHandler, {
+    onSuccess: () => {
+      if (!click) {
+        queryClient.invalidateQueries(["follow", id]);
+      }
+      if (!!click) {
+        queryClient.invalidateQueries(["follower", id]);
+      }
+    },
+  });
 
   return (
     <LayoutPage>
@@ -75,12 +85,8 @@ const FollowPage = () => {
         followerView={followerView}
         nickname={nickname}
       />
-      {followView && (
-        <FollowList followList={followList} onFollowHandler={followHandler} />
-      )}
-      {followerView && (
-        <FollowerList followerList={followerList} onFollowHandler={followHandler} />
-      )}
+      {followView && <FollowList followList={followList} mutate={mutate} />}
+      {followerView && <FollowerList followerList={followerList} mutate={mutate} />}
     </LayoutPage>
   );
 };
