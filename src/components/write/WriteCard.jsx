@@ -1,42 +1,48 @@
-import React, { useEffect, useState } from "react";
+import React, { memo, useEffect, useRef, useState } from "react";
 import styled from "styled-components";
 
-function WriteCard({
-  countList,
-  setImageURL,
-  imageURL,
-  imgUpload,
-  setContent,
-  setContent1,
-  setPageNum,
-}) {
+function WriteCard({ idx, imgUpload, getPageData }) {
+  const [imgUrl, setImgUrl] = useState("");
+  const [content, setContent] = useState("");
+
+  // const contentRef = useRef("");
+
+  // useEffect(() => {
+  //   setContent(contentRef?.current.value);
+  // }, [contentRef]);
+
+  const sendData = {
+    imageURL: imgUrl,
+    content: content,
+    page: idx,
+  };
+
+  useEffect(() => {
+    getPageData(sendData);
+  }, [sendData]);
+
+  const getImgUpload = async (e) => {
+    const result = await imgUpload(e);
+    setImgUrl(result.data.data.imageUrl);
+  };
+
   return (
     <div>
-      {countList &&
-        countList?.map((item, idx) => (
-          <AddCardDiv key={idx}>
-            <label></label>
-            {/* <PreviewImg
-              src={imageURL}
-            src={"https://cdn-icons-png.flaticon.com/512/149/149092.png"}
-            />
-            <input
-              type="file"
-              accept="image/*"
-                onChange={imgUpload}
-                value={imageURL}
-            /> */}
-            <div>
-              <Cardtextarea
-                placeholder="레시피를 입력해주세요"
-                onChange={(e) => {
-                  setContent1(e.target.value);
-                }}
-              />
-            </div>
-            <label>{idx + 1}</label>
-          </AddCardDiv>
-        ))}
+      <AddCardDiv>
+        <label></label>
+        <PreviewImg src={imgUrl} />
+        <input type="file" accept="image/*" onChange={getImgUpload} />
+        <div>
+          <Cardtextarea
+            placeholder="레시피를 입력해주세요"
+            onChange={(e) => {
+              setContent(e.target.value);
+            }}
+            // ref={contentRef}
+          />
+        </div>
+        {/* <label>{idx + 1}</label> */}
+      </AddCardDiv>
     </div>
   );
 }
@@ -57,11 +63,12 @@ const AddCardDiv = styled.div`
 
 const PreviewImg = styled.img`
   width: 40vw;
-  height 10vh;
-  margin: 0rem 1rem 0rem 1rem;`;
+  height: 10vh;
+  margin: 0rem 1rem 0rem 1rem;
+`;
 
 const Cardtextarea = styled.textarea`
- width: 60vw;
-  height 10vh;
+  width: 60vw;
+  height: 10vh;
   margin: 0rem 1rem 0rem 1rem;
 `;

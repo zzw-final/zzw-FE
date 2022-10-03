@@ -33,8 +33,6 @@ const WriteTitle = ({
     setTagItem("");
   };
 
-  console.log("태그리스트", tagList);
-
   const deleteTag = (ingredientName) => {
     setTagList(tagList.filter((tagItem) => tagItem !== ingredientName));
   };
@@ -53,6 +51,11 @@ const WriteTitle = ({
 
   const onClickImgInput = () => {
     imgInput.current.click();
+  };
+
+  const getImgUpload = async (e) => {
+    const result = await imgUpload(e);
+    console.log("result :>> ", result.data.data.imageUrl);
   };
 
   return (
@@ -112,7 +115,10 @@ const WriteTitle = ({
         type="file"
         accept="image/*"
         multiple="multiple"
-        onChange={imgUpload}
+        // onChange={() => {
+        //   imgUpload("ㅎㅎㅎㅎㅎ");
+        // }}
+        onChange={getImgUpload}
         ref={imgInput}
       />
       {/* <button onClick={onClickImgInput}>대표이미지를 업로드 해주세요 !</button> */}
@@ -215,9 +221,9 @@ const TimeSelect = styled.select`
 const PreviewImg = styled.img`
   /* background-color: blue; */
   width: 60vw;
-  height 20vh;
-  border:0;
-  border-radius:10px;
+  height: 20vh;
+  border: 0;
+  border-radius: 10px;
   margin: 0rem 1rem 0rem 1rem;
   grid-column-start: 2;
   grid-row-start: 5;
