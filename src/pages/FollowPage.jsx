@@ -34,19 +34,16 @@ const FollowPage = () => {
     }
   };
 
-  const follow = useQuery(["follow", id], fetchFollow, {
+  const { data: followList } = useQuery(["follow", id], fetchFollow, {
     enabled: !click, // 팔로우 진입시에만 받아옴
-    staleTime: Infinity, // 항상 신선한 데이터로 취급
+    staleTime: 300000,
     select: (data) => data.data.data, // 요청 성공시 데이터 가공
   });
-  const follower = useQuery(["follower", id], fetchFollower, {
+  const { data: followerList } = useQuery(["follower", id], fetchFollower, {
     enabled: !!click, // 팔로워 진입시에만 받아옴
-    staleTime: Infinity, // 항상 신선한 데이터로 취급
+    staleTime: 300000,
     select: (data) => data.data.data, // 요청 성공시 데이터 가공
   });
-
-  const followList = follow?.data; // follow 가공 data를 followList로 선언
-  const followerList = follower?.data; // follower 가공 data를 followerList로 선언
 
   // 팔로우 버튼을 눌렀다면
   const followBtn = () => {
@@ -62,44 +59,22 @@ const FollowPage = () => {
     setClick(true); // 클릭 상태는 true로(follower data fetch enabled option)
   };
 
-  const queryClient = useQueryClient(); // Optimistic Update 하려면 필요해요.
+  const queryClient = useQueryClient(); // Optimistic Update 하려면 필요.
 
-  // const followHandler = async (userId) => {
-  //   return await instance.post(`/api/auth/mypage/follow/${userId}`);
-  // };
+  const followHandler = async (userId) => {
+    return await instance.post(`/api/auth/mypage/follow/${userId}`);
+  };
 
-  const { mutate, isError, isSuccess } = useMutation(
-    (userId) => {
-      return instance.post(`/api/auth/mypage/follow/${userId}`);
-    }
-    // {
-    //   onMutate: async () => {
-    //     if (!click) {
-    //       await queryClient.cancelQueries(["follow", id]);
-    //       const prevFollow = queryClient.getQueryData(["follow", id]);
-    //       queryClient.setQueryData(["follow", id]);
-    //       return { prevFollow };
-    //     }
-    //     if (!!click) {
-    //       await queryClient.cancelQueries(["follower", id]);
-    //       const prevFollower = queryClient.getQueryData(["follower", id]);
-    //       queryClient.setQueryData(["follower", id]);
-    //       return { prevFollower };
-    //     }
-    //   },
-    // }
-  );
-
-  // const { mutate } = useMutation(followHandler, {
-  //   onMutate: async () => {
-  //     await queryClient.cancelQueries("followpage");
-  //     const oldFollowData = queryClient.getQueryData("followpage");
-  //     queryClient.setQueryData("followpage", (prev) => {
-  //       console.log(prev);
-  //     });
-  //     return { oldFollowData };
-  //   },
-  // });
+  const { mutate } = useMutation(followHandler, {
+    onSuccess: () => {
+      if (!click) {
+        queryClient.invalidateQueries(["follow", id]);
+      }
+      if (!!click) {
+        queryClient.invalidateQueries(["follower", id]);
+      }
+    },
+  });
 
   return (
     <LayoutPage>
@@ -110,20 +85,8 @@ const FollowPage = () => {
         followerView={followerView}
         nickname={nickname}
       />
-      {followView && (
-        <FollowList
-          followList={followList}
-          mutate={mutate}
-          // onFollowHandler={followHandler}
-        />
-      )}
-      {followerView && (
-        <FollowerList
-          followerList={followerList}
-          mutate={mutate}
-          // onFollowHandler={followHandler}
-        />
-      )}
+      {followView && <FollowList followList={followList} mutate={mutate} />}
+      {followerView && <FollowerList followerList={followerList} mutate={mutate} />}
     </LayoutPage>
   );
 };
