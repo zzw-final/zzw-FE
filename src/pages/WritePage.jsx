@@ -6,19 +6,9 @@ import { instance, imgInstance } from "../api/request";
 import LayoutPage from "../components/common/LayoutPage";
 import WriteCard from "../components/write/WriteCard";
 import WriteHeader from "../components/write/WriteHeader";
-import WriteSwiper from "../components/write/WriteSwiper";
 import WriteTitle from "../components/write/WriteTitle";
 
 function WritePage() {
-  // const titleRef = useRef("");
-  // const foodnameRef = useRef("");
-  // const ingredientRef = useRef([]);
-  // const timeRef = useRef("");
-  // const content = useRef("");
-  // const [imageURL, setImageURL] = useState([]);
-  // const [ingredient, setIngredient] = useState([]);
-  // const navigate = useNavigate();
-
   const [title, setTitle] = useState("");
   const [foodname, setFoodName] = useState("");
   const [ingredient, setIngredient] = useState([]);
@@ -27,35 +17,17 @@ function WritePage() {
   const [imageURL, setImageURL] = useState("");
   const navigate = useNavigate();
 
-  const [pageNum, setPageNum] = useState(0);
-
-  const [content1, setContent1] = useState("");
-  const [content2, setContent2] = useState("");
-
   // const cardData = (pageNum, content1, content2) => {
   //   setPageNum(pageNum);
   //   setContent1(content1);
   //   setContent2(content2);
   // };
 
-  console.log("첫번째 페이지 작성내용", content1);
-
   //post
   const onSubmitHandler = async (e) => {
     try {
       e.preventDefault();
       const data = {
-        // title: titleRef.current?.value,
-        // foodName: foodnameRef.current?.value,
-        // imageURL: imageURL,
-        // ingredient: ingredientRef.current?.value,
-        // time: timeRef.current?.value,
-        // pageList: [
-        //   {
-        //     imageURL: imageURL,
-        //     content: "내용",
-        //   },
-        // ],
         title: title,
         foodName: foodname,
         imageUrl: imageURL,
@@ -79,15 +51,6 @@ function WritePage() {
       console.log("에러..", error);
     }
   };
-
-  // const postData = (title, foodname, ingredient, time, content, imageUrl) => {
-  //   setTitle(title);
-  //   setFoodName(foodname);
-  //   setIngredient(ingredient);
-  //   setTime(time);
-  //   setContent(content);
-  //   setImageURL(imageUrl);
-  // };
 
   //img URL가져오는 요청
 
@@ -147,34 +110,9 @@ function WritePage() {
         imageURL={imageURL}
         imgUpload={imgUpload}
         setContent={setContent}
-        // cardData={cardData}
-        setContent1={setContent1}
-        setPageNum={setPageNum}
       />
 
       <Addbutton onClick={onAddCardDiv}>페이지 추가하기</Addbutton>
-
-      {/* <WriteTitle
-        titleRef={titleRef}
-        foodnameRef={foodnameRef}
-        ingredientRef={ingredientRef}
-        timeRef={timeRef}
-        content={content}
-        setImageURL={setImageURL}
-        imageURL={imageURL}
-        imgUpload={imgUpload}
-        setIngredient={setIngredient}
-      /> */}
-      {/* <WriteSwiper
-        titleRef={titleRef}
-        foodnameRef={foodnameRef}
-        ingredientRef={ingredientRef}
-        timeRef={timeRef}
-        content={content}
-        setImageURL={setImageURL}
-        imageURL={imageURL}
-        imgUpload={imgUpload}
-      /> */}
     </LayoutPage>
   );
 }

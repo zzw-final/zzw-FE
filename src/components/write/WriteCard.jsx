@@ -15,7 +15,6 @@ function WriteCard({
       {countList &&
         countList?.map((item, idx) => (
           <AddCardDiv key={idx}>
-            <label></label>
             {/* <PreviewImg
               src={imageURL}
             src={"https://cdn-icons-png.flaticon.com/512/149/149092.png"}
