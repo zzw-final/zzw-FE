@@ -5,8 +5,18 @@ import Tag from "../common/Tag";
 import CommentList from "../comment/CommentList";
 import { getCookie } from "../../util/cookie";
 import Toast from "../UI/Toast";
+import SwiperRecipe from "../common/SwiperRecipe";
 
-function Detail({ postDetail, tagList, post, remove, update, commentList, onDelete }) {
+function Detail({
+  postDetail,
+  tagList,
+  post,
+  remove,
+  update,
+  commentList,
+  onDelete,
+  likeToggle,
+}) {
   const navigate = useNavigate();
   const nickname = getCookie("loginNickname");
   const url = window.location.href;
@@ -22,7 +32,9 @@ function Detail({ postDetail, tagList, post, remove, update, commentList, onDele
   ).ingredientName;
 
   const foodIngredientList = postDetail?.ingredient
-    .map((ingredient) => (!ingredient.isName ? ingredient.ingredientName : undefined))
+    .map((ingredient) =>
+      !ingredient.isName ? ingredient.ingredientName : undefined
+    )
     .filter((ingredient) => ingredient !== undefined);
 
   return (
@@ -50,7 +62,11 @@ function Detail({ postDetail, tagList, post, remove, update, commentList, onDele
           <Tag height="20px" tagName={ingredient} key={i} />
         ))}
       </Tags>
-      <Content>제곧내</Content>
+      <Content>
+        {postDetail && (
+          <SwiperRecipe postDetail={postDetail} likeToggle={likeToggle} />
+        )}
+      </Content>
       {toast && <Toast setToast={setToast} />}
       <Footer>
         <FootLeft>
@@ -128,11 +144,11 @@ const Tags = styled.div`
 
 const Content = styled.div`
   margin: 10px auto;
-  padding: 0.5rem;
+  /* padding: 0.5rem; */
   border-radius: 10px;
-  width: 90vw;
+  width: 100vw;
   height: 60vh;
-  background-color: white;
+  /* background-color: white; */
 `;
 
 const Footer = styled.div`

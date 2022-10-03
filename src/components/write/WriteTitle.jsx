@@ -1,5 +1,7 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import styled from "styled-components";
+import Tag from "../common/Tag";
+import WriteCard from "./WriteCard";
 
 const WriteTitle = ({
   setTitle,
@@ -9,9 +11,16 @@ const WriteTitle = ({
   setImageURL,
   imageURL,
   imgUpload,
+  // titleRef,
+  // foodnameRef,
+  // ingredientRef,
+  // timeRef,
+  // content,
+  // setImageURL,
+  // imageURL,
+  // imgUpload,
+  // setIngredient,
 }) => {
-  // console.log(setTitle);
-
   const [tagItem, setTagItem] = useState("");
   const [tagList, setTagList] = useState([]);
 
@@ -23,12 +32,11 @@ const WriteTitle = ({
     }
     setTagItem("");
   };
-  console.log(tagList);
+
+  console.log("태그리스트", tagList);
 
   const deleteTag = (ingredientName) => {
-    setTagList(
-      tagList.filter((tagItem) => tagItem.ingredientName !== ingredientName)
-    );
+    setTagList(tagList.filter((tagItem) => tagItem !== ingredientName));
   };
 
   const onKeyPress = (e) => {
@@ -41,18 +49,35 @@ const WriteTitle = ({
     setIngredient(tagList);
   }, [tagList]);
 
+  const imgInput = useRef();
+
+  const onClickImgInput = () => {
+    imgInput.current.click();
+  };
+
   return (
     <WriteTitleContainer>
-      <Title placeholder="제목을 입력해주세요" />
-      <FoodNameInput placeholder="요리이름 입력해주세요" />
+      <Title
+        placeholder="제목을 입력해주세요"
+        // ref={titleRef}
+        onChange={(e) => {
+          setTitle(e.target.value);
+        }}
+      />
+      <FoodNameInput
+        placeholder="요리이름 입력해주세요"
+        // ref={foodnameRef}
+        onChange={(e) => {
+          setFoodName(e.target.value);
+        }}
+      />
+
       <TagBox>
         {tagList.map((tagItem, i) => {
           return (
             <Tagdiv key={i}>
-              <div>{tagItem.ingredientName}</div>
-              <Button onClick={() => deleteTag(tagItem.ingredientName)}>
-                X
-              </Button>
+              <div>{tagItem}</div>
+              <Button onClick={() => deleteTag(tagItem)}>X</Button>
             </Tagdiv>
           );
         })}
@@ -68,32 +93,33 @@ const WriteTitle = ({
       <SelectDiv>조리시간 </SelectDiv>
       <TimeSelect
         placeholder="요리 시간을 선택해주세요"
+        // ref={timeRef}
         onChange={(e) => {
           setTime(e.target.value);
         }}
       >
-        <option value="0">5분</option>
-        <option value="1">10분</option>
-        <option value="2">15분</option>
-        <option value="3">30분 이상</option>
+        <option value="5분">5분</option>
+        <option value="10분">10분</option>
+        <option value="15분">15분</option>
+        <option value="30분 이상">30분 이상</option>
       </TimeSelect>
       <PreviewImg
-        // src={imageURL}
-        src={"https://cdn-icons-png.flaticon.com/512/149/149092.png"}
+        placeholder="재료를 태그로 입력해주세요"
+        onClick={onClickImgInput}
+        src={imageURL}
       />
       <ImgInput
         type="file"
         accept="image/*"
         multiple="multiple"
         onChange={imgUpload}
-        value={imageURL}
+        ref={imgInput}
       />
+      {/* <button onClick={onClickImgInput}>대표이미지를 업로드 해주세요 !</button> */}
     </WriteTitleContainer>
   );
 };
-
 export default WriteTitle;
-
 const WriteTitleContainer = styled.div`
   background-color: white;
   margin: auto auto;
@@ -101,30 +127,28 @@ const WriteTitleContainer = styled.div`
   height: 60vh;
   border-radius: 20px;
   display: grid;
-  justify-items:center;
+  justify-items: center;
   gap: 5px;
   grid-template-columns: 1rem 1fr 1rem;
-  grid-template-rows: 8vh 5vh 1fr 5vh 1fr 1fr 1fr; */
+  grid-template-rows: 8vh 5vh 1fr 5vh 1fr 1fr 1fr;
   align-items: stretch;
 `;
+
 const Title = styled.input`
-width 60vw;
-height:4vh;
-border-radius: 5px;
-grid-column-start:2;
-grid-row-start:1;
-margin:4vh 1rem 0px 1rem;
-
-
+  width: 60vw;
+  height: 4vh;
+  border-radius: 5px;
+  grid-column-start: 2;
+  grid-row-start: 1;
+  margin: 4vh 1rem 0px 1rem;
 `;
-
 const FoodNameInput = styled.input`
-  width 60vw;
-height:4vh;
-border-radius: 5px;
-grid-column-start:2;
-grid-row-start:2;
-margin:1vh 1rem 0rem 1rem;
+  width: 60vw;
+  height: 4vh;
+  border-radius: 5px;
+  grid-column-start: 2;
+  grid-row-start: 2;
+  margin: 1vh 1rem 0rem 1rem;
 `;
 const TagBox = styled.div`
   display: flex;
@@ -162,7 +186,6 @@ const Tagdiv = styled.div`
   color: white;
   font-size: 13px;
 `;
-
 const Button = styled.button`
   display: flex;
   justify-content: center;
@@ -174,18 +197,16 @@ const Button = styled.button`
   border-radius: 50%;
   color: black;
 `;
-
 const SelectDiv = styled.div`
   grid-column-start: 2;
   grid-row-start: 4;
-  margin: 1vh 1rem 1rem 1rem;
+  margin: 1vh 1rem 1rem -10rem;
 `;
-
 const TimeSelect = styled.select`
   box-sizing: border-box;
   width: 20vw;
   height: 3vh;
-  margin: 2vw 2px 0rem 5rem;
+  margin: 2vw 2px 0rem -1rem;
   border: 1px solid #9c9c9c;
   border-radius: 10px;
   grid-column-start: 2;
@@ -195,12 +216,14 @@ const PreviewImg = styled.img`
   /* background-color: blue; */
   width: 60vw;
   height 20vh;
+  border:0;
+  border-radius:10px;
   margin: 0rem 1rem 0rem 1rem;
   grid-column-start: 2;
   grid-row-start: 5;
 `;
-
 const ImgInput = styled.input`
   grid-column-start: 2;
   grid-row-start: 6;
+  display: none;
 `;

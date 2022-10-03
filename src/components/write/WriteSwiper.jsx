@@ -9,13 +9,15 @@ import { EffectCards } from "swiper";
 import WriteTitle from "./WriteTitle";
 
 function WriteSwiper(
-  setTitle,
-  setFoodName,
-  setIngredient,
-  setTime,
-  setImageURL,
-  imageURL,
-  imgUpload
+  titleRef,
+  foodnameRef,
+  ingredientRef,
+  timeRef,
+  content,
+  setImageURL
+  // imageURL,
+  // imgUpload
+  // setIngredient,
 ) {
   const [slide, setSlide] = useState([]);
 
@@ -32,10 +34,11 @@ function WriteSwiper(
           className="mySwiper"
         >
           <WriteTitle
-          // setTitle={setTitle}
-          // setFoodName={setFoodName}
-          // setIngredient={setIngredient}
-          // setTime={setTime}
+          // titleRef={titleRef}
+          // foodnameRef={foodnameRef}
+          // ingredientRef={ingredientRef}
+          // timeRef={timeRef}
+          // content={content}
           // setImageURL={setImageURL}
           // imageURL={imageURL}
           // imgUpload={imgUpload}
