@@ -1,184 +1,180 @@
-import React, { useEffect, useState } from "react";
+import { useState } from "react";
 import styled from "styled-components";
-import { useNavigate, useParams } from "react-router-dom";
-import { instance } from "../../api/request";
+import { useNavigate } from "react-router-dom";
 import Tag from "../common/Tag";
 import CommentList from "../comment/CommentList";
-import { useCookies } from "react-cookie";
+import { getCookie } from "../../util/cookie";
+import Toast from "../UI/Toast";
+import SwiperRecipe from "../common/SwiperRecipe";
 
-
-function Detail({ postDetail, tagList, post, remove, update, commentList, onDelete }) {
-
+function Detail({
+  postDetail,
+  tagList,
+  post,
+  remove,
+  update,
+  commentList,
+  onDelete,
+  likeToggle,
+}) {
   const navigate = useNavigate();
-  const [cookies] = useCookies(["loginNickname"]);
-  const foodName = postDetail?.ingredient?.find(
-    (ingredient) => ingredient.isName === true
+  const nickname = getCookie("loginNickname");
+  const url = window.location.href;
+  const [toast, setToast] = useState(false);
+
+  const copyUrl = async () => {
+    setToast(true);
+    await navigator.clipboard.writeText(url);
+  };
+
+  const foodName = postDetail?.ingredient.find(
+    (ingredient) => ingredient.isName
   ).ingredientName;
 
   const foodIngredientList = postDetail?.ingredient
-    ?.map((ingredient) =>
-      ingredient.isName !== true ? ingredient.ingredientName : undefined
+    .map((ingredient) =>
+      !ingredient.isName ? ingredient.ingredientName : undefined
     )
     .filter((ingredient) => ingredient !== undefined);
 
-  const loginNickname = cookies.loginNickname;
-  console.log("닉네임", loginNickname);
-
   return (
-    <>
-      <DetailContainer>
-        <ButtonDiv>
-          {loginNickname === postDetail?.nickname ? (
-            <>
-              <button
-                onClick={() => {
-                  navigate(`/editpage/${postDetail.postId}`);
-                }}
-              >
-                수정
-              </button>
-              <button onClick={onDelete}>삭제</button>
-            </>
-          ) : null}
-        </ButtonDiv>
-        <TitleDiv>
-          <FoodnameDiv>{foodName}</FoodnameDiv>
-          <PostTitleDiv>
-            <NickNameDiv>{postDetail?.nickname}</NickNameDiv>
-            <PostTitle>{postDetail?.title}</PostTitle>
-
-            <Tags>
-              {foodIngredientList?.map((ingredient, idx) => (
-                <Tag tagName={ingredient} key={idx} />
-              ))}
-            </Tags>
-          </PostTitleDiv>
-        </TitleDiv>
-        <FoodImgBox>
-          <img alt="foodphoto" width="100%" height="90%" src={postDetail?.foodImg} />
-        </FoodImgBox>
-
-        <LikeDiv>
-          <CreatDate>{postDetail?.createAt}</CreatDate>
-          <Like>
-            조아요<Likenumdiv>{postDetail?.likeNum}</Likenumdiv>
-          </Like>
-        </LikeDiv>
-        <ContentBox>{postDetail?.content}</ContentBox>
-      </DetailContainer>
-      <CommentList
+    <DetailContainer>
+      <Header>
+        <FoodnameDiv>
+          <Foodname>{foodName}</Foodname>
+          <Time>⏱ {postDetail?.time} min</Time>
+        </FoodnameDiv>
+        {nickname === postDetail?.nickname && (
+          <ButtonDiv>
+            <Button
+              onClick={() => {
+                navigate(`/editpage/${postDetail?.postId}`);
+              }}
+            >
+              수정
+            </Button>
+            <Button onClick={onDelete}>삭제</Button>
+          </ButtonDiv>
+        )}
+      </Header>
+      <Tags>
+        {foodIngredientList?.map((ingredient, i) => (
+          <Tag height="20px" tagName={ingredient} key={i} />
+        ))}
+      </Tags>
+      <Content>
+        {postDetail && (
+          <SwiperRecipe postDetail={postDetail} likeToggle={likeToggle} />
+        )}
+      </Content>
+      {toast && <Toast setToast={setToast} />}
+      <Footer>
+        <FootLeft>
+          <Icon onClick={copyUrl} src={"/copy.png"} alt="공유하기" />
+          <Icon src={"/eye-off.png"} alt="신고하기" />
+        </FootLeft>
+        <Comment>💬 156</Comment>
+      </Footer>
+      {/* <CommentList
         postId={postDetail?.postId}
         post={post}
         remove={remove}
         update={update}
         commentList={commentList}
-      />
-    </>
+      /> */}
+    </DetailContainer>
   );
 }
+
 const DetailContainer = styled.div`
-  height: 70vh;
   width: 100vw;
 `;
 
-const TitleDiv = styled.div`
-  height: 10vh;
-  width: 100%;
-`;
-
-const ButtonDiv = styled.div`
-  text-align: right;
-  width: 100vw;
-  height: 4vh;
-  margin-top: 3vh;
-  padding: 3vw 3vh;
+const Header = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 2rem 1.9rem 1.5rem 1.9rem;
 `;
 
 const FoodnameDiv = styled.div`
-  width: 100vw;
-  height: 4vh;
-  padding-top: 1vh;
-  font-size: var(--font-regular);
+  display: flex;
+  align-items: center;
+`;
+
+const Foodname = styled.div`
+  font-size: var(--font-medium-large);
+  font-weight: var(--weight-bolder);
+`;
+
+const Time = styled.div`
+  font-size: var(--font-small);
+  margin-left: 0.3rem;
+`;
+
+const ButtonDiv = styled.div`
+  display: flex;
+  gap: 10px;
+`;
+
+const Button = styled.button`
+  font-size: var(--font-small);
+  font-weight: var(--weight-semi-bold);
+  color: #232323;
   text-align: center;
+  width: 2.5rem;
+  height: 1.2rem;
+  background-color: #fbf8f0;
+  border-radius: 3px;
+  box-shadow: 2px 2px 5px #bebebe;
+  border: none;
 `;
 
-const PostTitleDiv = styled.div`
-  justify-content: space-between;
-`;
-
-const PostTitle = styled.div`
-  height: 4vh;
-  font-size: var(--font-small);
-  padding: 2vw 4vh;
-`;
-
-const NickNameDiv = styled.div`
-  color: var(--color-grey);
-  padding: 0vh 10vw;
-  font-size: var(--font-micro);
-  text-align: right;
-`;
-
-const FoodImgBox = styled.div`
-  margin: auto;
-  margin-top: 8vw;
-  width: 60vw;
-  height: 20vh;
-
-  border-radius: 10px;
-`;
-
-const LikeDiv = styled.div`
-  display: grid;
-  grid-template-columns: 150px 1fr 1fr;
-`;
-
-const Like = styled.div`
-  width: 20vw;
-  grid-column-start: 4;
-  display: grid;
-  grid-template-columns: 4fr 3fr;
-  /* margin-right: 1rem;
-  margin-top: 1rem; */
-  margin: 1rem 1rem 0.5rem 2rem;
-  font-size: var(--font-micro);
-`;
-
-const Likenumdiv = styled.div`
-  /* background-color: #e8f5e9; */
-  width: 5vw;
-  font-size: var(--font-micro);
-`;
-
-const CreatDate = styled.div`
-  width: 35vw;
-  font-size: var(--font-micro);
-  /* background-color: green; */
-  grid-column: 1 / span 3;
-  margin-left: 2rem;
-  margin-top: 1rem;
-`;
-
-const ContentBox = styled.div`
-  box-sizing: border-box;
-  border: 1px solid #a8a8a8;
-  /* height: 30vh; */
-  padding: 5vw;
-  margin: 2vw;
-  border-radius: 10px;
-  font-size: var(--font-small);
-`;
 const Tags = styled.div`
   margin-left: 1rem;
   display: flex;
   padding: 0.2rem;
-  gap: 0.15rem;
-  overflow: auto;
+  gap: 0.5rem;
   white-space: nowrap;
 
   &::-webkit-scrollbar {
     display: none;
   }
+`;
+
+const Content = styled.div`
+  margin: 10px auto;
+  /* padding: 0.5rem; */
+  border-radius: 10px;
+  width: 100vw;
+  height: 60vh;
+  /* background-color: white; */
+`;
+
+const Footer = styled.div`
+  display: flex;
+  justify-content: space-between;
+  padding: 6rem 1.5rem 0rem 1.5rem;
+  align-items: center;
+`;
+
+const FootLeft = styled.div`
+  display: flex;
+  align-items: center;
+  gap: 20px;
+`;
+
+const Icon = styled.img`
+  width: 25px;
+  height: 25px;
+`;
+
+const Comment = styled.div`
+  background-color: white;
+  padding: 0.2rem 0.5rem;
+  box-shadow: 0 0 10px rgb(0 0 0 / 30%);
+  border-radius: 15px;
+  font-weight: var(--weight-bold);
 `;
 
 export default Detail;

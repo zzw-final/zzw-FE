@@ -66,6 +66,16 @@ function WritePage() {
       console.log("에러..", error);
     }
   };
+
+  const postData = (title, foodname, ingredient, time, content, imageUrl) => {
+    setTitle(title);
+    setFoodName(foodname);
+    setIngredient(ingredient);
+    setTime(time);
+    setContent(content);
+    setImageURL(imageUrl);
+  };
+
   //img URL가져오는 요청
 
   const imgUpload = (e) => {

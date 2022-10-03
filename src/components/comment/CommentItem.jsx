@@ -6,7 +6,8 @@ import useInputRef from "../../hooks/useInputRef";
 import { useNavigate } from "react-router-dom";
 
 const CommentItem = ({ commentItem, remove, update }) => {
-  const { commentId, userId, profile, nickname, comment, grade, createdAt } = commentItem;
+  const { commentId, userId, profile, nickname, comment, grade, createdAt } =
+    commentItem;
   const [updatedComment] = useState(comment);
   const [visibleEditBtns, setVisibleEditBtns] = useState("block");
   const [visibleEditCommentBox, setVisibleEditCommentBox] = useState("none");
@@ -86,7 +87,9 @@ const CommentItem = ({ commentItem, remove, update }) => {
       <EditedCommentBox visibleEditCommentBox={visibleEditCommentBox}>
         <EditComment ref={updateCommentRef}></EditComment>
         <EditCommentBtns>
-          <UpdateComplateBtn onClick={updateComment}>수정 완료</UpdateComplateBtn>
+          <UpdateComplateBtn onClick={updateComment}>
+            수정 완료
+          </UpdateComplateBtn>
           <CancleBtn onClick={cancleEdit}>취소</CancleBtn>
         </EditCommentBtns>
       </EditedCommentBox>

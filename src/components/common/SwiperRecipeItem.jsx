@@ -5,47 +5,62 @@ import styled from "styled-components";
 import Avatar from "@mui/material/Avatar";
 import Like from "./Like";
 import { useState } from "react";
+import { dateFormat } from "../../util/dateFormat";
 
-const SwiperRecipeItem = ({ IMSIdata, IMSIdataDetail, isFirstPage }) => {
+const SwiperRecipeItem = ({
+  postDetail,
+  contentList,
+  isFirstPage,
+  likeToggle,
+}) => {
   const [data, setData] = useState();
 
   const {
     postId,
     title,
     nickname,
-    profile,
+    // profile,
     grade,
-    userId,
-    pageCnt,
+    authorId,
     isLike,
     likeNum,
     foodImg,
     createAt,
-  } = IMSIdata;
+  } = postDetail;
 
-  const { imageUrl, content } = IMSIdataDetail;
+  const { imageUrl, content, page } = contentList;
+  const [likeToggleBtn, setLikeToggleBtn] = useState(isLike);
 
-  //   const [cookies] = useCookies(["loginNickname"]);
-  //   const navigate = useNavigate();
+  const [cookies] = useCookies(["loginNickname"]);
+  const navigate = useNavigate();
 
-  //   const loginNickname = cookies.loginNickname;
+  const loginNickname = cookies.loginNickname;
 
   const userPage = () => {
-    //   if (+cookies.loginUserId === userId) navigate(`/mypage`);
-    //   else navigate(`/mypage/${userId}`);
+    if (+cookies.loginUserId === authorId) navigate(`/mypage`);
+    else navigate(`/mypage/${authorId}`);
+  };
+
+  const like = async () => {
+    if (loginNickname === undefined) {
+      alert("로그인 유저만 사용 가능한 기능입니다.");
+      return;
+    }
+    await likeToggle(postId);
+    setLikeToggleBtn(!likeToggleBtn);
   };
 
   return isFirstPage ? (
     <ItemContainer>
       <ItemImg src={foodImg} alt="Recipe" />
       <LikeBox>
-        <Like /> {likeNum}
+        <Like isLike={likeToggleBtn} btnClick={like} /> {likeNum}
       </LikeBox>
       <ItemBox>
         <ItemInfo>
           <Avatar
             alt="user_img"
-            src={profile}
+            // src={profile}
             sx={{ width: 28, height: 28, mr: 1 }}
             onClick={userPage}
           />
@@ -53,7 +68,7 @@ const SwiperRecipeItem = ({ IMSIdata, IMSIdataDetail, isFirstPage }) => {
             <Nickname onClick={userPage}>
               {grade}/{nickname}
             </Nickname>
-            <CreatedAt>{createAt}</CreatedAt>
+            <CreatedAt>{dateFormat(createAt)}</CreatedAt>
           </NinknameCreatedAt>
         </ItemInfo>
         <ItemTitle>{title}</ItemTitle>
@@ -62,9 +77,8 @@ const SwiperRecipeItem = ({ IMSIdata, IMSIdataDetail, isFirstPage }) => {
   ) : (
     <ItemContainer>
       <ItemImg src={imageUrl} alt="Recipe" />
-      {/* <LikeBox><Like /> {likeNum}</LikeBox> */}
       <ItemBox>
-        <ItemStep>STEP 1</ItemStep>
+        <ItemStep>STEP {page}</ItemStep>
         <ItemContent>{content}</ItemContent>
       </ItemBox>
     </ItemContainer>

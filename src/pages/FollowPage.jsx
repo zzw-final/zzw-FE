@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import { useQuery } from "react-query";
 import { useLocation, useParams } from "react-router-dom";
 import { instance } from "../api/request";
@@ -20,32 +20,28 @@ const FollowPage = () => {
 
   const fetchFollow = async () => {
     if (!id) {
-      console.log("내 팔로우");
       return await instance.get(`/api/auth/mypage/follow`);
     } else {
-      console.log("남 팔로우");
       return await instance.get(`/api/mypage/${id}/follow`);
     }
   };
 
   const fetchFollower = async () => {
     if (!id) {
-      console.log("내 팔로워");
       return await instance.get(`/api/auth/mypage/follower`);
     } else {
-      console.log("남 팔로워");
       return await instance.get(`/api/mypage/${id}/follower`);
     }
   };
 
-  const follow = useQuery("follow", fetchFollow, {
+  const follow = useQuery(["follow", id], fetchFollow, {
     enabled: !click, // 팔로우 진입시에만 받아옴
-    staleTime: 600000, // 10분동안 신선한 데이터로 취급
+    staleTime: Infinity, // 항상 신선한 데이터로 취급
     select: (data) => data.data.data, // 요청 성공시 데이터 가공
   });
-  const follower = useQuery("follower", fetchFollower, {
+  const follower = useQuery(["follower", id], fetchFollower, {
     enabled: !!click, // 팔로워 진입시에만 받아옴
-    staleTime: 600000, // 10분동안 신선한 데이터로 취급
+    staleTime: Infinity, // 항상 신선한 데이터로 취급
     select: (data) => data.data.data, // 요청 성공시 데이터 가공
   });
 
