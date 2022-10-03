@@ -4,8 +4,6 @@ import Button from "../UI/Button";
 import { getCookie } from "../../util/cookie";
 import { useParams } from "react-router-dom";
 
-// TODO: 닉네임 검색 기능
-
 function FollowLayout({
   onClickFollower,
   onClickfollow,
@@ -21,9 +19,6 @@ function FollowLayout({
       <Container>
         <Nickname>{id ? nickname : myName}</Nickname>
       </Container>
-      <SearchBox>
-        <Search></Search>
-      </SearchBox>
       <Container>
         <Button name="followPageBtn" onClick={onClickfollow} view={followView}>
           팔로우
@@ -49,16 +44,4 @@ const Nickname = styled.div`
   border-bottom: 2px solid var(--color-light-white);
   font-weight: var(--weight-bolder);
   margin-bottom: 10px;
-`;
-
-const SearchBox = styled.div`
-  text-align: center;
-  position: relative;
-`;
-
-const Search = styled.input`
-  width: 93%;
-  height: 2.2rem;
-  border: 2px solid var(--color-light-grey);
-  border-radius: 20px;
 `;
