@@ -17,7 +17,6 @@ const SearchPage = () => {
   const searchedNickname = searchParams.get("nickname");
 
   const search = async (searchOption, sendData) => {
-    console.log("들어와???");
     navigate(`/search?${searchOption}=${sendData}`);
     const requestUrl = `/api/post/filter/${searchOption}?${searchOption}=${sendData}`;
     const resultSearch = await instance.get(requestUrl);

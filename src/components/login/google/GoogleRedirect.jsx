@@ -1,12 +1,16 @@
 import axios from "axios";
 import { useEffect } from "react";
 import { useCookies } from "react-cookie";
-import { useNavigate } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 
 function GoogleRedirect() {
   const [cookies, setCookie, removeCookies] = useCookies();
   const navigate = useNavigate();
   const code = new URL(window.location.href).searchParams.get("code");
+
+  const location = useLocation();
+
+  console.log("location.state.notFirst :>> ", location);
 
   useEffect(() => {
     async function googleLogin() {
@@ -16,9 +20,12 @@ function GoogleRedirect() {
 
       if (res.data.success && res.data.error === null) {
         const newUser = res.data.data.isFirst;
+        console.log("result.data.data.isFirst", res.data.data.isFirst);
         if (newUser === true) {
           const EMAIL = res.data.data.email;
+          const OAUTH = res.data.data.oauth;
           setCookie("loginEmail", EMAIL);
+          setCookie("loginOauth", OAUTH);
           navigate("/join");
         } else {
           const ACCESS_TOKEN = res.headers["authorization"];

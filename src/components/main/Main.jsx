@@ -21,8 +21,8 @@ const Main = ({
 
   const loginNickname = cookies.loginNickname;
 
-  console.log("loginNickname :>> ", loginNickname);
-  console.log("followPost :>> ", followPost);
+  // console.log("loginNickname :>> ", loginNickname);
+  // console.log("followPost :>> ", followPost);
 
   return (
     <MainContainer>

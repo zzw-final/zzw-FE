@@ -37,6 +37,8 @@ const MainPage = () => {
     navigate(`/search?${searchOption}=${sendData}`);
   };
 
+  console.log("recentPost mainpage > ", recentPost);
+
   return (
     <LayoutPage backgroundMain={"--color-orange"}>
       <Logo />
