@@ -7,6 +7,10 @@ const KakaoRedirect = () => {
   const navigate = useNavigate();
   const [cookies, setCookies, removeCookies] = useCookies([]);
 
+  const location = useLocation();
+
+  console.log("location.state.notFirst :>> ", location);
+
   // 인가코드
   let code = new URL(window.location.href).searchParams.get("code");
 
@@ -17,8 +21,11 @@ const KakaoRedirect = () => {
       if (result.data.success && result.data.error === null) {
         const newUser = result.data.data.isFirst;
         if (newUser === true) {
+          console.log("result kakao > ", result);
           const EMAIL = result.data.data.email;
+          const OAUTH = result.data.data.oauth;
           setCookies("loginEmail", EMAIL);
+          setCookies("loginOauth", OAUTH);
           navigate("/join");
         } else {
           const ACCESS_TOKEN = `Bearer ${result.headers["authorization"]}`;

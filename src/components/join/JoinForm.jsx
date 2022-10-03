@@ -14,7 +14,7 @@ const JoinForm = (props) => {
   const [nickname, setNickname] = useState("");
   const [isNickname, setIsNickname] = useState(false);
   const [signup, setSignup] = useState(false);
-  const [cookies] = useCookies(["loginEmail"]);
+  const [cookies] = useCookies(["loginEmail", "loginOauth"]);
 
   const navigate = useNavigate();
 
@@ -25,10 +25,15 @@ const JoinForm = (props) => {
     }
 
     const loginEmail = cookies.loginEmail;
-    const result = await join({ email: loginEmail, nickname });
+    const loginOauth = cookies.loginOauth;
+    const result = await join({
+      // email: loginEmail,
+      // oauth: loginOauth,
+      // nickname,
+    });
 
     if (result.data.success && result.data.error === null) {
-      navigate("/");
+      navigate("/login", { state: { first: false } });
     }
   };
 
