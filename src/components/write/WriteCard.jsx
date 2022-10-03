@@ -1,25 +1,38 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import styled from "styled-components";
 
-function WriteCard(props) {
+function WriteCard({
+  countList,
+  setImageURL,
+  imageURL,
+  imgUpload,
+  setContent,
+  setContent1,
+  setPageNum,
+}) {
   return (
     <div>
-      {props.countList &&
-        props.countList.map((item, idx) => (
+      {countList &&
+        countList?.map((item, idx) => (
           <AddCardDiv key={idx}>
             <label></label>
-            <PreviewImg
-              src={props.imageURL}
-              // src={"https://cdn-icons-png.flaticon.com/512/149/149092.png"}
+            {/* <PreviewImg
+              src={imageURL}
+            src={"https://cdn-icons-png.flaticon.com/512/149/149092.png"}
             />
             <input
               type="file"
               accept="image/*"
-              onChange={props.imgUpload}
-              value={props.imageURL}
-            />
+                onChange={imgUpload}
+                value={imageURL}
+            /> */}
             <div>
-              <Cardtextarea placeholder="제목을 입력해주세요" />
+              <Cardtextarea
+                placeholder="레시피를 입력해주세요"
+                onChange={(e) => {
+                  setContent1(e.target.value);
+                }}
+              />
             </div>
             <label>{idx + 1}</label>
           </AddCardDiv>

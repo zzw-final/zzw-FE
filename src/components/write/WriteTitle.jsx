@@ -23,6 +23,7 @@ const WriteTitle = ({
 }) => {
   const [tagItem, setTagItem] = useState("");
   const [tagList, setTagList] = useState([]);
+
   const submitTag = (prevState) => {
     if (!tagList.includes(tagItem)) {
       setTagList((prevState) => {
@@ -32,16 +33,10 @@ const WriteTitle = ({
     setTagItem("");
   };
 
-  // useEffect(() => {
-  //   postData(getfoodname, getingredients, getcookTime);
-  // }, [getfoodname, getingredients, getcookTime]);
-
-  console.log(tagList);
+  console.log("태그리스트", tagList);
 
   const deleteTag = (ingredientName) => {
-    setTagList(
-      tagList.filter((tagItem) => tagItem.ingredientName !== ingredientName)
-    );
+    setTagList(tagList.filter((tagItem) => tagItem !== ingredientName));
   };
 
   const onKeyPress = (e) => {
@@ -54,7 +49,11 @@ const WriteTitle = ({
     setIngredient(tagList);
   }, [tagList]);
 
-  // 카드 추가해주는 함수
+  const imgInput = useRef();
+
+  const onClickImgInput = () => {
+    imgInput.current.click();
+  };
 
   return (
     <WriteTitleContainer>
@@ -77,17 +76,17 @@ const WriteTitle = ({
         {tagList.map((tagItem, i) => {
           return (
             <Tagdiv key={i}>
-              <div>{tagItem.ingredientName}</div>
-              <Button onClick={() => deleteTag(tagItem.ingredientName)}>
-                X
-              </Button>
+              <div>{tagItem}</div>
+              <Button onClick={() => deleteTag(tagItem)}>X</Button>
             </Tagdiv>
           );
         })}
         <IngredintTag
           value={tagItem}
           placeholder="재료를 태그로 입력해주세요"
-          id="ingredients"
+          onChange={(e) => {
+            setTagItem(e.target.value);
+          }}
           onKeyPress={onKeyPress}
         />
       </TagBox>
@@ -99,22 +98,24 @@ const WriteTitle = ({
           setTime(e.target.value);
         }}
       >
-        <option value="0">5분</option>
-        <option value="1">10분</option>
-        <option value="2">15분</option>
-        <option value="3">30분 이상</option>
+        <option value="5분">5분</option>
+        <option value="10분">10분</option>
+        <option value="15분">15분</option>
+        <option value="30분 이상">30분 이상</option>
       </TimeSelect>
       <PreviewImg
+        placeholder="재료를 태그로 입력해주세요"
+        onClick={onClickImgInput}
         src={imageURL}
-        // src={"https://cdn-icons-png.flaticon.com/512/149/149092.png"}
       />
       <ImgInput
         type="file"
         accept="image/*"
         multiple="multiple"
-        // onChange={imgUpload}
-        // value={imageURL}
+        onChange={imgUpload}
+        ref={imgInput}
       />
+      {/* <button onClick={onClickImgInput}>대표이미지를 업로드 해주세요 !</button> */}
     </WriteTitleContainer>
   );
 };
@@ -142,12 +143,12 @@ const Title = styled.input`
   margin: 4vh 1rem 0px 1rem;
 `;
 const FoodNameInput = styled.input`
-  width:: 60vw;
-    height:  4vh;
-    border-radius: 5px;
-    grid-column-start:  2;
-    grid-row-start:  2;
-    margin:  1vh 1rem 0rem 1rem;
+  width: 60vw;
+  height: 4vh;
+  border-radius: 5px;
+  grid-column-start: 2;
+  grid-row-start: 2;
+  margin: 1vh 1rem 0rem 1rem;
 `;
 const TagBox = styled.div`
   display: flex;
@@ -224,8 +225,5 @@ const PreviewImg = styled.img`
 const ImgInput = styled.input`
   grid-column-start: 2;
   grid-row-start: 6;
-`;
-const TagList = styled.div`
-  color: var(--color-black);
-  display: flex;
+  display: none;
 `;
