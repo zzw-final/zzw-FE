@@ -2,7 +2,7 @@ import React from "react";
 import Follow from "./Follow";
 import styled from "styled-components";
 
-function FollowList({ followList, onFollowHandler }) {
+function FollowList({ followList, mutate }) {
   if (followList?.length === 0) {
     return <Div>팔로우 목록이 여기에 표시됩니다.</Div>;
   }
@@ -10,7 +10,12 @@ function FollowList({ followList, onFollowHandler }) {
   return (
     <>
       {followList?.map((follow) => (
-        <Follow key={follow.userId} follow={follow} onFollowHandler={onFollowHandler} />
+        <Follow
+          key={follow.userId}
+          follow={follow}
+          mutate={mutate}
+          // onFollowHandler={onFollowHandler}
+        />
       ))}
     </>
   );
