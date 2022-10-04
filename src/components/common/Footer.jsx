@@ -8,9 +8,12 @@ import PersonIcon from "@mui/icons-material/Person";
 import TagIcon from "@mui/icons-material/Tag";
 import { useNavigate } from "react-router-dom";
 import Tag from "../../components/common/Tag";
+import { useEffect } from "react";
 
 const Footer = ({ topTenTagList, tagAllList }) => {
   const [toggleTagList, setToggleTagList] = useState(false);
+  const [searchTagList, setSearchTagList] = useState([]);
+  const [searchHelpText, setSearchHelpText] = useState(false);
   const navigate = useNavigate();
 
   const goHome = () => {
@@ -29,9 +32,28 @@ const Footer = ({ topTenTagList, tagAllList }) => {
     setToggleTagList(!toggleTagList);
   };
 
-  const onClickTagHandler = (tagName) => {
-    navigate(`/search?tag=${tagName}`);
+  const onClickTagHandler = () => {
+    navigate(`/search?tag=${searchTagList.toString()}`);
+    setToggleTagList(!toggleTagList);
   };
+
+  const addSearchTag = (tagName) => {
+    if (searchTagList.includes(tagName)) {
+      setSearchTagList(searchTagList.filter((tag) => tag !== tagName));
+    } else {
+      setSearchTagList((prev) => [...prev, tagName]);
+    }
+  };
+
+  const deleteSelectedTag = (deleteTagName) => {
+    setSearchTagList(searchTagList.filter((tag) => tag !== deleteTagName));
+  };
+
+  useEffect(() => {
+    if (searchTagList.length !== 0 && searchTagList.length > 5)
+      setSearchHelpText(true);
+    else setSearchHelpText(false);
+  }, [searchTagList]);
 
   return (
     <>
@@ -62,13 +84,42 @@ const Footer = ({ topTenTagList, tagAllList }) => {
             label="Tag"
             value="tag"
             icon={<TagIcon />}
-            // className="openTagList"
             onClick={openTagBox}
           />
         </BottomNavigation>
       </FooterContainer>
       <TagList id="tagList" top={toggleTagList}>
-        <TagListFoldLine></TagListFoldLine>
+        <TagListFoldLine onClick={openTagBox}></TagListFoldLine>
+        <SearchBox>
+          <TagBox>
+            {searchTagList &&
+              searchTagList?.map((tag, idx) => (
+                <Tag
+                  tagName={tag}
+                  key={idx}
+                  margin="5px"
+                  isDelBtn={true}
+                  delBtnClick={() => {
+                    deleteSelectedTag(tag);
+                  }}
+                />
+              ))}
+          </TagBox>
+          {searchTagList.length !== 0 ? (
+            <>
+              <SearchBtn onClick={onClickTagHandler} disabled={searchHelpText}>
+                검색
+              </SearchBtn>
+              {searchHelpText ? (
+                <SearchHelpText>최대 5개까지 선택 가능합니다.</SearchHelpText>
+              ) : (
+                ""
+              )}
+            </>
+          ) : (
+            <IntroText>냉장고 속 재료들을 클릭 하세요 🥬</IntroText>
+          )}
+        </SearchBox>
         <TagTitle>인기 Tags</TagTitle>
         <TagBox>
           {topTenTagList &&
@@ -78,7 +129,7 @@ const Footer = ({ topTenTagList, tagAllList }) => {
                 key={idx}
                 margin="5px"
                 onClickHandler={() => {
-                  onClickTagHandler(tag);
+                  addSearchTag(tag);
                 }}
               />
             ))}
@@ -92,7 +143,7 @@ const Footer = ({ topTenTagList, tagAllList }) => {
                 key={idx}
                 margin="5px"
                 onClickHandler={() => {
-                  onClickTagHandler(tag);
+                  addSearchTag(tag);
                 }}
               />
             ))}
@@ -120,15 +171,53 @@ const TagListFoldLine = styled.div`
   margin: 0.5rem auto 2rem auto;
 `;
 
+const SearchBox = styled.div`
+  /* background-color: lavender; */
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: space-between;
+  height: 14vh;
+  position: relative;
+`;
+
+const IntroText = styled.div`
+  color: var(--color-white);
+  font-size: var(--font-medium);
+  font-weight: bold;
+  margin: 2rem 0;
+`;
+
+const SearchBtn = styled.button`
+  background-color: transparent;
+  border: 1px solid var(--color-white);
+  width: 6rem;
+  padding: 0.3rem;
+  margin: 1rem auto 0 auto;
+  font-size: var(--font-medium);
+  color: var(--color-white);
+  font-weight: bold;
+  border-radius: 10px;
+  cursor: pointer;
+`;
+
+const SearchHelpText = styled.p`
+  font-size: var(--font-small);
+  color: var(--color-light-orange);
+  font-weight: bold;
+  margin-top: 0.3rem;
+  position: absolute;
+  bottom: -25px;
+`;
+
 const TagList = styled.div`
   background-color: rgba(23, 23, 23, 0.888);
   width: 100%;
-  height: 75%;
+  height: 100%;
   margin: 0;
   padding: 1rem 2rem 2rem 2rem;
   transition: all 600ms cubic-bezier(0.86, 0, 0.07, 1);
-  top: ${({ top }) => (top ? "21%" : "100%")};
-  border-radius: 1.5rem 1.5rem 0 0;
+  top: ${({ top }) => (top ? "0%" : "100%")};
   position: fixed;
   left: 0;
   text-align: center;
@@ -138,13 +227,12 @@ const TagTitle = styled.div`
   color: var(--color-white);
   font-size: var(--font-medium);
   font-weight: bold;
-  margin-bottom: 1rem;
+  margin: 3rem 0 3rem 0;
 `;
 
 const TagBox = styled.div`
   display: flex;
   flex-wrap: wrap;
-  margin-bottom: 3rem;
 `;
 
 export default Footer;

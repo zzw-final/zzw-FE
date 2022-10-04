@@ -1,105 +1,146 @@
 import React from "react";
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
 import { instance, imgInstance } from "../api/request";
-import Footer from "../components/common/Footer";
 import LayoutPage from "../components/common/LayoutPage";
+import WriteCard from "../components/write/WriteCard";
 import WriteHeader from "../components/write/WriteHeader";
 import WriteSwiper from "../components/write/WriteSwiper";
 import WriteTitle from "../components/write/WriteTitle";
 
 function WritePage() {
+  // const titleRef = useRef("");
+  // const foodnameRef = useRef("");
+  // const ingredientRef = useRef([]);
+  // const timeRef = useRef("");
+  // const content = useRef("");
+  // const [imageURL, setImageURL] = useState([]);
+  // const [ingredient, setIngredient] = useState([]);
+  // const navigate = useNavigate();
+
   const [title, setTitle] = useState("");
   const [foodname, setFoodName] = useState("");
   const [ingredient, setIngredient] = useState([]);
   const [time, setTime] = useState("");
-  const [content, setContent] = useState("");
-  const [imageURL, setImageURL] = useState([]);
+  // const [content, setContent] = useState("");
+  const [imageURL, setImageURL] = useState("");
   const navigate = useNavigate();
+
+  const [pageDataList, setPageDataList] = useState([]);
+  const [pageData, setPageData] = useState({});
+
+  // const [pageData, setPageData] = useState({});
+  // const [pageDataImg, setPageDataImg] = useState("");
+  // const [pageDataContent, setPageDataContent] = useState("");
+  // const [pageDataCnt, setPageDataCnt] = useState(0);
 
   //post
   const onSubmitHandler = async (e) => {
+    e.preventDefault();
+    console.log("pageDataList :>> ", pageDataList);
     try {
-      e.preventDefault();
       const data = {
         title: title,
         foodName: foodname,
         imageUrl: imageURL,
         ingredient: ingredient,
         time: time,
-        content: content,
+        pageList: pageDataList,
       };
-      console.log(data);
-
-      await instance.post("/api/auth/post", data);
-      alert("게시글 등록이 완료되었습니다!");
-      navigate("/");
+      // console.log(data);
+      // await instance.post("/api/auth/post", data);
+      // alert("게시글 등록이 완료되었습니다!");
+      // navigate("/");
     } catch (error) {
       console.log("에러..", error);
     }
   };
 
-  const postData = (title, foodname, ingredient, time, content, imageUrl) => {
-    setTitle(title);
-    setFoodName(foodname);
-    setIngredient(ingredient);
-    setTime(time);
-    setContent(content);
-    setImageURL(imageUrl);
+  const getPageData = (sendData) => {
+    console.log("sendData :>> ", sendData.page);
+
+    console.log(
+      "find >",
+      pageDataList.find((i) => i.page === sendData.page)
+    );
+
+    if (pageDataList.find((i) => i.page === sendData.page) === undefined) {
+    }
+
+    pageDataList.map((i) =>
+      i.page === sendData.page
+        ? { ...i, imageURL: sendData.imageURL, content: sendData.content }
+        : i
+    );
+
+    setPageDataList((prev) => [...prev, sendData]);
   };
 
-  //img URL가져오는 요청
-
-  const imgUpload = (e) => {
+  const imgUpload = async (e) => {
     e.preventDefault();
     if (e.target.files) {
       const file = e.target.files[0];
       console.log("이미지 파일 받기", file);
       const formdata = new FormData();
       formdata.append("file", file);
-
-      imgInstance
-        .post("/api/post/image", formdata, {
-          headers: { "Content-Type": "multipart/form-data" },
-        })
-        .then((res) => {
-          console.log("이미지 업로드 완료됨", res.data);
-          console.log("이미지 URL확인", res.data.data.imageUrl);
-          setImageURL(res.data.data.imageUrl);
-        })
-        .catch((error) => {
-          console.log(error);
-        });
+      return await imgInstance.post("/api/post/image", formdata, {
+        headers: { "Content-Type": "multipart/form-data" },
+      });
     }
   };
 
+  const [list, setList] = useState();
+
+  //레시피 단계 작성 카드 추가
+  // const [countList, setCountList] = useState([0]);
+
+  let [cnt, setCnt] = useState(0);
+
+  const onAddCardDiv = () => {
+    setCnt(cnt + 1);
+    setList((prev) => [
+      prev,
+      <WriteCard
+        key={cnt}
+        idx={cnt}
+        imgUpload={imgUpload}
+        getPageData={getPageData}
+      />,
+    ]);
+  };
+
   return (
-    <LayoutPage>
+    <LayoutPage background={"#fbd499"}>
       <WriteHeader
         styled={{ position: "fixed" }}
         onSubmitHandler={onSubmitHandler}
       />
-      {/* <WriteTitle
+      <WriteTitle
         setTitle={setTitle}
         setFoodName={setFoodName}
         setIngredient={setIngredient}
         setTime={setTime}
-        setImageURL={setImageURL}
-        imageURL={imageURL}
-        imgUpload={imgUpload}
-      /> */}
-      <WriteSwiper
-        setTitle={setTitle}
-        setFoodName={setFoodName}
-        setIngredient={setIngredient}
-        setTime={setTime}
-        setImageURL={setImageURL}
         imageURL={imageURL}
         imgUpload={imgUpload}
       />
+      {list}
+      <Addbutton onClick={onAddCardDiv}>페이지 추가하기</Addbutton>
     </LayoutPage>
   );
 }
 
 export default WritePage;
+
+const Addbutton = styled.button`
+  background-color: white;
+  border: 0;
+  width: 80vw;
+  height: 5vh;
+  border-radius: 10px;
+  margin-left: 10vw;
+  &:hover {
+    background: var(--color-dark-white);
+    color: white;
+  }
+`;

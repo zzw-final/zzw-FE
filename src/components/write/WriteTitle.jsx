@@ -1,22 +1,29 @@
 import React, { useEffect, useRef, useState } from "react";
 import styled from "styled-components";
-const WriteTitle = ({ postData }) => {
-  const [title, setTitle] = useState("");
-  const [foodname, setFoodName] = useState("");
-  const [ingredient, setIngredient] = useState([]);
-  const [time, setTime] = useState("");
+import Tag from "../common/Tag";
+import WriteCard from "./WriteCard";
 
-  const foodnameRef = useRef("");
-
-  const getfoodname = foodnameRef?.current.value;
-  const getingredients = document.querySelector("#ingredients")?.value;
-  const getcookTime = document.querySelector("#cookTime")?.value;
-
-  console.log("getfoodname > ", getfoodname);
-
-  // console.log(setTitle);
+const WriteTitle = ({
+  setTitle,
+  setFoodName,
+  setIngredient,
+  setTime,
+  setImageURL,
+  imageURL,
+  imgUpload,
+  // titleRef,
+  // foodnameRef,
+  // ingredientRef,
+  // timeRef,
+  // content,
+  // setImageURL,
+  // imageURL,
+  // imgUpload,
+  // setIngredient,
+}) => {
   const [tagItem, setTagItem] = useState("");
   const [tagList, setTagList] = useState([]);
+
   const submitTag = (prevState) => {
     if (!tagList.includes(tagItem)) {
       setTagList((prevState) => {
@@ -26,16 +33,8 @@ const WriteTitle = ({ postData }) => {
     setTagItem("");
   };
 
-  // useEffect(() => {
-  //   postData(getfoodname, getingredients, getcookTime);
-  // }, [getfoodname, getingredients, getcookTime]);
-
-  console.log(tagList);
-
   const deleteTag = (ingredientName) => {
-    setTagList(
-      tagList.filter((tagItem) => tagItem.ingredientName !== ingredientName)
-    );
+    setTagList(tagList.filter((tagItem) => tagItem !== ingredientName));
   };
 
   const onKeyPress = (e) => {
@@ -48,46 +47,81 @@ const WriteTitle = ({ postData }) => {
     setIngredient(tagList);
   }, [tagList]);
 
+  const imgInput = useRef();
+
+  const onClickImgInput = () => {
+    imgInput.current.click();
+  };
+
+  const getImgUpload = async (e) => {
+    const result = await imgUpload(e);
+    console.log("result :>> ", result.data.data.imageUrl);
+  };
+
   return (
     <WriteTitleContainer>
-      <Title placeholder="제목을 입력해주세요" />
-      <FoodNameInput defaultValue="임시요리명" ref={foodnameRef} />
+      <Title
+        placeholder="제목을 입력해주세요"
+        // ref={titleRef}
+        onChange={(e) => {
+          setTitle(e.target.value);
+        }}
+      />
+      <FoodNameInput
+        placeholder="요리이름 입력해주세요"
+        // ref={foodnameRef}
+        onChange={(e) => {
+          setFoodName(e.target.value);
+        }}
+      />
+
       <TagBox>
         {tagList.map((tagItem, i) => {
           return (
             <Tagdiv key={i}>
-              <div>{tagItem.ingredientName}</div>
-              <Button onClick={() => deleteTag(tagItem.ingredientName)}>
-                X
-              </Button>
+              <div>{tagItem}</div>
+              <Button onClick={() => deleteTag(tagItem)}>X</Button>
             </Tagdiv>
           );
         })}
         <IngredintTag
           value={tagItem}
           placeholder="재료를 태그로 입력해주세요"
-          id="ingredients"
+          onChange={(e) => {
+            setTagItem(e.target.value);
+          }}
           onKeyPress={onKeyPress}
         />
       </TagBox>
       <SelectDiv>조리시간 </SelectDiv>
-      <TimeSelect placeholder="요리 시간을 선택해주세요" id="cookTime">
-        <option value="0">5분</option>
-        <option value="1">10분</option>
-        <option value="2">15분</option>
-        <option value="3">30분 이상</option>
+      <TimeSelect
+        placeholder="요리 시간을 선택해주세요"
+        // ref={timeRef}
+        onChange={(e) => {
+          setTime(e.target.value);
+        }}
+      >
+        <option value="5분">5분</option>
+        <option value="10분">10분</option>
+        <option value="15분">15분</option>
+        <option value="30분 이상">30분 이상</option>
       </TimeSelect>
       <PreviewImg
-        // src={imageURL}
-        src={"https://cdn-icons-png.flaticon.com/512/149/149092.png"}
+        placeholder="재료를 태그로 입력해주세요"
+        onClick={onClickImgInput}
+        src={imageURL}
       />
       <ImgInput
         type="file"
         accept="image/*"
         multiple="multiple"
-        // onChange={imgUpload}
-        // value={imageURL}
+        // onChange={() => {
+        //   imgUpload("ㅎㅎㅎㅎㅎ");
+        // }}
+        onChange={getImgUpload}
+        ref={imgInput}
       />
+      {/* <button onClick={onClickImgInput}>대표이미지를 업로드 해주세요 !</button> */}
     </WriteTitleContainer>
   );
 };
@@ -172,13 +206,13 @@ const Button = styled.button`
 const SelectDiv = styled.div`
   grid-column-start: 2;
   grid-row-start: 4;
-  margin: 1vh 1rem 1rem 1rem;
+  margin: 1vh 1rem 1rem -10rem;
 `;
 const TimeSelect = styled.select`
   box-sizing: border-box;
   width: 20vw;
   height: 3vh;
-  margin: 2vw 2px 0rem 5rem;
+  margin: 2vw 2px 0rem -1rem;
   border: 1px solid #9c9c9c;
   border-radius: 10px;
   grid-column-start: 2;
@@ -188,6 +222,8 @@ const PreviewImg = styled.img`
   /* background-color: blue; */
   width: 60vw;
   height: 20vh;
+  border: 0;
+  border-radius: 10px;
   margin: 0rem 1rem 0rem 1rem;
   grid-column-start: 2;
   grid-row-start: 5;
@@ -195,4 +231,5 @@ const PreviewImg = styled.img`
 const ImgInput = styled.input`
   grid-column-start: 2;
   grid-row-start: 6;
+  display: none;
 `;

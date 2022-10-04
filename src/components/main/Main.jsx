@@ -60,8 +60,8 @@ const Main = ({
             height="200px"
           />
         </BestRecipeContainer>
-        {/* {followPost && followPost.length === 0 ? ( */}
-        {followPost === null ? (
+        {(followPost && followPost.length === 0) ||
+        loginNickname === undefined ? (
           <>
             <Title>NEW 레시피 🥦</Title>
             <NewRecipeScrollContainer>
