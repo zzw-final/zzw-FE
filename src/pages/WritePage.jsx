@@ -4,11 +4,13 @@ import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
 import { instance, imgInstance } from "../api/request";
 import LayoutPage from "../components/common/LayoutPage";
+import WriteAddCard from "../components/write/WriteAddCard";
 import WriteCard from "../components/write/WriteCard";
 import WriteHeader from "../components/write/WriteHeader";
 import WriteTitle from "../components/write/WriteTitle";
 
 function WritePage() {
+  //WriteTitle에서 값을 받을 State
   const [title, setTitle] = useState("");
   const [foodname, setFoodName] = useState("");
   const [ingredient, setIngredient] = useState([]);
@@ -16,20 +18,14 @@ function WritePage() {
   const [imageURL, setImageURL] = useState("");
   const navigate = useNavigate();
 
-  // const [pageDataImg, setPageDataImg] = useState("");
-  // const [pageDataContent, setPageDataContent] = useState("");
-  // const [pageDataCnt, setPageDataCnt] = useState(0);
+  // WriteAddCard에서 값을 받을 state
+  const [formValues, setFomvalues] = useState([
+    { imageUrl: "", content: "", page: 0 },
+  ]);
 
-  const [pageDataList, setPageDataList] = useState([]);
-  const [pageData, setPageData] = useState({});
-  console.log("pageDataList", pageDataList);
-
-  // const [pageData, setPageData] = useState({});
-
-  //post
+  //받은값 전부를 post
   const onSubmitHandler = async (e) => {
     e.preventDefault();
-    console.log("pageDataList :>> ", pageDataList);
     try {
       const data = {
         title: title,
@@ -37,7 +33,7 @@ function WritePage() {
         imageUrl: imageURL,
         ingredient: ingredient,
         time: time,
-        pageList: pageDataList,
+        pageList: formValues,
       };
       console.log(data);
       await instance.post("/api/auth/post", data);
@@ -48,28 +44,7 @@ function WritePage() {
     }
   };
 
-  const getPageData = (sendData) => {
-    // console.log("sendData :>> ", sendData.page);
-
-    // console.log(
-    //   "find >",
-    //   pageDataList.find((i) => i.page === sendData.page)
-    // );
-
-    if (pageDataList.find((i) => i.page === sendData.page) === undefined) {
-    }
-
-    pageDataList.map((i) =>
-      i.page === sendData.page
-        ? { ...i, imageURL: sendData.imageURL, content: sendData.content }
-        : i
-    );
-
-    setPageDataList((prev) => [...prev, sendData]);
-  };
-
-  console.log();
-
+  //이미지 파일 업로드시 url로 변경해주는 post
   const imgUpload = async (e) => {
     e.preventDefault();
     if (e.target.files) {
@@ -81,23 +56,6 @@ function WritePage() {
         headers: { "Content-Type": "multipart/form-data" },
       });
     }
-  };
-
-  const [list, setList] = useState();
-  let [cnt, setCnt] = useState(0);
-
-  const onAddCardDiv = () => {
-    setCnt(cnt + 1);
-    setList((prev) => [
-      prev,
-      <WriteCard
-        key={cnt}
-        idx={cnt}
-        imgUpload={imgUpload}
-        getPageData={getPageData}
-      />,
-      console.log("랜더링중"),
-    ]);
   };
 
   return (
@@ -116,9 +74,11 @@ function WritePage() {
         setImageURL={setImageURL}
       />
       <Notion>레시피 단계별로 작성해주세요 !😋</Notion>
-      {/* <WriteCard /> */}
-      {list}
-      <Addbutton onClick={onAddCardDiv}>페이지 추가하기</Addbutton>
+      <WriteAddCard
+        imgUpload={imgUpload}
+        formValues={formValues}
+        setFomvalues={setFomvalues}
+      />
     </LayoutPage>
   );
 }
