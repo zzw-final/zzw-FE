@@ -9,6 +9,7 @@ import TagIcon from "@mui/icons-material/Tag";
 import { useNavigate } from "react-router-dom";
 import Tag from "../../components/common/Tag";
 import { useEffect } from "react";
+import { useCookies } from "react-cookie";
 
 const Footer = ({ topTenTagList, tagAllList }) => {
   const [toggleTagList, setToggleTagList] = useState(false);
@@ -16,16 +17,37 @@ const Footer = ({ topTenTagList, tagAllList }) => {
   const [searchHelpText, setSearchHelpText] = useState(false);
   const navigate = useNavigate();
 
+  const [cookies] = useCookies(["loginNickname"]);
+
+  const loginNickname = cookies.loginNickname;
+
+  console.log("loginNickname footer", loginNickname);
+
   const goHome = () => {
     navigate("/");
   };
 
+  const loginConfirm = (url) => {
+    if (!loginNickname) {
+      if (
+        window.confirm(
+          "로그인 사용자만 이용할 수 있습니다. 로그인 하시겠습니까?"
+        )
+      ) {
+        navigate("/login");
+        return;
+      }
+    } else {
+      navigate(url);
+    }
+  };
+
   const goWrite = () => {
-    navigate("/write");
+    loginConfirm("/write");
   };
 
   const goMypage = () => {
-    navigate("/mypage");
+    loginConfirm("/mypage");
   };
 
   const openTagBox = () => {
