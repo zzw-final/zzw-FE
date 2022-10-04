@@ -3,6 +3,7 @@ import { useNavigate, useParams } from "react-router-dom";
 import styled from "styled-components";
 import Button from "../UI/Button";
 import { instance } from "../../api/request";
+import { useMutation, useQueryClient } from "react-query";
 
 function Profile({ userData }) {
   const navigate = useNavigate();
@@ -11,21 +12,30 @@ function Profile({ userData }) {
   const [greyButton, setGreyButton] = useState(isFollow);
   const [followerNum, setFollowerNum] = useState(follower);
 
-  const onFollowHandler = async () => {
-    setGreyButton((prev) => !prev);
-    const res = await instance.post(`/api/auth/mypage/follow/${id}`);
-    if (res.data.data === "follow success") {
-      setFollowerNum((prev) => prev + 1);
-    }
-    if (res.data.data === "unfollow success") {
-      setFollowerNum((prev) => prev - 1);
-    }
-    return res;
+  const followHandler = async () => {
+    return await instance.post(`/api/auth/mypage/follow/${id}`);
   };
+
+  const queryClient = useQueryClient();
+
+  const { mutate } = useMutation(followHandler, {
+    onSuccess: (result) => {
+      setGreyButton((prev) => !prev);
+      if (result.data.data === "follow success") {
+        setFollowerNum((prev) => prev + 1);
+      }
+      if (result.data.data === "unfollow success") {
+        setFollowerNum((prev) => prev - 1);
+      }
+      queryClient.invalidateQueries(["follower", id]);
+    },
+  });
 
   const followClick = () => {
     if (!id) {
-      navigate(`/follow`, { state: { isClick: false, follow: true, follower: false } });
+      navigate(`/follow`, {
+        state: { isClick: false, follow: true, follower: false },
+      });
     } else {
       navigate(`/follow/${id}`, {
         state: { isClick: false, follow: true, follower: false, nickname },
@@ -35,7 +45,9 @@ function Profile({ userData }) {
 
   const followerClick = () => {
     if (!id) {
-      navigate(`/follow`, { state: { isClick: true, follow: false, follower: true } });
+      navigate(`/follow`, {
+        state: { isClick: true, follow: false, follower: true },
+      });
     } else {
       navigate(`/follow/${id}`, {
         state: { isClick: true, follow: false, follower: true, nickname },
@@ -77,7 +89,7 @@ function Profile({ userData }) {
           프로필 편집
         </Button>
       ) : (
-        <Button onClick={onFollowHandler} name="ProfileBtn" isFollow={greyButton}>
+        <Button onClick={mutate} name="ProfileBtn" isFollow={greyButton}>
           {greyButton ? "팔로잉" : "팔로우"}
         </Button>
       )}

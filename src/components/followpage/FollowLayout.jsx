@@ -4,8 +4,6 @@ import Button from "../UI/Button";
 import { getCookie } from "../../util/cookie";
 import { useParams } from "react-router-dom";
 
-// TODO: 닉네임 검색 기능
-
 function FollowLayout({
   onClickFollower,
   onClickfollow,
