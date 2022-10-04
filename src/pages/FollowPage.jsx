@@ -36,12 +36,14 @@ const FollowPage = () => {
 
   const { data: followList } = useQuery(["follow", id], fetchFollow, {
     enabled: !click, // 팔로우 진입시에만 받아옴
-    staleTime: 300000,
+    cacheTime: 30 * 60 * 1000, // 캐시 30분 유지
+    staleTime: Infinity, // 항상 신선한 데이터로 취급
     select: (data) => data.data.data, // 요청 성공시 데이터 가공
   });
   const { data: followerList } = useQuery(["follower", id], fetchFollower, {
     enabled: !!click, // 팔로워 진입시에만 받아옴
-    staleTime: 300000,
+    cacheTime: 30 * 60 * 1000, // 캐시 30분 유지
+    staleTime: Infinity, // 항상 신선한 데이터로 취급
     select: (data) => data.data.data, // 요청 성공시 데이터 가공
   });
 
@@ -59,12 +61,13 @@ const FollowPage = () => {
     setClick(true); // 클릭 상태는 true로(follower data fetch enabled option)
   };
 
-  const queryClient = useQueryClient(); // Optimistic Update 하려면 필요.
+  const queryClient = useQueryClient();
 
   const followHandler = async (userId) => {
     return await instance.post(`/api/auth/mypage/follow/${userId}`);
   };
 
+  // mutate(팔로우/언팔로우) 성공시 해당 키값의 캐시 무효화
   const { mutate } = useMutation(followHandler, {
     onSuccess: () => {
       if (!click) {
