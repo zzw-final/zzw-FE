@@ -4,6 +4,7 @@ import styled from "styled-components";
 import Button from "../UI/Button";
 import { instance } from "../../api/request";
 import { useMutation, useQueryClient } from "react-query";
+import { getCookie } from "../../util/cookie";
 
 function Profile({ userData }) {
   const navigate = useNavigate();
@@ -11,6 +12,7 @@ function Profile({ userData }) {
   const { follow, follower, grade, gradeList, nickname, profile, isFollow } = userData;
   const [greyButton, setGreyButton] = useState(isFollow);
   const [followerNum, setFollowerNum] = useState(follower);
+  console.log(getCookie("loginUserId"));
 
   const followHandler = async () => {
     return await instance.post(`/api/auth/mypage/follow/${id}`);
@@ -84,7 +86,7 @@ function Profile({ userData }) {
           ))}
         </BottomBox>
       </div>
-      {!id ? (
+      {!getCookie("loginUserId") ? null : !id ? (
         <Button name="ProfileBtn" isFollow={true}>
           프로필 편집
         </Button>

@@ -29,19 +29,17 @@ function Follow({ follow, mutate }) {
           <Grade>{grade}</Grade>
         </div>
       </LeftBox>
-      {userId !== +getCookie("loginUserId") && (
-        <RightBox>
-          <div>
-            <Button
-              onClick={followHandler}
-              name="FollowBtn"
-              isFollow={greyButton}
-            >
-              {greyButton ? "팔로잉" : "팔로우"}
-            </Button>
-          </div>
-        </RightBox>
-      )}
+      {!getCookie("loginUserId")
+        ? null
+        : userId !== +getCookie("loginUserId") && (
+            <RightBox>
+              <div>
+                <Button onClick={followHandler} name="FollowBtn" isFollow={greyButton}>
+                  {greyButton ? "팔로잉" : "팔로우"}
+                </Button>
+              </div>
+            </RightBox>
+          )}
     </Container>
   );
 }
