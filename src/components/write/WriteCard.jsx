@@ -10,6 +10,16 @@ function WriteCard({ idx, imgUpload, getPageData }) {
   // useEffect(() => {
   //   setContent(contentRef?.current.value);
   // }, [contentRef]);
+  //   let contentArr = [content];
+
+  const contentRef = useRef();
+  //   console.log(contentRef.current.value);
+
+  //   const sendData = {
+  //     imageUrl: pageDataImg,
+  //     content: pageDataContent,
+  //     page: idx,
+  //   };
 
   const sendData = {
     imageURL: imgUrl,
@@ -17,9 +27,13 @@ function WriteCard({ idx, imgUpload, getPageData }) {
     page: idx,
   };
 
-  useEffect(() => {
+  //   useEffect(() => {
+  //     getPageData(sendData);
+  //   }, [idx]);
+
+  const onSendData = () => {
     getPageData(sendData);
-  }, [sendData]);
+  };
 
   const getImgUpload = async (e) => {
     const result = await imgUpload(e);
@@ -42,6 +56,7 @@ function WriteCard({ idx, imgUpload, getPageData }) {
           />
         </div>
         {/* <label>{idx + 1}</label> */}
+        <button onClick={onSendData}>확인</button>
       </AddCardDiv>
     </div>
   );
