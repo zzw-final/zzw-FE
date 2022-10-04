@@ -99,32 +99,33 @@ const KakaoRedirect = () => {
       const result = await kakaoLoginInstance(code);
       if (result.data.success && result.data.error === null) {
         const newUser = result.data.data.isFirst;
-        const isDuplicate = result.data.data.isDuplicate;
+        // const isDuplicate = result.data.data.isDuplicate;
         const EMAIL = result.data.data.email;
         const OAUTH = result.data.data.oauth;
         setCookies("loginEmail", EMAIL);
         setCookies("loginOauth", OAUTH);
 
-        if (isDuplicate) {
-          if (
-            window.confirm(
-              "기존에 동일한 이메일로 가입했습니다. 통합하시겠습니까?"
-            )
-          ) {
-            const res = await axios.put(
-              process.env.REACT_APP_API + `/api/member/integration`,
-              { email: EMAIL, oauth: OAUTH }
-            );
-            if (res.data.success && res.data.error === null) {
-              onLogin(res);
-            }
-          } else {
-            navigate("/join");
-          }
-          return;
-        }
+        // if (isDuplicate) {
+        //   if (
+        //     window.confirm(
+        //       "기존에 동일한 이메일로 가입했습니다. 통합하시겠습니까?"
+        //     )
+        //   ) {
+        //     const res = await axios.put(
+        //       process.env.REACT_APP_API + `/api/member/integration`,
+        //       { email: EMAIL, oauth: OAUTH }
+        //     );
+        //     if (res.data.success && res.data.error === null) {
+        //       onLogin(res);
+        //     }
+        //   } else {
+        //     navigate("/join");
+        //   }
+        //   return;
+        // }
 
-        if (newUser && !isDuplicate) {
+        // if (newUser && !isDuplicate) {
+        if (newUser) {
           console.log("result kakao > ", result);
           const EMAIL = result.data.data.email;
           const OAUTH = result.data.data.oauth;

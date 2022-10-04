@@ -21,8 +21,8 @@ const Main = ({
 
   const loginNickname = cookies.loginNickname;
 
-  // console.log("loginNickname :>> ", loginNickname);
-  // console.log("followPost :>> ", followPost);
+  console.log("loginNickname :>> ", loginNickname);
+  console.log("followPost :>> ", followPost);
 
   return (
     <MainContainer>
@@ -60,8 +60,8 @@ const Main = ({
             height="200px"
           />
         </BestRecipeContainer>
-        {/* {followPost && followPost.length === 0 ? ( */}
-        {followPost === null ? (
+        {(followPost && followPost.length === 0) ||
+        loginNickname === undefined ? (
           <>
             <Title>NEW 레시피 🥦</Title>
             <NewRecipeScrollContainer>
