@@ -18,6 +18,7 @@ const MainPage = () => {
   useEffect(() => {
     async function fetchData() {
       const result = await instance.get(`/api/post`);
+      console.log("result mainpage :>> ", result);
       if (result.data.success && result.data.error === null) {
         setBestPost(result.data.data.bestPost);
         setRecentPost(result.data.data.recentPost);
