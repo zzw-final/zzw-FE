@@ -164,8 +164,6 @@ const NewRecipeContainer = styled.section`
   }
 `;
 
-const FollowContainer = styled.section`
-  display: flex;
-`;
+const FollowContainer = styled.section``;
 
 export default Main;
