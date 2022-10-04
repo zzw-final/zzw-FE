@@ -11,15 +11,6 @@ const WriteTitle = ({
   setImageURL,
   imageURL,
   imgUpload,
-  // titleRef,
-  // foodnameRef,
-  // ingredientRef,
-  // timeRef,
-  // content,
-  // setImageURL,
-  // imageURL,
-  // imgUpload,
-  // setIngredient,
 }) => {
   const [tagItem, setTagItem] = useState("");
   const [tagList, setTagList] = useState([]);
@@ -55,7 +46,7 @@ const WriteTitle = ({
 
   const getImgUpload = async (e) => {
     const result = await imgUpload(e);
-    console.log("result :>> ", result.data.data.imageUrl);
+    setImageURL(result.data.data.imageUrl);
   };
 
   return (
@@ -108,18 +99,15 @@ const WriteTitle = ({
       </TimeSelect>
       <PreviewImg
         placeholder="재료를 태그로 입력해주세요"
-        onClick={onClickImgInput}
+        // onClick={onClickImgInput}
         src={imageURL}
       />
       <ImgInput
         type="file"
         accept="image/*"
         multiple="multiple"
-        // onChange={() => {
-        //   imgUpload("ㅎㅎㅎㅎㅎ");
-        // }}
         onChange={getImgUpload}
-        ref={imgInput}
+        // ref={imgInput}
       />
       {/* <button onClick={onClickImgInput}>대표이미지를 업로드 해주세요 !</button> */}
     </WriteTitleContainer>
@@ -221,9 +209,9 @@ const TimeSelect = styled.select`
 const PreviewImg = styled.img`
   /* background-color: blue; */
   width: 60vw;
-  height: 20vh;
-  border: 0;
-  border-radius: 10px;
+  height 20vh;
+  border:0;
+  border-radius:10px;
   margin: 0rem 1rem 0rem 1rem;
   grid-column-start: 2;
   grid-row-start: 5;
@@ -231,5 +219,5 @@ const PreviewImg = styled.img`
 const ImgInput = styled.input`
   grid-column-start: 2;
   grid-row-start: 6;
-  display: none;
+  /* display: none; */
 `;
