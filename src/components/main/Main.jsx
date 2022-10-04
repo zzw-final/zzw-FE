@@ -21,9 +21,6 @@ const Main = ({
 
   const loginNickname = cookies.loginNickname;
 
-  console.log("loginNickname :>> ", loginNickname);
-  console.log("followPost :>> ", followPost);
-
   return (
     <MainContainer>
       <TagsContainer>
@@ -165,7 +162,7 @@ const NewRecipeContainer = styled.section`
 `;
 
 const FollowContainer = styled.section`
-  display: flex;
+  padding-bottom: 60px;
 `;
 
 export default Main;

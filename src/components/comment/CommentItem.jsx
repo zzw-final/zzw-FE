@@ -4,6 +4,7 @@ import Avatar from "@mui/material/Avatar";
 import { useCookies } from "react-cookie";
 import useInputRef from "../../hooks/useInputRef";
 import { useNavigate } from "react-router-dom";
+import { dateFormat } from "../../util/dateFormat";
 
 const CommentItem = ({ commentItem, remove, update }) => {
   const { commentId, userId, profile, nickname, comment, grade, createdAt } =
@@ -70,7 +71,7 @@ const CommentItem = ({ commentItem, remove, update }) => {
             <Nickname onClick={userPage}>{nickname} &gt; </Nickname>
             <GradeCreatedAt>
               <Grade>{grade}</Grade>
-              <CreatedAt>{createdAt}</CreatedAt>
+              <CreatedAt>{dateFormat(createdAt)}</CreatedAt>
             </GradeCreatedAt>
           </div>
         </InfoAvatar>

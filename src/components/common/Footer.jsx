@@ -9,6 +9,7 @@ import TagIcon from "@mui/icons-material/Tag";
 import { useNavigate } from "react-router-dom";
 import Tag from "../../components/common/Tag";
 import { useEffect } from "react";
+import { useCookies } from "react-cookie";
 
 const Footer = ({ topTenTagList, tagAllList }) => {
   const [toggleTagList, setToggleTagList] = useState(false);
@@ -16,16 +17,35 @@ const Footer = ({ topTenTagList, tagAllList }) => {
   const [searchHelpText, setSearchHelpText] = useState(false);
   const navigate = useNavigate();
 
+  const [cookies] = useCookies(["loginNickname"]);
+
+  const loginNickname = cookies.loginNickname;
+
   const goHome = () => {
     navigate("/");
   };
 
+  const loginConfirm = (url) => {
+    if (!loginNickname) {
+      if (
+        window.confirm(
+          "로그인 사용자만 이용할 수 있습니다. 로그인 하시겠습니까?"
+        )
+      ) {
+        navigate("/login");
+        return;
+      }
+    } else {
+      navigate(url);
+    }
+  };
+
   const goWrite = () => {
-    navigate("/write");
+    loginConfirm("/write");
   };
 
   const goMypage = () => {
-    navigate("/mypage");
+    loginConfirm("/mypage");
   };
 
   const openTagBox = () => {
@@ -154,7 +174,7 @@ const Footer = ({ topTenTagList, tagAllList }) => {
 };
 
 const FooterContainer = styled.div`
-  width: 100vw;
+  width: 100%;
   display: flex;
   justify-content: center;
   height: 56px;
@@ -179,6 +199,7 @@ const SearchBox = styled.div`
   justify-content: space-between;
   height: 14vh;
   position: relative;
+  z-index: 1;
 `;
 
 const IntroText = styled.div`
@@ -186,6 +207,7 @@ const IntroText = styled.div`
   font-size: var(--font-medium);
   font-weight: bold;
   margin: 2rem 0;
+  z-index: 1;
 `;
 
 const SearchBtn = styled.button`
@@ -221,6 +243,7 @@ const TagList = styled.div`
   position: fixed;
   left: 0;
   text-align: center;
+  z-index: 1;
 `;
 
 const TagTitle = styled.div`

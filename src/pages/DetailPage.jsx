@@ -4,6 +4,7 @@ import { useNavigate, useParams } from "react-router-dom";
 import { instance } from "../api/request";
 import LayoutPage from "../components/common/LayoutPage";
 import Detail from "../components/detail/Detail";
+import styled from "styled-components";
 
 function DetailPage() {
   const navigate = useNavigate();
@@ -24,8 +25,8 @@ function DetailPage() {
   useEffect(() => {
     async function fetchData() {
       const comments = await (
-        await instance.get(`/api/post/${id}`)
-      ).data.data.commentList;
+        await instance.get(`/api/post/${id}/comment`)
+      ).data.data;
       setCommentList(comments);
     }
     fetchData();
@@ -40,14 +41,11 @@ function DetailPage() {
       `/api/auth/post/${postInfo.postId}/comment`,
       comment
     );
-    console.log("res > ", res);
     const newPost = {
       ...res.data.data,
       postId: postInfo.postId,
       profile: postInfo.profile,
     };
-    console.log("newPost > ", newPost);
-    console.log("commentList > ", commentList);
     setCommentList((prev) => [newPost, ...prev]);
   }
 
@@ -97,17 +95,23 @@ function DetailPage() {
 
   return (
     <LayoutPage background={"#fbd499"}>
-      <Detail
-        postDetail={postDetail}
-        onDelete={onDeleteHandler}
-        post={post}
-        remove={remove}
-        update={update}
-        commentList={commentList}
-        likeToggle={likeToggle}
-      />
+      <DetailContainer>
+        <Detail
+          postDetail={postDetail}
+          onDelete={onDeleteHandler}
+          post={post}
+          remove={remove}
+          update={update}
+          commentList={commentList}
+          likeToggle={likeToggle}
+        />
+      </DetailContainer>
     </LayoutPage>
   );
 }
+
+const DetailContainer = styled.div`
+  height: 100vh;
+`;
 
 export default DetailPage;

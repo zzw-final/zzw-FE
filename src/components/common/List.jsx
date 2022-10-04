@@ -36,7 +36,7 @@ const ListContainer = styled.section`
   grid-template-columns: repeat(auto-fill, minmax(175px, 1fr));
   grid-row-gap: 1rem;
   justify-items: center;
-  height: 220px;
+  /* height: 220px; */
   margin: ${(props) => props.margin};
 `;
 

@@ -10,21 +10,6 @@ import SwiperRecipeItem from "./SwiperRecipeItem";
 
 const SwiperRecipe = ({ postDetail, likeToggle }) => {
   const contentList = postDetail.contentList;
-  const contentPageCnt = contentList.length;
-  const pageNav = new Array(contentPageCnt);
-
-  // console.log("pageNav", pageNav);
-
-  // console.log("contentList main! > ", contentList);
-  // console.log("contentPageCnt main! > ", contentPageCnt);
-
-  const getIdx = (idx) => {
-    console.log("idx !!!! >", idx);
-  };
-
-  const swiperRef = useRef();
-
-  console.log("swiperRef > ", swiperRef.current);
 
   return (
     <SwiperContainer>
@@ -44,28 +29,17 @@ const SwiperRecipe = ({ postDetail, likeToggle }) => {
             />
           </SwiperSlide>
           {contentList.map((content, idx) => (
-            <SwiperSlide
-              key={idx}
-              onChange={() => {
-                getIdx(idx);
-              }}
-            >
+            <SwiperSlide key={idx}>
               <SwiperRecipeItem
                 postDetail={postDetail}
                 contentList={content}
                 isFirstPage={false}
                 key={idx}
               />
-              {/* <IdxFloat>{idx + 1}</IdxFloat> */}
             </SwiperSlide>
           ))}
         </Swiper>
       </SwiperBox>
-      <PageNav>
-        {pageNav.fill("*").map((item, idx) => (
-          <Page key={idx}>{item}</Page>
-        ))}
-      </PageNav>
     </SwiperContainer>
   );
 };
@@ -79,18 +53,6 @@ const SwiperContainer = styled.div`
   height: 100%;
   margin: 2rem 0;
 `;
-
-const PageNav = styled.div`
-  padding: 1rem 0;
-  display: flex;
-`;
-
-// const IdxFloat = styled.div`
-//   position: absolute;
-//   bottom: 10px;
-// `;
-
-const Page = styled.div``;
 
 const SwiperBox = styled.div`
   .swiper {
