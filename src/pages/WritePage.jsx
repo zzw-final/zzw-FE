@@ -20,6 +20,8 @@ function WritePage() {
   const [pageDataList, setPageDataList] = useState([]);
   const [pageData, setPageData] = useState({});
 
+  console.log("pageDataList", pageDataList);
+
   // const [pageData, setPageData] = useState({});
   // const [pageDataImg, setPageDataImg] = useState("");
   // const [pageDataContent, setPageDataContent] = useState("");
@@ -66,6 +68,8 @@ function WritePage() {
 
     setPageDataList((prev) => [...prev, sendData]);
   };
+
+  console.log();
 
   const imgUpload = async (e) => {
     e.preventDefault();

@@ -17,9 +17,13 @@ function WriteCard({ idx, imgUpload, getPageData }) {
     page: idx,
   };
 
-  useEffect(() => {
+  //   useEffect(() => {
+  //     getPageData(sendData);
+  //   }, []);
+
+  const onSendData = () => {
     getPageData(sendData);
-  }, [sendData]);
+  };
 
   const getImgUpload = async (e) => {
     const result = await imgUpload(e);
@@ -42,6 +46,7 @@ function WriteCard({ idx, imgUpload, getPageData }) {
           />
         </div>
         {/* <label>{idx + 1}</label> */}
+        <button onClick={onSendData}>확인</button>
       </AddCardDiv>
     </div>
   );
