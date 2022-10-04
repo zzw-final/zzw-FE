@@ -4,13 +4,11 @@ import { useCookies } from "react-cookie";
 import { useLocation, useNavigate } from "react-router-dom";
 
 function NaverRedirect() {
+  const code = new URL(window.location.href).searchParams.get("code");
   const [cookies, setCookie, removeCookies] = useCookies();
   const navigate = useNavigate();
-  const code = new URL(window.location.href).searchParams.get("code");
 
-  const location = useLocation();
-
-  console.log("location.state.notFirst :>> ", location);
+  const setNickname = cookies.setNickname;
 
   useEffect(() => {
     async function NaverLogin() {
@@ -20,32 +18,58 @@ function NaverRedirect() {
       );
 
       if (res.data.success && res.data.error === null) {
-        console.log("result.data.data.isFirst", res.data.data.isFirst);
-        console.log("result.data.data", res.data.data);
         const newUser = res.data.data.isFirst;
-        if (newUser === true) {
-          const EMAIL = res.data.data.email;
-          setCookie("loginEmail", EMAIL);
+        const isDuplicate = res.data.data.isDuplicate;
+        const EMAIL = res.data.data.email;
+        const OAUTH = res.data.data.oauth;
+        setCookie("loginEmail", EMAIL);
+        setCookie("loginOauth", OAUTH);
+
+        if (isDuplicate) {
+          if (
+            window.confirm(
+              "기존에 동일한 이메일로 가입했습니다. 통합하시겠습니까?"
+            )
+          ) {
+            const res = await axios.put(
+              process.env.REACT_APP_API + `/api/member/integration`,
+              { email: EMAIL, oauth: OAUTH }
+            );
+            if (res.data.success && res.data.error === null) {
+              console.log("res 통합 :>> ", res);
+              onLogin(res);
+            }
+          } else {
+            navigate("/join");
+          }
+          return;
+        }
+
+        if (newUser && !isDuplicate && setNickname === undefined) {
           navigate("/join", { replace: true });
         } else {
-          const ACCESS_TOKEN = res.headers["authorization"];
-          const REFRESH_TOKEN = res.headers["refresh-token"];
-          const EMAIL = res.data.data.email;
-          const NICKNAME = res.data.data.nickname;
-          const PROFILE = res.data.data.profile;
-          const USERID = res.data.data.userId;
-          const GRADE = res.data.data.grade;
-          setCookie("accessToken", `Bearer ` + ACCESS_TOKEN);
-          setCookie("refreshToken", REFRESH_TOKEN);
-          setCookie("loginEmail", EMAIL);
-          setCookie("loginNickname", NICKNAME);
-          setCookie("loginProfile", PROFILE);
-          setCookie("loginUserId", USERID);
-          setCookie("loginGrade", GRADE);
+          onLogin(res);
           navigate("/", { replace: true });
         }
       }
     }
+    const onLogin = (res) => {
+      console.log("res onLogin :>> ", res);
+      const ACCESS_TOKEN = `Bearer ${res.headers["authorization"]}`;
+      const REFRESH_TOKEN = res.headers["refresh-token"];
+      const EMAIL = res.data.data.email;
+      const NICKNAME = res.data.data.nickname;
+      const PROFILE = res.data.data.profile;
+      const USERID = res.data.data.userId;
+      const GRADE = res.data.data.grade;
+      setCookie("accessToken", ACCESS_TOKEN);
+      setCookie("refreshToken", REFRESH_TOKEN);
+      setCookie("loginEmail", EMAIL);
+      setCookie("loginNickname", NICKNAME);
+      setCookie("loginProfile", PROFILE);
+      setCookie("loginUserId", USERID);
+      setCookie("loginGrade", GRADE);
+    };
     if (cookies.loginEmail === undefined) {
       NaverLogin();
     } else {

@@ -32,6 +32,8 @@ const Logo = () => {
     removeCookie("loginNickname");
     removeCookie("loginProfile");
     removeCookie("loginGrade");
+    removeCookie("loginOauth");
+    removeCookie("setNickname");
     alert("로그아웃");
   };
 
