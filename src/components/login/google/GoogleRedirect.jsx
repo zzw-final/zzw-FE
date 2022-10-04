@@ -7,7 +7,6 @@ function GoogleRedirect() {
   const code = new URL(window.location.href).searchParams.get("code");
   const [cookies, setCookie, removeCookies] = useCookies();
   const navigate = useNavigate();
-  const setNickname = cookies.setNickname;
 
   useEffect(() => {
     async function googleLogin() {
@@ -43,7 +42,7 @@ function GoogleRedirect() {
           return;
         }
 
-        if (newUser && !isDuplicate && setNickname === undefined) {
+        if (newUser && !isDuplicate) {
           navigate("/join");
         } else {
           onLogin(res);

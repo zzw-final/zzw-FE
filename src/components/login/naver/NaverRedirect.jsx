@@ -8,8 +8,6 @@ function NaverRedirect() {
   const [cookies, setCookie, removeCookies] = useCookies();
   const navigate = useNavigate();
 
-  const setNickname = cookies.setNickname;
-
   useEffect(() => {
     async function NaverLogin() {
       const res = await axios.get(
@@ -45,7 +43,7 @@ function NaverRedirect() {
           return;
         }
 
-        if (newUser && !isDuplicate && setNickname === undefined) {
+        if (newUser && !isDuplicate) {
           navigate("/join", { replace: true });
         } else {
           onLogin(res);

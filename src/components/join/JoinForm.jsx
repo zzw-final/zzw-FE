@@ -32,9 +32,28 @@ const JoinForm = (props) => {
       nickname,
     });
 
+    const onLogin = (result) => {
+      const ACCESS_TOKEN = `Bearer ${result.headers["authorization"]}`;
+      const REFRESH_TOKEN = result.headers["refresh-token"];
+      const OAUTH_TOKEN = result.data.data.oauthToken;
+      const EMAIL = result.data.data.email;
+      const NICKNAME = result.data.data.nickname;
+      const PROFILE = result.data.data.profile;
+      const USERID = result.data.data.userId;
+      const GRADE = result.data.data.grade;
+      setCookies("accessToken", ACCESS_TOKEN);
+      setCookies("refreshToken", REFRESH_TOKEN);
+      setCookies("oauthToken", OAUTH_TOKEN);
+      setCookies("loginEmail", EMAIL);
+      setCookies("loginNickname", NICKNAME);
+      setCookies("loginProfile", PROFILE);
+      setCookies("loginUserId", USERID);
+      setCookies("loginGrade", GRADE);
+    };
+
     if (result.data.success && result.data.error === null) {
-      setCookies("setNickname", "true");
-      navigate("/login");
+      onLogin(result);
+      navigate("/");
     }
   };
 
