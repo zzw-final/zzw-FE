@@ -1,5 +1,5 @@
 import React from "react";
-import { useState, useEffect, useRef } from "react";
+import { usememo, useState, useEffect, useRef } from "react";
 import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
 import { instance, imgInstance } from "../api/request";
@@ -13,19 +13,18 @@ function WritePage() {
   const [foodname, setFoodName] = useState("");
   const [ingredient, setIngredient] = useState([]);
   const [time, setTime] = useState("");
-  // const [content, setContent] = useState("");
   const [imageURL, setImageURL] = useState("");
   const navigate = useNavigate();
 
-  const [pageDataList, setPageDataList] = useState([]);
-  const [pageData, setPageData] = useState({});
-
-  console.log("pageDataList", pageDataList);
-
-  // const [pageData, setPageData] = useState({});
   // const [pageDataImg, setPageDataImg] = useState("");
   // const [pageDataContent, setPageDataContent] = useState("");
   // const [pageDataCnt, setPageDataCnt] = useState(0);
+
+  const [pageDataList, setPageDataList] = useState([]);
+  const [pageData, setPageData] = useState({});
+  console.log("pageDataList", pageDataList);
+
+  // const [pageData, setPageData] = useState({});
 
   //post
   const onSubmitHandler = async (e) => {
@@ -40,22 +39,22 @@ function WritePage() {
         time: time,
         pageList: pageDataList,
       };
-      // console.log(data);
-      // await instance.post("/api/auth/post", data);
-      // alert("게시글 등록이 완료되었습니다!");
-      // navigate("/");
+      console.log(data);
+      await instance.post("/api/auth/post", data);
+      alert("게시글 등록이 완료되었습니다!");
+      navigate("/");
     } catch (error) {
       console.log("에러..", error);
     }
   };
 
   const getPageData = (sendData) => {
-    console.log("sendData :>> ", sendData.page);
+    // console.log("sendData :>> ", sendData.page);
 
-    console.log(
-      "find >",
-      pageDataList.find((i) => i.page === sendData.page)
-    );
+    // console.log(
+    //   "find >",
+    //   pageDataList.find((i) => i.page === sendData.page)
+    // );
 
     if (pageDataList.find((i) => i.page === sendData.page) === undefined) {
     }
@@ -85,10 +84,6 @@ function WritePage() {
   };
 
   const [list, setList] = useState();
-
-  //레시피 단계 작성 카드 추가
-  // const [countList, setCountList] = useState([0]);
-
   let [cnt, setCnt] = useState(0);
 
   const onAddCardDiv = () => {
@@ -101,6 +96,7 @@ function WritePage() {
         imgUpload={imgUpload}
         getPageData={getPageData}
       />,
+      console.log("랜더링중"),
     ]);
   };
 
@@ -117,7 +113,10 @@ function WritePage() {
         setTime={setTime}
         imageURL={imageURL}
         imgUpload={imgUpload}
+        setImageURL={setImageURL}
       />
+      <Notion>레시피 단계별로 작성해주세요 !😋</Notion>
+      {/* <WriteCard /> */}
       {list}
       <Addbutton onClick={onAddCardDiv}>페이지 추가하기</Addbutton>
     </LayoutPage>
@@ -137,4 +136,8 @@ const Addbutton = styled.button`
     background: var(--color-dark-white);
     color: white;
   }
+`;
+
+const Notion = styled.div`
+  margin: 2rem 10vw 1rem 15vw;
 `;
