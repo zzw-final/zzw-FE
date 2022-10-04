@@ -36,8 +36,6 @@ const MainPage = () => {
     navigate(`/search?${searchOption}=${sendData}`);
   };
 
-  console.log("followPost > ", followPost);
-
   return (
     <LayoutPage backgroundMain={"--color-orange"}>
       <Logo />

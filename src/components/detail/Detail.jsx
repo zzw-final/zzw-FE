@@ -37,6 +37,14 @@ function Detail({
     )
     .filter((ingredient) => ingredient !== undefined);
 
+  const commentListCnt = commentList?.length;
+
+  const [toggleTagList, setToggleTagList] = useState(false);
+
+  const openTagBox = () => {
+    setToggleTagList(!toggleTagList);
+  };
+
   return (
     <DetailContainer>
       <Header>
@@ -73,22 +81,28 @@ function Detail({
           <Icon onClick={copyUrl} src={"/copy.png"} alt="공유하기" />
           <Icon src={"/eye-off.png"} alt="신고하기" />
         </FootLeft>
-        <Comment>💬 156</Comment>
+        <Comment onClick={openTagBox}>💬 {commentListCnt}</Comment>
+
+        <CommentListBox id="tagList" top={toggleTagList}>
+          <CommentFoldLine onClick={openTagBox}></CommentFoldLine>
+          <SearchBox>
+            <CommentBox>
+              <CommentList
+                postId={postDetail?.postId}
+                post={post}
+                remove={remove}
+                update={update}
+                commentList={commentList}
+              />
+            </CommentBox>
+          </SearchBox>
+        </CommentListBox>
       </Footer>
-      {/* <CommentList
-        postId={postDetail?.postId}
-        post={post}
-        remove={remove}
-        update={update}
-        commentList={commentList}
-      /> */}
     </DetailContainer>
   );
 }
 
-const DetailContainer = styled.div`
-  width: 100vw;
-`;
+const DetailContainer = styled.div``;
 
 const Header = styled.div`
   display: flex;
@@ -143,18 +157,13 @@ const Tags = styled.div`
 `;
 
 const Content = styled.div`
-  margin: 10px auto;
-  /* padding: 0.5rem; */
-  border-radius: 10px;
-  width: 100vw;
-  height: 60vh;
-  /* background-color: white; */
+  overflow: hidden;
 `;
 
 const Footer = styled.div`
   display: flex;
   justify-content: space-between;
-  padding: 6rem 1.5rem 0rem 1.5rem;
+  padding: 2rem 1.5rem 0rem 1.5rem;
   align-items: center;
 `;
 
@@ -170,11 +179,42 @@ const Icon = styled.img`
 `;
 
 const Comment = styled.div`
-  background-color: white;
+  background-color: var(--color-white);
   padding: 0.2rem 0.5rem;
   box-shadow: 0 0 10px rgb(0 0 0 / 30%);
   border-radius: 15px;
   font-weight: var(--weight-bold);
+`;
+
+const SearchBox = styled.div`
+  /* background-color: lavender; */
+  display: flex;
+  flex-direction: column;
+  height: 14vh;
+  position: relative;
+`;
+
+const CommentFoldLine = styled.div`
+  width: 20%;
+  height: 0.1rem;
+  background-color: var(--color-orange);
+  margin: 0.5rem auto 2rem auto;
+`;
+
+const CommentListBox = styled.div`
+  background-color: var(--color-white);
+  z-index: 1;
+  width: 90%;
+  height: 100%;
+  border-radius: 2rem 2rem 0 0;
+  transition: all 600ms cubic-bezier(0.86, 0, 0.07, 1);
+  top: ${({ top }) => (top ? "20%" : "100%")};
+  position: fixed;
+  left: 0;
+`;
+
+const CommentBox = styled.div`
+  width: 100%;
 `;
 
 export default Detail;

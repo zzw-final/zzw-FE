@@ -41,12 +41,16 @@ const SwiperRecipeItem = ({
     else navigate(`/mypage/${authorId}`);
   };
 
+  console.log("isLike :>> ", isLike);
+  console.log("likeNum :>> ", likeNum);
+
   const like = async () => {
     if (loginNickname === undefined) {
       alert("로그인 유저만 사용 가능한 기능입니다.");
       return;
     }
-    await likeToggle(postId);
+    const likeResult = await likeToggle(postId);
+    console.log("likeResult", likeResult.data.data);
     setLikeToggleBtn(!likeToggleBtn);
   };
 
