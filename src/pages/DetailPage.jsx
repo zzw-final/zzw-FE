@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { useQuery } from "react-query";
 import { useNavigate, useParams } from "react-router-dom";
-import { instance } from "../api/request";
+import { imgInstance, instance } from "../api/request";
 import LayoutPage from "../components/common/LayoutPage";
 import Detail from "../components/detail/Detail";
 import styled from "styled-components";
@@ -11,14 +11,74 @@ function DetailPage() {
   const { id } = useParams();
   const [commentList, setCommentList] = useState();
 
+  const [editedIngredient, setEditedIngredient] = useState();
+  const [editedTitle, setEditedTitle] = useState();
+  const [editedFoodname, setEditedFoodname] = useState();
+  const [editedImageUrl, setEditedImageUrl] = useState();
+  const [editTime, setEditTime] = useState();
+  const [editedValues, setEditedvalues] = useState([
+    { imageUrl: "", content: "", page: 0 },
+  ]);
+
+  useEffect(() => {
+    console.log("editedValues detailPage :>> ", editedValues);
+  }, [editedValues]);
+
   const fetchDetail = async () => {
     return await instance.get(`/api/post/${id}`);
   };
 
   const { data: postDetail } = useQuery(["detail", id], fetchDetail, {
-    staleTime: Infinity, // 항상 신선한 데이터로 취급
-    select: (data) => data.data.data, // 요청 성공시 데이터 가공
+    staleTime: Infinity,
+    select: (data) => data.data.data,
   });
+
+  const foodIngredientList = postDetail?.ingredient
+    ?.map((ingredient) =>
+      ingredient.isName !== true ? ingredient.ingredientName : undefined
+    )
+    .filter((ingredient) => ingredient !== undefined);
+
+  console.log("postDetail.time :>> ", postDetail?.time);
+
+  const onSubmitHandler = async () => {
+    const data = {
+      title: editedTitle || postDetail?.title,
+      foodName: editedFoodname || postDetail?.ingredient[0].ingredientName,
+      ingredient: editedIngredient || foodIngredientList,
+      imageUrl: editedImageUrl || postDetail?.foodImg,
+      time: editTime || postDetail.time,
+      pageList: editedValues || postDetail?.contentList,
+    };
+    console.log("보내는 수정데이터 확인", data);
+    // const result = await instance.put(`/api/auth/post/${id}`, data);
+    // console.log("result :>> ", result);
+    // alert("글 수정이 완료되었습니다!");
+    // navigate(`/detail/${id}`);
+  };
+
+  const editForm = (type, data) => {
+    switch (type) {
+      case "title":
+        setEditedTitle(data);
+        break;
+      case "foodName":
+        setEditedFoodname(data);
+        break;
+      case "ingredient":
+        setEditedIngredient(data);
+        break;
+      case "imageUrl":
+        setEditedImageUrl(data);
+        break;
+      case "time":
+        setEditTime(data);
+        break;
+
+      default:
+        break;
+    }
+  };
 
   useEffect(() => {
     async function fetchData() {
@@ -34,7 +94,6 @@ function DetailPage() {
     const comment = {
       comment: postInfo.comment,
     };
-    console.log("comment > ", comment);
     const res = await instance.post(
       `/api/auth/post/${postInfo.postId}/comment`,
       comment
@@ -91,6 +150,19 @@ function DetailPage() {
     return await instance.post(`/api/auth/post/${postId}`);
   };
 
+  const imgUpload = async (e) => {
+    e.preventDefault();
+    if (e.target.files) {
+      const file = e.target.files[0];
+      console.log("이미지 파일 받기", file);
+      const formdata = new FormData();
+      formdata.append("file", file);
+      return await imgInstance.post("/api/post/image", formdata, {
+        headers: { "Content-Type": "multipart/form-data" },
+      });
+    }
+  };
+
   return (
     <LayoutPage background={"#fbd499"}>
       <DetailContainer>
@@ -102,6 +174,11 @@ function DetailPage() {
           update={update}
           commentList={commentList}
           likeToggle={likeToggle}
+          imgUpload={imgUpload}
+          editedValues={editedValues}
+          setEditedValues={setEditedvalues}
+          onSubmitHandler={onSubmitHandler}
+          editForm={editForm}
         />
       </DetailContainer>
     </LayoutPage>

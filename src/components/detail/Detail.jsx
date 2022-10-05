@@ -16,11 +16,17 @@ function Detail({
   commentList,
   onDelete,
   likeToggle,
+  imgUpload,
+  editedValues,
+  setEditedValues,
+  onSubmitHandler,
+  editForm,
 }) {
   const navigate = useNavigate();
   const nickname = getCookie("loginNickname");
   const url = window.location.href;
   const [toast, setToast] = useState(false);
+  const [isEditMode, setIsEditMode] = useState(false);
 
   const copyUrl = async () => {
     setToast(true);
@@ -45,6 +51,10 @@ function Detail({
     setToggleTagList(!toggleTagList);
   };
 
+  const onEditPage = () => {
+    setIsEditMode(!isEditMode);
+  };
+
   return (
     <DetailContainer>
       <Header>
@@ -54,13 +64,8 @@ function Detail({
         </FoodnameDiv>
         {nickname === postDetail?.nickname && (
           <ButtonDiv>
-            <Button
-              onClick={() => {
-                navigate(`/editpage/${postDetail?.postId}`);
-              }}
-            >
-              수정
-            </Button>
+            <Button onClick={onSubmitHandler}>수정완료</Button>
+            <Button onClick={onEditPage}>수정</Button>
             <Button onClick={onDelete}>삭제</Button>
           </ButtonDiv>
         )}
@@ -72,7 +77,15 @@ function Detail({
       </Tags>
       <Content>
         {postDetail && (
-          <SwiperRecipe postDetail={postDetail} likeToggle={likeToggle} />
+          <SwiperRecipe
+            postDetail={postDetail}
+            likeToggle={likeToggle}
+            isEditMode={isEditMode}
+            imgUpload={imgUpload}
+            editedValues={editedValues}
+            setEditedValues={setEditedValues}
+            editForm={editForm}
+          />
         )}
       </Content>
       {toast && <Toast setToast={setToast} />}
