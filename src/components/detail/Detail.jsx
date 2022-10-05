@@ -36,16 +36,15 @@ function Detail({
 
   const [tagItem, setTagItem] = useState("");
   const [tagList, setTagList] = useState(foodIngredientList);
-  const [foodName, setFoodName] = useState();
 
   const copyUrl = async () => {
     setToast(true);
     await navigator.clipboard.writeText(url);
   };
 
-  // const foodName = postDetail?.ingredient.find(
-  //   (ingredient) => ingredient.isName
-  // ).ingredientName;
+  const foodName = postDetail?.ingredient.find(
+    (ingredient) => ingredient.isName
+  ).ingredientName;
 
   const commentListCnt = commentList?.length;
 
@@ -59,40 +58,31 @@ function Detail({
     setIsEditMode(!isEditMode);
   };
 
-  const submitTag = () => {
-    if (!tagList.includes(tagItem)) {
+  const submitTag = (prevState) => {
+    if (!tagList?.includes(tagItem)) {
       setTagList((prevState) => {
-        return [...prevState, { ingredientName: tagItem, isName: false }];
+        return [...prevState, tagItem];
       });
     }
     setTagItem("");
   };
 
-  //태그 삭제기능
   const deleteTag = (ingredientName) => {
-    setTagList(
-      tagList.filter((tagItem) => tagItem.ingredientName !== ingredientName)
-    );
+    setTagList(tagList.filter((tagItem) => tagItem !== ingredientName));
   };
 
-  //누르면 태그가 하나의 div
   const onKeyPress = (e) => {
     if (e.target.value !== "" && e.key === "Enter") {
       submitTag();
     }
   };
 
-  useEffect(() => {
-    console.log("postDetial > ", postDetail);
-    const foodName = postDetail?.ingredient?.find(
-      (item) => item.isName === true
-    )?.ingredientName;
-    const ingredientList_d = postDetail?.ingredient?.filter(
-      (item) => item.isName === false
-    );
-    setFoodName(foodName);
-    setTagList(ingredientList_d);
-  }, [postDetail]);
+  // useEffect(() => {
+  //   const ingredientList_d = postDetail?.ingredient?.filter(
+  //     (item) => item.isName === false
+  //   );
+  //   setTagList(ingredientList_d);
+  // }, [postDetail]);
 
   useEffect(() => {
     editForm("ingredient", tagList);
@@ -134,11 +124,11 @@ function Detail({
           </ButtonDiv>
         )}
       </Header>
-      <Tags>
+      {/* <Tags>
         {foodIngredientList?.map((ingredient, i) => (
           <Tag height="20px" tagName={ingredient} key={i} />
         ))}
-      </Tags>
+      </Tags> */}
       {/* 태그수정부분>>>>>> */}
       {/* 
       <Tags>
@@ -159,10 +149,8 @@ function Detail({
           tagList.map((tagItem, i) => {
             return (
               <Tagdiv key={i}>
-                <div>{tagItem.ingredientName}</div>
-                <Button onClick={() => deleteTag(tagItem.ingredientName)}>
-                  X
-                </Button>
+                <div>{tagItem}</div>
+                <Button onClick={() => deleteTag(tagItem)}>X</Button>
               </Tagdiv>
             );
           })}
@@ -176,7 +164,7 @@ function Detail({
       </TagBox>
       {/* <<<<태그수정(값도 잘 들어가집니다..한글자씩만 입력가능한 문제....) */}
 
-      <Content>
+      {/* <Content>
         {postDetail && (
           <SwiperRecipe
             postDetail={postDetail}
@@ -210,7 +198,7 @@ function Detail({
             </CommentBox>
           </SearchBox>
         </CommentListBox>
-      </Footer>
+      </Footer> */}
     </DetailContainer>
   );
 }
