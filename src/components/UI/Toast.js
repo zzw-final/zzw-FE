@@ -21,7 +21,7 @@ function Toast({ setToast }) {
 export default Toast;
 
 const Box = styled.div`
-  margin: 2rem 0px 0px 1.5rem;
+  margin: -1.2rem 0px 0px 1.5rem;
   padding: 0.8rem 1.2rem;
   background-color: white;
   opacity: 90%;

@@ -203,7 +203,7 @@ const CommentFoldLine = styled.div`
 const CommentListBox = styled.div`
   background-color: var(--color-white);
   z-index: 1;
-  width: 90%;
+  width: 100%;
   height: 100%;
   border-radius: 2rem 2rem 0 0;
   box-shadow: 0px 0px 20px #5b5b5b;

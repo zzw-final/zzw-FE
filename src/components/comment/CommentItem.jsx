@@ -101,7 +101,7 @@ const CommentItem = ({ commentItem, remove, update }) => {
 const ItemContainer = styled.div`
   display: flex;
   flex-direction: column;
-  padding: 0.2rem 0.4rem;
+  padding: 0.2rem 1rem;
 `;
 
 const Info = styled.div`

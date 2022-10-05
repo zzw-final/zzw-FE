@@ -56,8 +56,8 @@ const SwiperContainer = styled.div`
 
 const SwiperBox = styled.div`
   .swiper {
-    width: 280px;
-    height: 500px;
+    width: 320px;
+    height: 540px;
     margin: auto;
   }
 

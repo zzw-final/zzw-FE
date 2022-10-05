@@ -12,6 +12,7 @@ const Main = ({
   followPost,
   likeToggle,
   search,
+  mutate,
 }) => {
   const onClickTagHandler = (tagName) => {
     search("tag", tagName);
@@ -53,6 +54,7 @@ const Main = ({
           <List
             list={bestPost}
             likeToggle={likeToggle}
+            mutate={mutate}
             width="160px"
             height="200px"
           />
@@ -65,6 +67,7 @@ const Main = ({
               <List
                 list={recentPost}
                 likeToggle={likeToggle}
+                mutate={mutate}
                 display="grid"
                 height="210px"
                 margin="0 0.5rem 0 0.5rem"
@@ -78,6 +81,7 @@ const Main = ({
               <List
                 list={recentPost}
                 likeToggle={likeToggle}
+                mutate={mutate}
                 width="160px"
                 height="200px"
               />
@@ -87,6 +91,7 @@ const Main = ({
               <List
                 list={followPost}
                 likeToggle={likeToggle}
+                mutate={mutate}
                 display="grid"
                 height="210px"
                 margin="0 0.5rem 0 0.5rem"

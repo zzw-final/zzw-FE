@@ -7,7 +7,7 @@ import Like from "../common/Like";
 import { useCookies } from "react-cookie";
 import Skeleton from "@mui/material/Skeleton";
 
-function RecipeBest({ post, likeToggle, ...props }) {
+function RecipeBest({ post, likeToggle, mutate, ...props }) {
   const { postId, title, isLike, ingredient, foodImg } = post;
   const [likeToggleBtn, setLikeToggleBtn] = useState(isLike);
   const navigate = useNavigate();
@@ -34,6 +34,7 @@ function RecipeBest({ post, likeToggle, ...props }) {
       return;
     }
     await likeToggle(postId);
+    // mutate(postId);
     setLikeToggleBtn(!likeToggleBtn);
   };
 
@@ -80,8 +81,6 @@ const Title = styled.div`
   padding: 0.1rem 0.3rem;
   font-weight: var(--weight-semi-bold);
   margin: 0.2rem 0.2rem;
-
-  //DESC: width 넘어가면 ...으로 생략되는 부분
   width: 100%;
   overflow: hidden;
   text-overflow: ellipsis;
