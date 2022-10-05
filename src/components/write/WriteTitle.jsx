@@ -86,29 +86,26 @@ const WriteTitle = ({
       </TagBox>
       <SelectDiv>조리시간 </SelectDiv>
       <TimeSelect
-        // ref={timeRef}
         onChange={(e) => {
           setTime(e.target.value);
         }}
       >
-        <option selected value="5분">
-          5분
-        </option>
+        <option value="5분">5분</option>
         <option value="10분">10분</option>
         <option value="15분">15분</option>
         <option value="30분">30분 이상</option>
       </TimeSelect>
-      <PreviewImg
-        placeholder="재료를 태그로 입력해주세요"
-        // onClick={onClickImgInput}
-        src={imageURL}
-      />
+      <PreviewImg src={imageURL} />
+      <StyledFileInput onClick={onClickImgInput}>이미지 선택</StyledFileInput>
+      <ImgNotion onClick={onClickImgInput}>
+        최대 1MB까지 업로드 가능합니다.
+      </ImgNotion>
       <ImgInput
         type="file"
         accept="image/*"
         multiple="multiple"
         onChange={getImgUpload}
-        // ref={imgInput}
+        ref={imgInput}
       />
       {/* <button onClick={onClickImgInput}>대표이미지를 업로드 해주세요 !</button> */}
     </WriteTitleContainer>
@@ -218,7 +215,28 @@ const PreviewImg = styled.img`
   grid-row-start: 5;
 `;
 const ImgInput = styled.input`
+  /* grid-column-start: 2;
+  grid-row-start: 6; */
+  display: none;
+`;
+
+const StyledFileInput = styled.button`
   grid-column-start: 2;
   grid-row-start: 6;
-  /* display: none; */
+  width: 25vw;
+  height: 2vh;
+  font-size: 10px;
+  border: 0;
+  border-radius: 5px;
+  background-color: #ffbb56;
+  margin-top: 3vw;
+`;
+
+const ImgNotion = styled.label`
+  font-size: 3px;
+  margin-top: 16px;
+  color: var(--color-dark-white);
+  grid-column-start: 2;
+  grid-row-start: 6;
+  margin-top: 10vw;
 `;
