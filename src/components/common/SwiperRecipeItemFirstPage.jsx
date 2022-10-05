@@ -14,6 +14,7 @@ const SwiperRecipeItemFirstPage = ({
   isEditMode,
   imgUpload,
   editForm,
+  mutate,
 }) => {
   const {
     postId,
@@ -47,11 +48,14 @@ const SwiperRecipeItemFirstPage = ({
       alert("로그인 유저만 사용 가능한 기능입니다.");
       return;
     }
-    const likeResult = await likeToggle(postId);
+    // const likeResult = await likeToggle(postId);
+    // const likeResult = mutate(postId);
+    console.log("isLike :>> ", isLike);
+    mutate(postId);
     setLikeToggleBtn(!likeToggleBtn);
-    if (likeResult.data.data === "post like success")
-      setViewLikeNum(viewLikeNum + 1);
-    else setViewLikeNum(viewLikeNum - 1);
+    // if (likeResult.data.data === "post like success")
+    //   setViewLikeNum(viewLikeNum + 1);
+    // else setViewLikeNum(viewLikeNum - 1);
   };
 
   const getImgFoodUpload = async (e) => {

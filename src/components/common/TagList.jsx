@@ -1,36 +1,7 @@
-import { useState, useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import styled from "styled-components";
-import { useNavigate } from "react-router-dom";
-import Tag from "../common/Tag";
-import CommentList from "../comment/CommentList";
-import { getCookie } from "../../util/cookie";
-import Toast from "../UI/Toast";
-import SwiperRecipe from "../common/SwiperRecipe";
-import { useRef } from "react";
-import TagList from "../common/TagList";
 
-function Detail({
-  postDetail,
-  // tagList,
-  post,
-  remove,
-  update,
-  commentList,
-  onDelete,
-  likeToggle,
-  imgUpload,
-  editedValues,
-  setEditedValues,
-  onSubmitHandler,
-  editForm,
-  mutate,
-}) {
-  const navigate = useNavigate();
-  const nickname = getCookie("loginNickname");
-  const url = window.location.href;
-  const [toast, setToast] = useState(false);
-  const [isEditMode, setIsEditMode] = useState(false);
-
+const TagList = ({ postDetail, editForm }) => {
   const foodIngredientList = postDetail?.ingredient
     .map((ingredient) =>
       !ingredient.isName ? ingredient.ingredientName : undefined
@@ -39,24 +10,8 @@ function Detail({
 
   const [tagItem, setTagItem] = useState("");
   const [tagList, setTagList] = useState(foodIngredientList);
-  const [foodName, setFoodName] = useState();
 
-  const copyUrl = async () => {
-    setToast(true);
-    await navigator.clipboard.writeText(url);
-  };
-
-  const commentListCnt = commentList?.length;
-
-  const [toggleTagList, setToggleTagList] = useState(false);
-
-  const openTagBox = () => {
-    setToggleTagList(!toggleTagList);
-  };
-
-  const onEditPage = () => {
-    setIsEditMode(!isEditMode);
-  };
+  console.log("foodIngredientList > ", foodIngredientList);
 
   const submitTag = () => {
     if (!tagList.includes(tagItem)) {
@@ -82,119 +37,40 @@ function Detail({
   };
 
   useEffect(() => {
-    const foodName = postDetail?.ingredient?.find(
-      (item) => item.isName === true
-    )?.ingredientName;
-    setFoodName(foodName);
+    const ingredientList_d = postDetail?.ingredient?.filter(
+      (item) => item.isName === false
+    );
+    setTagList(ingredientList_d);
   }, [postDetail]);
 
   useEffect(() => {
     editForm("ingredient", tagList);
-  }, [tagList, editForm]);
-
-  const onCancle = () => {
-    setIsEditMode(!isEditMode);
-  };
+  }, [tagList]);
 
   return (
-    <DetailContainer>
-      <Header>
-        <FoodnameDiv>
-          {!isEditMode ? (
-            <>
-              <Foodname>{foodName}</Foodname>
-              <Time>⏱ {postDetail?.time} min</Time>
-            </>
-          ) : (
-            <>
-              <FoodnameEdit
-                defaultValue={foodName}
-                onBlur={(e) => {
-                  editForm("foodName", e.target.value);
-                }}
-              ></FoodnameEdit>
-              <TimeSelect
-                placeholder="요리 시간을 선택해주세요"
-                onBlur={(e) => {
-                  editForm("time", e.target.value);
-                }}
-              >
-                <option value="5분">5분</option>
-                <option value="10분">10분</option>
-                <option value="15분">15분</option>
-                <option value="30분">30분 이상</option>
-              </TimeSelect>
-            </>
-          )}
-        </FoodnameDiv>
-        {nickname === postDetail?.nickname && (
-          <ButtonDiv>
-            {!isEditMode ? (
-              <>
-                <Button onClick={onEditPage}>수정</Button>
-                <Button onClick={onDelete}>삭제</Button>
-              </>
-            ) : (
-              <>
-                <ButtonEdit onClick={onSubmitHandler}>수정완료</ButtonEdit>
-                <ButtonEdit onClick={onCancle}>수정취소</ButtonEdit>
-              </>
-            )}
-          </ButtonDiv>
-        )}
-      </Header>
-
-      {!isEditMode ? (
-        <Tags>
-          {foodIngredientList?.map((ingredient, i) => (
-            <Tag height="20px" tagName={ingredient} key={i} />
-          ))}
-        </Tags>
-      ) : (
-        <Tags>
-          <TagList postDetail={postDetail} editForm={editForm} />
-        </Tags>
-      )}
-
-      <Content>
-        {postDetail && (
-          <SwiperRecipe
-            postDetail={postDetail}
-            likeToggle={likeToggle}
-            isEditMode={isEditMode}
-            imgUpload={imgUpload}
-            editedValues={editedValues}
-            setEditedValues={setEditedValues}
-            editForm={editForm}
-            mutate={mutate}
-          />
-        )}
-      </Content>
-      {toast && <Toast setToast={setToast} />}
-      <Footer>
-        <FootLeft>
-          <Icon onClick={copyUrl} src={"/copy.png"} alt="공유하기" />
-          <Icon src={"/eye-off.png"} alt="신고하기" />
-        </FootLeft>
-        <Comment onClick={openTagBox}>💬 {commentListCnt}</Comment>
-        <CommentListBox id="tagList" top={toggleTagList}>
-          <CommentFoldLine onClick={openTagBox}></CommentFoldLine>
-          <SearchBox>
-            <CommentBox>
-              <CommentList
-                postId={postDetail?.postId}
-                post={post}
-                remove={remove}
-                update={update}
-                commentList={commentList}
-              />
-            </CommentBox>
-          </SearchBox>
-        </CommentListBox>
-      </Footer>
-    </DetailContainer>
+    <TagBox>
+      {tagList &&
+        tagList.map((tagItem, i) => {
+          return (
+            <Tagdiv key={i}>
+              <div>{tagItem.ingredientName}</div>
+              <Button onClick={() => deleteTag(tagItem.ingredientName)}>
+                X
+              </Button>
+            </Tagdiv>
+          );
+        })}
+      <IngredintTag
+        value={tagItem}
+        // value={}
+        onChange={(e) => {
+          setTagItem(e.target.value);
+        }}
+        onKeyPress={onKeyPress}
+      />
+    </TagBox>
   );
-}
+};
 
 const DetailContainer = styled.div``;
 
@@ -380,4 +256,4 @@ const CommentBox = styled.div`
   width: 100%;
 `;
 
-export default Detail;
+export default TagList;

@@ -17,6 +17,7 @@ const SwiperRecipe = ({
   editedValues,
   setEditedValues,
   editForm,
+  mutate,
 }) => {
   const contentList = postDetail.contentList;
 
@@ -36,6 +37,7 @@ const SwiperRecipe = ({
               isEditMode={isEditMode}
               imgUpload={imgUpload}
               editForm={editForm}
+              mutate={mutate}
             />
           </SwiperSlide>
           {contentList.map((content, idx) => (

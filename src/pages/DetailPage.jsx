@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { useQuery } from "react-query";
+import { useMutation, useQuery, useQueryClient } from "react-query";
 import { useNavigate, useParams } from "react-router-dom";
 import { imgInstance, instance } from "../api/request";
 import LayoutPage from "../components/common/LayoutPage";
@@ -27,6 +27,34 @@ function DetailPage() {
     select: (data) => data.data.data,
   });
 
+  const queryClient = useQueryClient();
+
+  const likeToggle = async (postId) => {
+    return await instance.post(`/api/auth/post/${postId}`);
+  };
+
+  console.log(" 디테일 페이지 렌더링.. ");
+
+  const { mutate } = useMutation(likeToggle, {
+    onMutate: async (postId) => {
+      await queryClient.cancelQueries(["detail", id]);
+      const previousData = queryClient.getQueryData(["detail", id]);
+      queryClient.setQueryData(["detail", id], (prevData) => {
+        console.log("prevData :>> ", prevData);
+        // return { ...prevData?.data.data, isLike: !prevData?.data.data.isLike };
+        return {
+          ...prevData,
+          isLike: !prevData.data.data.isLike,
+        };
+      });
+      return previousData;
+    },
+    onSuccess: async (data, postId) => {
+      console.log("data detailPage > ", data);
+      console.log("data detailPage  postId> ", postId);
+    },
+  });
+
   const foodIngredientList = postDetail?.ingredient
     ?.map((ingredient) =>
       ingredient.isName !== true ? ingredient.ingredientName : undefined
@@ -47,10 +75,10 @@ function DetailPage() {
       pageList: editedValues,
     };
     console.log("보내는 수정데이터 확인", data);
-    const result = await instance.put(`/api/auth/post/${id}`, data);
-    console.log("result :>> ", result);
-    alert("글 수정이 완료되었습니다!");
-    navigate(`/`);
+    // const result = await instance.put(`/api/auth/post/${id}`, data);
+    // console.log("result :>> ", result);
+    // alert("글 수정이 완료되었습니다!");
+    // navigate(`/`);
   };
 
   const editForm = (type, data) => {
@@ -141,10 +169,6 @@ function DetailPage() {
     }
   };
 
-  const likeToggle = async (postId) => {
-    return await instance.post(`/api/auth/post/${postId}`);
-  };
-
   const imgUpload = async (e) => {
     e.preventDefault();
     if (e.target.files) {
@@ -175,6 +199,7 @@ function DetailPage() {
             setEditedValues={setEditedvalues}
             onSubmitHandler={onSubmitHandler}
             editForm={editForm}
+            mutate={mutate}
           />
         )}
       </DetailContainer>
