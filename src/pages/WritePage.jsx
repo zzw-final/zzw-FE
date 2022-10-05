@@ -39,6 +39,7 @@ function WritePage() {
       await instance.post("/api/auth/post", data);
       alert("게시글 등록이 완료되었습니다!");
       navigate("/");
+      window.sessionStorage.clear();
     } catch (error) {
       console.log("에러..", error);
     }
