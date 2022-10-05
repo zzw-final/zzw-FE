@@ -106,6 +106,7 @@ const Main = ({
 
 const MainContainer = styled.div`
   /* text-align: center; */
+  padding-bottom: 60px;
 `;
 
 const TagsContainer = styled.section`
@@ -166,8 +167,6 @@ const NewRecipeContainer = styled.section`
   }
 `;
 
-const FollowContainer = styled.section`
-  padding-bottom: 60px;
-`;
+const FollowContainer = styled.section``;
 
 export default Main;
