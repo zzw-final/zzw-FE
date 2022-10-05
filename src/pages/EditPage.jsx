@@ -60,10 +60,6 @@ function EditPage() {
 
   const onSubmitHandler = async () => {
     const data = {
-      // 바뀐 값이 없으면 '' <- 이렇게 보내주고 싶을때 사용. 아래는 예시임.
-      // title: postDetail?.title === editedTitle ? "" : editedTitle,
-
-      // 수정이 되었다면, 수정된 값을 넣어줌. 수정 안되었다면, 기존 값을 넣어줌.
       title: editedTitle || postDetail?.title,
       foodName: editedFoodname || postDetail?.ingredient[0].ingredientName,
       ingredient: editedIngredient,
