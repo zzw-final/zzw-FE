@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import styled from "styled-components";
 import { useNavigate } from "react-router-dom";
 import Tag from "../common/Tag";
@@ -6,10 +6,12 @@ import CommentList from "../comment/CommentList";
 import { getCookie } from "../../util/cookie";
 import Toast from "../UI/Toast";
 import SwiperRecipe from "../common/SwiperRecipe";
+import { useRef } from "react";
+import TagList from "../common/TagList";
 
 function Detail({
   postDetail,
-  tagList,
+  // tagList,
   post,
   remove,
   update,
@@ -21,6 +23,7 @@ function Detail({
   setEditedValues,
   onSubmitHandler,
   editForm,
+  mutate,
 }) {
   const navigate = useNavigate();
   const nickname = getCookie("loginNickname");
@@ -28,20 +31,20 @@ function Detail({
   const [toast, setToast] = useState(false);
   const [isEditMode, setIsEditMode] = useState(false);
 
-  const copyUrl = async () => {
-    setToast(true);
-    await navigator.clipboard.writeText(url);
-  };
-
-  const foodName = postDetail?.ingredient.find(
-    (ingredient) => ingredient.isName
-  ).ingredientName;
-
   const foodIngredientList = postDetail?.ingredient
     .map((ingredient) =>
       !ingredient.isName ? ingredient.ingredientName : undefined
     )
     .filter((ingredient) => ingredient !== undefined);
+
+  const [tagItem, setTagItem] = useState("");
+  const [tagList, setTagList] = useState(foodIngredientList);
+  const [foodName, setFoodName] = useState();
+
+  const copyUrl = async () => {
+    setToast(true);
+    await navigator.clipboard.writeText(url);
+  };
 
   const commentListCnt = commentList?.length;
 
@@ -55,26 +58,104 @@ function Detail({
     setIsEditMode(!isEditMode);
   };
 
+  const submitTag = () => {
+    if (!tagList.includes(tagItem)) {
+      setTagList((prevState) => {
+        return [...prevState, { ingredientName: tagItem, isName: false }];
+      });
+    }
+    setTagItem("");
+  };
+
+  //태그 삭제기능
+  const deleteTag = (ingredientName) => {
+    setTagList(
+      tagList.filter((tagItem) => tagItem.ingredientName !== ingredientName)
+    );
+  };
+
+  //누르면 태그가 하나의 div
+  const onKeyPress = (e) => {
+    if (e.target.value !== "" && e.key === "Enter") {
+      submitTag();
+    }
+  };
+
+  useEffect(() => {
+    const foodName = postDetail?.ingredient?.find(
+      (item) => item.isName === true
+    )?.ingredientName;
+    setFoodName(foodName);
+  }, [postDetail]);
+
+  useEffect(() => {
+    editForm("ingredient", tagList);
+  }, [tagList, editForm]);
+
+  const onCancle = () => {
+    setIsEditMode(!isEditMode);
+  };
+
   return (
     <DetailContainer>
       <Header>
         <FoodnameDiv>
-          <Foodname>{foodName}</Foodname>
-          <Time>⏱ {postDetail?.time} min</Time>
+          {!isEditMode ? (
+            <>
+              <Foodname>{foodName}</Foodname>
+              <Time>⏱ {postDetail?.time} min</Time>
+            </>
+          ) : (
+            <>
+              <FoodnameEdit
+                defaultValue={foodName}
+                onBlur={(e) => {
+                  editForm("foodName", e.target.value);
+                }}
+              ></FoodnameEdit>
+              <TimeSelect
+                placeholder="요리 시간을 선택해주세요"
+                onBlur={(e) => {
+                  editForm("time", e.target.value);
+                }}
+              >
+                <option value="5분">5분</option>
+                <option value="10분">10분</option>
+                <option value="15분">15분</option>
+                <option value="30분">30분 이상</option>
+              </TimeSelect>
+            </>
+          )}
         </FoodnameDiv>
         {nickname === postDetail?.nickname && (
           <ButtonDiv>
-            <Button onClick={onSubmitHandler}>수정완료</Button>
-            <Button onClick={onEditPage}>수정</Button>
-            <Button onClick={onDelete}>삭제</Button>
+            {!isEditMode ? (
+              <>
+                <Button onClick={onEditPage}>수정</Button>
+                <Button onClick={onDelete}>삭제</Button>
+              </>
+            ) : (
+              <>
+                <ButtonEdit onClick={onSubmitHandler}>수정완료</ButtonEdit>
+                <ButtonEdit onClick={onCancle}>수정취소</ButtonEdit>
+              </>
+            )}
           </ButtonDiv>
         )}
       </Header>
-      <Tags>
-        {foodIngredientList?.map((ingredient, i) => (
-          <Tag height="20px" tagName={ingredient} key={i} />
-        ))}
-      </Tags>
+
+      {!isEditMode ? (
+        <Tags>
+          {foodIngredientList?.map((ingredient, i) => (
+            <Tag height="20px" tagName={ingredient} key={i} />
+          ))}
+        </Tags>
+      ) : (
+        <Tags>
+          <TagList postDetail={postDetail} editForm={editForm} />
+        </Tags>
+      )}
+
       <Content>
         {postDetail && (
           <SwiperRecipe
@@ -85,6 +166,7 @@ function Detail({
             editedValues={editedValues}
             setEditedValues={setEditedValues}
             editForm={editForm}
+            mutate={mutate}
           />
         )}
       </Content>
@@ -133,9 +215,27 @@ const Foodname = styled.div`
   font-weight: var(--weight-bolder);
 `;
 
+const FoodnameEdit = styled.input`
+  font-size: var(--font-small);
+  width: 7rem;
+`;
+
 const Time = styled.div`
   font-size: var(--font-small);
   margin-left: 0.3rem;
+`;
+
+const TimeSelect = styled.select`
+  box-sizing: border-box;
+  /* position: absolute; */
+  width: 4rem;
+  height: 1.4rem;
+  left: 273px;
+  top: 149px;
+  margin-left: 5px;
+
+  border: 1px solid #9c9c9c;
+  border-radius: 10px;
 `;
 
 const ButtonDiv = styled.div`
@@ -156,6 +256,19 @@ const Button = styled.button`
   border: none;
 `;
 
+const ButtonEdit = styled.button`
+  font-size: var(--font-small);
+  font-weight: var(--weight-semi-bold);
+  color: #232323;
+  text-align: center;
+  width: 4rem;
+  height: 1.2rem;
+  background-color: #fbf8f0;
+  border-radius: 3px;
+  box-shadow: 2px 2px 5px #bebebe;
+  border: none;
+`;
+
 const Tags = styled.div`
   margin-left: 1rem;
   display: flex;
@@ -166,6 +279,43 @@ const Tags = styled.div`
   &::-webkit-scrollbar {
     display: none;
   }
+`;
+const TagBox = styled.div`
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  width: 340px;
+  min-height: 5vh;
+  margin: 8px;
+  padding: 0 10px;
+  border: 1px solid rgba(0, 0, 0, 0.3);
+  border-radius: 10px;
+
+  &:focus-within {
+    border-color: var(--color-light-blue);
+  }
+`;
+
+const Tagdiv = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin: 5px;
+  padding: 5px;
+  background-color: var(--color-dark-pink);
+  border-radius: 5px;
+  color: white;
+  font-size: 13px;
+`;
+
+const IngredintTag = styled.input`
+  box-sizing: border-box;
+  display: inline-flex;
+  min-width: 150px;
+  background: transparent;
+  border: none;
+  outline: none;
+  /* cursor: text; */
 `;
 
 const Content = styled.div`

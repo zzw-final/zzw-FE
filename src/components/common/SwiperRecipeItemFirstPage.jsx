@@ -6,7 +6,6 @@ import Avatar from "@mui/material/Avatar";
 import Like from "./Like";
 import { useState } from "react";
 import { dateFormat } from "../../util/dateFormat";
-import { useRef } from "react";
 import { useEffect } from "react";
 
 const SwiperRecipeItemFirstPage = ({
@@ -15,6 +14,7 @@ const SwiperRecipeItemFirstPage = ({
   isEditMode,
   imgUpload,
   editForm,
+  mutate,
 }) => {
   const {
     postId,
@@ -36,9 +36,6 @@ const SwiperRecipeItemFirstPage = ({
   const navigate = useNavigate();
 
   const [imgFoodUrlEdited, setImgFoodUrlEdited] = useState(foodImg);
-  // const [editedContent, setEditedContent] = useState(content);
-  // const [editedTitle, setEditedTitle] = useState(title);
-
   const loginNickname = cookies.loginNickname;
 
   const userPage = () => {
@@ -51,11 +48,14 @@ const SwiperRecipeItemFirstPage = ({
       alert("로그인 유저만 사용 가능한 기능입니다.");
       return;
     }
-    const likeResult = await likeToggle(postId);
+    // const likeResult = await likeToggle(postId);
+    // const likeResult = mutate(postId);
+    console.log("isLike :>> ", isLike);
+    mutate(postId);
     setLikeToggleBtn(!likeToggleBtn);
-    if (likeResult.data.data === "post like success")
-      setViewLikeNum(viewLikeNum + 1);
-    else setViewLikeNum(viewLikeNum - 1);
+    // if (likeResult.data.data === "post like success")
+    //   setViewLikeNum(viewLikeNum + 1);
+    // else setViewLikeNum(viewLikeNum - 1);
   };
 
   const getImgFoodUpload = async (e) => {

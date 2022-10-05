@@ -87,8 +87,6 @@ const MainPage = () => {
   //   queryClient.invalidateQueries(["allList"]);
   // },
 
-  console.log("recentPost ", recentPost);
-
   const search = async (searchOption, sendData) => {
     navigate(`/search?${searchOption}=${sendData}`);
   };
