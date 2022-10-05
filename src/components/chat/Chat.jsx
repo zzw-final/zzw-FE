@@ -12,7 +12,7 @@ function Chat() {
 
   const connect = () => {
     client.current = new StompJs.Client({
-      brokerURL: "ws://15.164.216.199/stomp/chat",
+      brokerURL: `wss://${process.env.REACT_APP_CHAT_API}/stomp/chat`,
       connectHeaders: {
         Authorization: getCookie("accessToken"),
         oauth: getCookie("loginOauth"),
