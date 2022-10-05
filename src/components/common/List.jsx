@@ -4,7 +4,7 @@ import styled from "styled-components";
 import Skeleton from "@mui/material/Skeleton";
 import Card from "../UI/Card";
 
-const List = ({ list, likeToggle, ...props }) => {
+const List = ({ list, likeToggle, mutate, ...props }) => {
   return (
     <ListContainer {...props}>
       {list ? (
@@ -13,6 +13,7 @@ const List = ({ list, likeToggle, ...props }) => {
             post={item}
             key={item.postId}
             likeToggle={likeToggle}
+            mutate={mutate}
             {...props}
           />
         ))

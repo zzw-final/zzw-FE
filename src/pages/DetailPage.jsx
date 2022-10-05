@@ -15,12 +15,10 @@ function DetailPage() {
     return await instance.get(`/api/post/${id}`);
   };
 
-  const detail = useQuery(["detail", id], fetchDetail, {
+  const { data: postDetail } = useQuery(["detail", id], fetchDetail, {
     staleTime: Infinity, // 항상 신선한 데이터로 취급
     select: (data) => data.data.data, // 요청 성공시 데이터 가공
   });
-
-  const postDetail = detail.data;
 
   useEffect(() => {
     async function fetchData() {

@@ -82,7 +82,6 @@ function Detail({
           <Icon src={"/eye-off.png"} alt="신고하기" />
         </FootLeft>
         <Comment onClick={openTagBox}>💬 {commentListCnt}</Comment>
-
         <CommentListBox id="tagList" top={toggleTagList}>
           <CommentFoldLine onClick={openTagBox}></CommentFoldLine>
           <SearchBox>
@@ -196,7 +195,7 @@ const SearchBox = styled.div`
 
 const CommentFoldLine = styled.div`
   width: 20%;
-  height: 0.1rem;
+  height: 0.2rem;
   background-color: var(--color-orange);
   margin: 0.5rem auto 2rem auto;
 `;
@@ -204,11 +203,12 @@ const CommentFoldLine = styled.div`
 const CommentListBox = styled.div`
   background-color: var(--color-white);
   z-index: 1;
-  width: 90%;
+  width: 100%;
   height: 100%;
   border-radius: 2rem 2rem 0 0;
+  box-shadow: 0px 0px 20px #5b5b5b;
   transition: all 600ms cubic-bezier(0.86, 0, 0.07, 1);
-  top: ${({ top }) => (top ? "20%" : "100%")};
+  top: ${({ top }) => (top ? "9%" : "100%")};
   position: fixed;
   left: 0;
 `;

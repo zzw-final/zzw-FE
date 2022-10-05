@@ -4,8 +4,6 @@ import CommentForm from "./CommentForm";
 import CommentItem from "./CommentItem";
 
 const CommentList = ({ postId, post, remove, update, commentList }) => {
-  console.log("commentList 리스트 페이지", commentList);
-
   return (
     <CommentsConatiner>
       {postId && <CommentForm postId={postId} post={post} />}

@@ -30,6 +30,7 @@ const SwiperRecipeItem = ({
 
   const { imageUrl, content, page } = contentList;
   const [likeToggleBtn, setLikeToggleBtn] = useState(isLike);
+  const [viewLikeNum, setViewLikeNum] = useState(likeNum);
 
   const [cookies] = useCookies(["loginNickname"]);
   const navigate = useNavigate();
@@ -41,24 +42,23 @@ const SwiperRecipeItem = ({
     else navigate(`/mypage/${authorId}`);
   };
 
-  console.log("isLike :>> ", isLike);
-  console.log("likeNum :>> ", likeNum);
-
   const like = async () => {
     if (loginNickname === undefined) {
       alert("로그인 유저만 사용 가능한 기능입니다.");
       return;
     }
     const likeResult = await likeToggle(postId);
-    console.log("likeResult", likeResult.data.data);
     setLikeToggleBtn(!likeToggleBtn);
+    if (likeResult.data.data === "post like success")
+      setViewLikeNum(viewLikeNum + 1);
+    else setViewLikeNum(viewLikeNum - 1);
   };
 
   return isFirstPage ? (
     <ItemContainer>
       <ItemImg src={foodImg} alt="Recipe" />
       <LikeBox>
-        <Like isLike={likeToggleBtn} btnClick={like} /> {likeNum}
+        <Like isLike={likeToggleBtn} btnClick={like} /> {viewLikeNum}
       </LikeBox>
       <ItemBox>
         <ItemInfo>
@@ -82,7 +82,7 @@ const SwiperRecipeItem = ({
     <ItemContainer>
       <ItemImg src={imageUrl} alt="Recipe" />
       <ItemBox>
-        <ItemStep>STEP {page}</ItemStep>
+        <ItemStep>STEP {page + 1}</ItemStep>
         <ItemContent>{content}</ItemContent>
       </ItemBox>
     </ItemContainer>

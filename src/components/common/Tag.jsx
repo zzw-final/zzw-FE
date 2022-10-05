@@ -9,13 +9,17 @@ const Tag = ({
   delBtnClick,
   ...props
 }) => {
+  const tagNameFormat = `${tagName.substr(0, 9)} ${
+    tagName.length > 9 ? ".." : ""
+  }`;
+
   return (
     <TagContainer
       {...props}
       color={randomColor(isFoodName)}
       onClick={onClickHandler}
     >
-      {tagName} {isDelBtn ? <DelBtn onClick={delBtnClick}>X</DelBtn> : ""}
+      {tagNameFormat} {isDelBtn ? <DelBtn onClick={delBtnClick}>X</DelBtn> : ""}
     </TagContainer>
   );
 };
@@ -33,6 +37,11 @@ const TagContainer = styled.div`
   opacity: ${({ opacity }) => opacity || ""};
   box-shadow: ${({ boxShadow }) => boxShadow || ""};
   cursor: pointer;
+
+  /* width: 100%; */
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
 `;
 
 const DelBtn = styled.div`
