@@ -6,7 +6,6 @@ import Avatar from "@mui/material/Avatar";
 import Like from "./Like";
 import { useState } from "react";
 import { dateFormat } from "../../util/dateFormat";
-import { useRef } from "react";
 import { useEffect } from "react";
 
 const SwiperRecipeItemFirstPage = ({
@@ -36,9 +35,6 @@ const SwiperRecipeItemFirstPage = ({
   const navigate = useNavigate();
 
   const [imgFoodUrlEdited, setImgFoodUrlEdited] = useState(foodImg);
-  // const [editedContent, setEditedContent] = useState(content);
-  // const [editedTitle, setEditedTitle] = useState(title);
-
   const loginNickname = cookies.loginNickname;
 
   const userPage = () => {

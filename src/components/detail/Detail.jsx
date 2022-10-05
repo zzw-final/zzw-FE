@@ -55,6 +55,10 @@ function Detail({
     setIsEditMode(!isEditMode);
   };
 
+  const onCancle = () => {
+    setIsEditMode(!isEditMode);
+  };
+
   return (
     <DetailContainer>
       <Header>
@@ -64,9 +68,17 @@ function Detail({
         </FoodnameDiv>
         {nickname === postDetail?.nickname && (
           <ButtonDiv>
-            <Button onClick={onSubmitHandler}>수정완료</Button>
-            <Button onClick={onEditPage}>수정</Button>
-            <Button onClick={onDelete}>삭제</Button>
+            {!isEditMode ? (
+              <>
+                <Button onClick={onEditPage}>수정</Button>
+                <Button onClick={onDelete}>삭제</Button>
+              </>
+            ) : (
+              <>
+                <ButtonEdit onClick={onSubmitHandler}>수정완료</ButtonEdit>
+                <ButtonEdit onClick={onCancle}>수정취소</ButtonEdit>
+              </>
+            )}
           </ButtonDiv>
         )}
       </Header>
@@ -149,6 +161,19 @@ const Button = styled.button`
   color: #232323;
   text-align: center;
   width: 2.5rem;
+  height: 1.2rem;
+  background-color: #fbf8f0;
+  border-radius: 3px;
+  box-shadow: 2px 2px 5px #bebebe;
+  border: none;
+`;
+
+const ButtonEdit = styled.button`
+  font-size: var(--font-small);
+  font-weight: var(--weight-semi-bold);
+  color: #232323;
+  text-align: center;
+  width: 5rem;
   height: 1.2rem;
   background-color: #fbf8f0;
   border-radius: 3px;

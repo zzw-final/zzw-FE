@@ -16,20 +16,14 @@ function DetailPage() {
   const [editedFoodname, setEditedFoodname] = useState();
   const [editedImageUrl, setEditedImageUrl] = useState();
   const [editTime, setEditTime] = useState();
-  const [editedValues, setEditedvalues] = useState([
-    { imageUrl: "", content: "", page: 0 },
-  ]);
-
-  useEffect(() => {
-    console.log("editedValues detailPage :>> ", editedValues);
-  }, [editedValues]);
+  const [editedValues, setEditedvalues] = useState();
 
   const fetchDetail = async () => {
     return await instance.get(`/api/post/${id}`);
   };
 
   const { data: postDetail } = useQuery(["detail", id], fetchDetail, {
-    staleTime: Infinity,
+    // staleTime: Infinity,
     select: (data) => data.data.data,
   });
 
@@ -39,7 +33,9 @@ function DetailPage() {
     )
     .filter((ingredient) => ingredient !== undefined);
 
-  console.log("postDetail.time :>> ", postDetail?.time);
+  useEffect(() => {
+    setEditedvalues(postDetail?.contentList);
+  }, [postDetail?.contentList]);
 
   const onSubmitHandler = async () => {
     const data = {
@@ -48,13 +44,13 @@ function DetailPage() {
       ingredient: editedIngredient || foodIngredientList,
       imageUrl: editedImageUrl || postDetail?.foodImg,
       time: editTime || postDetail.time,
-      pageList: editedValues || postDetail?.contentList,
+      pageList: editedValues,
     };
     console.log("보내는 수정데이터 확인", data);
-    // const result = await instance.put(`/api/auth/post/${id}`, data);
-    // console.log("result :>> ", result);
-    // alert("글 수정이 완료되었습니다!");
-    // navigate(`/detail/${id}`);
+    const result = await instance.put(`/api/auth/post/${id}`, data);
+    console.log("result :>> ", result);
+    alert("글 수정이 완료되었습니다!");
+    navigate(`/`);
   };
 
   const editForm = (type, data) => {
@@ -74,7 +70,6 @@ function DetailPage() {
       case "time":
         setEditTime(data);
         break;
-
       default:
         break;
     }
@@ -166,20 +161,22 @@ function DetailPage() {
   return (
     <LayoutPage background={"#fbd499"}>
       <DetailContainer>
-        <Detail
-          postDetail={postDetail}
-          onDelete={onDeleteHandler}
-          post={post}
-          remove={remove}
-          update={update}
-          commentList={commentList}
-          likeToggle={likeToggle}
-          imgUpload={imgUpload}
-          editedValues={editedValues}
-          setEditedValues={setEditedvalues}
-          onSubmitHandler={onSubmitHandler}
-          editForm={editForm}
-        />
+        {editedValues && (
+          <Detail
+            postDetail={postDetail}
+            onDelete={onDeleteHandler}
+            post={post}
+            remove={remove}
+            update={update}
+            commentList={commentList}
+            likeToggle={likeToggle}
+            imgUpload={imgUpload}
+            editedValues={editedValues}
+            setEditedValues={setEditedvalues}
+            onSubmitHandler={onSubmitHandler}
+            editForm={editForm}
+          />
+        )}
       </DetailContainer>
     </LayoutPage>
   );

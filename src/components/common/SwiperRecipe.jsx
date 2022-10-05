@@ -41,10 +41,9 @@ const SwiperRecipe = ({
           {contentList.map((content, idx) => (
             <SwiperSlide key={idx}>
               <SwiperRecipeItem
-                postDetail={postDetail}
-                contentList={content}
                 key={idx}
                 idx={idx}
+                contentList={content}
                 isEditMode={isEditMode}
                 imgUpload={imgUpload}
                 editedValues={editedValues}
@@ -80,7 +79,6 @@ const SwiperBox = styled.div`
     align-items: center;
     justify-content: center;
     border-radius: 18px;
-    /* color: #fff; */
   }
 
   .swiper-slide {
