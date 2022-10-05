@@ -6,6 +6,8 @@ import CommentList from "../comment/CommentList";
 import { getCookie } from "../../util/cookie";
 import Toast from "../UI/Toast";
 import SwiperRecipe from "../common/SwiperRecipe";
+import { useRef } from "react";
+import TagList from "../common/TagList";
 
 function Detail({
   postDetail,
@@ -21,6 +23,7 @@ function Detail({
   setEditedValues,
   onSubmitHandler,
   editForm,
+  mutate,
 }) {
   const navigate = useNavigate();
   const nickname = getCookie("loginNickname");
@@ -41,10 +44,6 @@ function Detail({
     setToast(true);
     await navigator.clipboard.writeText(url);
   };
-
-  const foodName = postDetail?.ingredient.find(
-    (ingredient) => ingredient.isName
-  ).ingredientName;
 
   const commentListCnt = commentList?.length;
 
@@ -77,92 +76,80 @@ function Detail({
     }
   };
 
-  // useEffect(() => {
-  //   const ingredientList_d = postDetail?.ingredient?.filter(
-  //     (item) => item.isName === false
-  //   );
-  //   setTagList(ingredientList_d);
-  // }, [postDetail]);
+  useEffect(() => {
+    const foodName = postDetail?.ingredient?.find(
+      (item) => item.isName === true
+    )?.ingredientName;
+    setFoodName(foodName);
+  }, [postDetail]);
 
   useEffect(() => {
     editForm("ingredient", tagList);
   }, [tagList, editForm]);
 
+  const onCancle = () => {
+    setIsEditMode(!isEditMode);
+  };
+
   return (
     <DetailContainer>
       <Header>
         <FoodnameDiv>
-          <Foodname>{foodName}</Foodname>
-          {/* 요리이름 수정부분>>> */}
-          <input
-            defaultValue={foodName}
-            onBlur={(e) => {
-              editForm("foodName", e.target.value);
-            }}
-          ></input>
-          {/* <<<요리이름수정부분 */}
-          <Time>⏱ {postDetail?.time} min</Time>
-          {/* 요리시간 수정부분 >>>> */}
-          <TimeSelect
-            placeholder="요리 시간을 선택해주세요"
-            onBlur={(e) => {
-              editForm("time", e.target.value);
-            }}
-          >
-            <option value="5분">5분</option>
-            <option value="10분">10분</option>
-            <option value="15분">15분</option>
-            <option value="30분">30분 이상</option>
-          </TimeSelect>
-          {/* <<<<<요리시간 수정부분 */}
+          {!isEditMode ? (
+            <>
+              <Foodname>{foodName}</Foodname>
+              <Time>⏱ {postDetail?.time} min</Time>
+            </>
+          ) : (
+            <>
+              <FoodnameEdit
+                defaultValue={foodName}
+                onBlur={(e) => {
+                  editForm("foodName", e.target.value);
+                }}
+              ></FoodnameEdit>
+              <TimeSelect
+                placeholder="요리 시간을 선택해주세요"
+                onBlur={(e) => {
+                  editForm("time", e.target.value);
+                }}
+              >
+                <option value="5분">5분</option>
+                <option value="10분">10분</option>
+                <option value="15분">15분</option>
+                <option value="30분">30분 이상</option>
+              </TimeSelect>
+            </>
+          )}
         </FoodnameDiv>
         {nickname === postDetail?.nickname && (
           <ButtonDiv>
-            <Button onClick={onSubmitHandler}>수정완료</Button>
-            <Button onClick={onEditPage}>수정</Button>
-            <Button onClick={onDelete}>삭제</Button>
+            {!isEditMode ? (
+              <>
+                <Button onClick={onEditPage}>수정</Button>
+                <Button onClick={onDelete}>삭제</Button>
+              </>
+            ) : (
+              <>
+                <ButtonEdit onClick={onSubmitHandler}>수정완료</ButtonEdit>
+                <ButtonEdit onClick={onCancle}>수정취소</ButtonEdit>
+              </>
+            )}
           </ButtonDiv>
         )}
       </Header>
-      {/* <Tags>
-        {foodIngredientList?.map((ingredient, i) => (
-          <Tag height="20px" tagName={ingredient} key={i} />
-        ))}
-      </Tags> */}
-      {/* 태그수정부분>>>>>> */}
-      {/* 
-      <Tags>
-        {foodIngredientList.map((ingredient, i) => (
-          <Tag height="20px" tagName={ingredient} key={i} />
-        ))}
-        <IngredintTag
-          value={tagItem}
-          onBlur={(e) => {
-            editForm("ingredient", e.target.value);
-          }}
-          onKeyPress={onKeyPress}
-        />
-      </Tags> */}
 
-      <TagBox>
-        {tagList &&
-          tagList.map((tagItem, i) => {
-            return (
-              <Tagdiv key={i}>
-                <div>{tagItem}</div>
-                <Button onClick={() => deleteTag(tagItem)}>X</Button>
-              </Tagdiv>
-            );
-          })}
-        <IngredintTag
-          value={tagItem}
-          onChange={(e) => {
-            setTagItem(e.target.value);
-          }}
-          onKeyPress={onKeyPress}
-        />
-      </TagBox>
-      {/* <<<<태그수정(값도 잘 들어가집니다..한글자씩만 입력가능한 문제....) */}
+      {!isEditMode ? (
+        <Tags>
+          {foodIngredientList?.map((ingredient, i) => (
+            <Tag height="20px" tagName={ingredient} key={i} />
+          ))}
+        </Tags>
+      ) : (
+        <Tags>
+          <TagList postDetail={postDetail} editForm={editForm} />
+        </Tags>
+      )}
 
       {/* <Content>
         {postDetail && (
@@ -174,6 +161,7 @@ function Detail({
             editedValues={editedValues}
             setEditedValues={setEditedValues}
             editForm={editForm}
+            mutate={mutate}
           />
         )}
       </Content>
@@ -222,6 +210,11 @@ const Foodname = styled.div`
   font-weight: var(--weight-bolder);
 `;
 
+const FoodnameEdit = styled.input`
+  font-size: var(--font-small);
+  width: 7rem;
+`;
+
 const Time = styled.div`
   font-size: var(--font-small);
   margin-left: 0.3rem;
@@ -229,10 +222,9 @@ const Time = styled.div`
 
 const TimeSelect = styled.select`
   box-sizing: border-box;
-
   /* position: absolute; */
-  width: 110px;
-  height: 5vh;
+  width: 4rem;
+  height: 1.4rem;
   left: 273px;
   top: 149px;
   margin-left: 5px;
@@ -252,6 +244,19 @@ const Button = styled.button`
   color: #232323;
   text-align: center;
   width: 2.5rem;
+  height: 1.2rem;
+  background-color: #fbf8f0;
+  border-radius: 3px;
+  box-shadow: 2px 2px 5px #bebebe;
+  border: none;
+`;
+
+const ButtonEdit = styled.button`
+  font-size: var(--font-small);
+  font-weight: var(--weight-semi-bold);
+  color: #232323;
+  text-align: center;
+  width: 4rem;
   height: 1.2rem;
   background-color: #fbf8f0;
   border-radius: 3px;
@@ -305,7 +310,7 @@ const IngredintTag = styled.input`
   background: transparent;
   border: none;
   outline: none;
-  cursor: text;
+  /* cursor: text; */
 `;
 
 const Content = styled.div`

@@ -1,18 +1,8 @@
-import React from "react";
-import { useCookies } from "react-cookie";
-import { useNavigate } from "react-router-dom";
+import { React, useState } from "react";
 import styled from "styled-components";
-import Avatar from "@mui/material/Avatar";
-import Like from "./Like";
-import { useState } from "react";
-import { dateFormat } from "../../util/dateFormat";
-import { useRef } from "react";
-import { useEffect } from "react";
 
-const SwiperRecipeItemFirstPage = ({
-  postDetail,
+const SwiperRecipeItem = ({
   contentList,
-  likeToggle,
   isEditMode,
   imgUpload,
   editedValues,
@@ -20,23 +10,7 @@ const SwiperRecipeItemFirstPage = ({
   idx,
 }) => {
   const { imageUrl, content, page } = contentList;
-
   const [imgContentUrlEdited, setImgContentUrlEdited] = useState(imageUrl);
-  // const [editedContent, setEditedContent] = useState(content);
-  // const [editedTitle, setEditedTitle] = useState(title);
-
-  const addFormFields = () => {
-    setEditedValues([
-      ...editedValues,
-      { imageUrl: imageUrl, content: content, page: page },
-    ]);
-  };
-
-  useEffect(() => {
-    addFormFields();
-  }, []);
-
-  console.log("content :>> ", content);
 
   let handleChangeIMG = (i, e) => {
     let newFormValues = [...editedValues];
@@ -59,7 +33,7 @@ const SwiperRecipeItemFirstPage = ({
   return (
     <>
       <ItemContainer display={!isEditMode ? "Flex" : "none"}>
-        <ItemImg src={imageUrl} alt="Recipe" />
+        <ItemImg src={imageUrl} alt="RecipeImg" />
         <ItemBox>
           <ItemStep>STEP {page + 1}</ItemStep>
           <ItemContent>{content}</ItemContent>
@@ -117,7 +91,6 @@ const ItemImgEdit = styled.input`
 
 const ItemBox = styled.div`
   padding: 0 1rem;
-  /* background-color: lavender; */
 `;
 
 const ItemStep = styled.div`
@@ -137,4 +110,4 @@ const ItemContentEdit = styled.textarea`
   width: 100%;
 `;
 
-export default SwiperRecipeItemFirstPage;
+export default SwiperRecipeItem;
