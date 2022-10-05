@@ -86,16 +86,17 @@ const WriteTitle = ({
       </TagBox>
       <SelectDiv>조리시간 </SelectDiv>
       <TimeSelect
-        placeholder="요리 시간을 선택해주세요"
         // ref={timeRef}
         onChange={(e) => {
           setTime(e.target.value);
         }}
       >
-        <option value="5분">5분</option>
+        <option selected value="5분">
+          5분
+        </option>
         <option value="10분">10분</option>
         <option value="15분">15분</option>
-        <option value="30분 이상">30분 이상</option>
+        <option value="30분">30분 이상</option>
       </TimeSelect>
       <PreviewImg
         placeholder="재료를 태그로 입력해주세요"

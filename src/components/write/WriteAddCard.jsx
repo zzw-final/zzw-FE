@@ -1,36 +1,37 @@
 import React, { useState } from "react";
-import { useEffect } from "react";
 import styled from "styled-components";
 
 function WriteAddCard({ imgUpload, formValues, setFomvalues }) {
   //이미지파일을 set해주기 위한 useState
   const [imageUrl, setImageUrl] = useState("");
+  const [pageIdx, setPageIdx] = useState(0);
 
+  //서버에서 이미지를 url로 받아옴
   const getImgUpload = async (i, e) => {
     const result = await imgUpload(e);
     setImageUrl(result.data.data.imageUrl);
   };
 
-  useEffect(() => {}, [imageUrl]);
-
+  // 이미지 추가하기위한 핸들러
   let handleChangeIMG = (i, e) => {
     let newFormValues = [...formValues];
     newFormValues[i][e.target.name] = e.target.src;
-    // console.log("이미지", e.target);
     setFomvalues(newFormValues);
     console.log(formValues);
   };
 
-  console.log("밖에서는 이미지가 받아와질까?", imageUrl);
-
+  // content추가하기 위한 핸들러
   let handleChange = (i, e) => {
     let newFormValues = [...formValues];
     newFormValues[i][e.target.name] = e.target.value;
+    newFormValues[i].page = i;
+    console.log("i", i);
     setFomvalues(newFormValues);
   };
 
-  let addFormFields = () => {
-    setFomvalues([...formValues, { name: "", email: "" }]);
+  //
+  let addFormFields = (e) => {
+    setFomvalues([...formValues, { imageUrl: "", content: "", page: 0 }]);
   };
 
   let removeFormFields = (i) => {
@@ -46,25 +47,21 @@ function WriteAddCard({ imgUpload, formValues, setFomvalues }) {
 
   return (
     <>
-      <form onSubmit={handleSubmit}>
+      <form>
         {formValues.map((element, index) => (
-          <div key={index}>
-            <label>이미지파일</label>
-            <input
-              type="file"
-              accept="image/*"
-              //   value={element.imageUrl || ""}
-              onChange={(e) => getImgUpload(index, e)}
-            />
-            <img
+          <AddCardDiv key={index}>
+            <PreviewImg
               name="imageUrl"
               value={imageUrl}
               src={imageUrl}
               onLoad={(e) => handleChangeIMG(index, e)}
-              //   onChange={(e) => alert("ㅠㅠ", e)}
             />
-            <label>컨텐트</label>
             <input
+              type="file"
+              accept="image/*"
+              onChange={(e) => getImgUpload(index, e)}
+            />
+            <Cardtextarea
               type="text"
               name="content"
               value={element.content || ""}
@@ -77,53 +74,25 @@ function WriteAddCard({ imgUpload, formValues, setFomvalues }) {
                 className="button remove"
                 onClick={() => removeFormFields(index)}
               >
-                Remove
+                삭제
               </button>
             ) : null}
-          </div>
+          </AddCardDiv>
         ))}
+
         <div className="button-section">
-          <button
+          <Addbutton
             className="button add"
             type="button"
             onClick={() => addFormFields()}
           >
-            Add
-          </button>
+            새로운 단계 추가하기
+          </Addbutton>
           <button className="button submit" type="submit">
             Submit
           </button>
         </div>
       </form>
-
-      {/* {formValues.map((element, index) =>(
-        <div>
-      <AddCardDiv key={index}>
-        <PreviewImg />
-        <input
-        type="file"
-        accept="image/*"
-        name='image'
-        value={element.name || ""}
-        onChange={(e)=> handleChange(index, e)}/>
-        <div>
-          <Cardtextarea
-          placeholder="레시피를 입력해주세요"
-          name="content"
-          value={element.name || ""}
-          onChange={(e)=> handleChange(index, e)}
-          />
-        </div>
-        {index ? (
-            <button
-              type="button"
-              onClick={() => removeFormFields(index)}
-            >
-              삭제
-            </button>): null}
-
-        <button>확인</button>
-      </AddCardDiv> */}
     </>
   );
 }
@@ -133,7 +102,6 @@ export default WriteAddCard;
 const AddCardDiv = styled.div`
   background-color: white;
   margin: 5vh auto 5vh auto;
-
   width: 80vw;
   height: 30vh;
   border-radius: 20px;
@@ -145,11 +113,24 @@ const AddCardDiv = styled.div`
 const PreviewImg = styled.img`
   width: 40vw;
   height: 10vh;
-  margin: 0rem 1rem 0rem 1rem;
+  margin: 0rem 1rem 0rem 3rem;
 `;
 
 const Cardtextarea = styled.textarea`
   width: 60vw;
   height: 10vh;
-  margin: 0rem 1rem 0rem 1rem;
+  margin: 0rem 1rem 0rem 2rem;
+`;
+
+const Addbutton = styled.button`
+  background-color: white;
+  border: 0;
+  width: 80vw;
+  height: 5vh;
+  border-radius: 10px;
+  margin-left: 10vw;
+  &:hover {
+    background: var(--color-dark-white);
+    color: white;
+  }
 `;

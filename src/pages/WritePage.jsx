@@ -14,7 +14,7 @@ function WritePage() {
   const [title, setTitle] = useState("");
   const [foodname, setFoodName] = useState("");
   const [ingredient, setIngredient] = useState([]);
-  const [time, setTime] = useState("");
+  const [time, setTime] = useState("5분");
   const [imageURL, setImageURL] = useState("");
   const navigate = useNavigate();
 
