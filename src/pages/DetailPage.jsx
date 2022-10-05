@@ -75,11 +75,13 @@ function DetailPage() {
       pageList: editedValues,
     };
     console.log("보내는 수정데이터 확인", data);
-    // const result = await instance.put(`/api/auth/post/${id}`, data);
-    // console.log("result :>> ", result);
-    // alert("글 수정이 완료되었습니다!");
-    // navigate(`/`);
+    const result = await instance.put(`/api/auth/post/${id}`, data);
+    console.log("result :>> ", result);
+    alert("글 수정이 완료되었습니다!");
+    navigate(`/`);
   };
+
+  console.log("setEditedIngredient :>> ", editedIngredient);
 
   const editForm = (type, data) => {
     switch (type) {
@@ -90,9 +92,11 @@ function DetailPage() {
         setEditedFoodname(data);
         break;
       case "ingredient":
+        console.log("제발......! ", data);
         setEditedIngredient(data);
         break;
       case "imageUrl":
+        console.log("제발......! imgUrl ", data);
         setEditedImageUrl(data);
         break;
       case "time":
