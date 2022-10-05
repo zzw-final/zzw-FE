@@ -39,7 +39,7 @@ function DetailPage() {
     )
     .filter((ingredient) => ingredient !== undefined);
 
-  console.log("postDetail.time :>> ", postDetail.time);
+  console.log("postDetail.time :>> ", postDetail?.time);
 
   const onSubmitHandler = async () => {
     const data = {
