@@ -11,10 +11,24 @@ const SearchForm = ({ mainSearch, searchPageSearch }) => {
   const [selectOption, setSelectOption] = useState("tag");
   const [tagList, setTagList] = useState([]);
 
+  const [searchParams] = useSearchParams();
+  const searchedTitle = searchParams.get("title");
+  const searchedTag = searchParams.get("tag");
+  const searchedNickname = searchParams.get("nickname");
+
   const loginNickname = cookies.loginNickname || `반가운 손`;
   const welcomeText = `🥘 ${loginNickname}님, 오늘의 식재료를 입력해보세요!`;
 
   const selectRef = useRef();
+
+  const moveScroll = () => {
+    const tagListBox = document.querySelector("#tagListBox");
+    if (tagListBox?.scrollWidth !== 0) {
+      console.log("tagListBox.scroll :>> ", tagListBox.scrollWidth);
+      tagListBox?.scrollTo(tagListBox?.clientWidth + 1000, 0);
+      // tagListBox?.scrollTo();
+    }
+  };
 
   const onPeriodChange = (event) => {
     setSelectOption(event.target?.value);
@@ -28,33 +42,32 @@ const SearchForm = ({ mainSearch, searchPageSearch }) => {
     { value: "nickname", label: "닉네임" },
   ];
 
-  const [searchParams] = useSearchParams();
-  const searchedTitle = searchParams.get("title");
-  const searchedTag = searchParams.get("tag");
-  const searchedNickname = searchParams.get("nickname");
-
-  useEffect(() => {
-    inputRef.current.value = searchedTitle;
-  }, []);
-
   const searchHandler = () => {
     const searchText = inputRef?.current.value;
     const selectOptionRef = selectRef?.current.value;
-    if ((selectOptionRef !== "tag" && searchText === "") || tagList === []) {
-      alert("빈 값은 입력할 수 없습니다.");
+    if (selectOptionRef !== "tag" && searchText === "") {
+      alert("빈 값은 검색할 수 없습니다.");
       return;
     }
-    if (selectOptionRef === "tag") {
+    inputRef.current.value = "";
+    if (searchText === "" && selectOptionRef === "tag") {
+      return tagSearchHandler(
+        selectOptionRef,
+        searchText,
+        localStorage.getItem("tagList")
+      );
+    } else if (selectOptionRef === "tag") {
       makeTagList(searchText);
-      console.log("검색페이지에서 tagList 안", tagList);
-      inputRef.current.value = "";
-      tagSearchHandler(selectOptionRef, searchText, tagList);
       return;
     }
     window.location.pathname === "/"
       ? mainSearch(selectOptionRef, searchText)
       : searchPageSearch(selectOptionRef, searchText);
   };
+
+  useEffect(() => {
+    localStorage.setItem("tagList", tagList);
+  }, [tagList]);
 
   const tagSearchHandler = (selectOptionRef, searchText, tagList) => {
     if (window.location.pathname === "/") {
@@ -66,22 +79,16 @@ const SearchForm = ({ mainSearch, searchPageSearch }) => {
     searchPageSearch(selectOptionRef, tagList.toString());
   };
 
-  const ss = () => {
-    searchHandler();
-    console.log("검색페이지에서 tagList ss > ", tagList);
-  };
-
-  const inputRef = useInputRef("", ss);
+  const inputRef = useInputRef("", searchHandler);
 
   const makeTagList = (addedTag) => {
     if (addedTag === "") {
-      return;
+      return new Error("tag 가 비었습니다.");
     }
     if (!tagList.includes(addedTag)) {
-      setTagList((prevState) => {
-        return [...prevState, addedTag];
-      });
+      setTagList((prevState) => [...prevState, addedTag]);
     }
+    moveScroll();
   };
 
   useEffect(() => {
@@ -122,7 +129,7 @@ const SearchForm = ({ mainSearch, searchPageSearch }) => {
                 </option>
               ))}
             </SelectBox>
-            <TagList>
+            <TagList id="tagListBox">
               {tagList.map((tag, idx) => (
                 <Tag
                   tagName={tag}
@@ -135,7 +142,9 @@ const SearchForm = ({ mainSearch, searchPageSearch }) => {
               ))}
             </TagList>
             <InputForm ref={inputRef} />
-            <SearchIcon onClick={searchHandler} />
+            <SearchIconDiv>
+              <SearchIcon onClick={searchHandler} />
+            </SearchIconDiv>
           </InputBox>
         </Form>
       </SearchBox>
@@ -166,6 +175,7 @@ const InputBox = styled.div`
   width: 100%;
   align-items: center;
   padding: 0.2rem 0.6rem;
+  /* overflow: scroll; */
 `;
 
 const SelectBox = styled.select`
@@ -173,22 +183,37 @@ const SelectBox = styled.select`
   outline: 0;
   background-color: transparent;
   cursor: pointer;
+  position: absolute;
 `;
 
 const TagList = styled.div`
   color: var(--color-black);
   display: flex;
+  margin-left: 5rem;
+  overflow: scroll;
+  /* position: relative;
+  right: 0; */
+  /* max-width: 300%; */
   /* background-color: red; */
+  /* overflow: auto; */
+  /* white-space: pre-line;
+  word-break: break-all; */
+`;
+
+const SearchIconDiv = styled.div`
+  position: absolute;
+  right: 20px;
 `;
 
 const InputForm = styled.input`
-  width: 100%;
+  /* width: 100%; */
   height: 36px;
-  padding: 1rem;
+  /* padding: 0.8rem; */
   outline: 0;
   border: 0;
-  background-color: transparent;
   min-width: 100px;
+  background-color: transparent;
+  margin-right: 1.5rem;
 `;
 
 export default SearchForm;

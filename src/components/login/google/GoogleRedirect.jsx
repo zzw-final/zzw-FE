@@ -4,9 +4,9 @@ import { useCookies } from "react-cookie";
 import { useNavigate } from "react-router-dom";
 
 function GoogleRedirect() {
+  const code = new URL(window.location.href).searchParams.get("code");
   const [cookies, setCookie, removeCookies] = useCookies();
   const navigate = useNavigate();
-  const code = new URL(window.location.href).searchParams.get("code");
 
   useEffect(() => {
     async function googleLogin() {
@@ -16,29 +16,36 @@ function GoogleRedirect() {
 
       if (res.data.success && res.data.error === null) {
         const newUser = res.data.data.isFirst;
-        if (newUser === true) {
-          const EMAIL = res.data.data.email;
-          setCookie("loginEmail", EMAIL);
+        const EMAIL = res.data.data.email;
+        const OAUTH = res.data.data.oauth;
+        setCookie("loginEmail", EMAIL);
+        setCookie("loginOauth", OAUTH);
+        if (newUser) {
           navigate("/join");
         } else {
-          const ACCESS_TOKEN = res.headers["authorization"];
-          const REFRESH_TOKEN = res.headers["refresh-token"];
-          const EMAIL = res.data.data.email;
-          const NICKNAME = res.data.data.nickname;
-          const PROFILE = res.data.data.profile;
-          const USERID = res.data.data.userId;
-          const GRADE = res.data.data.grade;
-          setCookie("accessToken", ACCESS_TOKEN);
-          setCookie("refreshToken", REFRESH_TOKEN);
-          setCookie("loginEmail", EMAIL);
-          setCookie("loginNickname", NICKNAME);
-          setCookie("loginProfile", PROFILE);
-          setCookie("loginUserId", USERID);
-          setCookie("loginGrade", GRADE);
+          onLogin(res);
           navigate("/", { replace: true });
         }
       }
     }
+
+    const onLogin = (res) => {
+      const ACCESS_TOKEN = `Bearer ${res.headers["authorization"]}`;
+      const REFRESH_TOKEN = res.headers["refresh-token"];
+      const EMAIL = res.data.data.email;
+      const NICKNAME = res.data.data.nickname;
+      const PROFILE = res.data.data.profile;
+      const USERID = res.data.data.userId;
+      const GRADE = res.data.data.grade;
+      setCookie("accessToken", ACCESS_TOKEN);
+      setCookie("refreshToken", REFRESH_TOKEN);
+      setCookie("loginEmail", EMAIL);
+      setCookie("loginNickname", NICKNAME);
+      setCookie("loginProfile", PROFILE);
+      setCookie("loginUserId", USERID);
+      setCookie("loginGrade", GRADE);
+    };
+
     if (cookies.loginEmail === undefined) {
       googleLogin();
     } else {

@@ -17,7 +17,6 @@ const SearchPage = () => {
   const searchedNickname = searchParams.get("nickname");
 
   const search = async (searchOption, sendData) => {
-    console.log("들어와???");
     navigate(`/search?${searchOption}=${sendData}`);
     const requestUrl = `/api/post/filter/${searchOption}?${searchOption}=${sendData}`;
     const resultSearch = await instance.get(requestUrl);
@@ -60,7 +59,7 @@ const SearchListBox = styled.section`
   background-color: var(--color-white);
   padding: 1rem 0;
   margin: 1rem 0;
-  height: 100%;
+  padding-bottom: 56px;
 `;
 const SearchBox = styled.div`
   background-color: var(--color-orange);

@@ -14,7 +14,7 @@ const JoinForm = (props) => {
   const [nickname, setNickname] = useState("");
   const [isNickname, setIsNickname] = useState(false);
   const [signup, setSignup] = useState(false);
-  const [cookies] = useCookies(["loginEmail"]);
+  const [cookies, setCookies] = useCookies(["loginEmail", "loginOauth"]);
 
   const navigate = useNavigate();
 
@@ -25,9 +25,34 @@ const JoinForm = (props) => {
     }
 
     const loginEmail = cookies.loginEmail;
-    const result = await join({ email: loginEmail, nickname });
+    const loginOauth = cookies.loginOauth;
+    const result = await join({
+      email: loginEmail,
+      oauth: loginOauth,
+      nickname,
+    });
+
+    const onLogin = (result) => {
+      const ACCESS_TOKEN = `Bearer ${result.headers["authorization"]}`;
+      const REFRESH_TOKEN = result.headers["refresh-token"];
+      const OAUTH_TOKEN = result.data.data.oauthToken;
+      const EMAIL = result.data.data.email;
+      const NICKNAME = result.data.data.nickname;
+      const PROFILE = result.data.data.profile;
+      const USERID = result.data.data.userId;
+      const GRADE = result.data.data.grade;
+      setCookies("accessToken", ACCESS_TOKEN);
+      setCookies("refreshToken", REFRESH_TOKEN);
+      setCookies("oauthToken", OAUTH_TOKEN);
+      setCookies("loginEmail", EMAIL);
+      setCookies("loginNickname", NICKNAME);
+      setCookies("loginProfile", PROFILE);
+      setCookies("loginUserId", USERID);
+      setCookies("loginGrade", GRADE);
+    };
 
     if (result.data.success && result.data.error === null) {
+      onLogin(result);
       navigate("/");
     }
   };

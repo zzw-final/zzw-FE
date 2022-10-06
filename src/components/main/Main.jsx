@@ -12,6 +12,7 @@ const Main = ({
   followPost,
   likeToggle,
   search,
+  mutate,
 }) => {
   const onClickTagHandler = (tagName) => {
     search("tag", tagName);
@@ -20,9 +21,6 @@ const Main = ({
   const [cookies] = useCookies(["loginNickname"]);
 
   const loginNickname = cookies.loginNickname;
-
-  console.log("loginNickname :>> ", loginNickname);
-  console.log("followPost :>> ", followPost);
 
   return (
     <MainContainer>
@@ -56,18 +54,20 @@ const Main = ({
           <List
             list={bestPost}
             likeToggle={likeToggle}
+            mutate={mutate}
             width="160px"
             height="200px"
           />
         </BestRecipeContainer>
-        {/* {followPost && followPost.length === 0 ? ( */}
-        {followPost === null ? (
+        {(followPost && followPost.length === 0) ||
+        loginNickname === undefined ? (
           <>
             <Title>NEW 레시피 🥦</Title>
             <NewRecipeScrollContainer>
               <List
                 list={recentPost}
                 likeToggle={likeToggle}
+                mutate={mutate}
                 display="grid"
                 height="210px"
                 margin="0 0.5rem 0 0.5rem"
@@ -81,6 +81,7 @@ const Main = ({
               <List
                 list={recentPost}
                 likeToggle={likeToggle}
+                mutate={mutate}
                 width="160px"
                 height="200px"
               />
@@ -90,6 +91,7 @@ const Main = ({
               <List
                 list={followPost}
                 likeToggle={likeToggle}
+                mutate={mutate}
                 display="grid"
                 height="210px"
                 margin="0 0.5rem 0 0.5rem"
@@ -104,6 +106,7 @@ const Main = ({
 
 const MainContainer = styled.div`
   /* text-align: center; */
+  padding-bottom: 60px;
 `;
 
 const TagsContainer = styled.section`
@@ -164,8 +167,6 @@ const NewRecipeContainer = styled.section`
   }
 `;
 
-const FollowContainer = styled.section`
-  display: flex;
-`;
+const FollowContainer = styled.section``;
 
 export default Main;

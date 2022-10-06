@@ -51,9 +51,15 @@ const GlobalStyle = createGlobalStyle`
   padding: 0;
 }
 
+html,
 body {
-  margin: 0px;
-  cursor: default;
+  margin: 0;
+  padding: 0;
+}
+
+body{
+  height: 100vh;
+  width: 100vw;
 }
 
 a {

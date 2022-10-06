@@ -1,92 +1,73 @@
-import React from "react";
-import { useCookies } from "react-cookie";
-import { useNavigate } from "react-router-dom";
+import { React, useState } from "react";
 import styled from "styled-components";
-import Avatar from "@mui/material/Avatar";
-import Like from "./Like";
-import { useState } from "react";
-import { dateFormat } from "../../util/dateFormat";
 
 const SwiperRecipeItem = ({
-  postDetail,
   contentList,
-  isFirstPage,
-  likeToggle,
+  isEditMode,
+  imgUpload,
+  editedValues,
+  setEditedValues,
+  idx,
 }) => {
-  const [data, setData] = useState();
-
-  const {
-    postId,
-    title,
-    nickname,
-    // profile,
-    grade,
-    authorId,
-    isLike,
-    likeNum,
-    foodImg,
-    createAt,
-  } = postDetail;
-
   const { imageUrl, content, page } = contentList;
-  const [likeToggleBtn, setLikeToggleBtn] = useState(isLike);
+  const [imgContentUrlEdited, setImgContentUrlEdited] = useState(imageUrl);
 
-  const [cookies] = useCookies(["loginNickname"]);
-  const navigate = useNavigate();
-
-  const loginNickname = cookies.loginNickname;
-
-  const userPage = () => {
-    if (+cookies.loginUserId === authorId) navigate(`/mypage`);
-    else navigate(`/mypage/${authorId}`);
+  let handleChangeIMG = (i, e) => {
+    let newFormValues = [...editedValues];
+    newFormValues[i][e.target.name] = e.target.src;
+    setEditedValues(newFormValues);
   };
 
-  const like = async () => {
-    if (loginNickname === undefined) {
-      alert("로그인 유저만 사용 가능한 기능입니다.");
-      return;
-    }
-    await likeToggle(postId);
-    setLikeToggleBtn(!likeToggleBtn);
+  let handleChange = (i, e) => {
+    let newFormValues = [...editedValues];
+    newFormValues[i][e.target.name] = e.target.value;
+    newFormValues[i].page = i;
+    setEditedValues(newFormValues);
   };
 
-  return isFirstPage ? (
-    <ItemContainer>
-      <ItemImg src={foodImg} alt="Recipe" />
-      <LikeBox>
-        <Like isLike={likeToggleBtn} btnClick={like} /> {likeNum}
-      </LikeBox>
-      <ItemBox>
-        <ItemInfo>
-          <Avatar
-            alt="user_img"
-            // src={profile}
-            sx={{ width: 28, height: 28, mr: 1 }}
-            onClick={userPage}
-          />
-          <NinknameCreatedAt>
-            <Nickname onClick={userPage}>
-              {grade}/{nickname}
-            </Nickname>
-            <CreatedAt>{dateFormat(createAt)}</CreatedAt>
-          </NinknameCreatedAt>
-        </ItemInfo>
-        <ItemTitle>{title}</ItemTitle>
-      </ItemBox>
-    </ItemContainer>
-  ) : (
-    <ItemContainer>
-      <ItemImg src={imageUrl} alt="Recipe" />
-      <ItemBox>
-        <ItemStep>STEP {page}</ItemStep>
-        <ItemContent>{content}</ItemContent>
-      </ItemBox>
-    </ItemContainer>
+  const getImgContentUpload = async (e) => {
+    const result = await imgUpload(e);
+    setImgContentUrlEdited(result.data.data.imageUrl);
+  };
+
+  return (
+    <>
+      <ItemContainer display={!isEditMode ? "Flex" : "none"}>
+        <ItemImg src={imageUrl} alt="RecipeImg" />
+        <ItemBox>
+          <ItemStep>STEP {page + 1}</ItemStep>
+          <ItemContent>{content}</ItemContent>
+        </ItemBox>
+      </ItemContainer>
+      <ItemContainer display={!isEditMode ? "none" : "Flex"}>
+        <ItemImg
+          name="imageUrl"
+          value={imgContentUrlEdited}
+          src={imgContentUrlEdited}
+          alt="Recipe"
+          onLoad={(e) => handleChangeIMG(idx, e)}
+        />
+        <ItemImgEdit
+          type="file"
+          accept="image/*"
+          onChange={getImgContentUpload}
+        />
+        <ItemBox>
+          <ItemStep>STEP {page + 1}</ItemStep>
+          <ItemContentEdit
+            type="text"
+            name="content"
+            defaultValue={content}
+            onBlur={(e) => handleChange(idx, e)}
+          ></ItemContentEdit>
+        </ItemBox>
+      </ItemContainer>
+    </>
   );
 };
 
 const ItemContainer = styled.div`
-  display: flex;
+  display: ${({ display }) => display};
   flex-direction: column;
   color: var(--color-black);
   height: 100%;
@@ -102,46 +83,14 @@ const ItemImg = styled.img`
   margin-bottom: 1.5rem;
 `;
 
-const LikeBox = styled.div`
-  display: flex;
-  background-color: var(--color-white);
-  color: var(--color-grey);
-  align-items: center;
-  justify-content: center;
-  box-shadow: 0px 0px 5px #dcdcdc;
-  border-radius: 18px;
-  padding: 0.3rem;
-  width: 22%;
+const ItemImgEdit = styled.input`
   position: absolute;
-  right: 8%;
-  top: 56%;
+  top: 300px;
+  left: 16px;
 `;
 
 const ItemBox = styled.div`
   padding: 0 1rem;
-  /* background-color: lavender; */
-`;
-
-const ItemInfo = styled.div`
-  display: flex;
-  align-items: center;
-  padding-bottom: 1rem;
-`;
-
-const NinknameCreatedAt = styled.div`
-  display: flex;
-  justify-content: space-between;
-  width: 100%;
-`;
-
-const Nickname = styled.div`
-  font-size: var(--font-small);
-  color: var(--color-black);
-`;
-
-const CreatedAt = styled.div`
-  font-size: var(--font-micro);
-  color: var(--color-grey);
 `;
 
 const ItemStep = styled.div`
@@ -151,14 +100,14 @@ const ItemStep = styled.div`
   margin-bottom: 1rem;
 `;
 
-const ItemTitle = styled.div`
-  font-size: var(--font-medium);
-`;
-
 const ItemContent = styled.div`
   font-size: var(--font-medium);
   overflow: scroll;
   height: 100%;
+`;
+
+const ItemContentEdit = styled.textarea`
+  width: 100%;
 `;
 
 export default SwiperRecipeItem;

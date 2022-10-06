@@ -1,37 +1,41 @@
 import React from "react";
-import { useState, useEffect } from "react";
+import { usememo, useState, useEffect, useRef } from "react";
 import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
 import { instance, imgInstance } from "../api/request";
-import Footer from "../components/common/Footer";
 import LayoutPage from "../components/common/LayoutPage";
+import WriteAddCard from "../components/write/WriteAddCard";
+import WriteCard from "../components/write/WriteCard";
 import WriteHeader from "../components/write/WriteHeader";
-import WriteSwiper from "../components/write/WriteSwiper";
 import WriteTitle from "../components/write/WriteTitle";
 
 function WritePage() {
+  //WriteTitle에서 값을 받을 State
   const [title, setTitle] = useState("");
   const [foodname, setFoodName] = useState("");
   const [ingredient, setIngredient] = useState([]);
-  const [time, setTime] = useState("");
-  const [content, setContent] = useState("");
-  const [imageURL, setImageURL] = useState([]);
+  const [time, setTime] = useState("5분");
+  const [imageURL, setImageURL] = useState("");
   const navigate = useNavigate();
 
-  //post
+  // WriteAddCard에서 값을 받을 state
+  const [formValues, setFomvalues] = useState([
+    { imageUrl: "", content: "", page: 0 },
+  ]);
+
+  //받은값 전부를 post
   const onSubmitHandler = async (e) => {
+    e.preventDefault();
     try {
-      e.preventDefault();
       const data = {
         title: title,
         foodName: foodname,
         imageUrl: imageURL,
         ingredient: ingredient,
         time: time,
-        content: content,
+        pageList: formValues,
       };
       console.log(data);
-
       await instance.post("/api/auth/post", data);
       alert("게시글 등록이 완료되었습니다!");
       navigate("/");
@@ -40,66 +44,60 @@ function WritePage() {
     }
   };
 
-  const postData = (title, foodname, ingredient, time, content, imageUrl) => {
-    setTitle(title);
-    setFoodName(foodname);
-    setIngredient(ingredient);
-    setTime(time);
-    setContent(content);
-    setImageURL(imageUrl);
-  };
-
-  //img URL가져오는 요청
-
-  const imgUpload = (e) => {
+  //이미지 파일 업로드시 url로 변경해주는 post
+  const imgUpload = async (e) => {
     e.preventDefault();
     if (e.target.files) {
       const file = e.target.files[0];
       console.log("이미지 파일 받기", file);
       const formdata = new FormData();
       formdata.append("file", file);
-
-      imgInstance
-        .post("/api/post/image", formdata, {
-          headers: { "Content-Type": "multipart/form-data" },
-        })
-        .then((res) => {
-          console.log("이미지 업로드 완료됨", res.data);
-          console.log("이미지 URL확인", res.data.data.imageUrl);
-          setImageURL(res.data.data.imageUrl);
-        })
-        .catch((error) => {
-          console.log(error);
-        });
+      return await imgInstance.post("/api/post/image", formdata, {
+        headers: { "Content-Type": "multipart/form-data" },
+      });
     }
   };
 
   return (
-    <LayoutPage>
+    <LayoutPage background={"#fbd499"}>
       <WriteHeader
         styled={{ position: "fixed" }}
         onSubmitHandler={onSubmitHandler}
       />
-      {/* <WriteTitle
+      <WriteTitle
         setTitle={setTitle}
         setFoodName={setFoodName}
         setIngredient={setIngredient}
         setTime={setTime}
-        setImageURL={setImageURL}
         imageURL={imageURL}
         imgUpload={imgUpload}
-      /> */}
-      <WriteSwiper
-        setTitle={setTitle}
-        setFoodName={setFoodName}
-        setIngredient={setIngredient}
-        setTime={setTime}
         setImageURL={setImageURL}
-        imageURL={imageURL}
+      />
+      <Notion>레시피 단계별로 작성해주세요 !😋</Notion>
+      <WriteAddCard
         imgUpload={imgUpload}
+        formValues={formValues}
+        setFomvalues={setFomvalues}
       />
     </LayoutPage>
   );
 }
 
 export default WritePage;
+
+const Addbutton = styled.button`
+  background-color: white;
+  border: 0;
+  width: 80vw;
+  height: 5vh;
+  border-radius: 10px;
+  margin-left: 10vw;
+  &:hover {
+    background: var(--color-dark-white);
+    color: white;
+  }
+`;
+
+const Notion = styled.div`
+  margin: 2rem 10vw 1rem 15vw;
+`;

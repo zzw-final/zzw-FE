@@ -20,10 +20,12 @@ instance.interceptors.request.use(
   function (config) {
     const accessToken = getCookie("accessToken");
     const refreshToken = getCookie("refreshToken");
+    const oauth = getCookie("loginOauth");
 
     if (accessToken && refreshToken) {
       config.headers.common["Authorization"] = `${accessToken}`;
       config.headers.common["Refresh-Token"] = `${refreshToken}`;
+      config.headers.common["oauth"] = `${oauth}`;
     }
     return config;
   },
@@ -49,9 +51,11 @@ imgInstance.interceptors.request.use(
   function (config) {
     const accessToken = getCookie("accessToken");
     const refreshToken = getCookie("refreshToken");
+    const oauth = getCookie("loginOauth");
     if (accessToken && refreshToken) {
       config.headers.common["Authorization"] = `${accessToken}`;
       config.headers.common["Refresh-Token"] = `${refreshToken}`;
+      config.headers.common["oauth"] = `${oauth}`;
     }
     return config;
   },

@@ -21,19 +21,24 @@ const LayoutPage = ({ children, background, backgroundMain }) => {
   }, []);
 
   return (
-    <>
+    <LayoutPageContainer>
       <Wrapper background={background} backgroundMain={backgroundMain}>
         <div>{children}</div>
       </Wrapper>
       <Footer topTenTagList={topTenTagList} tagAllList={tagAllList} />
-    </>
+    </LayoutPageContainer>
   );
 };
 
+const LayoutPageContainer = styled.div`
+  position: relative;
+`;
+
 const Wrapper = styled.div`
-  height: auto;
-  min-height: 100vh;
-  padding-bottom: 56px;
+  /* height: auto; */
+  width: 100%;
+  height: 100%;
+  /* padding-bottom: 56px; */
   background-color: ${({ background }) => background || "white"};
   background: linear-gradient(
     var(${({ backgroundMain }) => backgroundMain}) 50%,

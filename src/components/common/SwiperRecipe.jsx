@@ -1,4 +1,4 @@
-import React, { useRef, useState } from "react";
+import React from "react";
 import { Swiper, SwiperSlide } from "swiper/react";
 import styled from "styled-components";
 import "swiper/css/bundle";
@@ -7,24 +7,18 @@ import "swiper/css/effect-cards";
 import "swiper/css/pagination";
 import { EffectCards } from "swiper";
 import SwiperRecipeItem from "./SwiperRecipeItem";
+import SwiperRecipeItemFirstPage from "./SwiperRecipeItemFirstPage";
 
-const SwiperRecipe = ({ postDetail, likeToggle }) => {
+const SwiperRecipe = ({
+  postDetail,
+  likeToggle,
+  isEditMode,
+  imgUpload,
+  editedValues,
+  setEditedValues,
+  editForm,
+}) => {
   const contentList = postDetail.contentList;
-  const contentPageCnt = contentList.length;
-  const pageNav = new Array(contentPageCnt);
-
-  // console.log("pageNav", pageNav);
-
-  // console.log("contentList main! > ", contentList);
-  // console.log("contentPageCnt main! > ", contentPageCnt);
-
-  const getIdx = (idx) => {
-    console.log("idx !!!! >", idx);
-  };
-
-  const swiperRef = useRef();
-
-  console.log("swiperRef > ", swiperRef.current);
 
   return (
     <SwiperContainer>
@@ -36,36 +30,29 @@ const SwiperRecipe = ({ postDetail, likeToggle }) => {
           className="mySwiper"
         >
           <SwiperSlide>
-            <SwiperRecipeItem
+            <SwiperRecipeItemFirstPage
               postDetail={postDetail}
-              contentList={contentList}
-              isFirstPage={true}
               likeToggle={likeToggle}
+              isEditMode={isEditMode}
+              imgUpload={imgUpload}
+              editForm={editForm}
             />
           </SwiperSlide>
           {contentList.map((content, idx) => (
-            <SwiperSlide
-              key={idx}
-              onChange={() => {
-                getIdx(idx);
-              }}
-            >
+            <SwiperSlide key={idx}>
               <SwiperRecipeItem
-                postDetail={postDetail}
-                contentList={content}
-                isFirstPage={false}
                 key={idx}
+                idx={idx}
+                contentList={content}
+                isEditMode={isEditMode}
+                imgUpload={imgUpload}
+                editedValues={editedValues}
+                setEditedValues={setEditedValues}
               />
-              {/* <IdxFloat>{idx + 1}</IdxFloat> */}
             </SwiperSlide>
           ))}
         </Swiper>
       </SwiperBox>
-      <PageNav>
-        {pageNav.fill("*").map((item, idx) => (
-          <Page key={idx}>{item}</Page>
-        ))}
-      </PageNav>
     </SwiperContainer>
   );
 };
@@ -80,22 +67,10 @@ const SwiperContainer = styled.div`
   margin: 2rem 0;
 `;
 
-const PageNav = styled.div`
-  padding: 1rem 0;
-  display: flex;
-`;
-
-// const IdxFloat = styled.div`
-//   position: absolute;
-//   bottom: 10px;
-// `;
-
-const Page = styled.div``;
-
 const SwiperBox = styled.div`
   .swiper {
-    width: 280px;
-    height: 500px;
+    width: 320px;
+    height: 540px;
     margin: auto;
   }
 
@@ -104,7 +79,6 @@ const SwiperBox = styled.div`
     align-items: center;
     justify-content: center;
     border-radius: 18px;
-    /* color: #fff; */
   }
 
   .swiper-slide {
