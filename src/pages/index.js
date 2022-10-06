@@ -6,3 +6,4 @@ export { default as JoinPage } from "./JoinPage";
 export { default as MyPage } from "./MyPage";
 export { default as WritePage } from "./WritePage";
 export { default as UserPage } from "./UserPage";
+export { default as ChatPage } from "./ChatPage";
