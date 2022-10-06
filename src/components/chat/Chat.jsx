@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState, useCallback } from "react";
+import { useEffect, useRef, useState } from "react";
 import * as StompJs from "@stomp/stompjs";
 import { getCookie } from "../../util/cookie";
 import useInput from "../../hooks/useInput";
@@ -6,7 +6,6 @@ import useInput from "../../hooks/useInput";
 function Chat() {
   const client = useRef({});
   const [msg, msgHandler] = useInput();
-  const [chat, setChat] = useState("");
 
   useEffect(() => {
     connect();
@@ -15,7 +14,7 @@ function Chat() {
 
   const connect = () => {
     client.current = new StompJs.Client({
-      brokerURL: `wss://${process.env.REACT_APP_CHAT_API}/stomp/chat`,
+      brokerURL: `wss://${process.env.REACT_APP_CHAT_API}/zzw`,
       connectHeaders: {
         Authorization: getCookie("accessToken"),
         oauth: getCookie("loginOauth"),
@@ -23,15 +22,13 @@ function Chat() {
       debug: function (str) {
         console.log(str);
       },
-      reconnectDelay: 90000,
-      heartbeatIncoming: 4000,
-      heartbeatOutgoing: 4000,
+      reconnectDelay: 50000,
       onConnect: (res) => {
-        console.log("onConnect 진입", res);
+        console.log("onConnect ->", res);
         subscribe();
       },
       onStompError: (frame) => {
-        console.log("onStompError 진입", frame);
+        console.log("onStompError ->", frame);
       },
     });
     client.current.activate();
@@ -42,24 +39,26 @@ function Chat() {
   };
 
   const subscribe = () => {
-    client.current.subscribe(`/sub/chat`, (response) => {
-      console.log(response);
+    client.current.subscribe(`/sub/chat/room/1`, (res) => {
+      console.log("sub body ->", res.body);
     });
   };
 
   const publish = (msg) => {
-    console.log("메시지", msg);
+    console.log("메시지 ->", msg);
     client.current.publish({
-      destination: "/pub/chat",
-      body: JSON.stringify(msg),
+      destination: "/pub/chat/message",
+      body: JSON.stringify({ roomId: 1, message: msg }),
+      headers: {
+        Authorization: getCookie("accessToken").split(" ")[1],
+        oauth: getCookie("loginOauth"),
+      },
     });
   };
 
   const unSubscribe = () => {
     client.current.unsubscribe();
   };
-
-  console.log(msg, "메시지");
 
   return (
     <>
