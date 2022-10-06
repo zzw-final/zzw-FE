@@ -23,9 +23,8 @@ function Detail({
   setEditedValues,
   onSubmitHandler,
   editForm,
-  mutate,
+  setEditedIngredient,
 }) {
-  const navigate = useNavigate();
   const nickname = getCookie("loginNickname");
   const url = window.location.href;
   const [toast, setToast] = useState(false);
@@ -37,8 +36,6 @@ function Detail({
     )
     .filter((ingredient) => ingredient !== undefined);
 
-  const [tagItem, setTagItem] = useState("");
-  const [tagList, setTagList] = useState(foodIngredientList);
   const [foodName, setFoodName] = useState();
 
   const copyUrl = async () => {
@@ -58,39 +55,12 @@ function Detail({
     setIsEditMode(!isEditMode);
   };
 
-  const submitTag = () => {
-    if (!tagList.includes(tagItem)) {
-      setTagList((prevState) => {
-        return [...prevState, { ingredientName: tagItem, isName: false }];
-      });
-    }
-    setTagItem("");
-  };
-
-  //태그 삭제기능
-  const deleteTag = (ingredientName) => {
-    setTagList(
-      tagList.filter((tagItem) => tagItem.ingredientName !== ingredientName)
-    );
-  };
-
-  //누르면 태그가 하나의 div
-  const onKeyPress = (e) => {
-    if (e.target.value !== "" && e.key === "Enter") {
-      submitTag();
-    }
-  };
-
   useEffect(() => {
     const foodName = postDetail?.ingredient?.find(
       (item) => item.isName === true
     )?.ingredientName;
     setFoodName(foodName);
   }, [postDetail]);
-
-  useEffect(() => {
-    editForm("ingredient", tagList);
-  }, [tagList, editForm]);
 
   const onCancle = () => {
     setIsEditMode(!isEditMode);
@@ -152,7 +122,11 @@ function Detail({
         </Tags>
       ) : (
         <Tags>
-          <TagList postDetail={postDetail} editForm={editForm} />
+          <TagList
+            postDetail={postDetail}
+            editForm={editForm}
+            setEditedIngredient={setEditedIngredient}
+          />
         </Tags>
       )}
 
@@ -166,7 +140,6 @@ function Detail({
             editedValues={editedValues}
             setEditedValues={setEditedValues}
             editForm={editForm}
-            mutate={mutate}
           />
         )}
       </Content>

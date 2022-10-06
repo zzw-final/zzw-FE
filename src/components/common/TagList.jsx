@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import styled from "styled-components";
 
-const TagList = ({ postDetail, editForm }) => {
+const TagList = ({ postDetail, editForm, setEditedIngredient }) => {
   const foodIngredientList = postDetail?.ingredient
     .map((ingredient) =>
       !ingredient.isName ? ingredient.ingredientName : undefined
@@ -10,7 +10,7 @@ const TagList = ({ postDetail, editForm }) => {
   const [tagItem, setTagItem] = useState("");
   const [tagList, setTagList] = useState(foodIngredientList);
 
-  const submitTag = (prevState) => {
+  const submitTag = () => {
     if (!tagList.includes(tagItem)) {
       setTagList((prevState) => {
         return [...prevState, tagItem];
@@ -18,21 +18,20 @@ const TagList = ({ postDetail, editForm }) => {
     }
     setTagItem("");
   };
+
   const deleteTag = (ingredientName) => {
     setTagList(tagList.filter((tagItem) => tagItem !== ingredientName));
   };
+
   const onKeyPress = (e) => {
     if (e.target.value !== "" && e.key === "Enter") {
       submitTag();
     }
   };
 
-  console.log("tagList :>> ", tagList);
-
   useEffect(() => {
-    console.log("들어와..?");
-    editForm("ingredient", tagList);
-  }, [tagList]);
+    setEditedIngredient(tagList);
+  }, [setEditedIngredient, tagList]);
 
   return (
     <TagBox>
@@ -104,7 +103,6 @@ const IngredintTag = styled.input`
   background: transparent;
   border: none;
   outline: none;
-  /* cursor: text; */
 `;
 
 export default TagList;
