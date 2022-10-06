@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useCallback, useEffect, useMemo, useState } from "react";
 import { useMutation, useQuery, useQueryClient } from "react-query";
 import { useNavigate, useParams } from "react-router-dom";
 import { imgInstance, instance } from "../api/request";
@@ -18,14 +18,24 @@ function DetailPage() {
   const [editTime, setEditTime] = useState();
   const [editedValues, setEditedvalues] = useState();
 
-  const fetchDetail = async () => {
-    return await instance.get(`/api/post/${id}`);
-  };
+  // const fetchDetail = async () => {
+  //   return await instance.get(`/api/post/${id}`);
+  // };
 
-  const { data: postDetail } = useQuery(["detail", id], fetchDetail, {
-    // staleTime: Infinity,
-    select: (data) => data.data.data,
-  });
+  // const { data: postDetail } = useQuery(["detail", id], fetchDetail, {
+  //   // staleTime: Infinity,
+  //   select: (data) => data.data.data,
+  // });
+
+  const [postDetail, setPostDetail] = useState();
+
+  useEffect(() => {
+    const getData = async () => {
+      const data = await instance.get(`/api/post/${id}`);
+      setPostDetail(data.data.data);
+    };
+    getData();
+  }, [id]);
 
   const queryClient = useQueryClient();
 
@@ -33,27 +43,25 @@ function DetailPage() {
     return await instance.post(`/api/auth/post/${postId}`);
   };
 
-  console.log(" 디테일 페이지 렌더링.. ");
-
-  const { mutate } = useMutation(likeToggle, {
-    onMutate: async (postId) => {
-      await queryClient.cancelQueries(["detail", id]);
-      const previousData = queryClient.getQueryData(["detail", id]);
-      queryClient.setQueryData(["detail", id], (prevData) => {
-        console.log("prevData :>> ", prevData);
-        // return { ...prevData?.data.data, isLike: !prevData?.data.data.isLike };
-        return {
-          ...prevData,
-          isLike: !prevData.data.data.isLike,
-        };
-      });
-      return previousData;
-    },
-    onSuccess: async (data, postId) => {
-      console.log("data detailPage > ", data);
-      console.log("data detailPage  postId> ", postId);
-    },
-  });
+  // const { mutate } = useMutation(likeToggle, {
+  //   onMutate: async (postId) => {
+  //     await queryClient.cancelQueries(["detail", id]);
+  //     const previousData = queryClient.getQueryData(["detail", id]);
+  //     queryClient.setQueryData(["detail", id], (prevData) => {
+  //       console.log("prevData :>> ", prevData);
+  // return { ...prevData?.data.data, isLike: !prevData?.data.data.isLike };
+  //       return {
+  //         ...prevData,
+  //         isLike: !prevData.data.data.isLike,
+  //       };
+  //     });
+  //     return previousData;
+  //   },
+  //   onSuccess: async (data, postId) => {
+  //     // console.log("data detailPage > ", data);
+  //     // console.log("data detailPage  postId> ", postId);
+  //   },
+  // });
 
   const foodIngredientList = postDetail?.ingredient
     ?.map((ingredient) =>
@@ -71,7 +79,7 @@ function DetailPage() {
       foodName: editedFoodname || postDetail?.ingredient[0].ingredientName,
       ingredient: editedIngredient || foodIngredientList,
       imageUrl: editedImageUrl || postDetail?.foodImg,
-      time: editTime || postDetail.time,
+      time: editTime || postDetail?.time + `분`,
       pageList: editedValues,
     };
     console.log("보내는 수정데이터 확인", data);
@@ -80,8 +88,6 @@ function DetailPage() {
     alert("글 수정이 완료되었습니다!");
     navigate(`/`);
   };
-
-  console.log("setEditedIngredient :>> ", editedIngredient);
 
   const editForm = (type, data) => {
     switch (type) {
@@ -92,11 +98,10 @@ function DetailPage() {
         setEditedFoodname(data);
         break;
       case "ingredient":
-        console.log("제발......! ", data);
+        console.log("Detail page editForm ", data);
         setEditedIngredient(data);
         break;
       case "imageUrl":
-        console.log("제발......! imgUrl ", data);
         setEditedImageUrl(data);
         break;
       case "time":
@@ -203,7 +208,7 @@ function DetailPage() {
             setEditedValues={setEditedvalues}
             onSubmitHandler={onSubmitHandler}
             editForm={editForm}
-            mutate={mutate}
+            setEditedIngredient={setEditedIngredient}
           />
         )}
       </DetailContainer>
