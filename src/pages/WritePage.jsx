@@ -19,8 +19,11 @@ function WritePage() {
   const navigate = useNavigate();
 
   // WriteAddCard에서 값을 받을 state
+  // const [formValues, setFomvalues] = useState([
+  //   { imageUrl: "", content: "", page: 0 },
+  // ]);
   const [formValues, setFomvalues] = useState([
-    { imageUrl: "", content: "", page: 0 },
+    { imageUrl: localStorage.getItem("titleIMG"), content: "", page: 0 },
   ]);
 
   //받은값 전부를 post

@@ -55,6 +55,7 @@ const WriteTitle = ({
     const resizingFile = new File([newFile], file.name, { type: file.type });
     const result = await imgUpload(resizingFile);
     setImageURL(result.data.data.imageUrl);
+    localStorage.setItem("titleIMG", result.data.data.imageUrl);
   };
 
   return (
@@ -164,6 +165,7 @@ const TagBox = styled.div`
   border-radius: 10px;
   grid-column-start: 2;
   grid-row-start: 3;
+  overflow: auto;
   &:focus-within {
     border-color: var(--color-light-blue);
   }

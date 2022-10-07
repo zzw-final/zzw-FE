@@ -23,7 +23,12 @@ function WriteAddCard({ imgUpload, formValues, setFomvalues }) {
   // 이미지 추가하기위한 핸들러
   let handleChangeIMG = (i, e) => {
     let newFormValues = [...formValues];
-    newFormValues[i][e.target.name] = window.sessionStorage.getItem(i);
+    if (!newFormValues[i].imageUrl) {
+      newFormValues[i][e.target.name] = window.localStorage.getItem("title");
+    } else {
+      newFormValues[i][e.target.name] = window.sessionStorage.getItem(i);
+    }
+
     //page 추가 (0페이지부터 시작)
     newFormValues[i].page = i;
     setFomvalues(newFormValues);
@@ -52,7 +57,6 @@ function WriteAddCard({ imgUpload, formValues, setFomvalues }) {
 
   let handleSubmit = (event) => {
     event.preventDefault();
-    console.log(formValues);
   };
 
   const imageInput = useRef();
@@ -63,10 +67,12 @@ function WriteAddCard({ imgUpload, formValues, setFomvalues }) {
 
   return (
     <>
-      <form style={{ height: "200vh" }} onSubmit={handleSubmit}>
+      <form
+        style={{ height: "auto", marginBottom: "60px" }}
+        onSubmit={handleSubmit}
+      >
         {formValues.map((element, index) => (
           <AddCardDiv key={index}>
-            {console.log("스토리지", window.sessionStorage.getItem(index))}
             <PreviewImg src={window.sessionStorage.getItem(index)}></PreviewImg>
             <img
               alt="submitImg"
