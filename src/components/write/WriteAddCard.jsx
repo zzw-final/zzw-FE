@@ -57,7 +57,6 @@ function WriteAddCard({ imgUpload, formValues, setFomvalues }) {
 
   let handleSubmit = (event) => {
     event.preventDefault();
-    console.log(formValues);
   };
 
   const imageInput = useRef();
@@ -74,7 +73,6 @@ function WriteAddCard({ imgUpload, formValues, setFomvalues }) {
       >
         {formValues.map((element, index) => (
           <AddCardDiv key={index}>
-            {console.log("스토리지", window.sessionStorage.getItem(index))}
             <PreviewImg src={window.sessionStorage.getItem(index)}></PreviewImg>
             <img
               alt="submitImg"
