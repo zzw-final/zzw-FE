@@ -253,43 +253,6 @@ const Tags = styled.div`
     display: none;
   }
 `;
-const TagBox = styled.div`
-  display: flex;
-  align-items: center;
-  flex-wrap: wrap;
-  width: 340px;
-  min-height: 5vh;
-  margin: 8px;
-  padding: 0 10px;
-  border: 1px solid rgba(0, 0, 0, 0.3);
-  border-radius: 10px;
-
-  &:focus-within {
-    border-color: var(--color-light-blue);
-  }
-`;
-
-const Tagdiv = styled.div`
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  margin: 5px;
-  padding: 5px;
-  background-color: var(--color-dark-pink);
-  border-radius: 5px;
-  color: white;
-  font-size: 13px;
-`;
-
-const IngredintTag = styled.input`
-  box-sizing: border-box;
-  display: inline-flex;
-  min-width: 150px;
-  background: transparent;
-  border: none;
-  outline: none;
-  /* cursor: text; */
-`;
 
 const Content = styled.div`
   overflow: hidden;
@@ -298,7 +261,7 @@ const Content = styled.div`
 const Footer = styled.div`
   display: flex;
   justify-content: space-between;
-  padding: 2rem 1.5rem 0rem 1.5rem;
+  padding: 0.5rem 1.5rem 0rem 1.5rem;
   align-items: center;
 `;
 

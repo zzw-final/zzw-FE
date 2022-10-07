@@ -20,6 +20,19 @@ const LayoutPage = ({ children, background, backgroundMain }) => {
     fetchData();
   }, []);
 
+  // useEffect(() => {
+  //   document.body.style.cssText = `
+  //     position: fixed;
+  //     top: -${window.scrollY}px;
+  //     overflow-y: scroll;
+  //     width: 100%;`;
+  //   return () => {
+  //     const scrollY = document.body.style.top;
+  //     document.body.style.cssText = "";
+  //     window.scrollTo(0, parseInt(scrollY || "0", 10) * -1);
+  //   };
+  // }, []);
+
   return (
     <LayoutPageContainer>
       <Wrapper background={background} backgroundMain={backgroundMain}>
@@ -32,13 +45,12 @@ const LayoutPage = ({ children, background, backgroundMain }) => {
 
 const LayoutPageContainer = styled.div`
   position: relative;
+  height: 100vh;
 `;
 
 const Wrapper = styled.div`
-  /* height: auto; */
   width: 100%;
-  height: 100%;
-  /* padding-bottom: 56px; */
+  overflow: hidden;
   background-color: ${({ background }) => background || "white"};
   background: linear-gradient(
     var(${({ backgroundMain }) => backgroundMain}) 50%,
