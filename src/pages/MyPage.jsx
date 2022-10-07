@@ -62,7 +62,9 @@ const MyPage = () => {
         myVisible={myVisible}
         likeVisible={likeVisible}
       />
-      {myVisible && <MyRecipes myRecipes={myRecipes} onLikeHandler={likeToggle} />}
+      {myVisible && (
+        <MyRecipes myRecipes={myRecipes} onLikeHandler={likeToggle} />
+      )}
       {likeVisible && (
         <LikeRecipes
           likeRecipes={likeRecipes}
