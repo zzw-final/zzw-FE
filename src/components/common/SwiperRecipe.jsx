@@ -1,4 +1,4 @@
-import React, { useRef, useState } from "react";
+import React from "react";
 import { Swiper, SwiperSlide } from "swiper/react";
 import styled from "styled-components";
 import "swiper/css/bundle";
@@ -7,8 +7,17 @@ import "swiper/css/effect-cards";
 import "swiper/css/pagination";
 import { EffectCards } from "swiper";
 import SwiperRecipeItem from "./SwiperRecipeItem";
+import SwiperRecipeItemFirstPage from "./SwiperRecipeItemFirstPage";
 
-const SwiperRecipe = ({ postDetail, likeToggle }) => {
+const SwiperRecipe = ({
+  postDetail,
+  likeToggle,
+  isEditMode,
+  imgUpload,
+  editedValues,
+  setEditedValues,
+  editForm,
+}) => {
   const contentList = postDetail.contentList;
 
   return (
@@ -21,20 +30,24 @@ const SwiperRecipe = ({ postDetail, likeToggle }) => {
           className="mySwiper"
         >
           <SwiperSlide>
-            <SwiperRecipeItem
+            <SwiperRecipeItemFirstPage
               postDetail={postDetail}
-              contentList={contentList}
-              isFirstPage={true}
               likeToggle={likeToggle}
+              isEditMode={isEditMode}
+              imgUpload={imgUpload}
+              editForm={editForm}
             />
           </SwiperSlide>
           {contentList.map((content, idx) => (
             <SwiperSlide key={idx}>
               <SwiperRecipeItem
-                postDetail={postDetail}
-                contentList={content}
-                isFirstPage={false}
                 key={idx}
+                idx={idx}
+                contentList={content}
+                isEditMode={isEditMode}
+                imgUpload={imgUpload}
+                editedValues={editedValues}
+                setEditedValues={setEditedValues}
               />
             </SwiperSlide>
           ))}
@@ -66,7 +79,6 @@ const SwiperBox = styled.div`
     align-items: center;
     justify-content: center;
     border-radius: 18px;
-    /* color: #fff; */
   }
 
   .swiper-slide {

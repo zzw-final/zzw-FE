@@ -5,31 +5,11 @@ function WriteCard({ idx, imgUpload, getPageData }) {
   const [imgUrl, setImgUrl] = useState("");
   const [content, setContent] = useState("");
 
-  // const contentRef = useRef("");
-
-  // useEffect(() => {
-  //   setContent(contentRef?.current.value);
-  // }, [contentRef]);
-  //   let contentArr = [content];
-
-  const contentRef = useRef();
-  //   console.log(contentRef.current.value);
-
-  //   const sendData = {
-  //     imageUrl: pageDataImg,
-  //     content: pageDataContent,
-  //     page: idx,
-  //   };
-
   const sendData = {
     imageURL: imgUrl,
     content: content,
     page: idx,
   };
-
-  //   useEffect(() => {
-  //     getPageData(sendData);
-  //   }, [idx]);
 
   const onSendData = () => {
     getPageData(sendData);
