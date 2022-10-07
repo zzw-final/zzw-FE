@@ -5,6 +5,7 @@ import { imgInstance, instance } from "../api/request";
 import LayoutPage from "../components/common/LayoutPage";
 import Detail from "../components/detail/Detail";
 import styled from "styled-components";
+import imageCompression from "browser-image-compression";
 
 function DetailPage() {
   const navigate = useNavigate();
@@ -178,17 +179,30 @@ function DetailPage() {
     }
   };
 
+  // const imgUpload = async (e) => {
+  //   e.preventDefault();
+  //   if (e.target.files) {
+  //     const file = e.target.files[0];
+  //     console.log("이미지 파일 받기", file);
+  //     const formdata = new FormData();
+  //     formdata.append("file", file);
+  //     return await imgInstance.post("/api/post/image", formdata, {
+  //       headers: { "Content-Type": "multipart/form-data" },
+  //     });
+  //   }
+  // };
+  //이미지 파일 업로드시 url로 변경해주는 post
   const imgUpload = async (e) => {
-    e.preventDefault();
-    if (e.target.files) {
-      const file = e.target.files[0];
-      console.log("이미지 파일 받기", file);
-      const formdata = new FormData();
-      formdata.append("file", file);
-      return await imgInstance.post("/api/post/image", formdata, {
-        headers: { "Content-Type": "multipart/form-data" },
-      });
-    }
+    // e.preventDefault();
+    const [file] = e.target.files;
+    const newFile = imageCompression(file, {
+      maxSizeMB: 1,
+      maxWidthOrHeight: 1920,
+    });
+    const resizingFile = new File([newFile], file.name, { type: file.type });
+    return await imgInstance.post("/api/post/image", resizingFile, {
+      headers: { "Content-Type": "multipart/form-data" },
+    });
   };
 
   return (
