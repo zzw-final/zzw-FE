@@ -7,6 +7,7 @@ import Main from "../components/main/Main";
 import SearchForm from "../components/main/SearchForm";
 import { useNavigate } from "react-router-dom";
 import { useMutation, useQueries, useQuery, useQueryClient } from "react-query";
+import Toast from "../components/UI/Toast";
 
 const MainPage = () => {
   const navigate = useNavigate();
@@ -15,6 +16,7 @@ const MainPage = () => {
   const [recentPost, setRecentPost] = useState([]);
   const [tagList, setTagList] = useState([]);
   const [followPost, setFollowPost] = useState([]);
+  const [toast, setToast] = useState(false);
 
   useEffect(() => {
     async function fetchData() {
@@ -91,11 +93,22 @@ const MainPage = () => {
     navigate(`/search?${searchOption}=${sendData}`);
   };
 
+  const showToast = () => {
+    setToast(true);
+  };
+
   return (
     <LayoutPage backgroundMain={"--color-orange"}>
       <Logo />
-      <SearchForm mainSearch={search} />
+      <SearchForm mainSearch={search} showToast={showToast} />
       <MainContainer>
+        {toast && (
+          <Toast
+            setToast={setToast}
+            text={"태그는 5개까지 검색 가능합니다."}
+            margin="0.5rem"
+          />
+        )}
         <Main
           bestPost={bestPost}
           recentPost={recentPost}

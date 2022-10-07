@@ -23,7 +23,7 @@ function WritePage() {
   //   { imageUrl: "", content: "", page: 0 },
   // ]);
   const [formValues, setFomvalues] = useState([
-    { imageUrl: localStorage.getItem("titleIMG"), content: "", page: 0 },
+    { imageUrl: "", content: "", page: 0 },
   ]);
 
   //받은값 전부를 post
@@ -43,6 +43,7 @@ function WritePage() {
       alert("게시글 등록이 완료되었습니다!");
       navigate("/");
       window.sessionStorage.clear();
+      window.localStorage.clear();
     } catch (error) {
       console.log("에러..", error);
     }

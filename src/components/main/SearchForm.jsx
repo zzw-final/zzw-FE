@@ -6,7 +6,7 @@ import useInputRef from "../../hooks/useInputRef";
 import Tag from "../common/Tag";
 import { useSearchParams } from "react-router-dom";
 
-const SearchForm = ({ mainSearch, searchPageSearch }) => {
+const SearchForm = ({ mainSearch, searchPageSearch, showToast }) => {
   const [cookies] = useCookies(["loginNickname"]);
   const [selectOption, setSelectOption] = useState("tag");
   const [tagList, setTagList] = useState([]);
@@ -17,14 +17,14 @@ const SearchForm = ({ mainSearch, searchPageSearch }) => {
   const searchedNickname = searchParams.get("nickname");
 
   const loginNickname = cookies.loginNickname || `반가운 손`;
-  const welcomeText = `🥘 ${loginNickname}님, 오늘의 식재료를 입력해보세요.`;
+  const welcomeText = `🥘 ${loginNickname}님, 오늘의 식재료를 입력해보세요!`;
+  const helpText = `태그는 5개만 `;
 
   const selectRef = useRef();
 
   const moveScroll = () => {
     const tagListBox = document.querySelector("#tagListBox");
     if (tagListBox?.scrollWidth !== 0) {
-      console.log("tagListBox.scroll :>> ", tagListBox.scrollWidth);
       tagListBox?.scrollTo(tagListBox?.clientWidth + 1000, 0);
       // tagListBox?.scrollTo();
     }
@@ -85,7 +85,13 @@ const SearchForm = ({ mainSearch, searchPageSearch }) => {
     if (addedTag === "") {
       return new Error("tag 가 비었습니다.");
     }
-    if (!tagList.includes(addedTag)) {
+    const localTaglist = localStorage.getItem("tagList").split(",");
+    if (localTaglist.length > 4) {
+      console.log("제한 5개..", localTaglist.length);
+      showToast();
+      return;
+    }
+    if (!localTaglist.includes(addedTag)) {
       setTagList((prevState) => [...prevState, addedTag]);
     }
     moveScroll();
