@@ -52,7 +52,7 @@ const WriteTitle = ({
       maxWidthOrHeight: 1920,
     });
     const resizingFile = new File([newFile], file.name, { type: file.type });
-    const result = await imgUpload(e, resizingFile);
+    const result = await imgUpload(resizingFile);
     setImageURL(result.data.data.imageUrl);
   };
 

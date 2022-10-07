@@ -43,10 +43,10 @@ function WritePage() {
   };
 
   //이미지 파일 업로드시 url로 변경해주는 post
-  const imgUpload = async (e, resizingFile) => {
-    e.preventDefault();
+  const imgUpload = async (file) => {
+    // e.preventDefault();
     const formdata = new FormData();
-    formdata.append("file", resizingFile);
+    formdata.append("file", file);
     return await imgInstance.post("/api/post/image", formdata, {
       headers: { "Content-Type": "multipart/form-data" },
     });
