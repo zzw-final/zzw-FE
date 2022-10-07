@@ -34,7 +34,11 @@ function Follow({ follow, mutate }) {
         : userId !== +getCookie("loginUserId") && (
             <RightBox>
               <div>
-                <Button onClick={followHandler} name="FollowBtn" isFollow={greyButton}>
+                <Button
+                  onClick={followHandler}
+                  name="FollowBtn"
+                  isFollow={greyButton}
+                >
                   {greyButton ? "팔로잉" : "팔로우"}
                 </Button>
               </div>

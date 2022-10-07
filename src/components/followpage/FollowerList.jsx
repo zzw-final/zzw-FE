@@ -23,9 +23,11 @@ function FollowerList({ followerList, mutate }) {
           onChange={searchInputHandler}
         ></Input>
       </SearchBox>
-      {searchFollowerList?.map((follow) => (
-        <Follow key={follow.userId} follow={follow} mutate={mutate} />
-      ))}
+      <div style={{ height: "auto", marginBottom: "100px" }}>
+        {searchFollowerList?.map((follow) => (
+          <Follow key={follow.userId} follow={follow} mutate={mutate} />
+        ))}
+      </div>
     </>
   );
 }
