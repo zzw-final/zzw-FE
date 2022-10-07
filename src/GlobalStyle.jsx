@@ -1,5 +1,12 @@
 import { createGlobalStyle } from "styled-components";
 
+function setScreenSize() {
+  let vh = window.innerHeight * 0.01;
+  document.documentElement.style.setProperty("--vh", `${vh}px`);
+}
+setScreenSize();
+window.addEventListener("resize", setScreenSize);
+
 const GlobalStyle = createGlobalStyle`
 
 :root {
@@ -57,8 +64,9 @@ body {
   padding: 0;
 }
 
-body{
-  height: 100vh;
+html, body{
+  /* height: 100vh; */
+  height: calc(var(--vh, 1vh) * 100 + 56px);;
   width: 100vw;
 }
 
