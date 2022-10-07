@@ -79,7 +79,8 @@ const Img = styled.img`
 
 const Title = styled.div`
   padding: 0.1rem 0.3rem;
-  font-weight: var(--weight-semi-bold);
+  font-weight: var(--weight-reqular-thick);
+  font-size: var(--font-regular);
   margin: 0.2rem 0.2rem;
   width: 100%;
   overflow: hidden;
