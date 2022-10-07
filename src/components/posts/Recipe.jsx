@@ -35,7 +35,12 @@ function Recipe({ post, onLikeHandler }) {
   return (
     <Card>
       <TopBox>
-        <Tag tagName={`#${foodName}`} isFoodName={true} height="24px" opacity={0.8} />
+        <Tag
+          tagName={`#${foodName}`}
+          isFoodName={true}
+          height="24px"
+          opacity={0.8}
+        />
         <Like isLike={likeToggleBtn} btnClick={like} />
       </TopBox>
       <Img alt="foodphoto" src={foodImg} onClick={goToDetail} />
@@ -68,9 +73,9 @@ const Img = styled.img`
 
 const Title = styled.div`
   padding: 0.1rem 0.3rem;
-  font-weight: var(--weight-semi-bold);
   margin: 0.2rem 0.2rem;
-
+  font-size: var(--font-regular);
+  font-weight: var(--weight-regular-thick);
   //DESC: width 넘어가면 ...으로 생략되는 부분
   width: 100%;
   overflow: hidden;

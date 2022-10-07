@@ -34,17 +34,19 @@ const GlobalStyle = createGlobalStyle`
   --color-dark-green: #224037;
 
   /* Font size */
-  --font-large: 22px;
-  --font-medium-large: 20px;
-  --font-medium: 18px;
-  --font-regular: 16px;
-  --font-small: 14px;
-  --font-micro: 12px;
+
+  --font-large: 25px; 
+  --font-medium-large: 23px; 
+  --font-medium: 21px; 
+  --font-regular: 19px; 
+  --font-small: 15px; 
+  --font-micro: 13px;
 
   /* Font weight */
   --weight-bolder: 900;
   --weight-bold: 700;
   --weight-semi-bold: 600;
+  --weight-regular-thick: 500;
   --weight-regular: 400;
 
   /* Size */

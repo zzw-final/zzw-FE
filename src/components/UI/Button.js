@@ -23,8 +23,8 @@ const MnBtn = styled.button`
           border: 2.5px solid var(--color-light-white);
           border-radius: 20px;
           padding: 0px 0.6rem;
-          font-weight: var(--weight-semi-bold);
-          font-size: var(--font-midium);
+          font-weight: var(--weight-regular-thick);
+          font-size: var(--font-regular);
           cursor: pointer;
 
           ${({ myVisible }) =>
