@@ -1,5 +1,12 @@
 import { createGlobalStyle } from "styled-components";
 
+// function setScreenSize() {
+//   let vh = window.innerHeight * 0.01;
+//   document.documentElement.style.setProperty("--vh", `${vh}px`);
+// }
+// setScreenSize();
+// window.addEventListener("resize", setScreenSize);
+
 const GlobalStyle = createGlobalStyle`
 
 :root {
@@ -49,6 +56,8 @@ const GlobalStyle = createGlobalStyle`
   box-sizing: border-box;
   margin: 0;
   padding: 0;
+  /* font-family: "EF_Diary"; */
+  font-family: "LeeSeoyun";
 }
 
 html,
@@ -57,8 +66,10 @@ body {
   padding: 0;
 }
 
-body{
+html, body{
   height: 100vh;
+  /* height: calc(var(--vh, 1vh) * 100 + 56px);; */
+  /* height: calc(var(--vh, 1vh) * 100); */
   width: 100vw;
 }
 
@@ -69,6 +80,19 @@ a {
 
 ul {
   list-style: none;
+}
+
+/* @font-face {
+  font-family: "EF_Diary";
+  src: url("./font/EF_Diary.ttf");
+} */
+
+@font-face { 
+  font-family: 'LeeSeoyun'; 
+  src: url('https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_2202-2@1.0/LeeSeoyun.woff') 
+  format('woff'); 
+  font-weight: normal; 
+  font-style: normal;
 }
 
 `;

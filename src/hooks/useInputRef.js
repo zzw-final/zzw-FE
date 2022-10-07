@@ -4,7 +4,7 @@ const useInputRef = (initialValue, submitAction) => {
   const ref = useRef(initialValue);
 
   useEffect(() => {
-    ref.current.focus();
+    // ref.current.focus();
   });
 
   useEffect(() => {
