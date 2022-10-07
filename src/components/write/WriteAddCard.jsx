@@ -68,7 +68,10 @@ function WriteAddCard({ imgUpload, formValues, setFomvalues }) {
 
   return (
     <>
-      <form style={{ height: "200vh" }} onSubmit={handleSubmit}>
+      <form
+        style={{ height: "auto", marginBottom: "60px" }}
+        onSubmit={handleSubmit}
+      >
         {formValues.map((element, index) => (
           <AddCardDiv key={index}>
             {console.log("스토리지", window.sessionStorage.getItem(index))}
