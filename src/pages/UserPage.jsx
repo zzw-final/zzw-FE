@@ -11,6 +11,10 @@ function UserPage() {
   const [anotherUserData, setAnotherUserData] = useState();
   const [userRecipe, setUserRecipe] = useState();
 
+  const likeToggle = async (postId) => {
+    return await instance.post(`/api/auth/post/${postId}`);
+  };
+
   useEffect(() => {
     async function fetchUserData() {
       const res = await instance.get(`/api/mypage/${id}`);
@@ -35,7 +39,11 @@ function UserPage() {
       <Button style={{ margin: `0.7rem` }} name="MyToggleBtn" myVisible={true}>
         {anotherUserData?.nickname} 님의 레시피 🍳
       </Button>
-      <MyRecipes myRecipes={userRecipe} userNickname={anotherUserData?.nickname} />
+      <MyRecipes
+        onLikeHandler={likeToggle}
+        myRecipes={userRecipe}
+        userNickname={anotherUserData?.nickname}
+      />
     </LayoutPage>
   );
 }
