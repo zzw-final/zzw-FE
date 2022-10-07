@@ -32,12 +32,13 @@ const LayoutPage = ({ children, background, backgroundMain }) => {
 
 const LayoutPageContainer = styled.div`
   position: relative;
+  height: calc(var(--vh, 1vh) * 100 + 56px);
 `;
 
 const Wrapper = styled.div`
   /* height: auto; */
   width: 100%;
-  height: 100%;
+  overflow: hidden;
   /* padding-bottom: 56px; */
   background-color: ${({ background }) => background || "white"};
   background: linear-gradient(

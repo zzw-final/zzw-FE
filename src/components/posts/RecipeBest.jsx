@@ -93,7 +93,6 @@ const Tags = styled.div`
   gap: 0.15rem;
   overflow: auto;
   white-space: nowrap;
-
   &::-webkit-scrollbar {
     display: none;
   }
