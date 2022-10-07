@@ -164,6 +164,7 @@ const TagBox = styled.div`
   border-radius: 10px;
   grid-column-start: 2;
   grid-row-start: 3;
+  overflow: auto;
   &:focus-within {
     border-color: var(--color-light-blue);
   }
