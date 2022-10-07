@@ -11,6 +11,7 @@ import {
   MyPage,
   WritePage,
   UserPage,
+  ChatPage,
 } from "./pages";
 import KakaoRedirect from "./components/login/kakao/KakaoRedirect";
 import GoogleRedirect from "./components/login/google/GoogleRedirect";
@@ -51,6 +52,8 @@ function App() {
             <Route path="/authnaver" element={<NaverRedirect />} />
             <Route path="/editpage/:id" element={<EditPage />} />
             <Route path="/search" element={<SearchPage />} />
+            <Route path="/chat" element={<ChatPage />} />
+            <Route path="*" element={<div>페이지를 찾을 수 없습니다.</div>} />
           </Routes>
         </Mobile>
       </BrowserRouter>

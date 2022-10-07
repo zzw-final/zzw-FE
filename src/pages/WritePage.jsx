@@ -19,7 +19,9 @@ function WritePage() {
   const navigate = useNavigate();
 
   // WriteAddCard에서 값을 받을 state
-  const [formValues, setFomvalues] = useState([{ imageUrl: "", content: "", page: 0 }]);
+  const [formValues, setFomvalues] = useState([
+    { imageUrl: "", content: "", page: 0 },
+  ]);
 
   //받은값 전부를 post
   const onSubmitHandler = async (e) => {
@@ -37,6 +39,7 @@ function WritePage() {
       await instance.post("/api/auth/post", data);
       alert("게시글 등록이 완료되었습니다!");
       navigate("/");
+      window.sessionStorage.clear();
     } catch (error) {
       console.log("에러..", error);
     }
@@ -54,7 +57,10 @@ function WritePage() {
 
   return (
     <LayoutPage background={"#fbd499"}>
-      <WriteHeader styled={{ position: "fixed" }} onSubmitHandler={onSubmitHandler} />
+      <WriteHeader
+        styled={{ position: "fixed" }}
+        onSubmitHandler={onSubmitHandler}
+      />
       <WriteTitle
         setTitle={setTitle}
         setFoodName={setFoodName}

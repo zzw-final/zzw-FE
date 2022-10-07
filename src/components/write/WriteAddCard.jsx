@@ -1,5 +1,6 @@
 import React, { useRef, useState } from "react";
 import styled from "styled-components";
+import imageCompression from "browser-image-compression";
 
 function WriteAddCard({ imgUpload, formValues, setFomvalues }) {
   //이미지파일을 set해주기 위한 useState
@@ -8,7 +9,13 @@ function WriteAddCard({ imgUpload, formValues, setFomvalues }) {
 
   //서버에서 이미지를 url로 받아옴
   const getImgUpload = async (i, e) => {
-    const result = await imgUpload(e);
+    const [file] = e.target.files;
+    const newFile = await imageCompression(file, {
+      maxSizeMB: 1,
+      maxWidthOrHeight: 1920,
+    });
+    const resizingFile = new File([newFile], file.name, { type: file.type });
+    const result = await imgUpload(resizingFile);
     setImageUrl(result.data.data.imageUrl);
     window.sessionStorage.setItem(i, result.data.data.imageUrl);
   };

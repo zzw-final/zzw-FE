@@ -39,12 +39,13 @@ const WriteTitle = ({
     setIngredient(tagList);
   }, [tagList]);
 
+  //파일업로드 버튼 예쁘게 커스텀하기 위한 ref
   const imgInput = useRef();
 
   const onClickImgInput = () => {
     imgInput.current.click();
   };
-
+  //이미지 파일 리사이징
   const getImgUpload = async (e) => {
     const [file] = e.target.files;
     const newFile = await imageCompression(file, {
@@ -104,7 +105,9 @@ const WriteTitle = ({
       </TimeSelect>
       <PreviewImg src={imageURL} />
       <StyledFileInput onClick={onClickImgInput}>이미지 선택</StyledFileInput>
-      <ImgNotion onClick={onClickImgInput}>최대 1MB까지 업로드 가능합니다.</ImgNotion>
+      <ImgNotion onClick={onClickImgInput}>
+        최대 1MB까지 업로드 가능합니다.
+      </ImgNotion>
       <ImgInput
         type="file"
         accept="image/*"
