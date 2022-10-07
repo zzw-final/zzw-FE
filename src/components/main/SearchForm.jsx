@@ -112,6 +112,17 @@ const SearchForm = ({ mainSearch, searchPageSearch }) => {
     setTagList(tagList.filter((tag) => tag !== deleteTagName));
   };
 
+  // useEffect(() => {
+  //   inputRef.current.addEventListener("keypress", logKey);
+  //   function logKey(event) {
+  //     if (event.code === "Backspace") {
+  //       console.log("backspace..");
+  // submitAction();
+  // inputRef.current.reset();
+  //     }
+  //   }
+  // }, []);
+
   return (
     <SearchContainer>
       {welcomeText}

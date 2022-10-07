@@ -147,7 +147,7 @@ const Footer = ({ topTenTagList, tagAllList }) => {
               <Tag
                 tagName={tag}
                 key={idx}
-                margin="5px"
+                margin="6px"
                 onClickHandler={() => {
                   addSearchTag(tag);
                 }}
@@ -161,7 +161,7 @@ const Footer = ({ topTenTagList, tagAllList }) => {
               <Tag
                 tagName={tag}
                 key={idx}
-                margin="5px"
+                margin="6px"
                 onClickHandler={() => {
                   addSearchTag(tag);
                 }}
@@ -235,7 +235,7 @@ const SearchHelpText = styled.p`
 const TagList = styled.div`
   background-color: rgba(23, 23, 23, 0.888);
   width: 100%;
-  height: 100%;
+  height: 94%;
   margin: 0;
   padding: 1rem 2rem 2rem 2rem;
   transition: all 600ms cubic-bezier(0.86, 0, 0.07, 1);

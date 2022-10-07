@@ -17,6 +17,8 @@ const Logo = () => {
     "loginProfile",
   ]);
 
+  const loginNickname = cookies.loginNickname;
+
   const logout = () => {
     axios.get(`${process.env.REACT_APP_API}/api/member/kakao/logout`, {
       headers: {
@@ -34,7 +36,7 @@ const Logo = () => {
     removeCookie("loginGrade");
     removeCookie("loginOauth");
     removeCookie("setNickname");
-    alert("로그아웃");
+    alert("로그아웃되었습니다.");
   };
 
   const unregister = async () => {
@@ -49,18 +51,14 @@ const Logo = () => {
   return (
     <>
       <LogoContainer>zzw.</LogoContainer>
-      <LoginBox>
-        {cookies.loginNickname || "로그인 유저 없음"}
-        <button onClick={unregister}>회원탈퇴</button>
-        <button onClick={logout}>로그아웃</button>
-        <button
-          onClick={() => {
-            navigate("/login");
-          }}
-        >
-          로그인
-        </button>
-      </LoginBox>
+      {loginNickname ? (
+        <LoginBox>
+          {/* <button onClick={unregister}>회원탈퇴</button> */}
+          <LogOutText onClick={logout}>Logout</LogOutText>
+        </LoginBox>
+      ) : (
+        ""
+      )}
     </>
   );
 };
@@ -83,6 +81,11 @@ const LoginBox = styled.div`
   position: absolute;
   top: 0;
   right: 0;
+`;
+
+const LogOutText = styled.p`
+  font-size: var(--font-small);
+  margin: 0.2rem;
 `;
 
 export default Logo;

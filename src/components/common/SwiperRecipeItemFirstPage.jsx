@@ -83,7 +83,7 @@ const SwiperRecipeItemFirstPage = ({
             />
             <NinknameCreatedAt>
               <Nickname onClick={userPage}>
-                {grade}/{nickname}
+                {nickname}/{grade}
               </Nickname>
               <CreatedAt>{dateFormat(createAt)}</CreatedAt>
             </NinknameCreatedAt>
