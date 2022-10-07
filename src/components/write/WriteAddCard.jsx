@@ -24,7 +24,7 @@ function WriteAddCard({ imgUpload, formValues, setFomvalues }) {
   let handleChangeIMG = (i, e) => {
     let newFormValues = [...formValues];
     if (!newFormValues[i].imageUrl) {
-      newFormValues[i][e.target.name] = window.localStorage.getItem("title");
+      newFormValues[i][e.target.name] = window.localStorage.getItem("titleIMG");
     } else {
       newFormValues[i][e.target.name] = window.sessionStorage.getItem(i);
     }

@@ -102,7 +102,7 @@ const FollowPage = () => {
         followerView={followerView}
         nickname={nickname}
       />
-      <div style={{ marginBottom: "60px", height: "auto" }}>
+      <div style={{ height: "auto" }}>
         {followView && <FollowList followList={followList} mutate={mutate} />}
       </div>
       <div style={{ marginBottom: "60px", height: "auto" }}>
