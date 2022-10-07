@@ -55,6 +55,7 @@ const WriteTitle = ({
     const resizingFile = new File([newFile], file.name, { type: file.type });
     const result = await imgUpload(resizingFile);
     setImageURL(result.data.data.imageUrl);
+    localStorage.setItem("titleIMG", result.data.data.imageUrl);
   };
 
   return (

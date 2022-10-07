@@ -23,7 +23,12 @@ function WriteAddCard({ imgUpload, formValues, setFomvalues }) {
   // 이미지 추가하기위한 핸들러
   let handleChangeIMG = (i, e) => {
     let newFormValues = [...formValues];
-    newFormValues[i][e.target.name] = window.sessionStorage.getItem(i);
+    if (!newFormValues[i].imageUrl) {
+      newFormValues[i][e.target.name] = window.localStorage.getItem("title");
+    } else {
+      newFormValues[i][e.target.name] = window.sessionStorage.getItem(i);
+    }
+
     //page 추가 (0페이지부터 시작)
     newFormValues[i].page = i;
     setFomvalues(newFormValues);
