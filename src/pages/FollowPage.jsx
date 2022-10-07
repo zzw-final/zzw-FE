@@ -78,7 +78,7 @@ const FollowPage = () => {
       }
       if (!!click) {
         queryClient.invalidateQueries(["follower", id]);
-        queryClient.invalidateQueries(["follow", "0"]);
+        queryClient.invalidateQueries(["follower", "0"]);
       }
     },
   });
