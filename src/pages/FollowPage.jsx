@@ -83,8 +83,6 @@ const FollowPage = () => {
     },
   });
 
-  console.log("click", click);
-
   return (
     <LayoutPage>
       <FollowLayout
