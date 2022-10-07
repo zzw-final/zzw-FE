@@ -2,8 +2,9 @@ name: Deploy to Production
  
 on:
   push:
-    branches:
-      - main
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
  
 jobs:
   deploy:
@@ -22,7 +23,7 @@ jobs:
             ${{ runner.OS }}-
  
       - name: Install Dependencies
-        run: yran
+        run: yarn
  
       - name: Build
         run: yarn build
@@ -33,6 +34,7 @@ jobs:
         env:
           AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
           AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          AWS_REGION: ${{ secrets.AWS_REGION }}
         run: |
           aws s3 cp \
             --recursive \
