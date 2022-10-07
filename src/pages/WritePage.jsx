@@ -19,9 +19,7 @@ function WritePage() {
   const navigate = useNavigate();
 
   // WriteAddCard에서 값을 받을 state
-  const [formValues, setFomvalues] = useState([
-    { imageUrl: "", content: "", page: 0 },
-  ]);
+  const [formValues, setFomvalues] = useState([{ imageUrl: "", content: "", page: 0 }]);
 
   //받은값 전부를 post
   const onSubmitHandler = async (e) => {
@@ -45,25 +43,18 @@ function WritePage() {
   };
 
   //이미지 파일 업로드시 url로 변경해주는 post
-  const imgUpload = async (e) => {
+  const imgUpload = async (e, resizingFile) => {
     e.preventDefault();
-    if (e.target.files) {
-      const file = e.target.files[0];
-      console.log("이미지 파일 받기", file);
-      const formdata = new FormData();
-      formdata.append("file", file);
-      return await imgInstance.post("/api/post/image", formdata, {
-        headers: { "Content-Type": "multipart/form-data" },
-      });
-    }
+    const formdata = new FormData();
+    formdata.append("file", resizingFile);
+    return await imgInstance.post("/api/post/image", formdata, {
+      headers: { "Content-Type": "multipart/form-data" },
+    });
   };
 
   return (
     <LayoutPage background={"#fbd499"}>
-      <WriteHeader
-        styled={{ position: "fixed" }}
-        onSubmitHandler={onSubmitHandler}
-      />
+      <WriteHeader styled={{ position: "fixed" }} onSubmitHandler={onSubmitHandler} />
       <WriteTitle
         setTitle={setTitle}
         setFoodName={setFoodName}
