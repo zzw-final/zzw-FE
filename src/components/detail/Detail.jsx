@@ -23,9 +23,8 @@ function Detail({
   setEditedValues,
   onSubmitHandler,
   editForm,
-  mutate,
+  setEditedIngredient,
 }) {
-  const navigate = useNavigate();
   const nickname = getCookie("loginNickname");
   const url = window.location.href;
   const [toast, setToast] = useState(false);
@@ -37,8 +36,7 @@ function Detail({
     )
     .filter((ingredient) => ingredient !== undefined);
 
-  const [tagItem, setTagItem] = useState("");
-  const [tagList, setTagList] = useState(foodIngredientList);
+  const [foodName, setFoodName] = useState();
 
   const copyUrl = async () => {
     setToast(true);
@@ -57,35 +55,12 @@ function Detail({
     setIsEditMode(!isEditMode);
   };
 
-  const submitTag = (prevState) => {
-    if (!tagList?.includes(tagItem)) {
-      setTagList((prevState) => {
-        return [...prevState, tagItem];
-      });
-    }
-    setTagItem("");
-  };
-
-  const deleteTag = (ingredientName) => {
-    setTagList(tagList.filter((tagItem) => tagItem !== ingredientName));
-  };
-
-  const onKeyPress = (e) => {
-    if (e.target.value !== "" && e.key === "Enter") {
-      submitTag();
-    }
-  };
-
   useEffect(() => {
     const foodName = postDetail?.ingredient?.find(
       (item) => item.isName === true
     )?.ingredientName;
     setFoodName(foodName);
   }, [postDetail]);
-
-  useEffect(() => {
-    editForm("ingredient", tagList);
-  }, [tagList, editForm]);
 
   const onCancle = () => {
     setIsEditMode(!isEditMode);
@@ -147,11 +122,15 @@ function Detail({
         </Tags>
       ) : (
         <Tags>
-          <TagList postDetail={postDetail} editForm={editForm} />
+          <TagList
+            postDetail={postDetail}
+            editForm={editForm}
+            setEditedIngredient={setEditedIngredient}
+          />
         </Tags>
       )}
 
-      {/* <Content>
+      <Content>
         {postDetail && (
           <SwiperRecipe
             postDetail={postDetail}
@@ -161,7 +140,6 @@ function Detail({
             editedValues={editedValues}
             setEditedValues={setEditedValues}
             editForm={editForm}
-            mutate={mutate}
           />
         )}
       </Content>
@@ -186,7 +164,7 @@ function Detail({
             </CommentBox>
           </SearchBox>
         </CommentListBox>
-      </Footer> */}
+      </Footer>
     </DetailContainer>
   );
 }
@@ -275,43 +253,6 @@ const Tags = styled.div`
     display: none;
   }
 `;
-const TagBox = styled.div`
-  display: flex;
-  align-items: center;
-  flex-wrap: wrap;
-  width: 340px;
-  min-height: 5vh;
-  margin: 8px;
-  padding: 0 10px;
-  border: 1px solid rgba(0, 0, 0, 0.3);
-  border-radius: 10px;
-
-  &:focus-within {
-    border-color: var(--color-light-blue);
-  }
-`;
-
-const Tagdiv = styled.div`
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  margin: 5px;
-  padding: 5px;
-  background-color: var(--color-dark-pink);
-  border-radius: 5px;
-  color: white;
-  font-size: 13px;
-`;
-
-const IngredintTag = styled.input`
-  box-sizing: border-box;
-  display: inline-flex;
-  min-width: 150px;
-  background: transparent;
-  border: none;
-  outline: none;
-  /* cursor: text; */
-`;
 
 const Content = styled.div`
   overflow: hidden;
@@ -320,7 +261,7 @@ const Content = styled.div`
 const Footer = styled.div`
   display: flex;
   justify-content: space-between;
-  padding: 2rem 1.5rem 0rem 1.5rem;
+  padding: 0.5rem 1.5rem 0rem 1.5rem;
   align-items: center;
 `;
 
