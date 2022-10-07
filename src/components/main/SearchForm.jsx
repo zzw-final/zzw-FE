@@ -17,7 +17,7 @@ const SearchForm = ({ mainSearch, searchPageSearch }) => {
   const searchedNickname = searchParams.get("nickname");
 
   const loginNickname = cookies.loginNickname || `반가운 손`;
-  const welcomeText = `🥘 ${loginNickname}님, 오늘의 식재료를 입력해보세요.`;
+  const welcomeText = `🥘 ${loginNickname}님, 오늘의 식재료를 입력해보세요..`;
 
   const selectRef = useRef();
 
