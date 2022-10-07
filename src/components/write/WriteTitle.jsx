@@ -2,6 +2,7 @@ import React, { useEffect, useRef, useState } from "react";
 import styled from "styled-components";
 import Tag from "../common/Tag";
 import WriteCard from "./WriteCard";
+import imageCompression from "browser-image-compression";
 
 const WriteTitle = ({
   setTitle,
@@ -38,15 +39,23 @@ const WriteTitle = ({
     setIngredient(tagList);
   }, [tagList]);
 
+  //파일업로드 버튼 예쁘게 커스텀하기 위한 ref
   const imgInput = useRef();
 
   const onClickImgInput = () => {
     imgInput.current.click();
   };
-
+  //이미지 파일 리사이징
   const getImgUpload = async (e) => {
-    const result = await imgUpload(e);
+    const [file] = e.target.files;
+    const newFile = await imageCompression(file, {
+      maxSizeMB: 1,
+      maxWidthOrHeight: 1920,
+    });
+    const resizingFile = new File([newFile], file.name, { type: file.type });
+    const result = await imgUpload(resizingFile);
     setImageURL(result.data.data.imageUrl);
+    localStorage.setItem("titleIMG", result.data.data.imageUrl);
   };
 
   return (
@@ -104,14 +113,16 @@ const WriteTitle = ({
         type="file"
         accept="image/*"
         multiple="multiple"
-        onChange={getImgUpload}
+        onChange={(e) => getImgUpload(e)}
         ref={imgInput}
       />
       {/* <button onClick={onClickImgInput}>대표이미지를 업로드 해주세요 !</button> */}
     </WriteTitleContainer>
   );
 };
+
 export default WriteTitle;
+
 const WriteTitleContainer = styled.div`
   background-color: white;
   margin: auto auto;
@@ -154,6 +165,7 @@ const TagBox = styled.div`
   border-radius: 10px;
   grid-column-start: 2;
   grid-row-start: 3;
+  overflow: auto;
   &:focus-within {
     border-color: var(--color-light-blue);
   }
@@ -207,9 +219,9 @@ const TimeSelect = styled.select`
 const PreviewImg = styled.img`
   /* background-color: blue; */
   width: 60vw;
-  height 20vh;
-  border:0;
-  border-radius:10px;
+  height: 20vh;
+  border: 0;
+  border-radius: 10px;
   margin: 0rem 1rem 0rem 1rem;
   grid-column-start: 2;
   grid-row-start: 5;
