@@ -31,9 +31,7 @@ function Detail({
   const [isEditMode, setIsEditMode] = useState(false);
 
   const foodIngredientList = postDetail?.ingredient
-    .map((ingredient) =>
-      !ingredient.isName ? ingredient.ingredientName : undefined
-    )
+    .map((ingredient) => (!ingredient.isName ? ingredient.ingredientName : undefined))
     .filter((ingredient) => ingredient !== undefined);
 
   const [foodName, setFoodName] = useState();
@@ -143,7 +141,7 @@ function Detail({
           />
         )}
       </Content>
-      {toast && <Toast setToast={setToast} />}
+      {toast && <Toast setToast={setToast} text="🖇 클립보드에 복사되었습니다." />}
       <Footer>
         <FootLeft>
           <Icon onClick={copyUrl} src={"/copy.png"} alt="공유하기" />

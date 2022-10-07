@@ -34,26 +34,18 @@ const FollowPage = () => {
     }
   };
 
-  const { data: followList } = useQuery(
-    ["follow", id ? id : "0"],
-    fetchFollow,
-    {
-      enabled: !click, // 팔로우 진입시에만 받아옴
-      cacheTime: 30 * 60 * 1000, // 캐시 30분 유지
-      staleTime: Infinity, // 항상 신선한 데이터로 취급
-      select: (data) => data.data.data, // 요청 성공시 데이터 가공
-    }
-  );
-  const { data: followerList } = useQuery(
-    ["follower", id ? id : "0"],
-    fetchFollower,
-    {
-      enabled: !!click, // 팔로워 진입시에만 받아옴
-      cacheTime: 30 * 60 * 1000, // 캐시 30분 유지
-      staleTime: Infinity, // 항상 신선한 데이터로 취급
-      select: (data) => data.data.data, // 요청 성공시 데이터 가공
-    }
-  );
+  const { data: followList } = useQuery(["follow", id ? id : "0"], fetchFollow, {
+    enabled: !click, // 팔로우 진입시에만 받아옴
+    cacheTime: 30 * 60 * 1000, // 캐시 30분 유지
+    staleTime: Infinity, // 항상 신선한 데이터로 취급
+    select: (data) => data.data.data, // 요청 성공시 데이터 가공
+  });
+  const { data: followerList } = useQuery(["follower", id ? id : "0"], fetchFollower, {
+    enabled: !!click, // 팔로워 진입시에만 받아옴
+    cacheTime: 30 * 60 * 1000, // 캐시 30분 유지
+    staleTime: Infinity, // 항상 신선한 데이터로 취급
+    select: (data) => data.data.data, // 요청 성공시 데이터 가공
+  });
 
   // 팔로우 버튼을 눌렀다면
   const followBtn = () => {
@@ -102,17 +94,11 @@ const FollowPage = () => {
         followerView={followerView}
         nickname={nickname}
       />
-      <div style={{ marginBottom: "60px", height: "auto" }}>
+      <div style={{ height: "auto" }}>
         {followView && <FollowList followList={followList} mutate={mutate} />}
       </div>
       <div style={{ marginBottom: "60px", height: "auto" }}>
-        {followerView && (
-          <FollowerList
-            followerList={followerList}
-            mutate={mutate}
-            style={{ marginBottom: "60px" }}
-          />
-        )}
+        {followerView && <FollowerList followerList={followerList} mutate={mutate} />}
       </div>
     </LayoutPage>
   );
