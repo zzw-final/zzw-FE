@@ -1,10 +1,15 @@
 import React from "react";
+import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
 
 function ChatLayout({ publish, msg, msgHandler, setMsg, children }) {
+  const navigate = useNavigate();
+
   const pub = () => {
-    publish(msg);
-    setMsg("");
+    if (msg !== "") {
+      publish(msg);
+      setMsg("");
+    }
   };
 
   const onEnterPress = (e) => {
@@ -17,7 +22,7 @@ function ChatLayout({ publish, msg, msgHandler, setMsg, children }) {
   return (
     <Container>
       <Header>
-        <p>↩︎</p>
+        <p onClick={() => navigate("/chatlist")}>↩︎</p>
         <div>
           냉털초보<span>사이트의 개발자</span>
         </div>
@@ -63,14 +68,13 @@ const Header = styled.div`
 `;
 
 const Label = styled.label`
-  position: relative;
   display: flex;
   width: 100%;
   position: fixed;
   bottom: 0;
-  margin: 5px 0 10px 9px;
 
   input {
+    margin: 10px auto 10px auto;
     outline: none;
     width: 95%;
     height: 2rem;
@@ -84,7 +88,7 @@ const Label = styled.label`
     position: absolute;
     font-size: var(--font-regular);
     color: var(--color-dark-orange);
-    top: 6px;
-    right: 27px;
+    top: 16px;
+    right: 25px;
   }
 `;
