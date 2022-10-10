@@ -16,7 +16,7 @@ function Chat() {
     client.current = new StompJs.Client({
       brokerURL: `wss://${process.env.REACT_APP_CHAT_API}/zzw`,
       connectHeaders: {
-        Authorization: getCookie("accessToken"),
+        Authorization: getCookie("accessToken").split(" ")[1],
         oauth: getCookie("loginOauth"),
       },
       debug: function (str) {
