@@ -7,6 +7,7 @@ import Like from "./Like";
 import { useState } from "react";
 import { dateFormat } from "../../util/dateFormat";
 import { useEffect } from "react";
+import imageCompression from "browser-image-compression";
 
 const SwiperRecipeItemFirstPage = ({
   postDetail,
@@ -66,6 +67,16 @@ const SwiperRecipeItemFirstPage = ({
     editForm("imageUrl", imgFoodUrlEdited);
   }, [imgFoodUrlEdited]);
 
+  const getImgUpload = async (e) => {
+    const [file] = e.target.files;
+    const newFile = await imageCompression(file, {
+      maxSizeMB: 1,
+      maxWidthOrHeight: 1920,
+    });
+    const resizingFile = new File([newFile], file.name, { type: file.type });
+    const result = await imgUpload(resizingFile);
+    setImgFoodUrlEdited(result.data.data.imageUrl);
+  };
   return (
     <>
       <ItemContainer display={!isEditMode ? "Flex" : "none"}>
@@ -93,7 +104,7 @@ const SwiperRecipeItemFirstPage = ({
       </ItemContainer>
       <ItemContainer display={!isEditMode ? "none" : "Flex"}>
         <ItemImg src={imgFoodUrlEdited} alt="Recipe" />
-        <ItemImgEdit type="file" accept="image/*" onChange={getImgFoodUpload} />
+        <ItemImgEdit type="file" accept="image/*" onChange={getImgUpload} />
         <ItemBox>
           <ItemInfo>
             <Avatar

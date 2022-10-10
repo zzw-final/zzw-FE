@@ -40,6 +40,7 @@ const GlobalStyle = createGlobalStyle`
   --font-medium-large: 23px; 
   --font-medium: 21px; 
   --font-regular: 19px; 
+  --font-semi-small: 17px;
   --font-small: 15px; 
   --font-micro: 13px;
 

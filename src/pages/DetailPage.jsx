@@ -191,19 +191,28 @@ function DetailPage() {
   //     });
   //   }
   // };
-  //이미지 파일 업로드시 url로 변경해주는 post
-  const imgUpload = async (e) => {
+
+  const imgUpload = async (file) => {
     // e.preventDefault();
-    const [file] = e.target.files;
-    const newFile = imageCompression(file, {
-      maxSizeMB: 1,
-      maxWidthOrHeight: 1920,
-    });
-    const resizingFile = new File([newFile], file.name, { type: file.type });
-    return await imgInstance.post("/api/post/image", resizingFile, {
+    const formdata = new FormData();
+    formdata.append("file", file);
+    return await imgInstance.post("/api/post/image", formdata, {
       headers: { "Content-Type": "multipart/form-data" },
     });
   };
+
+  //이미지 파일 업로드시 url로 변경해주는 post
+  // const imgUpload = async (e) => {
+  //   const [file] = e.target.files;
+  //   const newFile = imageCompression(file, {
+  //     maxSizeMB: 1,
+  //     maxWidthOrHeight: 1920,
+  //   });
+  //   const resizingFile = new File([newFile], file.name, { type: file.type });
+  //   return await imgInstance.post("/api/post/image", resizingFile, {
+  //     headers: { "Content-Type": "multipart/form-data" },
+  //   });
+  // };
 
   return (
     <LayoutPage background={"#fbd499"}>

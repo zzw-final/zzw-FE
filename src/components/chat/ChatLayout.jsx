@@ -62,8 +62,9 @@ const Label = styled.label`
     outline: none;
     width: 95%;
     height: 2rem;
-    padding: 1rem;
+    padding: 0.7rem;
     border: 1px solid var(--color-light-orange);
+    font-size: var(--font-semi-small);
     border-radius: 15px;
     background-color: var(--color-white-orange);
   }
