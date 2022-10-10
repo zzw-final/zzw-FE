@@ -1,33 +1,34 @@
-import { useEffect, useRef, useState, useCallback } from "react";
+import { useEffect, useRef, useState } from "react";
 import * as StompJs from "@stomp/stompjs";
 import { getCookie } from "../../util/cookie";
+import useInput from "../../hooks/useInput";
 
 function Chat() {
+  const client = useRef({});
+  const [msg, msgHandler] = useInput();
+
   useEffect(() => {
     connect();
     return () => disconnect();
   }, []);
 
-  const client = useRef({});
-
   const connect = () => {
     client.current = new StompJs.Client({
-      brokerURL: `wss://${process.env.REACT_APP_CHAT_API}/stomp/chat`,
+      brokerURL: `wss://${process.env.REACT_APP_CHAT_API}/zzw`,
       connectHeaders: {
-        Authorization: getCookie("accessToken"),
+        Authorization: getCookie("accessToken").split(" ")[1],
         oauth: getCookie("loginOauth"),
       },
       debug: function (str) {
         console.log(str);
       },
-      reconnectDelay: 600000,
-      heartbeatIncoming: 4000,
-      heartbeatOutgoing: 4000,
-      onConnect: () => {
-        console.log("성공했다쉬먀");
+      reconnectDelay: 50000,
+      onConnect: (res) => {
+        console.log("onConnect ->", res);
+        subscribe();
       },
       onStompError: (frame) => {
-        console.log("에러쉬먀", frame);
+        console.log("onStompError ->", frame);
       },
     });
     client.current.activate();
@@ -38,58 +39,33 @@ function Chat() {
   };
 
   const subscribe = () => {
-    client.current.subscribe(`주소`, ({ body }) => {});
+    client.current.subscribe(`/sub/chat/room/1`, (res) => {
+      console.log("sub body ->", res.body);
+    });
+  };
+
+  const publish = (msg) => {
+    console.log("메시지 ->", msg);
+    client.current.publish({
+      destination: "/pub/chat/message",
+      body: JSON.stringify({ roomId: 1, message: msg }),
+      headers: {
+        Authorization: getCookie("accessToken").split(" ")[1],
+        oauth: getCookie("loginOauth"),
+      },
+    });
   };
 
   const unSubscribe = () => {
     client.current.unsubscribe();
   };
 
-  return <div>Chat</div>;
+  return (
+    <>
+      <input onChange={msgHandler}></input>
+      <button onClick={() => publish(msg)}>Publish</button>
+    </>
+  );
 }
 
 export default Chat;
-
-//   const subscribe = () => {
-//     client.current.subscribe(`/sub/chat/${ROOM_SEQ}`, ({ body }) => {
-//       setChatMessages((_chatMessages) => [..._chatMessages, JSON.parse(body)]);
-//     });
-//   };
-
-//   const publish = (message) => {
-//     if (!client.current.connected) {
-//       return;
-//     }
-
-//     client.current.publish({
-//       destination: "/pub/chat",
-//       body: JSON.stringify({ roomSeq: ROOM_SEQ, message }),
-//     });
-
-//     setMessage("");
-//   };
-
-//   return (
-//     <div>
-//       {chatMessages && chatMessages.length > 0 && (
-//         <ul>
-//           {chatMessages.map((_chatMessage, index) => (
-//             <li key={index}>{_chatMessage.message}</li>
-//           ))}
-//         </ul>
-//       )}
-//       <div>
-//         <input
-//           type={"text"}
-//           placeholder={"message"}
-//           value={message}
-//           onChange={(e) => setMessage(e.target.value)}
-//           onKeyPress={(e) => e.which === 13 && publish(message)}
-//         />
-//         <button onClick={() => publish(message)}>send</button>
-//       </div>
-//     </div>
-//   );
-// };
-
-// export default App;

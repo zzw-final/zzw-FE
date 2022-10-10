@@ -6,7 +6,7 @@ import { instance } from "../../api/request";
 import { useMutation, useQueryClient } from "react-query";
 import { getCookie } from "../../util/cookie";
 
-function Profile({ userData }) {
+function Profile({ userData, DmRequestHandler }) {
   const navigate = useNavigate();
   const { id } = useParams();
   const { follow, follower, grade, gradeList, nickname, profile, isFollow } = userData;
@@ -90,9 +90,14 @@ function Profile({ userData }) {
           프로필 편집
         </Button>
       ) : (
-        <Button onClick={mutate} name="ProfileBtn" isFollow={greyButton}>
-          {greyButton ? "팔로잉" : "팔로우"}
-        </Button>
+        <Dm>
+          <Button onClick={mutate} name="ProfileBtn" isFollow={greyButton}>
+            {greyButton ? "팔로잉" : "팔로우"}
+          </Button>
+          <Button name="DmBtn" onClick={DmRequestHandler}>
+            DM
+          </Button>
+        </Dm>
       )}
     </Container>
   );
@@ -124,6 +129,11 @@ const Img = styled.img`
   height: 7rem;
   border-radius: 50%;
   background-color: var(--color-orange);
+`;
+
+const Dm = styled.div`
+  display: flex;
+  width: 100%;
 `;
 
 const NicknameBox = styled.div`

@@ -1,7 +1,7 @@
 import React from "react";
 import styled from "styled-components";
 
-function ChatLayout({ children }) {
+function ChatLayout({ publish, msg, msgHandler, children }) {
   return (
     <Container>
       <Header>
@@ -12,8 +12,8 @@ function ChatLayout({ children }) {
       </Header>
       {children}
       <Label>
-        <input />
-        <div>전송</div>
+        <input onChange={msgHandler} />
+        <div onClick={() => publish(msg)}>전송</div>
       </Label>
     </Container>
   );
