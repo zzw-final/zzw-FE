@@ -32,19 +32,19 @@ function WritePage() {
   const onSubmitHandler = async (e) => {
     e.preventDefault();
     if (title === "") {
-      return alert("제목을 입력해주세요");
+      return alert("제목을 입력해주세요❗️");
     }
     if (foodname === "") {
-      return alert("요리이름을 입력해주세요");
+      return alert("요리이름을 입력해주세요❗️");
     }
     if (
       imageURL ===
       "https://user-images.githubusercontent.com/110365677/194796076-31cf60cc-2ff0-4145-a538-f155f0793537.png"
     ) {
-      return alert("필수이미지를 추가해주세요");
+      return alert("필수이미지를 추가해주세요❗️");
     }
     if (ingredient === "") {
-      return alert("재료 태그를 추가해주세요");
+      return alert("재료 태그를 추가해주세요❗️");
     }
     try {
       const data = {
