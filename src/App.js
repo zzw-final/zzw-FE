@@ -17,6 +17,7 @@ import KakaoRedirect from "./components/login/kakao/KakaoRedirect";
 import GoogleRedirect from "./components/login/google/GoogleRedirect";
 import SearchPage from "./pages/SearchPage";
 import NaverRedirect from "./components/login/naver/NaverRedirect";
+import { getCookie } from "./util/cookie";
 
 const Desktop = ({ children }) => {
   const isDesktop = useMediaQuery({ minWidth: 768 });
@@ -29,6 +30,7 @@ const Mobile = ({ children }) => {
 };
 
 const queryClient = new QueryClient();
+const isLogin = getCookie("loginUserId") ? true : false;
 
 function App() {
   return (
@@ -40,9 +42,17 @@ function App() {
             <Route path="/" element={<MainPage />} />
             <Route path="/login" element={<LoginPage />} />
             <Route path="/Join" element={<JoinPage />} />
-            <Route path="/mypage" element={<MyPage />} />
+            {isLogin ? (
+              <Route path="/mypage" element={<MyPage />} />
+            ) : (
+              <Route path="/mypage" element={<LoginPage />} />
+            )}
             <Route path="/mypage/:id" element={<UserPage />} />
-            <Route path="/write" element={<WritePage />} />
+            {isLogin ? (
+              <Route path="/write" element={<WritePage />} />
+            ) : (
+              <Route path="/write" element={<LoginPage />} />
+            )}
             <Route path="/detail/:id" element={<DetailPage />} />
             <Route path="/follow" element={<FollowPage />} />
             <Route path="/follow/:id" element={<FollowPage />} />
@@ -50,7 +60,7 @@ function App() {
             <Route path="/authgoogle" element={<GoogleRedirect />} />
             <Route path="/authnaver" element={<NaverRedirect />} />
             <Route path="/search" element={<SearchPage />} />
-            <Route path="/chat" element={<ChatPage />} />
+            <Route path="/chat/:roomId" element={<ChatPage />} />
             <Route path="*" element={<div>페이지를 찾을 수 없습니다.</div>} />
           </Routes>
         </Mobile>

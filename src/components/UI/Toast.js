@@ -1,7 +1,9 @@
 import { useEffect } from "react";
 import styled from "styled-components";
 
-function Toast({ setToast, text }) {
+
+function Toast({ setToast, text, ...props }) {
+
   useEffect(() => {
     const timer = setTimeout(() => {
       setToast(false);
@@ -12,7 +14,7 @@ function Toast({ setToast, text }) {
   }, [setToast]);
 
   return (
-    <Box>
+    <Box {...props}>
       <p>{text}</p>
     </Box>
   );
@@ -21,7 +23,10 @@ function Toast({ setToast, text }) {
 export default Toast;
 
 const Box = styled.div`
-  margin: -2rem 0px 0px 1.5rem;
+  margin: ${({ margin }) => margin || "-1.2rem 0px 0px 1.5rem"};
+  top: ${({ top }) => top};
+  left: ${({ left }) => left};
+  position: ${({ position }) => position || "fixed"};
   padding: 0.8rem 1.2rem;
   background-color: white;
   opacity: 90%;
@@ -30,6 +35,5 @@ const Box = styled.div`
   color: black;
   text-align: center;
   font-weight: var(--weight-semi-bold);
-  position: fixed;
   z-index: 1;
 `;

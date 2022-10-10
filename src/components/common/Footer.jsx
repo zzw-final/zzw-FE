@@ -75,6 +75,21 @@ const Footer = ({ topTenTagList, tagAllList }) => {
     else setSearchHelpText(false);
   }, [searchTagList]);
 
+  useEffect(() => {
+    if (toggleTagList) {
+      document.body.style.cssText = `
+        position: fixed;
+        top: -${window.scrollY}px;
+        overflow-y: scroll;
+        width: 100%;`;
+      return () => {
+        const scrollY = document.body.style.top;
+        document.body.style.cssText = "";
+        window.scrollTo(0, parseInt(scrollY || "0", 10) * -1);
+      };
+    }
+  }, [toggleTagList]);
+
   return (
     <>
       <FooterContainer>
@@ -155,7 +170,7 @@ const Footer = ({ topTenTagList, tagAllList }) => {
             ))}
         </TagBox>
         <TagTitle>아래 태그도 검색해보세요</TagTitle>
-        <TagBox>
+        <TagBoxAll>
           {tagAllList &&
             tagAllList?.map((tag, idx) => (
               <Tag
@@ -167,7 +182,7 @@ const Footer = ({ topTenTagList, tagAllList }) => {
                 }}
               />
             ))}
-        </TagBox>
+        </TagBoxAll>
       </TagList>
     </>
   );
@@ -235,8 +250,9 @@ const SearchHelpText = styled.p`
 const TagList = styled.div`
   background-color: rgba(23, 23, 23, 0.888);
   width: 100%;
-  height: 94%;
+  height: 94vh;
   margin: 0;
+  margin-bottom: 4rem;
   padding: 1rem 2rem 2rem 2rem;
   transition: all 600ms cubic-bezier(0.86, 0, 0.07, 1);
   top: ${({ top }) => (top ? "0%" : "100%")};
@@ -244,6 +260,7 @@ const TagList = styled.div`
   left: 0;
   text-align: center;
   z-index: 1;
+  overflow: scroll;
 `;
 
 const TagTitle = styled.div`
@@ -254,6 +271,11 @@ const TagTitle = styled.div`
 `;
 
 const TagBox = styled.div`
+  display: flex;
+  flex-wrap: wrap;
+`;
+
+const TagBoxAll = styled.div`
   display: flex;
   flex-wrap: wrap;
 `;

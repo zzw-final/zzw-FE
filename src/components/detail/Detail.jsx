@@ -1,13 +1,12 @@
 import { useState, useEffect } from "react";
 import styled from "styled-components";
-import { useNavigate } from "react-router-dom";
 import Tag from "../common/Tag";
 import CommentList from "../comment/CommentList";
 import { getCookie } from "../../util/cookie";
 import Toast from "../UI/Toast";
 import SwiperRecipe from "../common/SwiperRecipe";
-import { useRef } from "react";
 import TagList from "../common/TagList";
+import { useNavigate } from "react-router-dom";
 
 function Detail({
   postDetail,
@@ -29,6 +28,7 @@ function Detail({
   const url = window.location.href;
   const [toast, setToast] = useState(false);
   const [isEditMode, setIsEditMode] = useState(false);
+  const navigate = useNavigate();
 
   const foodIngredientList = postDetail?.ingredient
     .map((ingredient) =>
@@ -64,6 +64,11 @@ function Detail({
 
   const onCancle = () => {
     setIsEditMode(!isEditMode);
+  };
+
+  const tagSearch = (tagName) => {
+    console.log("gg?");
+    navigate(`/search?tag=${tagName}`);
   };
 
   return (
@@ -117,7 +122,14 @@ function Detail({
       {!isEditMode ? (
         <Tags>
           {foodIngredientList?.map((ingredient, i) => (
-            <Tag height="20px" tagName={ingredient} key={i} />
+            <Tag
+              height="20px"
+              tagName={ingredient}
+              key={i}
+              onClickHandler={() => {
+                tagSearch(ingredient);
+              }}
+            />
           ))}
         </Tags>
       ) : (
@@ -143,9 +155,11 @@ function Detail({
           />
         )}
       </Content>
+
       {toast && (
         <Toast setToast={setToast} text="🖇 클립보드에 복사되었습니다." />
       )}
+
       <Footer>
         <FootLeft>
           <Icon onClick={copyUrl} src={"/copy.png"} alt="공유하기" />
