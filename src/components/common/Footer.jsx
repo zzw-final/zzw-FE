@@ -53,9 +53,7 @@ const Footer = ({ topTenTagList, tagAllList }) => {
   };
 
   const onClickTagHandler = () => {
-    navigate(`/search?tag=${searchTagList.toString()}`, {
-      state: { from: "tagSearch" },
-    });
+    navigate(`/search?tag=${searchTagList.toString()}`);
     setToggleTagList(!toggleTagList);
   };
 

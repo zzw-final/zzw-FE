@@ -18,13 +18,6 @@ const SearchPage = () => {
   const searchedNickname = searchParams.get("nickname");
   const [toast, setToast] = useState(false);
 
-  // const location = useLocation();
-
-  // if (location?.state) {
-  //   console.log("location?.state.from :>> ", location.state.from);
-  //   navigate(`/search?`);
-  // }
-
   const search = async (searchOption, sendData) => {
     navigate(`/search?${searchOption}=${sendData}`);
     const requestUrl = `/api/post/filter/${searchOption}?${searchOption}=${sendData}`;
