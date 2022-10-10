@@ -31,7 +31,9 @@ const WriteTitle = ({
 
   const onKeyPress = (e) => {
     if (e.target.value !== "" && e.key === "Enter") {
-      submitTag();
+      if (tagList.length < 11) {
+        submitTag();
+      }
     }
   };
 

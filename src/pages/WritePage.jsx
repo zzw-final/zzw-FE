@@ -15,7 +15,9 @@ function WritePage() {
   const [foodname, setFoodName] = useState("");
   const [ingredient, setIngredient] = useState([]);
   const [time, setTime] = useState("5분");
-  const [imageURL, setImageURL] = useState("");
+  const [imageURL, setImageURL] = useState(
+    "https://user-images.githubusercontent.com/110365677/194796076-31cf60cc-2ff0-4145-a538-f155f0793537.png"
+  );
   const navigate = useNavigate();
 
   // WriteAddCard에서 값을 받을 state
@@ -29,6 +31,21 @@ function WritePage() {
   //받은값 전부를 post
   const onSubmitHandler = async (e) => {
     e.preventDefault();
+    if (title === "") {
+      return alert("제목을 입력해주세요❗️");
+    }
+    if (foodname === "") {
+      return alert("요리이름을 입력해주세요❗️");
+    }
+    if (
+      imageURL ===
+      "https://user-images.githubusercontent.com/110365677/194796076-31cf60cc-2ff0-4145-a538-f155f0793537.png"
+    ) {
+      return alert("필수이미지를 추가해주세요❗️");
+    }
+    if (ingredient.length === 0) {
+      return alert("재료 태그를 추가해주세요❗️");
+    }
     try {
       const data = {
         title: title,
@@ -41,11 +58,11 @@ function WritePage() {
       console.log(data);
       await instance.post("/api/auth/post", data);
       alert("게시글 등록이 완료되었습니다!");
-      navigate("/");
+      navigate(-1);
       window.sessionStorage.clear();
       window.localStorage.clear();
     } catch (error) {
-      console.log("에러..", error);
+      alert("작성 폼을 다시 확인해주세요!");
     }
   };
 
