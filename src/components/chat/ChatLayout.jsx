@@ -2,7 +2,7 @@ import React from "react";
 import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
 
-function ChatLayout({ publish, msg, msgHandler, setMsg, children }) {
+function ChatLayout({ publish, msg, msgHandler, setMsg, location, children }) {
   const navigate = useNavigate();
 
   const pub = () => {
@@ -24,7 +24,8 @@ function ChatLayout({ publish, msg, msgHandler, setMsg, children }) {
       <Header>
         <p onClick={() => navigate("/chatlist")}>↩︎</p>
         <div>
-          냉털초보<span>사이트의 개발자</span>
+          {location.nickname}
+          <span>{location.grade}</span>
         </div>
       </Header>
       {children}
