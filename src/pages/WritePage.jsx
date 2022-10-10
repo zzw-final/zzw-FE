@@ -43,7 +43,7 @@ function WritePage() {
     ) {
       return alert("필수이미지를 추가해주세요❗️");
     }
-    if (ingredient === "") {
+    if (ingredient.length === 0) {
       return alert("재료 태그를 추가해주세요❗️");
     }
     try {
