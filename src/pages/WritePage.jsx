@@ -15,7 +15,9 @@ function WritePage() {
   const [foodname, setFoodName] = useState("");
   const [ingredient, setIngredient] = useState([]);
   const [time, setTime] = useState("5분");
-  const [imageURL, setImageURL] = useState("");
+  const [imageURL, setImageURL] = useState(
+    "https://user-images.githubusercontent.com/110365677/194796076-31cf60cc-2ff0-4145-a538-f155f0793537.png"
+  );
   const navigate = useNavigate();
 
   // WriteAddCard에서 값을 받을 state
