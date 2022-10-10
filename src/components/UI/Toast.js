@@ -1,7 +1,9 @@
 import { useEffect } from "react";
 import styled from "styled-components";
 
+
 function Toast({ setToast, text, ...props }) {
+
   useEffect(() => {
     const timer = setTimeout(() => {
       setToast(false);

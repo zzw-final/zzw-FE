@@ -12,7 +12,6 @@ function Profile({ userData }) {
   const { follow, follower, grade, gradeList, nickname, profile, isFollow } = userData;
   const [greyButton, setGreyButton] = useState(isFollow);
   const [followerNum, setFollowerNum] = useState(follower);
-  console.log(getCookie("loginUserId"));
 
   const followHandler = async () => {
     return await instance.post(`/api/auth/mypage/follow/${id}`);
