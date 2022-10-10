@@ -6,6 +6,7 @@ import { getCookie } from "../../util/cookie";
 import Toast from "../UI/Toast";
 import SwiperRecipe from "../common/SwiperRecipe";
 import TagList from "../common/TagList";
+import { useNavigate } from "react-router-dom";
 
 function Detail({
   postDetail,
@@ -27,6 +28,7 @@ function Detail({
   const url = window.location.href;
   const [toast, setToast] = useState(false);
   const [isEditMode, setIsEditMode] = useState(false);
+  const navigate = useNavigate();
 
   const foodIngredientList = postDetail?.ingredient
     .map((ingredient) =>
@@ -62,6 +64,11 @@ function Detail({
 
   const onCancle = () => {
     setIsEditMode(!isEditMode);
+  };
+
+  const tagSearch = (tagName) => {
+    console.log("gg?");
+    navigate(`/search?tag=${tagName}`);
   };
 
   return (
@@ -115,7 +122,14 @@ function Detail({
       {!isEditMode ? (
         <Tags>
           {foodIngredientList?.map((ingredient, i) => (
-            <Tag height="20px" tagName={ingredient} key={i} />
+            <Tag
+              height="20px"
+              tagName={ingredient}
+              key={i}
+              onClickHandler={() => {
+                tagSearch(ingredient);
+              }}
+            />
           ))}
         </Tags>
       ) : (
