@@ -4,11 +4,20 @@ import { getCookie } from "../util/cookie";
 import useInput from "../hooks/useInput";
 import ChatLayout from "../components/chat/ChatLayout";
 import { useParams } from "react-router-dom";
+import SendMsg from "../components/chat/SendMsg";
+import GetMsg from "../components/chat/GetMsg";
 
 function ChatPage() {
   const client = useRef({});
   const { roomId } = useParams();
   const [msg, msgHandler] = useInput();
+  const [messages, setMessages] = useState([
+    {
+      message: "",
+      sender: "",
+      sendTime: "",
+    },
+  ]);
 
   useEffect(() => {
     connect();
@@ -42,7 +51,17 @@ function ChatPage() {
 
   const subscribe = () => {
     client.current.subscribe(`/sub/chat/room/${roomId}`, (res) => {
+      const body = JSON.parse(res.body);
       console.log("sub body ->", JSON.parse(res.body));
+      setMessages((msg) => [
+        ...msg,
+        {
+          message: body.message,
+          sender: body.sender,
+          sendTime: body.sendTime,
+          profile: body.profile,
+        },
+      ]);
     });
   };
 
@@ -61,10 +80,25 @@ function ChatPage() {
   const unSubscribe = () => {
     client.current.unsubscribe();
   };
+  const time = messages.map((msg, idx) => messages[idx].sendTime);
+  console.log("보내는시간", time);
+  const time2 = time.sort(
+    (a, b) => new DataTransfer(a.data) - new DataTransfer(b.data)
+  );
+  console.log("time2", time2);
+  const loginNickname = getCookie("loginNickname");
 
   return (
     <ChatLayout msg={msg} publish={publish} msgHandler={msgHandler}>
-      <div>여기에 수진님이 메시지 넣으시면 되는 부분 ~</div>
+      <div style={{ marginBottom: "50px" }}>
+        {messages.map((mag, idx) =>
+          loginNickname === messages[idx].sender ? (
+            <SendMsg messages={messages} mag={mag} idx={idx} />
+          ) : (
+            <GetMsg messages={messages} mag={mag} idx={idx} />
+          )
+        )}
+      </div>
     </ChatLayout>
   );
 }
