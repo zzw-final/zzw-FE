@@ -15,7 +15,6 @@ import {
 } from "./pages";
 import KakaoRedirect from "./components/login/kakao/KakaoRedirect";
 import GoogleRedirect from "./components/login/google/GoogleRedirect";
-import EditPage from "./pages/EditPage";
 import SearchPage from "./pages/SearchPage";
 import NaverRedirect from "./components/login/naver/NaverRedirect";
 
@@ -50,7 +49,6 @@ function App() {
             <Route path="/authkakao" element={<KakaoRedirect />} />
             <Route path="/authgoogle" element={<GoogleRedirect />} />
             <Route path="/authnaver" element={<NaverRedirect />} />
-            <Route path="/editpage/:id" element={<EditPage />} />
             <Route path="/search" element={<SearchPage />} />
             <Route path="/chat" element={<ChatPage />} />
             <Route path="*" element={<div>페이지를 찾을 수 없습니다.</div>} />
