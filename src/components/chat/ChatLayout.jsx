@@ -1,7 +1,19 @@
 import React from "react";
 import styled from "styled-components";
 
-function ChatLayout({ publish, msg, msgHandler, children }) {
+function ChatLayout({ publish, msg, msgHandler, setMsg, children }) {
+  const pub = () => {
+    publish(msg);
+    setMsg("");
+  };
+
+  const onEnterPress = (e) => {
+    if (msg !== "" && e.key === "Enter") {
+      pub();
+      setMsg("");
+    }
+  };
+
   return (
     <Container>
       <Header>
@@ -12,8 +24,8 @@ function ChatLayout({ publish, msg, msgHandler, children }) {
       </Header>
       {children}
       <Label>
-        <input onChange={msgHandler} />
-        <div onClick={() => publish(msg)}>전송</div>
+        <input value={msg} onKeyPress={onEnterPress} onChange={msgHandler} />
+        <div onClick={pub}>전송</div>
       </Label>
     </Container>
   );
