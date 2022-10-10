@@ -1,12 +1,10 @@
 import { useState, useEffect } from "react";
 import styled from "styled-components";
-import { useNavigate } from "react-router-dom";
 import Tag from "../common/Tag";
 import CommentList from "../comment/CommentList";
 import { getCookie } from "../../util/cookie";
 import Toast from "../UI/Toast";
 import SwiperRecipe from "../common/SwiperRecipe";
-import { useRef } from "react";
 import TagList from "../common/TagList";
 
 function Detail({
@@ -31,9 +29,7 @@ function Detail({
   const [isEditMode, setIsEditMode] = useState(false);
 
   const foodIngredientList = postDetail?.ingredient
-    .map((ingredient) =>
-      !ingredient.isName ? ingredient.ingredientName : undefined
-    )
+    .map((ingredient) => (!ingredient.isName ? ingredient.ingredientName : undefined))
     .filter((ingredient) => ingredient !== undefined);
 
   const [foodName, setFoodName] = useState();
@@ -143,7 +139,9 @@ function Detail({
           />
         )}
       </Content>
-      {toast && <Toast setToast={setToast} />}
+
+      {toast && <Toast setToast={setToast} text="🖇 클립보드에 복사되었습니다." />}
+
       <Footer>
         <FootLeft>
           <Icon onClick={copyUrl} src={"/copy.png"} alt="공유하기" />

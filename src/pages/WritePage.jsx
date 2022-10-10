@@ -19,6 +19,9 @@ function WritePage() {
   const navigate = useNavigate();
 
   // WriteAddCard에서 값을 받을 state
+  // const [formValues, setFomvalues] = useState([
+  //   { imageUrl: "", content: "", page: 0 },
+  // ]);
   const [formValues, setFomvalues] = useState([
     { imageUrl: "", content: "", page: 0 },
   ]);
@@ -39,23 +42,21 @@ function WritePage() {
       await instance.post("/api/auth/post", data);
       alert("게시글 등록이 완료되었습니다!");
       navigate("/");
+      window.sessionStorage.clear();
+      window.localStorage.clear();
     } catch (error) {
       console.log("에러..", error);
     }
   };
 
   //이미지 파일 업로드시 url로 변경해주는 post
-  const imgUpload = async (e) => {
-    e.preventDefault();
-    if (e.target.files) {
-      const file = e.target.files[0];
-      console.log("이미지 파일 받기", file);
-      const formdata = new FormData();
-      formdata.append("file", file);
-      return await imgInstance.post("/api/post/image", formdata, {
-        headers: { "Content-Type": "multipart/form-data" },
-      });
-    }
+  const imgUpload = async (file) => {
+    // e.preventDefault();
+    const formdata = new FormData();
+    formdata.append("file", file);
+    return await imgInstance.post("/api/post/image", formdata, {
+      headers: { "Content-Type": "multipart/form-data" },
+    });
   };
 
   return (

@@ -77,13 +77,11 @@ const FollowPage = () => {
         queryClient.invalidateQueries(["follow", "0"]);
       }
       if (!!click) {
-        queryClient.invalidateQueries(["follower", id]);
+        queryClient.invalidateQueries(["follower", id ? id : "0"]);
         queryClient.invalidateQueries(["follow", "0"]);
       }
     },
   });
-
-  console.log("click", click);
 
   return (
     <LayoutPage>
@@ -94,8 +92,12 @@ const FollowPage = () => {
         followerView={followerView}
         nickname={nickname}
       />
-      {followView && <FollowList followList={followList} mutate={mutate} />}
-      {followerView && <FollowerList followerList={followerList} mutate={mutate} />}
+      <div style={{ height: "auto" }}>
+        {followView && <FollowList followList={followList} mutate={mutate} />}
+      </div>
+      <div style={{ marginBottom: "60px", height: "auto" }}>
+        {followerView && <FollowerList followerList={followerList} mutate={mutate} />}
+      </div>
     </LayoutPage>
   );
 };
