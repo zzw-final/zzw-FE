@@ -48,6 +48,10 @@ const Logo = () => {
     } else return;
   };
 
+  const chatList = () => {
+    navigate("/chatlist");
+  };
+
   return (
     <>
       <LogoContainer>zzw.</LogoContainer>
@@ -55,6 +59,7 @@ const Logo = () => {
         <LoginBox>
           {/* <button onClick={unregister}>회원탈퇴</button> */}
           <LogOutText onClick={logout}>Logout</LogOutText>
+          <LogOutText onClick={chatList}>chatList</LogOutText>
         </LoginBox>
       ) : (
         ""
