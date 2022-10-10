@@ -56,7 +56,7 @@ const Input = styled.input`
   font-size: var(--font-small);
 
   &::-webkit-search-decoration,
-  &::-webkit-search-cancel-button,
+  &::--search-cancel-button,
   &::-webkit-search-results-button,
   &::-webkit-search-results-decoration {
     display: none;

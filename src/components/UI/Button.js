@@ -9,8 +9,7 @@ export default Button;
 
 const MnBtn = styled.button`
   color: ${({ Color }) => Color || "black"};
-  background-color: ${({ backgroundColor }) =>
-    backgroundColor || "transparent"};
+  background-color: ${({ backgroundColor }) => backgroundColor || "transparent"};
   height: 2rem;
 
   ${({ name }) => {
@@ -84,6 +83,20 @@ const MnBtn = styled.button`
               color: white;
               font-weight: var(--weight-bolder);
             `}
+        `;
+
+      case "DmBtn":
+        return css`
+          width: ${({ width }) => width || "23%"};
+          height: ${({ height }) => height || "1.7rem"};
+          margin-left: 5px;
+          background-color: var(--color-real-orange);
+          font-weight: var(--weight-bolder);
+          color: white;
+          border: none;
+          border-radius: 5px;
+          color: var(--color-white);
+          font-size: var(--font-regular);
         `;
 
       case "FollowBtn":

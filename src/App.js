@@ -60,7 +60,7 @@ function App() {
             <Route path="/authgoogle" element={<GoogleRedirect />} />
             <Route path="/authnaver" element={<NaverRedirect />} />
             <Route path="/search" element={<SearchPage />} />
-            <Route path="/chat" element={<ChatPage />} />
+            <Route path="/chat/:roomId" element={<ChatPage />} />
             <Route path="*" element={<div>페이지를 찾을 수 없습니다.</div>} />
           </Routes>
         </Mobile>
