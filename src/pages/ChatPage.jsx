@@ -19,15 +19,14 @@ function ChatPage() {
     client.current = new StompJs.Client({
       brokerURL: `wss://${process.env.REACT_APP_CHAT_API}/zzw`,
       connectHeaders: {
-        Authorization: getCookie("accessToken").split(" ")[1],
+        Authorization: getCookie("accessToken"),
         oauth: getCookie("loginOauth"),
       },
-      debug: function (str) {
-        console.log(str);
-      },
-      reconnectDelay: 50000,
+      // debug: function (str) {
+      //   console.log(str);
+      // },
+      reconnectDelay: 100,
       onConnect: (res) => {
-        console.log("onConnect ->", res);
         subscribe();
       },
       onStompError: (frame) => {
@@ -43,7 +42,7 @@ function ChatPage() {
 
   const subscribe = () => {
     client.current.subscribe(`/sub/chat/room/${roomId}`, (res) => {
-      console.log("sub body ->", res.body);
+      console.log("sub body ->", JSON.parse(res.body));
     });
   };
 
@@ -51,9 +50,9 @@ function ChatPage() {
     console.log("퍼블리시 ->", msg);
     client.current.publish({
       destination: "/pub/chat/message",
-      body: JSON.stringify({ roomId: `${roomId}`, message: msg }),
+      body: JSON.stringify({ roomId: +roomId, message: msg }),
       headers: {
-        Authorization: getCookie("accessToken").split(" ")[1],
+        Authorization: getCookie("accessToken"),
         oauth: getCookie("loginOauth"),
       },
     });
