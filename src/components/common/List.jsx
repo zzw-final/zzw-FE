@@ -1,15 +1,15 @@
 import React from "react";
-import RecipeBest from "../posts/RecipeBest";
 import styled from "styled-components";
 import Skeleton from "@mui/material/Skeleton";
 import Card from "../UI/Card";
+import Recipe from "../posts/Recipe";
 
 const List = ({ list, likeToggle, mutate, ...props }) => {
   return (
     <ListContainer {...props}>
       {list ? (
         list?.map((item) => (
-          <RecipeBest
+          <Recipe
             post={item}
             key={item.postId}
             likeToggle={likeToggle}

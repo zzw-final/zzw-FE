@@ -4,9 +4,9 @@ import Tag from "../common/Tag";
 import CommentList from "../comment/CommentList";
 import { getCookie } from "../../util/cookie";
 import Toast from "../UI/Toast";
-import SwiperRecipe from "../common/SwiperRecipe";
-import TagList from "../common/TagList";
 import { useNavigate } from "react-router-dom";
+import TagList from "./TagList";
+import SwiperRecipe from "./SwiperRecipe";
 
 function Detail({
   postDetail,
