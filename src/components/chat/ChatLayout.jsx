@@ -6,14 +6,14 @@ function ChatLayout({ publish, msg, msgHandler, setMsg, location, children }) {
   const navigate = useNavigate();
 
   const pub = () => {
-    if (msg !== "") {
+    if (msg.trim() !== "") {
       publish(msg);
       setMsg("");
     }
   };
 
   const onEnterPress = (e) => {
-    if (msg !== "" && e.key === "Enter") {
+    if (msg.trim() !== "" && e.key === "Enter") {
       pub();
       setMsg("");
     }
@@ -29,8 +29,9 @@ function ChatLayout({ publish, msg, msgHandler, setMsg, location, children }) {
         </div>
       </Header>
       {children}
-      <Label>
-        <input value={msg} onKeyPress={onEnterPress} onChange={msgHandler} />
+
+      <Label  style={{ position: "fixed" }}>
+        <textarea value={msg} onKeyPress={onEnterPress} onChange={msgHandler} />
         <div onClick={pub}>전송</div>
       </Label>
     </Container>
@@ -50,8 +51,9 @@ const Header = styled.div`
   display: flex;
   border-bottom: 1px solid var(--color-light-orange);
   align-items: center;
-  margin: 0 auto 10px auto;
-
+  margin: auto auto 10px 10px;
+  background-color: white;
+  position: fixed;
   p {
     font-size: var(--font-regular);
     font-weight: var(--weight-semi-bold);
@@ -69,21 +71,26 @@ const Header = styled.div`
 `;
 
 const Label = styled.label`
+  /* position: relative; */
+
   display: flex;
   width: 100%;
   position: fixed;
   bottom: 0;
 
-  input {
+  textarea {
     margin: 10px auto 10px auto;
-    outline: none;
     width: 95%;
     height: 2rem;
-    padding: 0.7rem;
+    padding: 0.4rem 3.5rem 0.4rem 1rem;
     border: 1px solid var(--color-light-orange);
     font-size: var(--font-semi-small);
     border-radius: 15px;
     background-color: var(--color-white-orange);
+    outline: none;
+    resize: none;
+    overflow: hidden;
+    caret-color: var(--color-orange);
   }
   div {
     position: absolute;
