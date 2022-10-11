@@ -18,6 +18,7 @@ import GoogleRedirect from "./components/login/google/GoogleRedirect";
 import SearchPage from "./pages/SearchPage";
 import NaverRedirect from "./components/login/naver/NaverRedirect";
 import { getCookie } from "./util/cookie";
+import ChatListPage from "./pages/ChatListPage";
 
 const Desktop = ({ children }) => {
   const isDesktop = useMediaQuery({ minWidth: 768 });
@@ -61,6 +62,7 @@ function App() {
             <Route path="/authnaver" element={<NaverRedirect />} />
             <Route path="/search" element={<SearchPage />} />
             <Route path="/chat/:roomId" element={<ChatPage />} />
+            <Route path="/chatlist" element={<ChatListPage />} />
             <Route path="*" element={<div>페이지를 찾을 수 없습니다.</div>} />
           </Routes>
         </Mobile>

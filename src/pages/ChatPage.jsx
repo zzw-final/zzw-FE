@@ -8,6 +8,7 @@ import SendMsg from "../components/chat/SendMsg";
 import GetMsg from "../components/chat/GetMsg";
 import { instance } from "../api/request";
 
+
 function ChatPage() {
   const client = useRef({});
   const { roomId } = useParams();
@@ -35,15 +36,9 @@ function ChatPage() {
         Authorization: getCookie("accessToken"),
         oauth: getCookie("loginOauth"),
       },
-      // debug: function (str) {
-      //   console.log(str);
-      // },
       reconnectDelay: 100,
-      onConnect: (res) => {
+      onConnect: () => {
         subscribe();
-      },
-      onStompError: (frame) => {
-        console.log("onStompError ->", frame);
       },
     });
     client.current.activate();
@@ -71,19 +66,21 @@ function ChatPage() {
 
   const publish = (msg) => {
     console.log("퍼블리시 ->", msg);
-    client.current.publish({
-      destination: "/pub/chat/message",
-      body: JSON.stringify({ roomId: +roomId, message: msg }),
-      headers: {
-        Authorization: getCookie("accessToken"),
-        oauth: getCookie("loginOauth"),
-      },
-    });
+    if (msg !== "") {
+      client.current.publish({
+        destination: "/pub/chat/message",
+        body: JSON.stringify({ roomId: +roomId, message: msg }),
+        headers: {
+          Authorization: getCookie("accessToken"),
+          oauth: getCookie("loginOauth"),
+        },
+      });
+    }
   };
 
-  const unSubscribe = () => {
-    client.current.unsubscribe();
-  };
+  // const unSubscribe = () => {
+  //   client.current.unsubscribe();
+  // };
 
   //보내는사람 받는사람->닉네임으로 비교
   const loginNickname = getCookie("loginNickname");
@@ -107,6 +104,7 @@ function ChatPage() {
   };
 
   return (
+
     <ChatLayout msg={msg} publish={publish} msgHandler={msgHandler}>
       <div style={{ margin: "50px 0px 50px 10px", width: "100%" }}>
         {messages.map((mag, idx) =>
@@ -127,6 +125,7 @@ function ChatPage() {
           )
         )}
       </div>
+
     </ChatLayout>
   );
 }

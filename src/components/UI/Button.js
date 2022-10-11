@@ -9,7 +9,8 @@ export default Button;
 
 const MnBtn = styled.button`
   color: ${({ Color }) => Color || "black"};
-  background-color: ${({ backgroundColor }) => backgroundColor || "transparent"};
+  background-color: ${({ backgroundColor }) =>
+    backgroundColor || "transparent"};
   height: 2rem;
 
   ${({ name }) => {

@@ -37,7 +37,9 @@ function UserPage() {
   const DmRequest = async () => {
     const res = await instance.get(`/api/mypage/${id}/chat`);
     if (res.data.data) {
-      navigate(`/chat/${res.data.data.roomId}`);
+      navigate(`/chat/${res.data.data.roomId}`, {
+        state: { nickname: anotherUserData.nickname, grade: anotherUserData.grade },
+      });
     }
   };
 
