@@ -1,13 +1,15 @@
 import React from "react";
 import styled from "styled-components";
+import { dateFormat } from "../../util/dateFormat";
 
-function sendMsg({ messages, msg, idx }) {
-  console.log("메세지", messages);
+function sendMsg({ messages, msg, idx, scrollRef }) {
+  const date = dateFormat(messages[idx].sendTime);
+
   return (
     <div>
       <SendChatDiv key={idx}>
-        <MsgDiv>
-          <DateDiv>{messages[idx].sendTime}</DateDiv>
+        <MsgDiv ref={scrollRef}>
+          <DateDiv>{date}</DateDiv>
           <Content>{messages[idx].message}</Content>
         </MsgDiv>
       </SendChatDiv>
@@ -32,7 +34,7 @@ const MsgDiv = styled.div`
 const DateDiv = styled.p`
   font-size: var(--font-micro);
   width: auto;
-  margin: auto 5px 5px auto;
+  margin: auto 1px 10px auto;
   color: var(--color-grey);
 `;
 

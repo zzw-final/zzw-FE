@@ -1,14 +1,16 @@
 import React from "react";
 import styled from "styled-components";
+import { dateFormat } from "../../util/dateFormat";
 
-function GetMsg({ messages, msg, idx }) {
+function GetMsg({ messages, msg, idx, scrollRef }) {
+  const date = dateFormat(messages[idx].sendTime);
   return (
     <div>
       <GetMsgDiv key={idx}>
-        <MsgDiv>
+        <MsgDiv ref={scrollRef}>
           <ProFileimg alt="profile" src={messages[idx].profile} />
           <Content>{messages[idx].message}</Content>
-          <DateDiv>{messages[idx].sendTime}</DateDiv>
+          <DateDiv>{date}</DateDiv>
         </MsgDiv>
       </GetMsgDiv>
     </div>
@@ -49,6 +51,6 @@ const Content = styled.div`
 const DateDiv = styled.p`
   font-size: var(--font-micro);
   width: auto;
-  margin: auto auto 5px 5px;
+  margin: auto auto 10px 1px;
   color: var(--color-grey);
 `;
