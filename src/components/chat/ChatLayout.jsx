@@ -16,7 +16,6 @@ function ChatLayout({ publish, msg, msgHandler, setMsg, location, children }) {
     if (msg.trim() !== "" && e.key === "Enter") {
       pub();
       setMsg("");
-      return false;
     }
   };
 
