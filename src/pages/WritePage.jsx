@@ -8,6 +8,7 @@ import WriteAddCard from "../components/write/WriteAddCard";
 import WriteCard from "../components/write/WriteCard";
 import WriteHeader from "../components/write/WriteHeader";
 import WriteTitle from "../components/write/WriteTitle";
+import { getCookie } from "../util/cookie";
 
 function WritePage() {
   //WriteTitle에서 값을 받을 State
@@ -19,14 +20,19 @@ function WritePage() {
     "https://user-images.githubusercontent.com/110365677/194796076-31cf60cc-2ff0-4145-a538-f155f0793537.png"
   );
   const navigate = useNavigate();
+  const isLogin = getCookie("loginUserId") ? true : false;
+
+  useEffect(() => {
+    if (!isLogin) {
+      navigate("/login");
+    }
+  }, []);
 
   // WriteAddCard에서 값을 받을 state
   // const [formValues, setFomvalues] = useState([
   //   { imageUrl: "", content: "", page: 0 },
   // ]);
-  const [formValues, setFomvalues] = useState([
-    { imageUrl: "", content: "", page: 0 },
-  ]);
+  const [formValues, setFomvalues] = useState([{ imageUrl: "", content: "", page: 0 }]);
 
   //받은값 전부를 post
   const onSubmitHandler = async (e) => {
@@ -78,10 +84,7 @@ function WritePage() {
 
   return (
     <LayoutPage background={"#fbd499"}>
-      <WriteHeader
-        styled={{ position: "fixed" }}
-        onSubmitHandler={onSubmitHandler}
-      />
+      <WriteHeader styled={{ position: "fixed" }} onSubmitHandler={onSubmitHandler} />
       <WriteTitle
         setTitle={setTitle}
         setFoodName={setFoodName}

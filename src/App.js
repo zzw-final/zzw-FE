@@ -31,7 +31,6 @@ const Mobile = ({ children }) => {
 };
 
 const queryClient = new QueryClient();
-const isLogin = getCookie("loginUserId") ? true : false;
 
 function App() {
   return (
@@ -43,17 +42,8 @@ function App() {
             <Route path="/" element={<MainPage />} />
             <Route path="/login" element={<LoginPage />} />
             <Route path="/Join" element={<JoinPage />} />
-            {isLogin ? (
-              <Route path="/mypage" element={<MyPage />} />
-            ) : (
-              <Route path="/mypage" element={<LoginPage />} />
-            )}
-            <Route path="/mypage/:id" element={<UserPage />} />
-            {isLogin ? (
-              <Route path="/write" element={<WritePage />} />
-            ) : (
-              <Route path="/write" element={<LoginPage />} />
-            )}
+            <Route path="/write" element={<WritePage />} />
+            <Route path="/mypage" element={<MyPage />} />
             <Route path="/detail/:id" element={<DetailPage />} />
             <Route path="/follow" element={<FollowPage />} />
             <Route path="/follow/:id" element={<FollowPage />} />

@@ -91,13 +91,14 @@ const MnBtn = styled.button`
           width: ${({ width }) => width || "23%"};
           height: ${({ height }) => height || "1.7rem"};
           margin-left: 5px;
-          background-color: var(--color-real-orange);
+          background-color: ${({ background }) =>
+            background || "var(--color-real-orange)"};
           font-weight: var(--weight-bolder);
           color: white;
           border: none;
           border-radius: 5px;
           color: var(--color-white);
-          font-size: var(--font-regular);
+          font-size: ${({ size }) => size || "var(--font-regular)"};
         `;
 
       case "FollowBtn":

@@ -6,14 +6,14 @@ function ChatLayout({ publish, msg, msgHandler, setMsg, location, children }) {
   const navigate = useNavigate();
 
   const pub = () => {
-    if (msg !== "") {
+    if (msg.trim() !== "") {
       publish(msg);
       setMsg("");
     }
   };
 
   const onEnterPress = (e) => {
-    if (msg !== "" && e.key === "Enter") {
+    if (msg.trim() !== "" && e.key === "Enter") {
       pub();
       setMsg("");
     }
@@ -30,9 +30,9 @@ function ChatLayout({ publish, msg, msgHandler, setMsg, location, children }) {
       </Header>
       {children}
 
-      <Label style={{ position: "fixed" }}>
-        <input onChange={msgHandler} />
-        <div onClick={() => publish(msg)}>전송</div>
+      <Label  style={{ position: "fixed" }}>
+        <textarea value={msg} onKeyPress={onEnterPress} onChange={msgHandler} />
+        <div onClick={pub}>전송</div>
       </Label>
     </Container>
   );
@@ -78,16 +78,19 @@ const Label = styled.label`
   position: fixed;
   bottom: 0;
 
-  input {
+  textarea {
     margin: 10px auto 10px auto;
-    outline: none;
     width: 95%;
     height: 2rem;
-    padding: 0.7rem;
+    padding: 0.4rem 3.5rem 0.4rem 1rem;
     border: 1px solid var(--color-light-orange);
     font-size: var(--font-semi-small);
     border-radius: 15px;
     background-color: var(--color-white-orange);
+    outline: none;
+    resize: none;
+    overflow: hidden;
+    caret-color: var(--color-orange);
   }
   div {
     position: absolute;
