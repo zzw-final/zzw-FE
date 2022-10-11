@@ -4,6 +4,7 @@ import { useCookies } from "react-cookie";
 import { Navigate, useNavigate } from "react-router-dom";
 import styled from "styled-components";
 import { instance } from "../../api/request";
+import TextsmsIcon from "@mui/icons-material/Textsms";
 
 const Logo = () => {
   const navigate = useNavigate();
@@ -42,9 +43,8 @@ const Logo = () => {
   const unregister = async () => {
     const loginUserId = cookies.loginUserId;
     if (loginUserId && window.confirm("탈퇴 하시겠습니까?")) {
-      const result = await instance.delete(`/api/member/resign/${loginUserId}`);
+      await instance.delete(`/api/member/resign/${loginUserId}`);
       logout();
-      console.log("result unregister :>> ", result);
     } else return;
   };
 
@@ -57,9 +57,11 @@ const Logo = () => {
       <LogoContainer>zzw.</LogoContainer>
       {loginNickname ? (
         <LoginBox>
-          {/* <button onClick={unregister}>회원탈퇴</button> */}
           <LogOutText onClick={logout}>Logout</LogOutText>
-          <LogOutText onClick={chatList}>chatList</LogOutText>
+          <ChatListIcon onClick={chatList}>
+            <TextsmsIcon />
+            <NewChatMsg>!</NewChatMsg>
+          </ChatListIcon>
         </LoginBox>
       ) : (
         ""
@@ -83,6 +85,10 @@ const LogoContainer = styled.div`
 `;
 
 const LoginBox = styled.div`
+  display: flex;
+  justify-content: space-between;
+  padding: 1rem;
+  width: 100%;
   position: absolute;
   top: 0;
   right: 0;
@@ -91,6 +97,25 @@ const LoginBox = styled.div`
 const LogOutText = styled.p`
   font-size: var(--font-small);
   margin: 0.2rem;
+`;
+
+const ChatListIcon = styled.div`
+  position: relative;
+  color: var(--color-white);
+`;
+
+const NewChatMsg = styled.div`
+  color: var(--color-orange);
+  font-size: var(--font-reqular);
+  background-color: var(--color-dark-pink);
+  border-radius: 50%;
+  width: 14px;
+  height: 14px;
+  text-align: center;
+  line-height: 14px;
+  position: absolute;
+  top: -3px;
+  right: -5px;
 `;
 
 export default Logo;

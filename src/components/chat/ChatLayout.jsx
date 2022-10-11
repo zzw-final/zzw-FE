@@ -29,7 +29,8 @@ function ChatLayout({ publish, msg, msgHandler, setMsg, location, children }) {
         </div>
       </Header>
       {children}
-      <Label>
+
+      <Label  style={{ position: "fixed" }}>
         <textarea value={msg} onKeyPress={onEnterPress} onChange={msgHandler} />
         <div onClick={pub}>전송</div>
       </Label>
@@ -50,8 +51,9 @@ const Header = styled.div`
   display: flex;
   border-bottom: 1px solid var(--color-light-orange);
   align-items: center;
-  margin: 0 auto 10px auto;
-
+  margin: auto auto 10px 10px;
+  background-color: white;
+  position: fixed;
   p {
     font-size: var(--font-regular);
     font-weight: var(--weight-semi-bold);
@@ -69,6 +71,8 @@ const Header = styled.div`
 `;
 
 const Label = styled.label`
+  /* position: relative; */
+
   display: flex;
   width: 100%;
   position: fixed;

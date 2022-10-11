@@ -3,6 +3,7 @@ import styled from "styled-components";
 import { useState } from "react";
 import { instance } from "../api/request";
 import ChatListItem from "../components/chat/ChatListItem";
+import LayoutPage from "../components/common/LayoutPage";
 
 const ChatListPage = () => {
   const [chatList, setChatList] = useState([]);
@@ -17,25 +18,44 @@ const ChatListPage = () => {
     getData();
   }, []);
 
+  const deleteChatRoom = async (roomId) => {
+    const result = await instance.delete(`/api/chat/member/${roomId}`);
+    if (result.data.success && result.data.erorr === undefined) {
+      setChatList((prev) =>
+        prev.filter((listItem) => listItem.roomId !== roomId)
+      );
+    }
+  };
+
   return (
-    <ChatListContainer>
-      <p>DM</p>
-      <ChatList>
-        {chatList.length !== 0 ? (
-          chatList.map((listItem, idx) => (
-            <ChatListItem listItem={listItem} key={idx} />
-          ))
-        ) : (
-          <ListText>채팅 리스트가 없습니다.</ListText>
-        )}
-      </ChatList>
-    </ChatListContainer>
+    <LayoutPage>
+      <ChatListContainer>
+        <p>DM</p>
+        <ChatList>
+          {chatList.length !== 0 ? (
+            chatList.map((listItem, idx) => (
+              <ChatListItem
+                listItem={listItem}
+                key={idx}
+                deleteChatRoom={deleteChatRoom}
+              />
+            ))
+          ) : (
+            <ListText>채팅 리스트가 없습니다.</ListText>
+          )}
+        </ChatList>
+      </ChatListContainer>
+    </LayoutPage>
   );
 };
 
 const ChatListContainer = styled.div`
   text-align: center;
   padding: 1rem;
+  p {
+    font-size: var(--font-medium-large);
+    font-weight: var(--weight-semi-bold);
+  }
 `;
 
 const ChatList = styled.div`
