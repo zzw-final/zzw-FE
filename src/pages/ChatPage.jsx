@@ -7,13 +7,14 @@ import { useParams } from "react-router-dom";
 import SendMsg from "../components/chat/SendMsg";
 import GetMsg from "../components/chat/GetMsg";
 import { instance } from "../api/request";
-
+import { useLocation } from "react-router-dom";
 
 function ChatPage() {
   const client = useRef({});
   const { roomId } = useParams();
-  const [msg, msgHandler] = useInput();
+  const [msg, msgHandler, setMsg] = useInput();
   const [messages, setMessages] = useState([{}]);
+  const { state: location } = useLocation();
 
   useEffect(() => {
     connect();
@@ -104,28 +105,22 @@ function ChatPage() {
   };
 
   return (
-
-    <ChatLayout msg={msg} publish={publish} msgHandler={msgHandler}>
+    <ChatLayout
+      msg={msg}
+      setMsg={setMsg}
+      publish={publish}
+      msgHandler={msgHandler}
+      location={location}
+    >
       <div style={{ margin: "50px 0px 50px 10px", width: "100%" }}>
         {messages.map((mag, idx) =>
           loginNickname === messages[idx].sender ? (
-            <SendMsg
-              messages={messages}
-              mag={mag}
-              idx={idx}
-              scrollRef={scrollRef}
-            />
+            <SendMsg messages={messages} mag={mag} idx={idx} scrollRef={scrollRef} />
           ) : (
-            <GetMsg
-              messages={messages}
-              mag={mag}
-              idx={idx}
-              scrollRef={scrollRef}
-            />
+            <GetMsg messages={messages} mag={mag} idx={idx} scrollRef={scrollRef} />
           )
         )}
       </div>
-
     </ChatLayout>
   );
 }
