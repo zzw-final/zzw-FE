@@ -3,7 +3,7 @@ import { useCookies } from "react-cookie";
 import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
 import Avatar from "@mui/material/Avatar";
-import Like from "./Like";
+import Like from "../common/Like";
 import { useState } from "react";
 import { dateFormat } from "../../util/dateFormat";
 import { useEffect } from "react";
