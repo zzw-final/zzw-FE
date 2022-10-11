@@ -9,7 +9,7 @@ const ChatListItem = ({ listItem, deleteChatRoom }) => {
   const { roomId, userId, profile, nickname, grade, message, isRead } =
     listItem;
 
-  console.log("listItem", listItem);
+  console.log("listItem isRead > ", listItem.isRead);
 
   const navigate = useNavigate();
 
@@ -44,7 +44,7 @@ const ChatListItem = ({ listItem, deleteChatRoom }) => {
       />
       <ItemContent>
         <Nickname>
-          {nickname} / {grade} <IsReadAlert></IsReadAlert>
+          {nickname} / {grade} {!isRead ? <IsReadAlert /> : ""}
         </Nickname>
         {message}
       </ItemContent>
@@ -72,8 +72,8 @@ const Nickname = styled.div`
 
 const IsReadAlert = styled.p`
   background-color: var(--color-orange);
-  width: 10px;
-  height: 10px;
+  width: 9px;
+  height: 9px;
   border-radius: 50%;
   margin-left: 0.2rem;
 `;
