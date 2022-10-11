@@ -9,7 +9,6 @@ import GetMsg from "../components/chat/GetMsg";
 import { instance } from "../api/request";
 import { useLocation } from "react-router-dom";
 
-
 function ChatPage() {
   const client = useRef({});
   const { roomId } = useParams();
@@ -17,7 +16,6 @@ function ChatPage() {
   const [messages, setMessages] = useState([{}]);
   const { state: location } = useLocation();
   const navigate = useNavigate();
-
 
   useEffect(() => {
     connect();
@@ -117,15 +115,17 @@ function ChatPage() {
       publish={publish}
       msgHandler={msgHandler}
       location={location}
+      back={back}
     >
       <div style={{ margin: "50px 0px 50px 10px", width: "100%" }}>
-        {messages && {messages.map((mag, idx) =>
-          loginNickname === messages[idx].sender ? (
-            <SendMsg messages={messages} mag={mag} idx={idx} scrollRef={scrollRef} />
-          ) : (
-            <GetMsg messages={messages} mag={mag} idx={idx} scrollRef={scrollRef} />
-          )
-        )}}
+        {messages &&
+          messages.map((mag, idx) =>
+            loginNickname === messages[idx].sender ? (
+              <SendMsg messages={messages} mag={mag} idx={idx} scrollRef={scrollRef} />
+            ) : (
+              <GetMsg messages={messages} mag={mag} idx={idx} scrollRef={scrollRef} />
+            )
+          )}
       </div>
     </ChatLayout>
   );
