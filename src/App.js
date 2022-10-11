@@ -44,6 +44,7 @@ function App() {
             <Route path="/Join" element={<JoinPage />} />
             <Route path="/write" element={<WritePage />} />
             <Route path="/mypage" element={<MyPage />} />
+            <Route path="/mypage/:id" element={<UserPage />} />
             <Route path="/detail/:id" element={<DetailPage />} />
             <Route path="/follow" element={<FollowPage />} />
             <Route path="/follow/:id" element={<FollowPage />} />
