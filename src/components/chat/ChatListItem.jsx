@@ -6,7 +6,10 @@ import { useCookies } from "react-cookie";
 import Button from "../UI/Button";
 
 const ChatListItem = ({ listItem, deleteChatRoom }) => {
-  const { roomId, userId, profile, nickname, grade, message } = listItem;
+  const { roomId, userId, profile, nickname, grade, message, isRead } =
+    listItem;
+
+  console.log("listItem", listItem);
 
   const navigate = useNavigate();
 
@@ -30,6 +33,7 @@ const ChatListItem = ({ listItem, deleteChatRoom }) => {
     } else {
     }
   };
+  // 안읽었으면 false,
 
   return (
     <ListItemContainer onClick={chatPage}>
@@ -40,7 +44,7 @@ const ChatListItem = ({ listItem, deleteChatRoom }) => {
       />
       <ItemContent>
         <Nickname>
-          {nickname} / {grade}
+          {nickname} / {grade} <IsReadAlert></IsReadAlert>
         </Nickname>
         {message}
       </ItemContent>
@@ -60,8 +64,18 @@ const ListItemContainer = styled.div`
 `;
 
 const Nickname = styled.div`
+  display: flex;
+  align-items: center;
   font-weight: var(--weight-semi-bold);
   margin-bottom: 0.3rem;
+`;
+
+const IsReadAlert = styled.p`
+  background-color: var(--color-orange);
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  margin-left: 0.2rem;
 `;
 
 const ItemContent = styled.div`
