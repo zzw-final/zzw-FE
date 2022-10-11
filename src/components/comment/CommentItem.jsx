@@ -5,6 +5,7 @@ import { useCookies } from "react-cookie";
 import useInputRef from "../../hooks/useInputRef";
 import { useNavigate } from "react-router-dom";
 import { dateFormat } from "../../util/dateFormat";
+import Button from "../UI/Button";
 
 const CommentItem = ({ commentItem, remove, update }) => {
   const { commentId, userId, profile, nickname, comment, grade, createdAt } =
@@ -77,8 +78,29 @@ const CommentItem = ({ commentItem, remove, update }) => {
         </InfoAvatar>
         {loginNickname && loginNickname === nickname ? (
           <EditBtns visibleEditBtns={visibleEditBtns}>
-            <UpdateBtn onClick={openUpdateForm}>수정</UpdateBtn>
-            <DeleteBtn onClick={removeComment}>X</DeleteBtn>
+            <Button
+              name="commonBtn"
+              onClick={openUpdateForm}
+              backgroundColor="var(--color-light-white)"
+              padding="0.15rem 0.3rem"
+              position="absolute"
+              right="1.6rem"
+              top="0.25rem"
+            >
+              수정
+            </Button>
+            <Button
+              name="commonBtn"
+              onClick={removeComment}
+              color="var(--color-white)"
+              backgroundColor="var(--color-dark-pink)"
+              padding="0.15rem 0.3rem"
+              position="absolute"
+              right="0.2rem"
+              top="0.25rem"
+            >
+              X
+            </Button>
           </EditBtns>
         ) : (
           ""
@@ -88,10 +110,25 @@ const CommentItem = ({ commentItem, remove, update }) => {
       <EditedCommentBox visibleEditCommentBox={visibleEditCommentBox}>
         <EditComment ref={updateCommentRef}></EditComment>
         <EditCommentBtns>
-          <UpdateComplateBtn onClick={updateComment}>
+          <Button
+            name="commonBtn"
+            onClick={updateComment}
+            backgroundColor="var(--color-light-white)"
+            padding="0.15rem 0.3rem"
+            borderRadius="0.5rem"
+          >
             수정 완료
-          </UpdateComplateBtn>
-          <CancleBtn onClick={cancleEdit}>취소</CancleBtn>
+          </Button>
+          <Button
+            name="commonBtn"
+            onClick={cancleEdit}
+            backgroundColor="var(--color-dark-pink)"
+            color="var(--color-white)"
+            padding="0.15rem 0.3rem"
+            borderRadius="0.5rem"
+          >
+            취소
+          </Button>
         </EditCommentBtns>
       </EditedCommentBox>
     </ItemContainer>

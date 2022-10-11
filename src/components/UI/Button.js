@@ -133,6 +133,26 @@ const MnBtn = styled.button`
           border: none;
         `;
 
+      case "commonBtn":
+        return css`
+          width: ${({ width }) => width || ""};
+          height: ${({ height }) => height || "1.2rem"};
+          margin: ${({ margin }) => margin || "0"};
+          padding: ${({ padding }) => padding || "0"};
+          color: ${({ color }) => color || "var(--color-black)"};
+          background-color: ${({ backgroundColor }) =>
+            backgroundColor || "var(--color-white)"};
+          font-size: ${({ fontSize }) => fontSize || "var(--font-micro)"};
+          font-weight: ${({ fontWeight }) =>
+            fontWeight || "var(--weight-regular)"};
+          border: ${({ border }) => border || "none"};
+          border-radius: ${({ borderRadius }) => borderRadius || "5px"};
+          position: ${({ position }) => position || ""};
+          right: ${({ right }) => right || ""};
+          top: ${({ top }) => top || ""};
+          outline: 0;
+        `;
+
       default:
         return css`
           border: 3px solid white;
