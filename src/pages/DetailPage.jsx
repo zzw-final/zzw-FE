@@ -175,7 +175,7 @@ function DetailPage() {
     if (window.confirm("작성 글을 삭제하시겠습니까?")) {
       await instance.delete(`/api/auth/post/${id}`);
       alert("삭제되었습니다.");
-      navigate("/");
+      navigate(-1);
     }
   };
 
@@ -240,10 +240,11 @@ function DetailPage() {
 }
 
 const DetailContainer = styled.div`
-  height: 100vh;
-  /* height: calc(var(--vh, 1vh) * 100 + 56px); */
+  /* height: 100vh; */
+  height: calc(var(--vh, 1vh) * 100 - 56px);
   height: auto;
   margin-bottom: 60px;
+  /* height: calc(var(--vh, 1vh) * 100 + 56px); */
 `;
 
 export default DetailPage;

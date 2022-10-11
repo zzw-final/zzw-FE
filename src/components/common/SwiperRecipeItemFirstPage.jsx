@@ -58,10 +58,10 @@ const SwiperRecipeItemFirstPage = ({
     else setViewLikeNum(viewLikeNum - 1);
   };
 
-  const getImgFoodUpload = async (e) => {
-    const result = await imgUpload(e);
-    setImgFoodUrlEdited(result.data.data.imageUrl);
-  };
+  // const getImgFoodUpload = async (e) => {
+  //   const result = await imgUpload(e);
+  //   setImgFoodUrlEdited(result.data.data.imageUrl);
+  // };
 
   useEffect(() => {
     editForm("imageUrl", imgFoodUrlEdited);
