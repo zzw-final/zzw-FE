@@ -30,7 +30,7 @@ function ChatLayout({ publish, msg, msgHandler, setMsg, location, children }) {
       </Header>
       {children}
 
-      <Label  style={{ position: "fixed" }}>
+      <Label style={{ position: "fixed" }}>
         <textarea value={msg} onKeyPress={onEnterPress} onChange={msgHandler} />
         <div onClick={pub}>전송</div>
       </Label>
