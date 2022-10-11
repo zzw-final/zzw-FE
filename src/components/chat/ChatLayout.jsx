@@ -2,7 +2,15 @@ import React from "react";
 import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
 
-function ChatLayout({ publish, msg, msgHandler, setMsg, location, children }) {
+function ChatLayout({
+  publish,
+  msg,
+  msgHandler,
+  setMsg,
+  location,
+  children,
+  back,
+}) {
   const navigate = useNavigate();
 
   const pub = () => {
@@ -22,10 +30,11 @@ function ChatLayout({ publish, msg, msgHandler, setMsg, location, children }) {
   return (
     <Container>
       <Header>
-        <p onClick={() => navigate("/chatlist")}>↩︎</p>
+        {/* <p onClick={() => navigate("/chatlist")}>↩︎</p> */}
+        <p onClick={back}>↩︎</p>
         <div>
-          {location.nickname}
-          <span>{location.grade}</span>
+          {location?.nickname}
+          <span>{location?.grade}</span>
         </div>
       </Header>
       {children}

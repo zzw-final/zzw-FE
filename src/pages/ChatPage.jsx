@@ -3,11 +3,12 @@ import * as StompJs from "@stomp/stompjs";
 import { getCookie } from "../util/cookie";
 import useInput from "../hooks/useInput";
 import ChatLayout from "../components/chat/ChatLayout";
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import SendMsg from "../components/chat/SendMsg";
 import GetMsg from "../components/chat/GetMsg";
 import { instance } from "../api/request";
 import { useLocation } from "react-router-dom";
+
 
 function ChatPage() {
   const client = useRef({});
@@ -15,6 +16,8 @@ function ChatPage() {
   const [msg, msgHandler, setMsg] = useInput();
   const [messages, setMessages] = useState([{}]);
   const { state: location } = useLocation();
+  const navigate = useNavigate();
+
 
   useEffect(() => {
     connect();
@@ -96,12 +99,15 @@ function ChatPage() {
   //새로운 메세지 오면 하단 고정
   useEffect(() => {
     scrollRef.current?.scrollIntoView({ behavior: "smooth" });
+    console.log(messages.length);
   }, [messages]);
 
+  //메세지 어디까지 확인했는지 체크해주는 put 요청
   const back = async () => {
-    const newdata = { roomId: roomId, messageId: messages[-1] };
+    const newdata = { roomId: Number(roomId), messageId: messages.length };
     console.log(newdata);
-    // await instance.post(`/api/chat/newmessage`);
+    await instance.put("/api/chat/newmessage", newdata);
+    navigate("/chatlist");
   };
 
   return (
@@ -113,13 +119,13 @@ function ChatPage() {
       location={location}
     >
       <div style={{ margin: "50px 0px 50px 10px", width: "100%" }}>
-        {messages.map((mag, idx) =>
+        {messages && {messages.map((mag, idx) =>
           loginNickname === messages[idx].sender ? (
             <SendMsg messages={messages} mag={mag} idx={idx} scrollRef={scrollRef} />
           ) : (
             <GetMsg messages={messages} mag={mag} idx={idx} scrollRef={scrollRef} />
           )
-        )}
+        )}}
       </div>
     </ChatLayout>
   );
