@@ -1,7 +1,17 @@
 import React from "react";
+import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
 
-function ChatLayout({ publish, msg, msgHandler, setMsg, location, children, back }) {
+function ChatLayout({
+  publish,
+  msg,
+  msgHandler,
+  setMsg,
+  location,
+  children,
+  back,
+}) {
+  const navigate = useNavigate();
   const pub = () => {
     if (msg.trim() !== "") {
       publish(msg);
@@ -11,6 +21,7 @@ function ChatLayout({ publish, msg, msgHandler, setMsg, location, children, back
 
   const onEnterPress = (e) => {
     if (msg.trim() !== "" && e.key === "Enter") {
+      e.preventDefault();
       pub();
       setMsg("");
     }
@@ -19,14 +30,13 @@ function ChatLayout({ publish, msg, msgHandler, setMsg, location, children, back
   return (
     <Container>
       <Header>
-        <p onClick={back}>↩︎</p>
+        <p onClick={() => navigate("/chatlist")}>↩︎</p>
         <div>
           {location?.nickname}
           <span>{location?.grade}</span>
         </div>
       </Header>
       {children}
-
       <Label style={{ position: "fixed" }}>
         <textarea value={msg} onKeyPress={onEnterPress} onChange={msgHandler} />
         <div onClick={pub}>전송</div>
@@ -40,23 +50,25 @@ export default ChatLayout;
 const Container = styled.div`
   display: flex;
   flex-direction: column;
+  overflow-x: hidden;
 `;
 
 const Header = styled.div`
-  width: 90%;
+  width: 95%;
   height: 50px;
   display: flex;
   border-bottom: 1px solid var(--color-light-orange);
   align-items: center;
-  margin: auto auto 10px 10px;
+  margin: auto auto 10px auto;
   background-color: white;
   position: fixed;
   p {
     font-size: var(--font-regular);
     font-weight: var(--weight-semi-bold);
+    margin: 15px auto auto 20px;
   }
   div {
-    margin: auto;
+    margin: auto 90px auto 20px;
     font-size: var(--font-medium-large);
     font-weight: var(--weight-semi-bold);
   }
