@@ -86,6 +86,21 @@ const MnBtn = styled.button`
             `}
         `;
 
+      case "DmBtn":
+        return css`
+          width: ${({ width }) => width || "23%"};
+          height: ${({ height }) => height || "1.7rem"};
+          margin-left: 5px;
+          background-color: ${({ background }) =>
+            background || "var(--color-real-orange)"};
+          font-weight: var(--weight-bolder);
+          color: white;
+          border: none;
+          border-radius: 5px;
+          color: var(--color-white);
+          font-size: ${({ size }) => size || "var(--font-regular)"};
+        `;
+
       case "FollowBtn":
         return css`
           height: 1.7rem;
@@ -117,6 +132,26 @@ const MnBtn = styled.button`
           font-weight: var(--weight-bold);
           border-radius: 5px;
           border: none;
+        `;
+
+      case "commonBtn":
+        return css`
+          width: ${({ width }) => width || ""};
+          height: ${({ height }) => height || "1.2rem"};
+          margin: ${({ margin }) => margin || "0"};
+          padding: ${({ padding }) => padding || "0"};
+          color: ${({ color }) => color || "var(--color-black)"};
+          background-color: ${({ backgroundColor }) =>
+            backgroundColor || "var(--color-white)"};
+          font-size: ${({ fontSize }) => fontSize || "var(--font-micro)"};
+          font-weight: ${({ fontWeight }) =>
+            fontWeight || "var(--weight-regular)"};
+          border: ${({ border }) => border || "none"};
+          border-radius: ${({ borderRadius }) => borderRadius || "5px"};
+          position: ${({ position }) => position || ""};
+          right: ${({ right }) => right || ""};
+          top: ${({ top }) => top || ""};
+          outline: 0;
         `;
 
       default:

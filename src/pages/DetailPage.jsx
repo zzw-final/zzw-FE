@@ -175,7 +175,7 @@ function DetailPage() {
     if (window.confirm("작성 글을 삭제하시겠습니까?")) {
       await instance.delete(`/api/auth/post/${id}`);
       alert("삭제되었습니다.");
-      navigate("/");
+      navigate(-1);
     }
   };
 
@@ -191,19 +191,28 @@ function DetailPage() {
   //     });
   //   }
   // };
-  //이미지 파일 업로드시 url로 변경해주는 post
-  const imgUpload = async (e) => {
+
+  const imgUpload = async (file) => {
     // e.preventDefault();
-    const [file] = e.target.files;
-    const newFile = imageCompression(file, {
-      maxSizeMB: 1,
-      maxWidthOrHeight: 1920,
-    });
-    const resizingFile = new File([newFile], file.name, { type: file.type });
-    return await imgInstance.post("/api/post/image", resizingFile, {
+    const formdata = new FormData();
+    formdata.append("file", file);
+    return await imgInstance.post("/api/post/image", formdata, {
       headers: { "Content-Type": "multipart/form-data" },
     });
   };
+
+  //이미지 파일 업로드시 url로 변경해주는 post
+  // const imgUpload = async (e) => {
+  //   const [file] = e.target.files;
+  //   const newFile = imageCompression(file, {
+  //     maxSizeMB: 1,
+  //     maxWidthOrHeight: 1920,
+  //   });
+  //   const resizingFile = new File([newFile], file.name, { type: file.type });
+  //   return await imgInstance.post("/api/post/image", resizingFile, {
+  //     headers: { "Content-Type": "multipart/form-data" },
+  //   });
+  // };
 
   return (
     <LayoutPage background={"#fbd499"}>
@@ -231,10 +240,11 @@ function DetailPage() {
 }
 
 const DetailContainer = styled.div`
-  height: 100vh;
-  /* height: calc(var(--vh, 1vh) * 100 + 56px); */
+  /* height: 100vh; */
+  height: calc(var(--vh, 1vh) * 100 - 56px);
   height: auto;
   margin-bottom: 60px;
+  /* height: calc(var(--vh, 1vh) * 100 + 56px); */
 `;
 
 export default DetailPage;

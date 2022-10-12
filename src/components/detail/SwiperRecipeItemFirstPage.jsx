@@ -3,10 +3,11 @@ import { useCookies } from "react-cookie";
 import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
 import Avatar from "@mui/material/Avatar";
-import Like from "./Like";
+import Like from "../common/Like";
 import { useState } from "react";
 import { dateFormat } from "../../util/dateFormat";
 import { useEffect } from "react";
+import imageCompression from "browser-image-compression";
 
 const SwiperRecipeItemFirstPage = ({
   postDetail,
@@ -57,15 +58,25 @@ const SwiperRecipeItemFirstPage = ({
     else setViewLikeNum(viewLikeNum - 1);
   };
 
-  const getImgFoodUpload = async (e) => {
-    const result = await imgUpload(e);
-    setImgFoodUrlEdited(result.data.data.imageUrl);
-  };
+  // const getImgFoodUpload = async (e) => {
+  //   const result = await imgUpload(e);
+  //   setImgFoodUrlEdited(result.data.data.imageUrl);
+  // };
 
   useEffect(() => {
     editForm("imageUrl", imgFoodUrlEdited);
   }, [imgFoodUrlEdited]);
 
+  const getImgUpload = async (e) => {
+    const [file] = e.target.files;
+    const newFile = await imageCompression(file, {
+      maxSizeMB: 1,
+      maxWidthOrHeight: 1920,
+    });
+    const resizingFile = new File([newFile], file.name, { type: file.type });
+    const result = await imgUpload(resizingFile);
+    setImgFoodUrlEdited(result.data.data.imageUrl);
+  };
   return (
     <>
       <ItemContainer display={!isEditMode ? "Flex" : "none"}>
@@ -93,7 +104,7 @@ const SwiperRecipeItemFirstPage = ({
       </ItemContainer>
       <ItemContainer display={!isEditMode ? "none" : "Flex"}>
         <ItemImg src={imgFoodUrlEdited} alt="Recipe" />
-        <ItemImgEdit type="file" accept="image/*" onChange={getImgFoodUpload} />
+        <ItemImgEdit type="file" accept="image/*" onChange={getImgUpload} />
         <ItemBox>
           <ItemInfo>
             <Avatar

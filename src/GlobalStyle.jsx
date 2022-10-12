@@ -24,10 +24,11 @@ const GlobalStyle = createGlobalStyle`
   --color-pink: #ffa4a1;
   --color-dark-pink: #ff6863;
   --color-yellow: #fff7d1; 
-  --color-light-orange: #FACE8E;
+  --color-white-orange: #faeedd;
+  --color-light-orange: #ffddab;
   --color-orange: #FFBB56;
-  /* --color-dark-orange: #ffa113; */
-  --color-dark-orange: #f4623a;
+  --color-real-orange: #ffa113;
+  --color-dark-orange: #ff683e;
   --color-primary-green: #e8f5e9;
   --color-light-green: #dcedc8;
   --color-green: #aabb97;
@@ -39,6 +40,7 @@ const GlobalStyle = createGlobalStyle`
   --font-medium-large: 23px; 
   --font-medium: 21px; 
   --font-regular: 19px; 
+  --font-semi-small: 17px;
   --font-small: 15px; 
   --font-micro: 13px;
 

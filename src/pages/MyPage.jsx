@@ -5,6 +5,8 @@ import MyRecipes from "../components/posts/MyRecipes";
 import LikeRecipes from "../components/posts/LikeRecipes";
 import { instance } from "../api/request";
 import LayoutPage from "../components/common/LayoutPage";
+import { getCookie } from "../util/cookie";
+import { useNavigate } from "react-router-dom";
 
 const MyPage = () => {
   const [userData, setUserData] = useState();
@@ -13,8 +15,11 @@ const MyPage = () => {
   const [heart, setHeart] = useState(0);
   const [myVisible, setMyVisible] = useState(true);
   const [likeVisible, setLikeVisible] = useState(false);
+  const isLogin = getCookie("loginUserId") ? true : false;
+  const navigate = useNavigate();
 
   useEffect(() => {
+    if (!isLogin) navigate("/login");
     async function fetchProfileData() {
       const res = await instance.get(`/api/auth/mypage`);
       const userProfile = res.data.data;

@@ -1,17 +1,51 @@
 import React, { useState } from "react";
+import axios from "axios";
 import { useNavigate, useParams } from "react-router-dom";
 import styled from "styled-components";
 import Button from "../UI/Button";
 import { instance } from "../../api/request";
 import { useMutation, useQueryClient } from "react-query";
-import { getCookie } from "../../util/cookie";
+import { getCookie, removeCookie } from "../../util/cookie";
 
-function Profile({ userData }) {
+function Profile({ userData, DmRequestHandler }) {
   const navigate = useNavigate();
   const { id } = useParams();
   const { follow, follower, grade, gradeList, nickname, profile, isFollow } = userData;
   const [greyButton, setGreyButton] = useState(isFollow);
   const [followerNum, setFollowerNum] = useState(follower);
+
+  const logout = () => {
+    const alert = window.confirm("로그아웃 하시겠습니까?");
+    if (alert) {
+      if (getCookie("loginOauth") === "kakao") {
+        axios.get(`${process.env.REACT_APP_API}/api/member/kakao/logout`, {
+          headers: {
+            kakaoToken: getCookie("oauthToken"),
+            withCredentials: true,
+          },
+        });
+      }
+      removeCookie("loginNickname");
+      removeCookie("refreshToken");
+      removeCookie("loginUserId");
+      removeCookie("accessToken");
+      removeCookie("oauthToken");
+      removeCookie("loginGrade");
+      removeCookie("loginProfile");
+      removeCookie("loginOauth");
+      removeCookie("loginEmail");
+      navigate("/");
+    }
+    return null;
+  };
+
+  const deleteAccount = async () => {
+    const loginUserId = getCookie("loginUserId");
+    if (loginUserId && window.confirm("탈퇴하시겠습니까?")) {
+      await instance.delete(`/api/member/resign/${loginUserId}`);
+      logout();
+    } else return;
+  };
 
   const followHandler = async () => {
     return await instance.post(`/api/auth/mypage/follow/${id}`);
@@ -86,13 +120,29 @@ function Profile({ userData }) {
         </BottomBox>
       </div>
       {!getCookie("loginUserId") ? null : !id ? (
-        <Button name="ProfileBtn" isFollow={true}>
-          프로필 편집
-        </Button>
+        <Dm>
+          <Button name="ProfileBtn" isFollow={true}>
+            프로필 편집
+          </Button>
+          <Button
+            onClick={logout}
+            name="DmBtn"
+            width="20%"
+            background="gray"
+            size="var(--font-small)"
+          >
+            Logout
+          </Button>
+        </Dm>
       ) : (
-        <Button onClick={mutate} name="ProfileBtn" isFollow={greyButton}>
-          {greyButton ? "팔로잉" : "팔로우"}
-        </Button>
+        <Dm>
+          <Button onClick={mutate} name="ProfileBtn" isFollow={greyButton}>
+            {greyButton ? "팔로잉" : "팔로우"}
+          </Button>
+          <Button name="DmBtn" onClick={DmRequestHandler}>
+            DM
+          </Button>
+        </Dm>
       )}
     </Container>
   );
@@ -124,6 +174,11 @@ const Img = styled.img`
   height: 7rem;
   border-radius: 50%;
   background-color: var(--color-orange);
+`;
+
+const Dm = styled.div`
+  display: flex;
+  width: 100%;
 `;
 
 const NicknameBox = styled.div`

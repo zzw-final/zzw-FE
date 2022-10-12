@@ -1,5 +1,6 @@
 import { React, useState } from "react";
 import styled from "styled-components";
+import imageCompression from "browser-image-compression";
 
 const SwiperRecipeItem = ({
   contentList,
@@ -11,6 +12,21 @@ const SwiperRecipeItem = ({
 }) => {
   const { imageUrl, content, page } = contentList;
   const [imgContentUrlEdited, setImgContentUrlEdited] = useState(imageUrl);
+
+  const getImgUpload = async (e) => {
+    const file = e.target.files[0];
+    console.log("file", file);
+    const newFile = await imageCompression(file, {
+      maxSizeMB: 1,
+      maxWidthOrHeight: 1920,
+    });
+    const resizingFile = new File([newFile], file.name, { type: file.type });
+    const result = await imgUpload(resizingFile);
+    console.log("수정이미지", result);
+    setImgContentUrlEdited(result.data.data.imageUrl);
+  };
+
+  // console.log(imgContentUrlEdited);
 
   let handleChangeIMG = (i, e) => {
     let newFormValues = [...editedValues];
@@ -26,7 +42,7 @@ const SwiperRecipeItem = ({
   };
 
   const getImgContentUpload = async (e) => {
-    const result = await imgUpload(e);
+    const result = await imgUpload(e.target.files[0]);
     setImgContentUrlEdited(result.data.data.imageUrl);
   };
 
@@ -47,11 +63,7 @@ const SwiperRecipeItem = ({
           alt="Recipe"
           onLoad={(e) => handleChangeIMG(idx, e)}
         />
-        <ItemImgEdit
-          type="file"
-          accept="image/*"
-          onChange={getImgContentUpload}
-        />
+        <ItemImgEdit type="file" accept="image/*" onChange={getImgUpload} />
         <ItemBox>
           <ItemStep>STEP {page + 1}</ItemStep>
           <ItemContentEdit
