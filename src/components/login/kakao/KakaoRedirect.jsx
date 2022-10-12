@@ -13,6 +13,8 @@ const KakaoRedirect = () => {
         process.env.REACT_APP_API + `/api/member/login/kakao?code=${code}`
       );
 
+      console.log("result kakao > ", result);
+
       if (result.data.success && result.data.error === null) {
         const newUser = result.data.data.isFirst;
         const EMAIL = result.data.data.email;
