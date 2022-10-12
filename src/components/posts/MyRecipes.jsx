@@ -5,7 +5,7 @@ import Button from "../UI/Button";
 import { useNavigate } from "react-router-dom";
 import { getCookie } from "../../util/cookie";
 
-function MyRecipes({ myRecipes, userNickname, onLikeHandler }) {
+function MyRecipes({ myRecipes, userNickname }) {
   const navigate = useNavigate();
   const nickname = getCookie("loginNickname");
 
@@ -36,11 +36,7 @@ function MyRecipes({ myRecipes, userNickname, onLikeHandler }) {
   return (
     <Container>
       {myRecipes?.map((myRecipe) => (
-        <Recipe
-          key={myRecipe.postId}
-          post={myRecipe}
-          onLikeHandler={onLikeHandler}
-        ></Recipe>
+        <Recipe key={myRecipe.postId} post={myRecipe}></Recipe>
       ))}
     </Container>
   );

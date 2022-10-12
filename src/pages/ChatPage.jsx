@@ -3,7 +3,7 @@ import * as StompJs from "@stomp/stompjs";
 import { getCookie } from "../util/cookie";
 import useInput from "../hooks/useInput";
 import ChatLayout from "../components/chat/ChatLayout";
-import { useNavigate, useParams } from "react-router-dom";
+import { useParams } from "react-router-dom";
 import SendMsg from "../components/chat/SendMsg";
 import GetMsg from "../components/chat/GetMsg";
 import { instance } from "../api/request";
@@ -12,10 +12,9 @@ import { useLocation } from "react-router-dom";
 function ChatPage() {
   const client = useRef({});
   const { roomId } = useParams();
-  const [msg, msgHandler, setMsg] = useInput();
+  const [msg, msgHandler] = useInput();
   const [messages, setMessages] = useState([{}]);
   const { state: location } = useLocation();
-  const navigate = useNavigate();
 
   useEffect(() => {
     connect();
@@ -97,35 +96,30 @@ function ChatPage() {
   //새로운 메세지 오면 하단 고정
   useEffect(() => {
     scrollRef.current?.scrollIntoView({ behavior: "smooth" });
-    console.log(messages.length);
   }, [messages]);
 
-  //메세지 어디까지 확인했는지 체크해주는 put 요청
   const back = async () => {
-    const newdata = { roomId: Number(roomId), messageId: messages.length };
+    const newdata = { roomId: roomId, messageId: messages[-1] };
     console.log(newdata);
-    await instance.put("/api/chat/newmessage", newdata);
-    navigate("/chatlist");
+    // await instance.post(`/api/chat/newmessage`);
   };
 
   return (
-    <ChatLayout
-      msg={msg}
-      setMsg={setMsg}
-      publish={publish}
-      msgHandler={msgHandler}
-      location={location}
-      back={back}
-    >
-      <div style={{ margin: "50px 0px 50px 10px", width: "100%" }}>
-        {messages &&
-          messages.map((mag, idx) =>
-            loginNickname === messages[idx].sender ? (
-              <SendMsg messages={messages} mag={mag} idx={idx} scrollRef={scrollRef} />
-            ) : (
-              <GetMsg messages={messages} mag={mag} idx={idx} scrollRef={scrollRef} />
-            )
-          )}
+    <ChatLayout msg={msg} publish={publish} msgHandler={msgHandler} location={location}>
+      <div style={{ margin: "50px 0px 50px 0px", width: "100%" }}>
+        {messages.map((mag, idx) =>
+          loginNickname === messages[idx].sender ? (
+            <SendMsg messages={messages} mag={mag} idx={idx} scrollRef={scrollRef} />
+          ) : (
+            <GetMsg
+              location={location}
+              messages={messages}
+              mag={mag}
+              idx={idx}
+              scrollRef={scrollRef}
+            />
+          )
+        )}
       </div>
     </ChatLayout>
   );

@@ -1,14 +1,23 @@
 import React from "react";
+import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
 import { dateFormat } from "../../util/dateFormat";
 
-function GetMsg({ messages, msg, idx, scrollRef }) {
+function GetMsg({ messages, msg, idx, scrollRef, location }) {
   const date = dateFormat(messages[idx].sendTime);
+  const navigate = useNavigate();
+
   return (
     <div>
       <GetMsgDiv key={idx}>
         <MsgDiv ref={scrollRef}>
-          <ProFileimg alt="profile" src={messages[idx].profile} />
+          <ProFileimg
+            onClick={() => {
+              navigate(`/mypage/${location.userId}`);
+            }}
+            alt="profile"
+            src={messages[idx].profile}
+          />
           <Content>{messages[idx].message}</Content>
           <DateDiv>{date}</DateDiv>
         </MsgDiv>

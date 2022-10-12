@@ -1,12 +1,13 @@
-import React, { useState } from "react";
 import styled from "styled-components";
 import Tag from "../common/Tag";
 import Card from "../UI/Card";
 import Like from "../common/Like";
+import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useCookies } from "react-cookie";
+import { likes } from "../../api/request";
 
-function Recipe({ post, onLikeHandler, ...props }) {
+function Recipe({ post, ...props }) {
   const navigate = useNavigate();
   const { postId, title, isLike, ingredient, foodImg } = post;
   const [likeToggleBtn, setLikeToggleBtn] = useState(isLike);
@@ -28,7 +29,7 @@ function Recipe({ post, onLikeHandler, ...props }) {
       alert("로그인 유저만 사용 가능한 기능입니다.");
       return;
     }
-    const resp = await onLikeHandler(postId);
+    const resp = await likes(postId);
     const isVisible = resp.data.data;
     if (isVisible) {
       setLikeToggleBtn(!likeToggleBtn);
@@ -42,12 +43,7 @@ function Recipe({ post, onLikeHandler, ...props }) {
   return (
     <Card {...props} margin="1px 6px">
       <TopBox>
-        <Tag
-          tagName={`#${foodName}`}
-          isFoodName={true}
-          height="24px"
-          opacity={0.8}
-        />
+        <Tag tagName={`#${foodName}`} isFoodName={true} height="24px" opacity={0.8} />
         <Like isLike={likeToggleBtn} btnClick={like} />
       </TopBox>
       <Img alt="foodphoto" src={foodImg} onClick={goToDetail} />

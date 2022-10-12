@@ -83,3 +83,7 @@ export const kakaoLoginInstance = async (code) => {
 export const join = async (sendData) => {
   return instance.post(`/api/member/signup`, sendData);
 };
+
+export const likes = async (postId) => {
+  return await instance.post(`/api/auth/post/${postId}`);
+};
