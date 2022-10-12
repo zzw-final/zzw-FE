@@ -3,7 +3,7 @@ import * as StompJs from "@stomp/stompjs";
 import { getCookie } from "../util/cookie";
 import useInput from "../hooks/useInput";
 import ChatLayout from "../components/chat/ChatLayout";
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import SendMsg from "../components/chat/SendMsg";
 import GetMsg from "../components/chat/GetMsg";
 import { instance } from "../api/request";
@@ -12,9 +12,10 @@ import { useLocation } from "react-router-dom";
 function ChatPage() {
   const client = useRef({});
   const { roomId } = useParams();
-  const [msg, msgHandler] = useInput();
+  const [msg, msgHandler, setMsg] = useInput();
   const [messages, setMessages] = useState([{}]);
   const { state: location } = useLocation();
+  const navigate = useNavigate();
 
   useEffect(() => {
     connect();
@@ -55,7 +56,6 @@ function ChatPage() {
       };
       console.log(newdata);
       await instance.put("/api/chat/newmessage", newdata);
-      navigate("/chatlist");
     };
     back();
     client.current.deactivate();
@@ -118,21 +118,14 @@ function ChatPage() {
       msgHandler={msgHandler}
       location={location}
     >
-      <div
-        style={{ margin: "50px 0px 50px 0px", width: "90%", height: "90%" }}
-      >
+      <div style={{ margin: "50px 0px 50px 0px", width: "95%", height: "90%" }}>
         {messages &&
           messages.map((mag, idx) =>
             loginNickname === messages[idx].sender ? (
-              <SendMsg
-                messages={messages}
-                mag={mag}
-                idx={idx}
-                scrollRef={scrollRef}
-              />
+              <SendMsg messages={messages} mag={mag} idx={idx} scrollRef={scrollRef} />
             ) : (
               <GetMsg
-              location={location}
+                location={location}
                 messages={messages}
                 mag={mag}
                 idx={idx}
