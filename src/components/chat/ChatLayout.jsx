@@ -29,8 +29,7 @@ function ChatLayout({
   return (
     <Container>
       <Header>
-        <p onClick={back}>↩︎</p>
-        {/* <p onClick={() => navigate("/chatlist")}>↩︎</p> */}
+        <p onClick={() => navigate("/chatlist")}>↩︎</p>
         <div>
           {location?.nickname}
           <span>{location?.grade}</span>

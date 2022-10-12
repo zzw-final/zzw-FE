@@ -46,8 +46,19 @@ function ChatPage() {
     });
     client.current.activate();
   };
-
+  //disconnect시 메세지 어디까지 확인했는지 체크해주는 put 요청
   const disconnect = () => {
+    const back = async () => {
+      const newdata = {
+        roomId: Number(roomId),
+        // messageId: messages[messages.length - 1].messageId,
+        userId: Number(getCookie("loginUserId")),
+      };
+      console.log(newdata);
+      await instance.put("/api/chat/newmessage", newdata);
+      navigate("/chatlist");
+    };
+    back();
     client.current.deactivate();
   };
 
@@ -101,22 +112,6 @@ function ChatPage() {
     console.log(messages.length);
   }, [messages]);
 
-  //메세지 어디까지 확인했는지 체크해주는 put 요청
-
-  const back = async () => {
-    const newdata = {
-      roomId: Number(roomId),
-      messageId: messages[messages.length - 1].messageId,
-    };
-    console.log(newdata);
-    await instance.put("/api/chat/newmessage", newdata);
-    navigate("/chatlist");
-  };
-
-  useEffect(() => {
-    return () => back();
-  }, []);
-
   return (
     <ChatLayout
       msg={msg}
@@ -124,7 +119,6 @@ function ChatPage() {
       publish={publish}
       msgHandler={msgHandler}
       location={location}
-      back={back}
     >
       <div
         style={{ margin: "50px 0px 50px 10px", width: "90%", height: "90%" }}
