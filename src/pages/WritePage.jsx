@@ -1,13 +1,11 @@
-import axios from "axios";
 import React from "react";
-import { usememo, useState, useEffect, useRef } from "react";
+import { useState } from "react";
 import { useMutation } from "react-query";
 import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
 import { instance, imgInstance } from "../api/request";
 import LayoutPage from "../components/common/LayoutPage";
 import WriteAddCard from "../components/write/WriteAddCard";
-import WriteCard from "../components/write/WriteCard";
 import WriteHeader from "../components/write/WriteHeader";
 import WriteTitle from "../components/write/WriteTitle";
 

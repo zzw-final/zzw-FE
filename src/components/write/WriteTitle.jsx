@@ -1,7 +1,5 @@
 import React, { useEffect, useRef, useState } from "react";
 import styled from "styled-components";
-import Tag from "../common/Tag";
-import WriteCard from "./WriteCard";
 import imageCompression from "browser-image-compression";
 
 const WriteTitle = ({
