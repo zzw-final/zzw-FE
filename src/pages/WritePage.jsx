@@ -8,7 +8,6 @@ import WriteAddCard from "../components/write/WriteAddCard";
 import WriteCard from "../components/write/WriteCard";
 import WriteHeader from "../components/write/WriteHeader";
 import WriteTitle from "../components/write/WriteTitle";
-import { getCookie } from "../util/cookie";
 
 function WritePage() {
   //WriteTitle에서 값을 받을 State
@@ -20,13 +19,6 @@ function WritePage() {
     "https://user-images.githubusercontent.com/110365677/194796076-31cf60cc-2ff0-4145-a538-f155f0793537.png"
   );
   const navigate = useNavigate();
-  const isLogin = getCookie("loginUserId") ? true : false;
-
-  useEffect(() => {
-    if (!isLogin) {
-      navigate("/login");
-    }
-  }, []);
 
   // WriteAddCard에서 값을 받을 state
   // const [formValues, setFomvalues] = useState([
