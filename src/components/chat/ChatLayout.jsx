@@ -2,15 +2,7 @@ import React from "react";
 import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
 
-function ChatLayout({
-  publish,
-  msg,
-  msgHandler,
-  setMsg,
-  location,
-  children,
-  back,
-}) {
+function ChatLayout({ publish, msg, msgHandler, setMsg, location, children, back }) {
   const navigate = useNavigate();
   const pub = () => {
     if (msg.trim() !== "") {
@@ -59,7 +51,7 @@ const Header = styled.div`
   display: flex;
   border-bottom: 1px solid var(--color-light-orange);
   align-items: center;
-  margin: auto auto 10px auto;
+  margin: auto auto 10px 10px;
   background-color: white;
   position: fixed;
   p {
