@@ -25,6 +25,7 @@ function ChatPage() {
   useEffect(() => {
     const getChat = async () => {
       const chatData = await instance.get(`/api/chat/message/${roomId}`);
+      console.log("기존메세지", chatData.data.data);
       setMessages(chatData.data.data);
     };
     getChat();
@@ -44,8 +45,19 @@ function ChatPage() {
     });
     client.current.activate();
   };
-
+  //disconnect시 메세지 어디까지 확인했는지 체크해주는 put 요청
   const disconnect = () => {
+    const back = async () => {
+      const newdata = {
+        roomId: Number(roomId),
+        // messageId: messages[messages.length - 1].messageId,
+        userId: Number(getCookie("loginUserId")),
+      };
+      console.log(newdata);
+      await instance.put("/api/chat/newmessage", newdata);
+      navigate("/chatlist");
+    };
+    back();
     client.current.deactivate();
   };
 
@@ -98,28 +110,36 @@ function ChatPage() {
     scrollRef.current?.scrollIntoView({ behavior: "smooth" });
   }, [messages]);
 
-  const back = async () => {
-    const newdata = { roomId: roomId, messageId: messages[-1] };
-    console.log(newdata);
-    // await instance.post(`/api/chat/newmessage`);
-  };
-
   return (
-    <ChatLayout msg={msg} publish={publish} msgHandler={msgHandler} location={location}>
-      <div style={{ margin: "50px 0px 50px 0px", width: "100%" }}>
-        {messages.map((mag, idx) =>
-          loginNickname === messages[idx].sender ? (
-            <SendMsg messages={messages} mag={mag} idx={idx} scrollRef={scrollRef} />
-          ) : (
-            <GetMsg
+    <ChatLayout
+      msg={msg}
+      setMsg={setMsg}
+      publish={publish}
+      msgHandler={msgHandler}
+      location={location}
+    >
+      <div
+        style={{ margin: "50px 0px 50px 0px", width: "90%", height: "90%" }}
+      >
+        {messages &&
+          messages.map((mag, idx) =>
+            loginNickname === messages[idx].sender ? (
+              <SendMsg
+                messages={messages}
+                mag={mag}
+                idx={idx}
+                scrollRef={scrollRef}
+              />
+            ) : (
+              <GetMsg
               location={location}
-              messages={messages}
-              mag={mag}
-              idx={idx}
-              scrollRef={scrollRef}
-            />
-          )
-        )}
+                messages={messages}
+                mag={mag}
+                idx={idx}
+                scrollRef={scrollRef}
+              />
+            )
+          )}
       </div>
     </ChatLayout>
   );
