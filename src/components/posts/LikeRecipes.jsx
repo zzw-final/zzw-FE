@@ -1,8 +1,7 @@
-import React from "react";
 import Recipe from "./Recipe";
 import styled from "styled-components";
 
-function LikeRecipes({ likeRecipes, onLikeHandler }) {
+function LikeRecipes({ likeRecipes }) {
   if (likeRecipes?.length === 0) {
     return (
       <AlignBox>
@@ -14,11 +13,7 @@ function LikeRecipes({ likeRecipes, onLikeHandler }) {
   return (
     <Container>
       {likeRecipes?.map((likeRecipe) => (
-        <Recipe
-          key={likeRecipe.postId}
-          post={likeRecipe}
-          onLikeHandler={onLikeHandler}
-        />
+        <Recipe key={likeRecipe.postId} post={likeRecipe} />
       ))}
     </Container>
   );

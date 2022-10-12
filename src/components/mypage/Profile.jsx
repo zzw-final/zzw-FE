@@ -7,7 +7,7 @@ import { instance } from "../../api/request";
 import { useMutation, useQueryClient } from "react-query";
 import { getCookie, removeCookie } from "../../util/cookie";
 
-function Profile({ userData, DmRequestHandler }) {
+function Profile({ userData, DmRequest, profileRef }) {
   const navigate = useNavigate();
   const { id } = useParams();
   const { follow, follower, grade, gradeList, nickname, profile, isFollow } = userData;
@@ -36,7 +36,6 @@ function Profile({ userData, DmRequestHandler }) {
       removeCookie("loginEmail");
       navigate("/");
     }
-    return null;
   };
 
   const deleteAccount = async () => {
@@ -62,7 +61,10 @@ function Profile({ userData, DmRequestHandler }) {
       if (result.data.data === "unfollow success") {
         setFollowerNum((prev) => prev - 1);
       }
-      queryClient.invalidateQueries(["follower", id]);
+      queryClient.invalidateQueries(["userpage", "profile"]);
+      queryClient.invalidateQueries(["mypage", "profile"]);
+      queryClient.invalidateQueries(["follow"]);
+      queryClient.invalidateQueries(["follower"]);
     },
   });
 
@@ -91,7 +93,7 @@ function Profile({ userData, DmRequestHandler }) {
   };
 
   return (
-    <Container>
+    <Container ref={profileRef}>
       <div>
         <TopBox>
           <Img src={profile}></Img>
@@ -139,7 +141,7 @@ function Profile({ userData, DmRequestHandler }) {
           <Button onClick={mutate} name="ProfileBtn" isFollow={greyButton}>
             {greyButton ? "팔로잉" : "팔로우"}
           </Button>
-          <Button name="DmBtn" onClick={DmRequestHandler}>
+          <Button name="DmBtn" onClick={DmRequest}>
             DM
           </Button>
         </Dm>
