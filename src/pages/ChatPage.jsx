@@ -3,7 +3,7 @@ import * as StompJs from "@stomp/stompjs";
 import { getCookie } from "../util/cookie";
 import useInput from "../hooks/useInput";
 import ChatLayout from "../components/chat/ChatLayout";
-import { useNavigate, useParams } from "react-router-dom";
+import { useParams } from "react-router-dom";
 import SendMsg from "../components/chat/SendMsg";
 import GetMsg from "../components/chat/GetMsg";
 import { instance } from "../api/request";
@@ -12,10 +12,9 @@ import { useLocation } from "react-router-dom";
 function ChatPage() {
   const client = useRef({});
   const { roomId } = useParams();
-  const [msg, msgHandler, setMsg] = useInput();
+  const [msg, msgHandler] = useInput();
   const [messages, setMessages] = useState([{}]);
   const { state: location } = useLocation();
-  const navigate = useNavigate();
 
   useEffect(() => {
     connect();
@@ -109,7 +108,6 @@ function ChatPage() {
   //새로운 메세지 오면 하단 고정
   useEffect(() => {
     scrollRef.current?.scrollIntoView({ behavior: "smooth" });
-    console.log(messages.length);
   }, [messages]);
 
   return (
@@ -121,7 +119,7 @@ function ChatPage() {
       location={location}
     >
       <div
-        style={{ margin: "50px 0px 50px 10px", width: "90%", height: "90%" }}
+        style={{ margin: "50px 0px 50px 0px", width: "90%", height: "90%" }}
       >
         {messages &&
           messages.map((mag, idx) =>
@@ -134,6 +132,7 @@ function ChatPage() {
               />
             ) : (
               <GetMsg
+              location={location}
                 messages={messages}
                 mag={mag}
                 idx={idx}

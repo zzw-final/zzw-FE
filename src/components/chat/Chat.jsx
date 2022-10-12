@@ -9,7 +9,7 @@ function Chat() {
 
   useEffect(() => {
     connect();
-    return () => disconnect();
+    return disconnect();
   }, []);
 
   const connect = () => {

@@ -21,6 +21,7 @@ function ChatLayout({
 
   const onEnterPress = (e) => {
     if (msg.trim() !== "" && e.key === "Enter") {
+      e.preventDefault();
       pub();
       setMsg("");
     }
@@ -36,7 +37,6 @@ function ChatLayout({
         </div>
       </Header>
       {children}
-
       <Label style={{ position: "fixed" }}>
         <textarea value={msg} onKeyPress={onEnterPress} onChange={msgHandler} />
         <div onClick={pub}>전송</div>
@@ -50,10 +50,11 @@ export default ChatLayout;
 const Container = styled.div`
   display: flex;
   flex-direction: column;
+  overflow-x: hidden;
 `;
 
 const Header = styled.div`
-  width: 100%;
+  width: 95%;
   height: 50px;
   display: flex;
   border-bottom: 1px solid var(--color-light-orange);
