@@ -12,7 +12,7 @@ import { useLocation } from "react-router-dom";
 function ChatPage() {
   const client = useRef({});
   const { roomId } = useParams();
-  const [msg, msgHandler] = useInput();
+  const [msg, msgHandler, setMsg] = useInput();
   const [messages, setMessages] = useState([{}]);
   const { state: location } = useLocation();
 
@@ -55,7 +55,6 @@ function ChatPage() {
       };
       console.log(newdata);
       await instance.put("/api/chat/newmessage", newdata);
-      navigate("/chatlist");
     };
     back();
     client.current.deactivate();
@@ -118,9 +117,7 @@ function ChatPage() {
       msgHandler={msgHandler}
       location={location}
     >
-      <div
-        style={{ margin: "50px 0px 50px 0px", width: "90%", height: "90%" }}
-      >
+      <div style={{ margin: "50px 0px 50px 0px", width: "90%", height: "90%" }}>
         {messages &&
           messages.map((mag, idx) =>
             loginNickname === messages[idx].sender ? (
@@ -132,7 +129,7 @@ function ChatPage() {
               />
             ) : (
               <GetMsg
-              location={location}
+                location={location}
                 messages={messages}
                 mag={mag}
                 idx={idx}
