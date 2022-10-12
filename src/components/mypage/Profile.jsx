@@ -36,7 +36,6 @@ function Profile({ userData, DmRequest, profileRef }) {
       removeCookie("loginEmail");
       navigate("/");
     }
-    return null;
   };
 
   const deleteAccount = async () => {
@@ -62,7 +61,10 @@ function Profile({ userData, DmRequest, profileRef }) {
       if (result.data.data === "unfollow success") {
         setFollowerNum((prev) => prev - 1);
       }
-      queryClient.invalidateQueries(["follower", id]);
+      queryClient.invalidateQueries(["userpage", "profile"]);
+      queryClient.invalidateQueries(["mypage", "profile"]);
+      queryClient.invalidateQueries(["follow"]);
+      queryClient.invalidateQueries(["follower"]);
     },
   });
 

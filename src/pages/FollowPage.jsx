@@ -54,19 +54,12 @@ const FollowPage = () => {
     setClick(true); // 클릭 상태는 true로(follower data fetch enabled option)
   };
 
-  // mutate(팔로우/언팔로우) 성공시 해당 키값의 캐시 무효화
-  // 다른 User의 리스트에서 mutate가 일어났다 -> 내가 누군가를 팔로우하거나 언팔로우했음을 의미
-  // 따라서 내 팔로우 캐시도 무효화
   const { mutate } = useMutation((userId) => followHandler(userId), {
     onSuccess: () => {
-      if (!click) {
-        queryClient.invalidateQueries(["follow", id]);
-        queryClient.invalidateQueries(["follow", "0"]);
-      }
-      if (!!click) {
-        queryClient.invalidateQueries(["follower", id ? id : "0"]);
-        queryClient.invalidateQueries(["follow", "0"]);
-      }
+      queryClient.invalidateQueries(["userpage", "profile"]);
+      queryClient.invalidateQueries(["mypage", "profile"]);
+      queryClient.invalidateQueries(["follow"]);
+      queryClient.invalidateQueries(["follower"]);
     },
   });
 
