@@ -1,5 +1,7 @@
+import axios from "axios";
 import React from "react";
 import { usememo, useState, useEffect, useRef } from "react";
+import { useMutation } from "react-query";
 import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
 import { instance, imgInstance } from "../api/request";
@@ -21,14 +23,26 @@ function WritePage() {
   const navigate = useNavigate();
 
   // WriteAddCard에서 값을 받을 state
-  // const [formValues, setFomvalues] = useState([
-  //   { imageUrl: "", content: "", page: 0 },
-  // ]);
-  const [formValues, setFomvalues] = useState([{ imageUrl: "", content: "", page: 0 }]);
+  const [formValues, setFomvalues] = useState([
+    { imageUrl: "", content: "", page: 0 },
+  ]);
 
-  //받은값 전부를 post
-  const onSubmitHandler = async (e) => {
-    e.preventDefault();
+  //받은값 전부를 post => mutate로 리팩토링
+  const writepost = async () => {
+    const data = {
+      title: title,
+      foodName: foodname,
+      imageUrl: imageURL,
+      ingredient: ingredient,
+      time: time,
+      pageList: formValues,
+    };
+    return await instance.post(`/api/auth/post`, data);
+  };
+
+  const { mutate } = useMutation(writepost);
+
+  const submit = () => {
     if (title === "") {
       return alert("제목을 입력해주세요❗️");
     }
@@ -44,24 +58,11 @@ function WritePage() {
     if (ingredient.length === 0) {
       return alert("재료 태그를 추가해주세요❗️");
     }
-    try {
-      const data = {
-        title: title,
-        foodName: foodname,
-        imageUrl: imageURL,
-        ingredient: ingredient,
-        time: time,
-        pageList: formValues,
-      };
-      console.log(data);
-      await instance.post("/api/auth/post", data);
-      alert("게시글 등록이 완료되었습니다!");
-      navigate(-1);
-      window.sessionStorage.clear();
-      window.localStorage.clear();
-    } catch (error) {
-      alert("작성 폼을 다시 확인해주세요!");
-    }
+    mutate();
+    alert("게시글 등록이 완료되었습니다!");
+    navigate(-1);
+    window.sessionStorage.clear();
+    window.localStorage.clear();
   };
 
   //이미지 파일 업로드시 url로 변경해주는 post
@@ -76,7 +77,11 @@ function WritePage() {
 
   return (
     <LayoutPage background={"#fbd499"}>
-      <WriteHeader styled={{ position: "fixed" }} onSubmitHandler={onSubmitHandler} />
+      <WriteHeader
+        styled={{ position: "fixed" }}
+        submit={submit}
+        mutate={mutate}
+      />
       <WriteTitle
         setTitle={setTitle}
         setFoodName={setFoodName}
@@ -97,19 +102,6 @@ function WritePage() {
 }
 
 export default WritePage;
-
-const Addbutton = styled.button`
-  background-color: white;
-  border: 0;
-  width: 80vw;
-  height: 5vh;
-  border-radius: 10px;
-  margin-left: 10vw;
-  &:hover {
-    background: var(--color-dark-white);
-    color: white;
-  }
-`;
 
 const Notion = styled.div`
   margin: 2rem 10vw 1rem 15vw;
