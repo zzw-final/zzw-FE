@@ -18,6 +18,7 @@ const ChatListItem = ({ listItem, deleteChatRoom }) => {
       state: {
         nickname,
         grade,
+        userId,
       },
     });
   };

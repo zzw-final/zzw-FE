@@ -17,8 +17,9 @@ import KakaoRedirect from "./components/login/kakao/KakaoRedirect";
 import GoogleRedirect from "./components/login/google/GoogleRedirect";
 import SearchPage from "./pages/SearchPage";
 import NaverRedirect from "./components/login/naver/NaverRedirect";
-import { getCookie } from "./util/cookie";
 import ChatListPage from "./pages/ChatListPage";
+import { getCookie } from "./util/cookie";
+import { useEffect } from "react";
 
 const Desktop = ({ children }) => {
   const isDesktop = useMediaQuery({ minWidth: 768 });
@@ -32,7 +33,30 @@ const Mobile = ({ children }) => {
 
 const queryClient = new QueryClient();
 
+// console.log("loginUserId app :>> ", getCookie("loginUserId"));
+// console.log("loginNickname app :>> ", getCookie("loginNickname"));
+
+// console.log("now!!!! >", new Date().toString());
+
 function App() {
+  // useEffect(() => {
+  //   const myTimeout = setTimeout(() => {
+  //     console.log(
+  //       'getCookie("tokenInvalidtime")  app :>> ',
+  //       getCookie("tokenInvalidtime")
+  //     );
+  //   }, 1000);
+  //   function myStopFunction() {
+  //     clearTimeout(myTimeout);
+  //   }
+
+  //   return () => {
+  //     myStopFunction();
+  //   };
+  // }, []);
+
+  // console.log("app 렌더링...");
+
   return (
     <QueryClientProvider client={queryClient}>
       <BrowserRouter>

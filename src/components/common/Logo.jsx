@@ -1,28 +1,54 @@
-import axios from "axios";
-import React from "react";
-import { useCookies } from "react-cookie";
-import { Navigate, useNavigate } from "react-router-dom";
+import { React, useEffect, useState, useRef } from "react";
+import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
 import { instance } from "../../api/request";
+import { getCookie } from "../../util/cookie";
 import TextsmsIcon from "@mui/icons-material/Textsms";
-import { useEffect } from "react";
-import { useState } from "react";
+import * as StompJs from "@stomp/stompjs";
 
 const Logo = () => {
+  const client = useRef({});
   const navigate = useNavigate();
-  const [cookies] = useCookies([
-    "accessToken",
-    "refreshToken",
-    "oauthToken",
-    "loginUserId",
-    "loginEmail",
-    "loginNickname",
-    "loginProfile",
-  ]);
+  const [newChatText, setNewChatText] = useState();
+  const loginNickname = getCookie("loginNickname");
+  const loginUserId = getCookie("loginUserId");
 
-  const [newChatText, setNetChatText] = useState(false);
+  useEffect(() => {
+    connect();
+    return () => disconnect();
+  }, []);
 
-  const loginNickname = cookies.loginNickname;
+  const connect = () => {
+    client.current = new StompJs.Client({
+      brokerURL: `wss://${process.env.REACT_APP_CHAT_API}/zzw`,
+      connectHeaders: {
+        Authorization: getCookie("accessToken"),
+        oauth: getCookie("loginOauth"),
+      },
+      // debug: (str) => {
+      //   console.log(str);
+      // },
+      reconnectDelay: 100,
+      onConnect: () => {
+        subscribe();
+      },
+    });
+    client.current.activate();
+  };
+
+  const disconnect = () => {
+    client.current.deactivate();
+  };
+
+  const subscribe = () => {
+    client.current.subscribe(`/sub/chat/member/${loginUserId}`, (res) => {
+      const body = JSON.parse(res.body);
+      console.log("body :>> ", body.isRead);
+      setNewChatText(body.isRead);
+    });
+  };
+
+  console.log("newChatText > ", newChatText);
 
   // 🥲 회원탈퇴
   // const unregister = async () => {
@@ -37,14 +63,14 @@ const Logo = () => {
     navigate("/chatlist");
   };
 
-  const chatAlarm = async () => {
-    const result = await instance.get(`/api/chat/alarm`);
-    setNetChatText(result.data.data.isRead);
-  };
+  // const chatAlarm = async () => {
+  //   const result = await instance.get(`/api/chat/alarm`);
+  //   setNetChatText(result.data.data.isRead);
+  // };
 
-  useEffect(() => {
-    chatAlarm();
-  }, []);
+  // useEffect(() => {
+  //   chatAlarm();
+  // }, []);
 
   return (
     <>

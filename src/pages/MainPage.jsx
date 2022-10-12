@@ -8,9 +8,14 @@ import SearchForm from "../components/main/SearchForm";
 import { useNavigate } from "react-router-dom";
 import { useMutation, useQueries, useQuery, useQueryClient } from "react-query";
 import Toast from "../components/UI/Toast";
+import { getCookie } from "../util/cookie";
 
 const MainPage = () => {
   const navigate = useNavigate();
+  console.log(
+    'getCookie("tokenInvalidtime") main :>> ',
+    getCookie("tokenInvalidtime")
+  );
 
   const [bestPost, setBestPost] = useState([]);
   const [recentPost, setRecentPost] = useState([]);
