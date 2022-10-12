@@ -72,9 +72,8 @@ function DetailPage() {
       time: editTime || postDetail?.time + `분`,
       pageList: editedValues,
     };
-    console.log("보내는 수정데이터 확인", data);
+    // console.log("보내는 수정데이터 확인", data);
     const result = fetchEdit();
-    // const result = await instance.put(`/api/auth/post/${id}`, data);
     console.log("result :>> ", result);
     alert("글 수정이 완료되었습니다!");
     navigate(`/`);
@@ -164,7 +163,8 @@ function DetailPage() {
 
   const onDeleteHandler = async () => {
     if (window.confirm("작성 글을 삭제하시겠습니까?")) {
-      await instance.delete(`/api/auth/post/${id}`);
+      // await instance.delete(`/api/auth/post/${id}`);
+      fetchDelete(id);
       alert("삭제되었습니다.");
       navigate(-1);
     }
