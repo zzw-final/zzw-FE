@@ -1,11 +1,12 @@
 import React, { useCallback, useEffect, useMemo, useState } from "react";
 import { useMutation, useQuery, useQueryClient } from "react-query";
+import { options } from "../api/options";
 import { useNavigate, useParams } from "react-router-dom";
 import { imgInstance, instance } from "../api/request";
 import LayoutPage from "../components/common/LayoutPage";
 import Detail from "../components/detail/Detail";
 import styled from "styled-components";
-import imageCompression from "browser-image-compression";
+import { fetchDetail, fetchDelete, fetchEdit } from "../api/writepage";
 
 function DetailPage() {
   const navigate = useNavigate();
@@ -19,26 +20,14 @@ function DetailPage() {
   const [editTime, setEditTime] = useState();
   const [editedValues, setEditedvalues] = useState();
 
-  // const fetchDetail = async () => {
-  //   return await instance.get(`/api/post/${id}`);
-  // };
-
-  // const { data: postDetail } = useQuery(["detail", id], fetchDetail, {
-  //   // staleTime: Infinity,
-  //   select: (data) => data.data.data,
-  // });
-
-  const [postDetail, setPostDetail] = useState();
-
-  useEffect(() => {
-    const getData = async () => {
-      const data = await instance.get(`/api/post/${id}`);
-      setPostDetail(data.data.data);
-    };
-    getData();
-  }, [id]);
-
   const queryClient = useQueryClient();
+
+  //기존 데이터 가져오는 useQuery
+  const { data: postDetail } = useQuery(
+    ["detail", id],
+    () => fetchDetail(id),
+    options.eternal
+  );
 
   const likeToggle = async (postId) => {
     return await instance.post(`/api/auth/post/${postId}`);
@@ -84,7 +73,8 @@ function DetailPage() {
       pageList: editedValues,
     };
     console.log("보내는 수정데이터 확인", data);
-    const result = await instance.put(`/api/auth/post/${id}`, data);
+    const result = fetchEdit();
+    // const result = await instance.put(`/api/auth/post/${id}`, data);
     console.log("result :>> ", result);
     alert("글 수정이 완료되었습니다!");
     navigate(`/`);
@@ -170,6 +160,7 @@ function DetailPage() {
       );
     }
   }
+  // const { mutate } = useMutation(fetchDelete);
 
   const onDeleteHandler = async () => {
     if (window.confirm("작성 글을 삭제하시겠습니까?")) {
@@ -179,19 +170,6 @@ function DetailPage() {
     }
   };
 
-  // const imgUpload = async (e) => {
-  //   e.preventDefault();
-  //   if (e.target.files) {
-  //     const file = e.target.files[0];
-  //     console.log("이미지 파일 받기", file);
-  //     const formdata = new FormData();
-  //     formdata.append("file", file);
-  //     return await imgInstance.post("/api/post/image", formdata, {
-  //       headers: { "Content-Type": "multipart/form-data" },
-  //     });
-  //   }
-  // };
-
   const imgUpload = async (file) => {
     // e.preventDefault();
     const formdata = new FormData();
@@ -200,19 +178,6 @@ function DetailPage() {
       headers: { "Content-Type": "multipart/form-data" },
     });
   };
-
-  //이미지 파일 업로드시 url로 변경해주는 post
-  // const imgUpload = async (e) => {
-  //   const [file] = e.target.files;
-  //   const newFile = imageCompression(file, {
-  //     maxSizeMB: 1,
-  //     maxWidthOrHeight: 1920,
-  //   });
-  //   const resizingFile = new File([newFile], file.name, { type: file.type });
-  //   return await imgInstance.post("/api/post/image", resizingFile, {
-  //     headers: { "Content-Type": "multipart/form-data" },
-  //   });
-  // };
 
   return (
     <LayoutPage background={"#fbd499"}>
