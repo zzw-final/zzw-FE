@@ -1,7 +1,17 @@
 import React from "react";
+import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
 
-function ChatLayout({ publish, msg, msgHandler, setMsg, location, children, back }) {
+function ChatLayout({
+  publish,
+  msg,
+  msgHandler,
+  setMsg,
+  location,
+  children,
+  back,
+}) {
+  const navigate = useNavigate();
   const pub = () => {
     if (msg.trim() !== "") {
       publish(msg);
@@ -20,6 +30,7 @@ function ChatLayout({ publish, msg, msgHandler, setMsg, location, children, back
     <Container>
       <Header>
         <p onClick={back}>↩︎</p>
+        {/* <p onClick={() => navigate("/chatlist")}>↩︎</p> */}
         <div>
           {location?.nickname}
           <span>{location?.grade}</span>
@@ -43,20 +54,21 @@ const Container = styled.div`
 `;
 
 const Header = styled.div`
-  width: 90%;
+  width: 100%;
   height: 50px;
   display: flex;
   border-bottom: 1px solid var(--color-light-orange);
   align-items: center;
-  margin: auto auto 10px 10px;
+  margin: auto auto 10px auto;
   background-color: white;
   position: fixed;
   p {
     font-size: var(--font-regular);
     font-weight: var(--weight-semi-bold);
+    margin: 15px auto auto 20px;
   }
   div {
-    margin: auto;
+    margin: auto 90px auto 20px;
     font-size: var(--font-medium-large);
     font-weight: var(--weight-semi-bold);
   }

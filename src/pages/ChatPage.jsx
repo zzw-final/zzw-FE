@@ -26,6 +26,7 @@ function ChatPage() {
   useEffect(() => {
     const getChat = async () => {
       const chatData = await instance.get(`/api/chat/message/${roomId}`);
+      console.log("기존메세지", chatData.data.data);
       setMessages(chatData.data.data);
     };
     getChat();
@@ -101,12 +102,20 @@ function ChatPage() {
   }, [messages]);
 
   //메세지 어디까지 확인했는지 체크해주는 put 요청
+
   const back = async () => {
-    const newdata = { roomId: Number(roomId), messageId: messages.length };
+    const newdata = {
+      roomId: Number(roomId),
+      messageId: messages[messages.length - 1].messageId,
+    };
     console.log(newdata);
     await instance.put("/api/chat/newmessage", newdata);
     navigate("/chatlist");
   };
+
+  useEffect(() => {
+    return () => back();
+  }, []);
 
   return (
     <ChatLayout
@@ -117,13 +126,25 @@ function ChatPage() {
       location={location}
       back={back}
     >
-      <div style={{ margin: "50px 0px 50px 10px", width: "100%" }}>
+      <div
+        style={{ margin: "50px 0px 50px 10px", width: "90%", height: "90%" }}
+      >
         {messages &&
           messages.map((mag, idx) =>
             loginNickname === messages[idx].sender ? (
-              <SendMsg messages={messages} mag={mag} idx={idx} scrollRef={scrollRef} />
+              <SendMsg
+                messages={messages}
+                mag={mag}
+                idx={idx}
+                scrollRef={scrollRef}
+              />
             ) : (
-              <GetMsg messages={messages} mag={mag} idx={idx} scrollRef={scrollRef} />
+              <GetMsg
+                messages={messages}
+                mag={mag}
+                idx={idx}
+                scrollRef={scrollRef}
+              />
             )
           )}
       </div>

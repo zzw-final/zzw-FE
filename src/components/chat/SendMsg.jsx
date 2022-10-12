@@ -29,6 +29,7 @@ const MsgDiv = styled.div`
   float: right;
   width: 90%;
   padding: 10px;
+  margin-right: -20px;
 `;
 
 const DateDiv = styled.p`
