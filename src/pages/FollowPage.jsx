@@ -5,7 +5,6 @@ import FollowList from "../components/followpage/FollowList";
 import { useState } from "react";
 import { useQuery, useMutation, useQueryClient } from "react-query";
 import { useLocation, useParams } from "react-router-dom";
-import { instance } from "../api/request";
 import { options } from "../api/options";
 import {
   fetchFollow,
@@ -18,10 +17,10 @@ import {
 const FollowPage = () => {
   const { id } = useParams();
   const { state: location } = useLocation();
-  const { isClick, followClick, followerClick, nickname } = location;
+  const { isClick, follow, follower, nickname } = location;
   const [click, setClick] = useState(isClick);
-  const [followView, setFollowView] = useState(followClick);
-  const [followerView, setFollowerView] = useState(followerClick);
+  const [followView, setFollowView] = useState(follow);
+  const [followerView, setFollowerView] = useState(follower);
   const queryClient = useQueryClient();
 
   const { data: followList } = useQuery(
@@ -57,7 +56,7 @@ const FollowPage = () => {
 
   // mutate(팔로우/언팔로우) 성공시 해당 키값의 캐시 무효화
   // 다른 User의 리스트에서 mutate가 일어났다 -> 내가 누군가를 팔로우하거나 언팔로우했음을 의미
-  // 따라서 내 팔로우 캐시도 무효화 시킨다.
+  // 따라서 내 팔로우 캐시도 무효화
   const { mutate } = useMutation((userId) => followHandler(userId), {
     onSuccess: () => {
       if (!click) {
