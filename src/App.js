@@ -39,7 +39,7 @@ function App() {
   useEffect(() => {
     setTimeout(() => {
       if (getCookie("loginEmail")) setIsLogin(true);
-    }, 300);
+    }, 500);
   }, []);
 
   console.log(isLogin);

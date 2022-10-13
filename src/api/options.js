@@ -1,4 +1,7 @@
 export const options = {
+  basic: {
+    select: (data) => data.data.data,
+  },
   eternal: {
     cacheTime: Infinity,
     staleTime: Infinity,
