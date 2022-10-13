@@ -8,91 +8,58 @@ import SearchForm from "../components/main/SearchForm";
 import { useNavigate } from "react-router-dom";
 import { useMutation, useQueries, useQuery, useQueryClient } from "react-query";
 import Toast from "../components/UI/Toast";
-import { getCookie } from "../util/cookie";
+// import { fetchBestList } from "../api/mainpage";
+import { options } from "../api/options";
+import {
+  fetchBestList,
+  fetchBestTagTopFive,
+  fetchFollowListInfinite,
+  fetchRecentList,
+  fetchRecentListInfinite,
+} from "../api/mainpage";
+import { useCookies } from "react-cookie";
 
 const MainPage = () => {
   const navigate = useNavigate();
-  console.log(
-    'getCookie("tokenInvalidtime") main :>> ',
-    getCookie("tokenInvalidtime")
+
+  const [toast, setToast] = useState(false);
+  const [cookies] = useCookies(["loginNickname"]);
+
+  const loginNickname = cookies.loginNickname;
+
+  const { data: tagList } = useQuery(
+    "tagList",
+    fetchBestTagTopFive,
+    options.eternal
   );
 
-  const [bestPost, setBestPost] = useState([]);
-  const [recentPost, setRecentPost] = useState([]);
-  const [tagList, setTagList] = useState([]);
-  const [followPost, setFollowPost] = useState([]);
-  const [toast, setToast] = useState(false);
+  const { data: bestPost } = useQuery(
+    "bestPost",
+    fetchBestList,
+    options.eternal
+  );
 
-  useEffect(() => {
-    async function fetchData() {
-      const result = await instance.get(`/api/post`);
-      if (result.data.success && result.data.error === null) {
-        setBestPost(result.data.data.bestPost);
-        setRecentPost(result.data.data.recentPost);
-        setTagList(result.data.data.tagList);
-        setFollowPost(result.data.data.followPost);
-      }
-    }
-    fetchData();
-  }, []);
+  const { data: recentPost } = useQuery(
+    "recentPost",
+    loginNickname ? fetchRecentList : "",
+    options.eternal
+  );
 
-  // const fetchData = async () => {
-  //   console.log("요청...");
-  //   return await instance.get(`/api/post`);
-  // };
+  const { data: recentPostInfinite } = useQuery(
+    "recentPostInfinite",
+    loginNickname ? "" : () => fetchRecentListInfinite,
+    options.eternal
+  );
 
-  // const { data: bestPost } = useQuery(["allList"], fetchData, {
-  //   select: (data) => data.data.data.bestPost,
-  //   cacheTime: 0,
-  // });
-  // const { data: recentPost } = useQuery(["allList"], fetchData, {
-  //   select: (data) => data.data.data.recentPost,
-  //   cacheTime: 0,
-  // });
-  // const { data: followPost } = useQuery(["allList"], fetchData, {
-  //   select: (data) => data.data.data.followPost,
-  //   cacheTime: 0,
-  // });
-  // const { data: tagList } = useQuery(["allList"], fetchData, {
-  //   select: (data) => data.data.data.tagList,
-  //   cacheTime: 0,
-  // });
+  const { data: followPost } = useQuery(
+    "followPost",
+    loginNickname ? () => fetchFollowListInfinite : "",
+    options.eternal
+  );
 
   const likeToggle = async (postId) => {
     return await instance.post(`/api/auth/post/${postId}`);
   };
-
-  // const queryClient = useQueryClient();
-
-  // const { mutate } = useMutation(likeToggle, {
-  //   onSuccess: (result, context) => {
-  //     // 위의 파라미터 찍어보기
-  //     queryClient.invalidateQueries(["allList"]);
-  //   },
-  // });
-
-  // const { mutate } = useMutation(likeToggle, {
-  //   onMutate: async (postId) => {
-  //     await queryClient.cancelQueries(["allList"]);
-  //     const previousData = queryClient.getQueryData(["allList"]);
-  // queryClient.setQueryData(["allList"], (prevData) => {
-  // console.log("prevData :>> ", prevData?.data?.data.bestPost);
-  // return prevData?.data?.data.bestPost.map((post) =>
-  //   post.postId === postId ? { ...post, isLike: !post.isLike } : post
-  // );
-  // return prevData;
-  // });
-  //     return { previousData };
-  //   },
-  //   onError: (err, context) => {
-  //     queryClient.setQueryData(["allList"], context.previousData);
-  //   },
-  // });
-
-  // onSuccess: (result, context) => {
-  // 위의 파라미터 찍어보기
-  //   queryClient.invalidateQueries(["allList"]);
-  // },
 
   const search = async (searchOption, sendData) => {
     navigate(`/search?${searchOption}=${sendData}`);
@@ -115,13 +82,13 @@ const MainPage = () => {
           />
         )}
         <Main
+          tagList={tagList}
           bestPost={bestPost}
           recentPost={recentPost}
-          tagList={tagList}
+          recentPostInfinite={recentPostInfinite && recentPostInfinite}
           followPost={followPost}
           likeToggle={likeToggle}
           search={search}
-          // mutate={mutate}
         />
       </MainContainer>
     </LayoutPage>

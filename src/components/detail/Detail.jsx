@@ -67,7 +67,6 @@ function Detail({
   };
 
   const tagSearch = (tagName) => {
-    console.log("gg?");
     navigate(`/search?tag=${tagName}`);
   };
 

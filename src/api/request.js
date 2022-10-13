@@ -87,3 +87,7 @@ export const join = async (sendData) => {
 export const likes = async (postId) => {
   return await instance.post(`/api/auth/post/${postId}`);
 };
+
+export const searchRecipe = async (postId) => {
+  return await instance.get(`/api/post/filter/${postId}`);
+};

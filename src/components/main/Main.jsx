@@ -4,11 +4,13 @@ import List from "../common/List";
 import Tag from "../common/Tag";
 import Skeleton from "@mui/material/Skeleton";
 import { useCookies } from "react-cookie";
+import ListInfinite from "../common/ListInfinite";
 
 const Main = ({
+  tagList,
   bestPost,
   recentPost,
-  tagList,
+  recentPostInfinite,
   followPost,
   likeToggle,
   search,
@@ -25,7 +27,7 @@ const Main = ({
   return (
     <MainContainer>
       <TagsContainer>
-        {tagList ? (
+        {tagList &&
           tagList?.map((tag, idx) => (
             <Tag
               tagName={tag.tagName}
@@ -37,16 +39,7 @@ const Main = ({
               margin="0 0.5rem 0 0.5rem"
               boxShadow="0px 2px 0px #868686"
             />
-          ))
-        ) : (
-          // 4번 반복
-          <Skeleton
-            variant="rounded"
-            width={50}
-            height={19}
-            sx={{ marginLeft: 1, marginRight: 1 }}
-          />
-        )}
+          ))}
       </TagsContainer>
       <ListBox>
         <Title>베스트 🍲</Title>
@@ -59,15 +52,14 @@ const Main = ({
             height="200px"
           />
         </BestRecipeContainer>
-        {(followPost && followPost.length === 0) ||
-        loginNickname === undefined ? (
+        {loginNickname === undefined ? (
           <>
             <Title>NEW 레시피 🥦</Title>
             <NewRecipeScrollContainer>
-              <List
-                list={recentPost}
+              <ListInfinite
+                list={recentPostInfinite}
+                listName="recentPost"
                 likeToggle={likeToggle}
-                mutate={mutate}
                 display="grid"
                 height="210px"
                 margin="0 0.5rem 0 0.5rem"
@@ -81,17 +73,16 @@ const Main = ({
               <List
                 list={recentPost}
                 likeToggle={likeToggle}
-                mutate={mutate}
                 width="160px"
                 height="200px"
               />
             </NewRecipeContainer>
             <Title>follow List 🥕</Title>
             <FollowContainer>
-              <List
+              <ListInfinite
                 list={followPost}
                 likeToggle={likeToggle}
-                mutate={mutate}
+                listName="followPost"
                 display="grid"
                 height="210px"
                 margin="0 0.5rem 0 0.5rem"

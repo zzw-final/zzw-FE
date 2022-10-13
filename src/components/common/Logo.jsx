@@ -48,7 +48,7 @@ const Logo = () => {
     });
   };
 
-  console.log("newChatText > ", newChatText);
+  // console.log("newChatText > ", newChatText);
 
   // 🥲 회원탈퇴
   // const unregister = async () => {

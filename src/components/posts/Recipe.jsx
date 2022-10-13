@@ -43,7 +43,12 @@ function Recipe({ post, ...props }) {
   return (
     <Card {...props} margin="1px 6px">
       <TopBox>
-        <Tag tagName={`#${foodName}`} isFoodName={true} height="24px" opacity={0.8} />
+        <Tag
+          tagName={`#${foodName}`}
+          isFoodName={true}
+          height="24px"
+          opacity={0.8}
+        />
         <Like isLike={likeToggleBtn} btnClick={like} />
       </TopBox>
       <Img alt="foodphoto" src={foodImg} onClick={goToDetail} />

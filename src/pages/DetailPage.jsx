@@ -1,7 +1,7 @@
 import React, { useCallback, useEffect, useMemo, useState } from "react";
 import { useMutation, useQuery, useQueryClient } from "react-query";
 import { useNavigate, useParams } from "react-router-dom";
-import { imgInstance, instance } from "../api/request";
+import { imgInstance, instance, likes } from "../api/request";
 import LayoutPage from "../components/common/LayoutPage";
 import Detail from "../components/detail/Detail";
 import styled from "styled-components";
@@ -41,7 +41,8 @@ function DetailPage() {
   const queryClient = useQueryClient();
 
   const likeToggle = async (postId) => {
-    return await instance.post(`/api/auth/post/${postId}`);
+    return likes(postId);
+    // return await instance.post(`/api/auth/post/${postId}`);
   };
 
   // const { mutate } = useMutation(likeToggle, {

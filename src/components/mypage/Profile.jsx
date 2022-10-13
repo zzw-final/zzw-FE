@@ -6,6 +6,7 @@ import Button from "../UI/Button";
 import { instance } from "../../api/request";
 import { useMutation, useQueryClient } from "react-query";
 import { getCookie, removeCookie } from "../../util/cookie";
+import { useCookies } from "react-cookie";
 
 function Profile({ userData, DmRequest, profileRef }) {
   const navigate = useNavigate();
