@@ -11,12 +11,15 @@ import {
   fetchDelete,
   fetchEdit,
   fetchImg,
+  commentFetch,
+  commentPost,
+  commentDelete,
+  commentUpdate,
 } from "../api/writepage";
 
 function DetailPage() {
   const navigate = useNavigate();
   const { id } = useParams();
-  const [commentList, setCommentList] = useState();
 
   const [editedIngredient, setEditedIngredient] = useState();
   const [editedTitle, setEditedTitle] = useState();
@@ -58,7 +61,7 @@ function DetailPage() {
   const editMutate = useMutation((sendData) => fetchEdit(sendData), {
     onSuccess: () => {
       alert("글 수정이 완료되었습니다!");
-      navigate(`/`); //여기 해당 디테일페이지로 이동하게 수정하기
+      navigate(`/`);
     },
   });
 
@@ -98,6 +101,7 @@ function DetailPage() {
     }
   };
 
+  //디테일 페이지 좋아요
   const likeToggle = async (postId) => {
     return await instance.post(`/api/auth/post/${postId}`);
   };
@@ -122,73 +126,62 @@ function DetailPage() {
   //   },
   // });
 
+  //재료만 뽑아줌
   const foodIngredientList = postDetail?.ingredient
     ?.map((ingredient) =>
       ingredient.isName !== true ? ingredient.ingredientName : undefined
     )
     .filter((ingredient) => ingredient !== undefined);
 
+  // 2p~10p 데이터
   useEffect(() => {
     setEditedvalues(postDetail?.contentList);
   }, [postDetail?.contentList]);
 
-  useEffect(() => {
-    async function fetchData() {
-      const comments = await (
-        await instance.get(`/api/post/${id}/comment`)
-      ).data.data;
-      setCommentList(comments);
-    }
-    fetchData();
-  }, [id]);
+  //댓글 데이터 가져오는 useQuery
+  const { data: commentList } = useQuery(
+    ["comment", id],
+    () => commentFetch(id),
+    options.eternal
+  );
 
-  async function post(postInfo) {
-    const comment = {
-      comment: postInfo.comment,
-    };
-    const res = await instance.post(
-      `/api/auth/post/${postInfo.postId}/comment`,
-      comment
-    );
-    const newPost = {
-      ...res.data.data,
-      postId: postInfo.postId,
-      profile: postInfo.profile,
-    };
-    setCommentList((prev) => [newPost, ...prev]);
-  }
+  //댓글 작성
+  const commentPostMutate = useMutation((postInfo) => commentPost(postInfo), {
+    onSuccess: () => {
+      queryClient.invalidateQueries("comment", id);
+    },
+  });
 
-  async function remove(commentId) {
-    const removed = await instance.delete(
-      `/api/auth/post/comment/${commentId}`
-    );
-    if (removed.data.data === "success delete") {
-      const deletedCommentId = commentId;
-      setCommentList((prev) =>
-        prev.filter((comment) => comment.commentId !== deletedCommentId)
-      );
-    }
-  }
+  const post = (postInfo) => {
+    commentPostMutate.mutate(postInfo);
+  };
 
-  async function update(updatedInfo) {
-    const comment = {
-      comment: updatedInfo.comment,
-    };
-    const res = await instance.put(
-      `/api/auth/post/comment/${updatedInfo.commentId}`,
-      comment
-    );
-    if (res.data.success) {
-      const updatedPost = updatedInfo;
-      setCommentList((prev) =>
-        prev.map((item) =>
-          item.commentId === updatedPost.commentId
-            ? { ...item, comment: updatedPost.comment }
-            : item
-        )
-      );
+  //댓글 삭제
+  const commentDeleteMutate = useMutation(
+    (commentId) => commentDelete(commentId),
+    {
+      onSuccess: () => {
+        queryClient.invalidateQueries("comment", id);
+      },
     }
-  }
+  );
+  const remove = (commentId) => {
+    commentDeleteMutate.mutate(commentId);
+  };
+
+  //댓글 수정
+
+  const commentUpdateMutate = useMutation(
+    (updateInfo) => commentUpdate(updateInfo),
+    {
+      onSuccess: () => {
+        queryClient.invalidateQueries("comment", id);
+      },
+    }
+  );
+  const update = (updateInfo) => {
+    commentUpdateMutate.mutate(updateInfo);
+  };
 
   return (
     <LayoutPage background={"#fbd499"}>
@@ -217,11 +210,9 @@ function DetailPage() {
 }
 
 const DetailContainer = styled.div`
-  /* height: 100vh; */
   height: calc(var(--vh, 1vh) * 100 - 56px);
   height: auto;
   margin-bottom: 60px;
-  /* height: calc(var(--vh, 1vh) * 100 + 56px); */
 `;
 
 export default DetailPage;
