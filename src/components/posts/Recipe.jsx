@@ -1,14 +1,18 @@
-import React, { useState } from "react";
 import styled from "styled-components";
 import Tag from "../common/Tag";
 import Card from "../UI/Card";
 import Like from "../common/Like";
+import { useState } from "react";
 import { useNavigate } from "react-router-dom";
+import { useCookies } from "react-cookie";
+import { likes } from "../../api/request";
 
-function Recipe({ post, onLikeHandler }) {
+function Recipe({ post, ...props }) {
   const navigate = useNavigate();
   const { postId, title, isLike, ingredient, foodImg } = post;
   const [likeToggleBtn, setLikeToggleBtn] = useState(isLike);
+  const [cookies] = useCookies(["loginNickname"]);
+  const loginNickname = cookies.loginNickname;
 
   const foodName = ingredient?.find(
     (ingredient) => ingredient.isName === true
@@ -21,7 +25,12 @@ function Recipe({ post, onLikeHandler }) {
     .filter((ingredient) => ingredient !== undefined);
 
   const like = async () => {
-    const resp = await onLikeHandler(postId);
+    if (loginNickname === undefined) {
+      alert("로그인 유저만 사용 가능한 기능입니다.");
+      return;
+    }
+    const resp = await likes(postId);
+    console.log("조아요", resp);
     const isVisible = resp.data.data;
     if (isVisible) {
       setLikeToggleBtn(!likeToggleBtn);
@@ -33,7 +42,7 @@ function Recipe({ post, onLikeHandler }) {
   };
 
   return (
-    <Card>
+    <Card {...props} margin="1px 6px">
       <TopBox>
         <Tag
           tagName={`#${foodName}`}

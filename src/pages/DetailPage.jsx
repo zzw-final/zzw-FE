@@ -1,16 +1,25 @@
 import React, { useCallback, useEffect, useMemo, useState } from "react";
 import { useMutation, useQuery, useQueryClient } from "react-query";
+import { options } from "../api/options";
 import { useNavigate, useParams } from "react-router-dom";
-import { imgInstance, instance } from "../api/request";
 import LayoutPage from "../components/common/LayoutPage";
 import Detail from "../components/detail/Detail";
 import styled from "styled-components";
-import imageCompression from "browser-image-compression";
+import {
+  fetchDetail,
+  fetchDelete,
+  fetchEdit,
+  fetchImg,
+  commentFetch,
+  commentPost,
+  commentDelete,
+  commentUpdate,
+  likePost,
+} from "../api/writepage";
 
 function DetailPage() {
   const navigate = useNavigate();
   const { id } = useParams();
-  const [commentList, setCommentList] = useState();
 
   const [editedIngredient, setEditedIngredient] = useState();
   const [editedTitle, setEditedTitle] = useState();
@@ -19,60 +28,42 @@ function DetailPage() {
   const [editTime, setEditTime] = useState();
   const [editedValues, setEditedvalues] = useState();
 
-  // const fetchDetail = async () => {
-  //   return await instance.get(`/api/post/${id}`);
-  // };
-
-  // const { data: postDetail } = useQuery(["detail", id], fetchDetail, {
-  //   // staleTime: Infinity,
-  //   select: (data) => data.data.data,
-  // });
-
-  const [postDetail, setPostDetail] = useState();
-
-  useEffect(() => {
-    const getData = async () => {
-      const data = await instance.get(`/api/post/${id}`);
-      setPostDetail(data.data.data);
-    };
-    getData();
-  }, [id]);
-
   const queryClient = useQueryClient();
 
-  const likeToggle = async (postId) => {
-    return await instance.post(`/api/auth/post/${postId}`);
+  //기존 데이터 가져오는 useQuery
+  const { data: postDetail } = useQuery(
+    ["detail", id],
+    () => fetchDetail(id),
+    options.eternal
+  );
+
+  //이미지 업로드 시 url 반환요청
+  const imgUpload = async (file) => {
+    const formdata = new FormData();
+    formdata.append("file", file);
+    return fetchImg(formdata);
   };
 
-  // const { mutate } = useMutation(likeToggle, {
-  //   onMutate: async (postId) => {
-  //     await queryClient.cancelQueries(["detail", id]);
-  //     const previousData = queryClient.getQueryData(["detail", id]);
-  //     queryClient.setQueryData(["detail", id], (prevData) => {
-  //       console.log("prevData :>> ", prevData);
-  // return { ...prevData?.data.data, isLike: !prevData?.data.data.isLike };
-  //       return {
-  //         ...prevData,
-  //         isLike: !prevData.data.data.isLike,
-  //       };
-  //     });
-  //     return previousData;
-  //   },
-  //   onSuccess: async (data, postId) => {
-  //     // console.log("data detailPage > ", data);
-  //     // console.log("data detailPage  postId> ", postId);
-  //   },
-  // });
+  //게시글 삭제
+  const delteMutate = useMutation((id) => fetchDelete(id), {
+    onSuccess: () => {
+      alert("삭제되었습니다.");
+      navigate(-1);
+    },
+  });
 
-  const foodIngredientList = postDetail?.ingredient
-    ?.map((ingredient) =>
-      ingredient.isName !== true ? ingredient.ingredientName : undefined
-    )
-    .filter((ingredient) => ingredient !== undefined);
-
-  useEffect(() => {
-    setEditedvalues(postDetail?.contentList);
-  }, [postDetail?.contentList]);
+  const onDeleteHandler = () => {
+    if (window.confirm("작성 글을 삭제하시겠습니까?")) {
+      delteMutate.mutate(id);
+    }
+  };
+  //게시글 수정
+  const editMutate = useMutation((sendData) => fetchEdit(sendData), {
+    onSuccess: () => {
+      alert("글 수정이 완료되었습니다!");
+      navigate(`/`);
+    },
+  });
 
   const onSubmitHandler = async () => {
     const data = {
@@ -83,11 +74,8 @@ function DetailPage() {
       time: editTime || postDetail?.time + `분`,
       pageList: editedValues,
     };
-    console.log("보내는 수정데이터 확인", data);
-    const result = await instance.put(`/api/auth/post/${id}`, data);
-    console.log("result :>> ", result);
-    alert("글 수정이 완료되었습니다!");
-    navigate(`/`);
+    const sendData = { id, data };
+    editMutate.mutate(sendData);
   };
 
   const editForm = (type, data) => {
@@ -113,96 +101,61 @@ function DetailPage() {
     }
   };
 
+  //재료만 뽑아줌
+  const foodIngredientList = postDetail?.ingredient
+    ?.map((ingredient) =>
+      ingredient.isName !== true ? ingredient.ingredientName : undefined
+    )
+    .filter((ingredient) => ingredient !== undefined);
+
+  // 2p~10p 데이터
   useEffect(() => {
-    async function fetchData() {
-      const comments = await (
-        await instance.get(`/api/post/${id}/comment`)
-      ).data.data;
-      setCommentList(comments);
-    }
-    fetchData();
-  }, [id]);
+    setEditedvalues(postDetail?.contentList);
+  }, [postDetail?.contentList]);
 
-  async function post(postInfo) {
-    const comment = {
-      comment: postInfo.comment,
-    };
-    const res = await instance.post(
-      `/api/auth/post/${postInfo.postId}/comment`,
-      comment
-    );
-    const newPost = {
-      ...res.data.data,
-      postId: postInfo.postId,
-      profile: postInfo.profile,
-    };
-    setCommentList((prev) => [newPost, ...prev]);
-  }
+  //댓글 데이터 가져오는 useQuery
+  const { data: commentList } = useQuery(
+    ["comment", id],
+    () => commentFetch(id),
+    options.eternal
+  );
 
-  async function remove(commentId) {
-    const removed = await instance.delete(
-      `/api/auth/post/comment/${commentId}`
-    );
-    if (removed.data.data === "success delete") {
-      const deletedCommentId = commentId;
-      setCommentList((prev) =>
-        prev.filter((comment) => comment.commentId !== deletedCommentId)
-      );
-    }
-  }
+  //댓글 작성
+  const commentPostMutate = useMutation((postInfo) => commentPost(postInfo), {
+    onSuccess: () => {
+      queryClient.invalidateQueries("comment", id);
+    },
+  });
 
-  async function update(updatedInfo) {
-    const comment = {
-      comment: updatedInfo.comment,
-    };
-    const res = await instance.put(
-      `/api/auth/post/comment/${updatedInfo.commentId}`,
-      comment
-    );
-    if (res.data.success) {
-      const updatedPost = updatedInfo;
-      setCommentList((prev) =>
-        prev.map((item) =>
-          item.commentId === updatedPost.commentId
-            ? { ...item, comment: updatedPost.comment }
-            : item
-        )
-      );
-    }
-  }
-
-  const onDeleteHandler = async () => {
-    if (window.confirm("작성 글을 삭제하시겠습니까?")) {
-      await instance.delete(`/api/auth/post/${id}`);
-      alert("삭제되었습니다.");
-      navigate("/");
-    }
+  const post = (postInfo) => {
+    commentPostMutate.mutate(postInfo);
   };
 
-  // const imgUpload = async (e) => {
-  //   e.preventDefault();
-  //   if (e.target.files) {
-  //     const file = e.target.files[0];
-  //     console.log("이미지 파일 받기", file);
-  //     const formdata = new FormData();
-  //     formdata.append("file", file);
-  //     return await imgInstance.post("/api/post/image", formdata, {
-  //       headers: { "Content-Type": "multipart/form-data" },
-  //     });
-  //   }
-  // };
-  //이미지 파일 업로드시 url로 변경해주는 post
-  const imgUpload = async (e) => {
-    // e.preventDefault();
-    const [file] = e.target.files;
-    const newFile = imageCompression(file, {
-      maxSizeMB: 1,
-      maxWidthOrHeight: 1920,
-    });
-    const resizingFile = new File([newFile], file.name, { type: file.type });
-    return await imgInstance.post("/api/post/image", resizingFile, {
-      headers: { "Content-Type": "multipart/form-data" },
-    });
+  //댓글 삭제
+  const commentDeleteMutate = useMutation(
+    (commentId) => commentDelete(commentId),
+    {
+      onSuccess: () => {
+        queryClient.invalidateQueries("comment", id);
+      },
+    }
+  );
+  const remove = (commentId) => {
+    commentDeleteMutate.mutate(commentId);
+  };
+
+  //댓글 수정
+
+  const commentUpdateMutate = useMutation(
+    (updateInfo) => commentUpdate(updateInfo),
+    {
+      onSuccess: () => {
+        queryClient.invalidateQueries("comment", id);
+      },
+    }
+  );
+  const update = (updateInfo) => {
+    commentUpdateMutate.mutate(updateInfo);
   };
 
   return (
@@ -212,11 +165,11 @@ function DetailPage() {
           <Detail
             postDetail={postDetail}
             onDelete={onDeleteHandler}
+            id={id}
             post={post}
             remove={remove}
             update={update}
             commentList={commentList}
-            likeToggle={likeToggle}
             imgUpload={imgUpload}
             editedValues={editedValues}
             setEditedValues={setEditedvalues}
@@ -231,8 +184,7 @@ function DetailPage() {
 }
 
 const DetailContainer = styled.div`
-  height: 100vh;
-  /* height: calc(var(--vh, 1vh) * 100 + 56px); */
+  height: calc(var(--vh, 1vh) * 100 - 56px);
   height: auto;
   margin-bottom: 60px;
 `;

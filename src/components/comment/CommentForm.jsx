@@ -1,6 +1,6 @@
 import React from "react";
 import styled from "styled-components";
-import Button from "@mui/material/Button";
+import Button from "../UI/Button";
 import { useCookies } from "react-cookie";
 import useInputRef from "../../hooks/useInputRef";
 
@@ -30,7 +30,13 @@ const CommentForm = ({ postId, post }) => {
   return (
     <FormContainer>
       <CommentInput ref={commentRef} />
-      <Button variant="outlined" sx={{ p: 0, ml: 1 }} onClick={postComment}>
+      <Button
+        name="commonBtn"
+        onClick={postComment}
+        width="5rem"
+        height="2rem"
+        border="1px solid var(--color-grey)"
+      >
         댓글 달기
       </Button>
     </FormContainer>
@@ -39,12 +45,14 @@ const CommentForm = ({ postId, post }) => {
 
 const FormContainer = styled.div`
   display: flex;
+  align-items: center;
   margin: 0.4rem;
 `;
 
 const CommentInput = styled.input`
   width: 100%;
   height: 4vh;
+  margin: 0.5rem;
 `;
 
 export default CommentForm;

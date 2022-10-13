@@ -4,12 +4,14 @@ import Tag from "../common/Tag";
 import CommentList from "../comment/CommentList";
 import { getCookie } from "../../util/cookie";
 import Toast from "../UI/Toast";
-import SwiperRecipe from "../common/SwiperRecipe";
-import TagList from "../common/TagList";
+import { useNavigate } from "react-router-dom";
+import TagList from "./TagList";
+import SwiperRecipe from "./SwiperRecipe";
 
 function Detail({
   postDetail,
   // tagList,
+  id,
   post,
   remove,
   update,
@@ -27,9 +29,12 @@ function Detail({
   const url = window.location.href;
   const [toast, setToast] = useState(false);
   const [isEditMode, setIsEditMode] = useState(false);
+  const navigate = useNavigate();
 
   const foodIngredientList = postDetail?.ingredient
-    .map((ingredient) => (!ingredient.isName ? ingredient.ingredientName : undefined))
+    .map((ingredient) =>
+      !ingredient.isName ? ingredient.ingredientName : undefined
+    )
     .filter((ingredient) => ingredient !== undefined);
 
   const [foodName, setFoodName] = useState();
@@ -60,6 +65,11 @@ function Detail({
 
   const onCancle = () => {
     setIsEditMode(!isEditMode);
+  };
+
+  const tagSearch = (tagName) => {
+    console.log("gg?");
+    navigate(`/search?tag=${tagName}`);
   };
 
   return (
@@ -113,7 +123,14 @@ function Detail({
       {!isEditMode ? (
         <Tags>
           {foodIngredientList?.map((ingredient, i) => (
-            <Tag height="20px" tagName={ingredient} key={i} />
+            <Tag
+              height="20px"
+              tagName={ingredient}
+              key={i}
+              onClickHandler={() => {
+                tagSearch(ingredient);
+              }}
+            />
           ))}
         </Tags>
       ) : (
@@ -140,7 +157,9 @@ function Detail({
         )}
       </Content>
 
-      {toast && <Toast setToast={setToast} text="🖇 클립보드에 복사되었습니다." />}
+      {toast && (
+        <Toast setToast={setToast} text="🖇 클립보드에 복사되었습니다." />
+      )}
 
       <Footer>
         <FootLeft>
@@ -246,6 +265,7 @@ const Tags = styled.div`
   padding: 0.2rem;
   gap: 0.5rem;
   white-space: nowrap;
+  overflow-x: scroll;
 
   &::-webkit-scrollbar {
     display: none;
