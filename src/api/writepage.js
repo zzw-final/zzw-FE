@@ -52,3 +52,8 @@ export const commentUpdate = async (updatedInfo) => {
     comment
   );
 };
+
+//좋아요
+export const likePost = async (postId) => {
+  return await instance.post(`/api/auth/post/${postId}`);
+};

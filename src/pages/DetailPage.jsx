@@ -2,7 +2,6 @@ import React, { useCallback, useEffect, useMemo, useState } from "react";
 import { useMutation, useQuery, useQueryClient } from "react-query";
 import { options } from "../api/options";
 import { useNavigate, useParams } from "react-router-dom";
-import { imgInstance, instance } from "../api/request";
 import LayoutPage from "../components/common/LayoutPage";
 import Detail from "../components/detail/Detail";
 import styled from "styled-components";
@@ -15,6 +14,7 @@ import {
   commentPost,
   commentDelete,
   commentUpdate,
+  likePost,
 } from "../api/writepage";
 
 function DetailPage() {
@@ -101,31 +101,6 @@ function DetailPage() {
     }
   };
 
-  //디테일 페이지 좋아요
-  const likeToggle = async (postId) => {
-    return await instance.post(`/api/auth/post/${postId}`);
-  };
-
-  // const { mutate } = useMutation(likeToggle, {
-  //   onMutate: async (postId) => {
-  //     await queryClient.cancelQueries(["detail", id]);
-  //     const previousData = queryClient.getQueryData(["detail", id]);
-  //     queryClient.setQueryData(["detail", id], (prevData) => {
-  //       console.log("prevData :>> ", prevData);
-  // return { ...prevData?.data.data, isLike: !prevData?.data.data.isLike };
-  //       return {
-  //         ...prevData,
-  //         isLike: !prevData.data.data.isLike,
-  //       };
-  //     });
-  //     return previousData;
-  //   },
-  //   onSuccess: async (data, postId) => {
-  //     // console.log("data detailPage > ", data);
-  //     // console.log("data detailPage  postId> ", postId);
-  //   },
-  // });
-
   //재료만 뽑아줌
   const foodIngredientList = postDetail?.ingredient
     ?.map((ingredient) =>
@@ -195,7 +170,6 @@ function DetailPage() {
             remove={remove}
             update={update}
             commentList={commentList}
-            likeToggle={likeToggle}
             imgUpload={imgUpload}
             editedValues={editedValues}
             setEditedValues={setEditedvalues}
