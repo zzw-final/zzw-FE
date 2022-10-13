@@ -11,6 +11,7 @@ import SwiperRecipe from "./SwiperRecipe";
 function Detail({
   postDetail,
   // tagList,
+  id,
   post,
   remove,
   update,

@@ -6,7 +6,12 @@ import { imgInstance, instance } from "../api/request";
 import LayoutPage from "../components/common/LayoutPage";
 import Detail from "../components/detail/Detail";
 import styled from "styled-components";
-import { fetchDetail, fetchDelete, fetchEdit } from "../api/writepage";
+import {
+  fetchDetail,
+  fetchDelete,
+  fetchEdit,
+  fetchImg,
+} from "../api/writepage";
 
 function DetailPage() {
   const navigate = useNavigate();
@@ -28,6 +33,70 @@ function DetailPage() {
     () => fetchDetail(id),
     options.eternal
   );
+
+  //이미지 업로드 시 url 반환요청
+  const imgUpload = async (file) => {
+    const formdata = new FormData();
+    formdata.append("file", file);
+    return fetchImg(formdata);
+  };
+
+  //게시글 삭제
+  const delteMutate = useMutation((id) => fetchDelete(id), {
+    onSuccess: () => {
+      alert("삭제되었습니다.");
+      navigate(-1);
+    },
+  });
+
+  const onDeleteHandler = () => {
+    if (window.confirm("작성 글을 삭제하시겠습니까?")) {
+      delteMutate.mutate(id);
+    }
+  };
+  //게시글 수정
+  const editMutate = useMutation((sendData) => fetchEdit(sendData), {
+    onSuccess: () => {
+      alert("글 수정이 완료되었습니다!");
+      navigate(`/`); //여기 해당 디테일페이지로 이동하게 수정하기
+    },
+  });
+
+  const onSubmitHandler = async () => {
+    const data = {
+      title: editedTitle || postDetail?.title,
+      foodName: editedFoodname || postDetail?.ingredient[0].ingredientName,
+      ingredient: editedIngredient || foodIngredientList,
+      imageUrl: editedImageUrl || postDetail?.foodImg,
+      time: editTime || postDetail?.time + `분`,
+      pageList: editedValues,
+    };
+    const sendData = { id, data };
+    editMutate.mutate(sendData);
+  };
+
+  const editForm = (type, data) => {
+    switch (type) {
+      case "title":
+        setEditedTitle(data);
+        break;
+      case "foodName":
+        setEditedFoodname(data);
+        break;
+      case "ingredient":
+        console.log("Detail page editForm ", data);
+        setEditedIngredient(data);
+        break;
+      case "imageUrl":
+        setEditedImageUrl(data);
+        break;
+      case "time":
+        setEditTime(data);
+        break;
+      default:
+        break;
+    }
+  };
 
   const likeToggle = async (postId) => {
     return await instance.post(`/api/auth/post/${postId}`);
@@ -62,45 +131,6 @@ function DetailPage() {
   useEffect(() => {
     setEditedvalues(postDetail?.contentList);
   }, [postDetail?.contentList]);
-
-  const onSubmitHandler = async () => {
-    const data = {
-      title: editedTitle || postDetail?.title,
-      foodName: editedFoodname || postDetail?.ingredient[0].ingredientName,
-      ingredient: editedIngredient || foodIngredientList,
-      imageUrl: editedImageUrl || postDetail?.foodImg,
-      time: editTime || postDetail?.time + `분`,
-      pageList: editedValues,
-    };
-    // console.log("보내는 수정데이터 확인", data);
-    const result = fetchEdit();
-    console.log("result :>> ", result);
-    alert("글 수정이 완료되었습니다!");
-    navigate(`/`);
-  };
-
-  const editForm = (type, data) => {
-    switch (type) {
-      case "title":
-        setEditedTitle(data);
-        break;
-      case "foodName":
-        setEditedFoodname(data);
-        break;
-      case "ingredient":
-        console.log("Detail page editForm ", data);
-        setEditedIngredient(data);
-        break;
-      case "imageUrl":
-        setEditedImageUrl(data);
-        break;
-      case "time":
-        setEditTime(data);
-        break;
-      default:
-        break;
-    }
-  };
 
   useEffect(() => {
     async function fetchData() {
@@ -159,25 +189,6 @@ function DetailPage() {
       );
     }
   }
-  // const { mutate } = useMutation(fetchDelete);
-
-  const onDeleteHandler = async () => {
-    if (window.confirm("작성 글을 삭제하시겠습니까?")) {
-      // await instance.delete(`/api/auth/post/${id}`);
-      fetchDelete(id);
-      alert("삭제되었습니다.");
-      navigate(-1);
-    }
-  };
-
-  const imgUpload = async (file) => {
-    // e.preventDefault();
-    const formdata = new FormData();
-    formdata.append("file", file);
-    return await imgInstance.post("/api/post/image", formdata, {
-      headers: { "Content-Type": "multipart/form-data" },
-    });
-  };
 
   return (
     <LayoutPage background={"#fbd499"}>
@@ -186,6 +197,7 @@ function DetailPage() {
           <Detail
             postDetail={postDetail}
             onDelete={onDeleteHandler}
+            id={id}
             post={post}
             remove={remove}
             update={update}

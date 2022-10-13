@@ -4,6 +4,7 @@ import { useMutation } from "react-query";
 import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
 import { instance, imgInstance } from "../api/request";
+import { fetchImg, fetchpostWrite, writePostMutation } from "../api/writepage";
 import LayoutPage from "../components/common/LayoutPage";
 import WriteAddCard from "../components/write/WriteAddCard";
 import WriteHeader from "../components/write/WriteHeader";
@@ -35,7 +36,7 @@ function WritePage() {
       time: time,
       pageList: formValues,
     };
-    return await instance.post(`/api/auth/post`, data);
+    return fetchpostWrite(data);
   };
 
   const { mutate } = useMutation(writepost);
@@ -65,12 +66,9 @@ function WritePage() {
 
   //이미지 파일 업로드시 url로 변경해주는 post
   const imgUpload = async (file) => {
-    // e.preventDefault();
     const formdata = new FormData();
     formdata.append("file", file);
-    return await imgInstance.post("/api/post/image", formdata, {
-      headers: { "Content-Type": "multipart/form-data" },
-    });
+    return fetchImg(formdata);
   };
 
   return (
