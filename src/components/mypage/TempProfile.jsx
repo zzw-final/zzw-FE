@@ -6,9 +6,8 @@ import Button from "../UI/Button";
 import { instance } from "../../api/request";
 import { useMutation, useQueryClient } from "react-query";
 import { getCookie, removeCookie } from "../../util/cookie";
-import LogoutIcon from "@mui/icons-material/Logout";
 
-function Profile({ userData, DmRequest, profileRef }) {
+function TempProfile({ userData, DmRequest, profileRef }) {
   const navigate = useNavigate();
   const { id } = useParams();
   const { follow, follower, grade, gradeList, nickname, profile, isFollow } = userData;
@@ -120,45 +119,28 @@ function Profile({ userData, DmRequest, profileRef }) {
               </Follow>
             </FollowBox>
             <BottomBox>
-              {gradeList.length === 0 && (
-                <EmptyGrade>
-                  아직 칭호가 없어요! <br></br> 열심히 활동해서 칭호를 획득해 보세요.
-                </EmptyGrade>
-              )}
               {gradeList?.map((grade, i) => (
                 <Grades key={i}>{grade.gradeName}</Grades>
               ))}
             </BottomBox>
             {!getCookie("loginUserId") ? null : !id ? (
               <Dm>
-                <Button name="DmBtn" width="60%" background="var(--color-dark-orange)">
-                  <span style={{ fontSize: "13px" }}>✍️</span> 프로필 편집
-                </Button>
+                <Button name="ProfileBtn">프로필 편집</Button>
                 <Button
                   onClick={logout}
                   name="DmBtn"
-                  width="40%"
+                  width="20%"
                   size="var(--font-small)"
                 >
-                  <div style={{ display: "flex", marginLeft: "5px" }}>
-                    <LogoutIcon fontSize="small" />
-                    <span style={{ fontSize: "16px", margin: "1px 0 0 6px" }}>
-                      Logout
-                    </span>
-                  </div>
+                  Logout
                 </Button>
               </Dm>
             ) : (
               <Dm>
-                <Button onClick={mutate} name="DmBtn" width="70%" isFollow={greyButton}>
+                <Button onClick={mutate} name="ProfileBtn" isFollow={greyButton}>
                   {greyButton ? "팔로잉" : "팔로우"}
                 </Button>
-                <Button
-                  name="DmBtn"
-                  width="30%"
-                  background="var(--color-dark-orange)"
-                  onClick={DmRequest}
-                >
+                <Button name="DmBtn" onClick={DmRequest}>
                   DM
                 </Button>
               </Dm>
@@ -170,7 +152,7 @@ function Profile({ userData, DmRequest, profileRef }) {
   );
 }
 
-export default Profile;
+export default TempProfile;
 
 const Container = styled.div`
   background-color: var(--color-light-orange);
@@ -215,7 +197,6 @@ const Nickname = styled.h3`
 
 const FollowBox = styled.div`
   display: flex;
-  width: 14.5rem;
   justify-content: space-evenly;
 `;
 
@@ -227,30 +208,23 @@ const Follow = styled.div`
 `;
 
 const Num = styled.p`
-  margin-top: 2px;
   font-size: var(--font-medium);
   font-weight: var(--weight-bold);
 `;
 
 const BottomBox = styled.div`
-  height: 5rem;
   display: flex;
-  gap: 3px;
-  overflow-y: scroll;
+  gap: 0.3rem;
   flex-wrap: wrap;
   margin: 20px 0 20px 0;
 `;
 
-const EmptyGrade = styled.div`
-  text-align: center;
-  padding: 1rem 0;
-`;
-
 const Grades = styled.div`
   height: 1.5rem;
-  padding: 0px 0.5rem;
+  padding: 0px 0.4rem;
   display: flex;
   align-items: center;
+  justify-content: center;
   background-color: var(--color-white);
   font-size: var(--font-small);
   border-radius: 10px;

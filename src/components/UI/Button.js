@@ -25,26 +25,6 @@ const MnBtn = styled.button`
           font-weight: var(--weight-regular-thick);
           font-size: var(--font-regular);
           cursor: pointer;
-
-          ${({ myVisible }) =>
-            myVisible &&
-            css`
-              background-color: var(--color-orange);
-              font-weight: var(--weight-bolder);
-              color: var(--color-white);
-              border: 2.5px solid transparent;
-              outline: none;
-            `}
-
-          ${({ likeVisible }) =>
-            likeVisible &&
-            css`
-              background-color: var(--color-pink);
-              font-weight: var(--weight-bolder);
-              color: var(--color-white);
-              border: 2.5px solid transparent;
-              outline: none;
-            `}
         `;
 
       case "followPageBtn":
@@ -73,32 +53,50 @@ const MnBtn = styled.button`
           height: ${({ height }) => height || "1.7rem"};
           background-color: var(--color-dark-white);
           border: none;
-          border-radius: 5px;
+          border-radius: 7px;
           color: var(--color-white);
-          font-size: var(--font-regular);
+          font-size: var(--font-semi-small);
           font-weight: var(--weight-bold);
-          ${({ isFollow }) =>
-            !isFollow &&
+          padding: 1px;
+          ${({ myVisible }) =>
+            myVisible &&
             css`
-              background-color: var(--color-sky);
-              color: white;
+              background-color: var(--color-orange);
               font-weight: var(--weight-bolder);
+              color: var(--color-white);
+              border: 2.5px solid transparent;
+              outline: none;
+            `}
+          ${({ likeVisible }) =>
+            likeVisible &&
+            css`
+              background-color: var(--color-orange);
+              font-weight: var(--weight-bolder);
+              color: var(--color-white);
+              border: 2.5px solid transparent;
+              outline: none;
             `}
         `;
 
       case "DmBtn":
         return css`
-          width: ${({ width }) => width || "23%"};
-          height: ${({ height }) => height || "1.7rem"};
-          margin-left: 5px;
+          width: ${({ width }) => width || "30%"};
+          height: ${({ height }) => height || "1.8rem"};
+          margin-right: 5px;
           background-color: ${({ background }) =>
             background || "var(--color-real-orange)"};
-          font-weight: var(--weight-bolder);
           color: white;
           border: none;
-          border-radius: 5px;
+          border-radius: 8px;
           color: var(--color-white);
           font-size: ${({ size }) => size || "var(--font-regular)"};
+
+          ${({ isFollow }) =>
+            isFollow &&
+            css`
+              background-color: var(--color-dark-white);
+              color: white;
+            `}
         `;
 
       case "FollowBtn":
