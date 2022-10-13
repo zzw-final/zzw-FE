@@ -49,19 +49,20 @@ const MnBtn = styled.button`
 
       case "followPageBtn":
         return css`
+          width: 50%;
           margin: 1rem auto;
           background-color: transparent;
           border: 3px solid transparent;
           font-size: var(--font-regular);
           font-weight: var(--weight-semi-bold);
           color: var(--color-grey);
-          padding: 0rem 0.7rem;
+          padding-bottom: 1.7em;
 
           ${({ view }) =>
             view &&
             css`
               color: black;
-              border-bottom: 1.5px solid gray;
+              border-bottom: 2px solid var(--color-orange);
               font-weight: var(--weight-bold);
             `}
         `;
@@ -103,19 +104,20 @@ const MnBtn = styled.button`
       case "FollowBtn":
         return css`
           height: 1.7rem;
-          padding: 1rem 1rem;
+          padding: 0.8rem 0.8rem;
           display: flex;
           align-items: center;
-          background-color: var(--color-light-white);
+          background-color: var(--color-light-grey);
           border: none;
           border-radius: 5px;
+          color: #4b4b4b;
           font-size: var(--font-small);
           font-weight: var(--weight-semi-bold);
 
           ${({ isFollow }) =>
             !isFollow &&
             css`
-              background-color: var(--color-sky);
+              background-color: var(--color-dark-orange);
               color: white;
               font-weight: var(--weight-bolder);
             `}
