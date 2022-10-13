@@ -15,6 +15,7 @@ function ChatPage() {
   const [msg, msgHandler, setMsg] = useInput();
   const [messages, setMessages] = useState([{}]);
   const { state: location } = useLocation();
+  const navigate = useNavigate();
 
   useEffect(() => {
     connect();
@@ -117,7 +118,7 @@ function ChatPage() {
       msgHandler={msgHandler}
       location={location}
     >
-      <div style={{ margin: "50px 0px 50px 0px", width: "90%", height: "90%" }}>
+      <div style={{ margin: "50px 0px 50px 0px", width: "95%", height: "90%" }}>
         {messages &&
           messages.map((mag, idx) =>
             loginNickname === messages[idx].sender ? (
