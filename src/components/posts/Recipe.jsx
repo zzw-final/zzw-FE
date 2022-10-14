@@ -30,6 +30,7 @@ function Recipe({ post, ...props }) {
       return;
     }
     const resp = await likes(postId);
+    console.log("조아요", resp);
     const isVisible = resp.data.data;
     if (isVisible) {
       setLikeToggleBtn(!likeToggleBtn);
