@@ -140,9 +140,9 @@ function Profile({ userData, DmRequest, profileRef }) {
                   width="40%"
                   size="var(--font-small)"
                 >
-                  <div style={{ display: "flex", marginLeft: "5px" }}>
+                  <div style={{ display: "inline-flex" }}>
                     <LogoutIcon fontSize="small" />
-                    <span style={{ fontSize: "16px", margin: "1px 0 0 6px" }}>
+                    <span style={{ fontSize: "16px", margin: "2.5px 0 0 7px" }}>
                       Logout
                     </span>
                   </div>
@@ -239,6 +239,9 @@ const BottomBox = styled.div`
   overflow-y: scroll;
   flex-wrap: wrap;
   margin: 20px 0 20px 0;
+  &::-webkit-scrollbar {
+    display: none;
+  }
 `;
 
 const EmptyGrade = styled.div`

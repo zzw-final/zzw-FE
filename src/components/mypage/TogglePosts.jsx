@@ -18,6 +18,7 @@ function TogglePosts({ onClickLikeRecipe, onClickMyRecipe, myVisible, likeVisibl
       <Button
         onClick={onClickLikeRecipe}
         likeVisible={likeVisible}
+        width="23rem"
         height="2rem"
         name="ProfileBtn"
       >
