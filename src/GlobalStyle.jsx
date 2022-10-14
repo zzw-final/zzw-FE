@@ -64,7 +64,7 @@ const GlobalStyle = createGlobalStyle`
   margin: 0;
   padding: 0;
   /* font-family: "EF_Diary"; */
-  font-family: "LeeSeoyun";
+  font-family: "GangwonEdu_OTFBoldA";
 }
 
 html,
@@ -94,12 +94,26 @@ ul {
   src: url("./font/EF_Diary.ttf");
 } */
 
-@font-face { 
+/* @font-face { 
   font-family: 'LeeSeoyun'; 
   src: url('https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_2202-2@1.0/LeeSeoyun.woff') 
   format('woff'); 
   font-weight: normal; 
   font-style: normal;
+} */
+
+/* @font-face {
+    font-family: 'SUIT-Medium';
+    src: url('https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_suit@1.0/SUIT-Medium.woff2') format('woff2');
+    font-weight: normal;
+    font-style: normal;
+} */
+
+@font-face {
+    font-family: 'GangwonEdu_OTFBoldA';
+    src: url('https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_2201-2@1.0/GangwonEdu_OTFBoldA.woff') format('woff');
+    font-weight: normal;
+    font-style: normal;
 }
 
 `;
