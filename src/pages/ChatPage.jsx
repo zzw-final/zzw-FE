@@ -121,7 +121,12 @@ function ChatPage() {
         {messages &&
           messages.map((mag, idx) =>
             loginNickname === messages[idx].sender ? (
-              <SendMsg messages={messages} mag={mag} idx={idx} scrollRef={scrollRef} />
+              <SendMsg
+                messages={messages}
+                mag={mag}
+                idx={idx}
+                scrollRef={scrollRef}
+              />
             ) : (
               <GetMsg
                 location={location}

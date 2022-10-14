@@ -7,6 +7,7 @@ import { useNavigate, useParams } from "react-router-dom";
 import { instance } from "../../api/request";
 import { useMutation, useQueryClient } from "react-query";
 import { getCookie, removeCookie } from "../../util/cookie";
+import { useCookies } from "react-cookie";
 
 function Profile({ userData, DmRequest, profileRef, editHandler }) {
   const navigate = useNavigate();
@@ -36,6 +37,7 @@ function Profile({ userData, DmRequest, profileRef, editHandler }) {
       removeCookie("loginProfile");
       removeCookie("loginOauth");
       removeCookie("loginEmail");
+      removeCookie("tokenInvalidtime");
       navigate("/");
     }
   };

@@ -49,6 +49,7 @@ const SwiperRecipeItemFirstPage = ({
       return;
     }
     const likeResult = await likeToggle(postId);
+    console.log("likeResult", likeResult);
     // const likeResult = mutate(postId);
     // console.log("isLike :>> ", isLike);
     // mutate(postId);

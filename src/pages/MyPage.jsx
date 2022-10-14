@@ -29,10 +29,14 @@ const MyPage = () => {
     options.eternal
   );
 
-  const { data: likeRecipes } = useQuery(["mypage", "likeRecipes"], fetchLikeRecipes, {
-    ...options.eternal,
-    enabled: likeVisible,
-  });
+  const { data: likeRecipes } = useQuery(
+    ["mypage", "likeRecipes"],
+    fetchLikeRecipes,
+    {
+      ...options.eternal,
+      enabled: likeVisible,
+    }
+  );
 
   const likeRecipeClick = () => {
     setMyVisible(false);

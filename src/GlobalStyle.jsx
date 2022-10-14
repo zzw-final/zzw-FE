@@ -24,9 +24,12 @@ const GlobalStyle = createGlobalStyle`
   --color-pink: #ffa4a1;
   --color-dark-pink: #ff6863;
   --color-yellow: #fff7d1; 
-  --color-white-orange: #ffeed4;
-  --color-light-orange: #FFE8C6;
-  --color-orange: #FFBB56;
+  --color-white-orange: #faeedd;
+  --color-light-orange: #ffddab;
+  --color-main-light-orange: #FFE8C6; // main light orange
+  --color-orange: #FFBB56; // main orange
+  --color-real-light-orange: #FF9800; // main dark orange
+  --color-main-dark-orange: #FF7A00; // main more dark orange
   --color-real-orange: #ffa113;
   --color-dark-orange: #FF7A01;
   --color-primary-green: #e8f5e9;
