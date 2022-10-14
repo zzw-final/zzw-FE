@@ -69,6 +69,7 @@ const SwiperRecipeItemFirstPage = ({
       alert("로그인 유저만 사용 가능한 기능입니다.");
       return;
     }
+
     const likeResult = likeMutate.mutate(postId);
     console.log("디테일페이지에서 가져온값", likeResult?.data?.data);
     if (likeResult?.data?.data == "post like success") {
@@ -78,6 +79,7 @@ const SwiperRecipeItemFirstPage = ({
       // setViewLikeNum(viewLikeNum - 1);
       setLikeToggleBtn(!isLike);
     }
+
   };
 
   useEffect(() => {

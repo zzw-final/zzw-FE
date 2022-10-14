@@ -6,11 +6,23 @@ function TogglePosts({ onClickLikeRecipe, onClickMyRecipe, myVisible, likeVisibl
   return (
     //TODO: 무한스크롤 넣기
     <Container>
-      <Button onClick={onClickMyRecipe} myVisible={myVisible} name="MyToggleBtn">
-        내가 쓴 레시피 🥘
+      <Button
+        onClick={onClickMyRecipe}
+        myVisible={myVisible}
+        width="20rem"
+        height="2rem"
+        name="ProfileBtn"
+      >
+        <span style={{ fontSize: "15px" }}>✏️</span> 내가 작성한 레시피
       </Button>
-      <Button onClick={onClickLikeRecipe} likeVisible={likeVisible} name="MyToggleBtn">
-        내가 좋아한 레시피 🍳
+      <Button
+        onClick={onClickLikeRecipe}
+        likeVisible={likeVisible}
+        width="23rem"
+        height="2rem"
+        name="ProfileBtn"
+      >
+        <span style={{ fontSize: "15px" }}>💘</span> 내가 좋아요한 레시피
       </Button>
     </Container>
   );

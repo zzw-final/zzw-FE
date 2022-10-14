@@ -1,27 +1,30 @@
 import React, { useEffect, useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
-import { instance } from "../api/request";
+import { instance, likes, searchRecipe } from "../api/request";
 import LayoutPage from "../components/common/LayoutPage";
 import List from "../components/common/List";
 import SearchForm from "../components/main/SearchForm";
 import { useSearchParams } from "react-router-dom";
 import styled from "styled-components";
 import Toast from "../components/UI/Toast";
+import { options } from "../api/options";
+import { useQuery } from "react-query";
 
 const SearchPage = () => {
   const [searchResultList, setSearchResultList] = useState([]);
-  const navigate = useNavigate();
+  const [toast, setToast] = useState(false);
 
   const [searchParams] = useSearchParams();
   const searchedTitle = searchParams.get("title");
   const searchedTag = searchParams.get("tag");
   const searchedNickname = searchParams.get("nickname");
-  const [toast, setToast] = useState(false);
+
+  const navigate = useNavigate();
 
   const search = async (searchOption, sendData) => {
     navigate(`/search?${searchOption}=${sendData}`);
-    const requestUrl = `/api/post/filter/${searchOption}?${searchOption}=${sendData}`;
-    const resultSearch = await instance.get(requestUrl);
+    const requestUrl = `${searchOption}?${searchOption}=${sendData}`;
+    const resultSearch = await searchRecipe(requestUrl);
     setSearchResultList(resultSearch.data.data);
   };
 
@@ -38,7 +41,7 @@ const SearchPage = () => {
   }, [searchedTag, searchedTitle, searchedNickname]);
 
   const likeToggle = async (postId) => {
-    return await instance.post(`/api/auth/post/${postId}`);
+    likes(postId);
   };
 
   const showToast = () => {
@@ -78,7 +81,7 @@ const SearchListBox = styled.section`
   background-color: var(--color-white);
   padding: 1rem 0;
   margin: 1rem 0;
-  padding-bottom: 56px;
+  padding-bottom: 90px;
 `;
 
 const SearchBox = styled.div`

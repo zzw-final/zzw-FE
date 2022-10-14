@@ -17,8 +17,11 @@ import KakaoRedirect from "./components/login/kakao/KakaoRedirect";
 import GoogleRedirect from "./components/login/google/GoogleRedirect";
 import SearchPage from "./pages/SearchPage";
 import NaverRedirect from "./components/login/naver/NaverRedirect";
-import { getCookie } from "./util/cookie";
 import ChatListPage from "./pages/ChatListPage";
+import { useState, useEffect } from "react";
+import { getCookie } from "./util/cookie";
+
+
 
 const Desktop = ({ children }) => {
   const isDesktop = useMediaQuery({ minWidth: 768 });
@@ -32,7 +35,39 @@ const Mobile = ({ children }) => {
 
 const queryClient = new QueryClient();
 
+// console.log("loginUserId app :>> ", getCookie("loginUserId"));
+// console.log("loginNickname app :>> ", getCookie("loginNickname"));
+
+// console.log("now!!!! >", new Date().toString());
+
 function App() {
+
+  const [isLogin, setIsLogin] = useState(getCookie("loginUserId") ? true : false);
+
+  useEffect(() => {
+    setTimeout(() => {
+      if (getCookie("loginEmail")) setIsLogin(true);
+    }, 500);
+  }, []);
+
+  // useEffect(() => {
+  //   const myTimeout = setTimeout(() => {
+  //     console.log(
+  //       'getCookie("tokenInvalidtime")  app :>> ',
+  //       getCookie("tokenInvalidtime")
+  //     );
+  //   }, 1000);
+  //   function myStopFunction() {
+  //     clearTimeout(myTimeout);
+  //   }
+
+  //   return () => {
+  //     myStopFunction();
+  //   };
+  // }, []);
+
+  // console.log("app 렌더링...");
+
   return (
     <QueryClientProvider client={queryClient}>
       <BrowserRouter>
@@ -42,8 +77,16 @@ function App() {
             <Route path="/" element={<MainPage />} />
             <Route path="/login" element={<LoginPage />} />
             <Route path="/Join" element={<JoinPage />} />
-            <Route path="/write" element={<WritePage />} />
-            <Route path="/mypage" element={<MyPage />} />
+            {isLogin ? (
+              <Route path="/write" element={<WritePage />} />
+            ) : (
+              <Route path="/write" element={<LoginPage />} />
+            )}
+            {isLogin ? (
+              <Route path="/mypage" element={<MyPage />} />
+            ) : (
+              <Route path="/mypage" element={<LoginPage />} />
+            )}
             <Route path="/mypage/:id" element={<UserPage />} />
             <Route path="/detail/:id" element={<DetailPage />} />
             <Route path="/follow" element={<FollowPage />} />
@@ -58,7 +101,7 @@ function App() {
           </Routes>
         </Mobile>
       </BrowserRouter>
-      <ReactQueryDevtools initialIsOpen={false} />
+      {/* <ReactQueryDevtools initialIsOpen={false} /> */}
     </QueryClientProvider>
   );
 }
