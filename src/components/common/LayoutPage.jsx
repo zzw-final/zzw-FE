@@ -125,6 +125,10 @@ const Header = styled.header`
   background-color: var(--color-main-light-orange);
   font-size: var(--font-medium-large);
   font-weight: var(--weight-semi-bold);
+  width: 100%;
+  position: fixed;
+  top: 0;
+  z-index: 1;
 `;
 
 const Wrapper = styled.div`

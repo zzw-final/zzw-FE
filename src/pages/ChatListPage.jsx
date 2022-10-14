@@ -72,7 +72,9 @@ const ChatListPage = () => {
   );
 };
 
-const ChatListContainer = styled.div``;
+const ChatListContainer = styled.div`
+  margin-top: 80px;
+`;
 
 const ChatList = styled.div`
   padding: 1rem;

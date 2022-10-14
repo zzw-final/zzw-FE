@@ -215,21 +215,23 @@ const Tagdiv = styled.div`
   justify-content: space-between;
   margin: 5px;
   padding: 5px;
-  background-color: var(--color-dark-pink);
+  background-color: #ffb84e;
   border-radius: 5px;
-  color: white;
+  color: black;
   font-size: 13px;
 `;
-const Button = styled.button`
+const Button = styled.p`
   display: flex;
   justify-content: center;
   align-items: center;
   width: 15px;
   height: 15px;
   margin-left: 1px;
-  background-color: white;
+  font-weight: var(--weight-bold);
+  background-color: none;
+  border: 0;
   border-radius: 50%;
-  color: black;
+  color: white;
 `;
 const SelectDiv = styled.div`
   grid-column-start: 2;
