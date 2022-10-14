@@ -39,7 +39,7 @@ const WriteTitle = ({
     setIngredient(tagList);
   }, [tagList]);
 
-  //파일업로드 버튼 예쁘게 커스텀하기 위한 ref
+  //파일업로드 버튼커스텀하기 위한 ref
   const imgInput = useRef();
 
   const onClickImgInput = () => {
@@ -60,6 +60,8 @@ const WriteTitle = ({
 
   return (
     <WriteTitleContainer>
+      <PreviewImg src={imageURL} onClick={onClickImgInput} />
+      <TitleNoti>제목</TitleNoti>
       <Title
         placeholder="제목을 입력해주세요"
         // ref={titleRef}
@@ -67,6 +69,7 @@ const WriteTitle = ({
           setTitle(e.target.value);
         }}
       />
+      <FoodNameNoti>요리이름</FoodNameNoti>
       <FoodNameInput
         placeholder="요리이름 입력해주세요"
         // ref={foodnameRef}
@@ -74,7 +77,7 @@ const WriteTitle = ({
           setFoodName(e.target.value);
         }}
       />
-
+      <TagNoti>해시 태그</TagNoti>
       <TagBox>
         {tagList.map((tagItem, i) => {
           return (
@@ -104,11 +107,7 @@ const WriteTitle = ({
         <option value="15분">15분</option>
         <option value="30분">30분 이상</option>
       </TimeSelect>
-      <PreviewImg src={imageURL} />
-      <StyledFileInput onClick={onClickImgInput}>이미지 선택</StyledFileInput>
-      <ImgNotion onClick={onClickImgInput}>
-        최대 1MB까지 업로드 가능합니다.
-      </ImgNotion>
+
       <ImgInput
         type="file"
         accept="image/*"
@@ -116,7 +115,6 @@ const WriteTitle = ({
         onChange={(e) => getImgUpload(e)}
         ref={imgInput}
       />
-      {/* <button onClick={onClickImgInput}>대표이미지를 업로드 해주세요 !</button> */}
     </WriteTitleContainer>
   );
 };
@@ -124,48 +122,80 @@ const WriteTitle = ({
 export default WriteTitle;
 
 const WriteTitleContainer = styled.div`
-  background-color: white;
+  /* background-color: green; */
   margin: auto auto;
-  width: 80vw;
-  height: 60vh;
-  border-radius: 20px;
+  width: 98%;
+  height: 80vh;
   display: grid;
-  justify-items: center;
+  justify-items: left;
   gap: 5px;
   grid-template-columns: 1rem 1fr 1rem;
-  grid-template-rows: 8vh 5vh 1fr 5vh 1fr 1fr 1fr;
+  grid-template-rows: 1fr 1fr 1fr 0.8fr 1fr;
   align-items: stretch;
 `;
 
-const Title = styled.input`
-  width: 60vw;
-  height: 4vh;
-  border-radius: 5px;
-  grid-column-start: 2;
-  grid-row-start: 1;
-  margin: 4vh 1rem 0px 1rem;
-`;
-const FoodNameInput = styled.input`
-  width: 60vw;
-  height: 4vh;
-  border-radius: 5px;
+const TitleNoti = styled.p`
   grid-column-start: 2;
   grid-row-start: 2;
-  margin: 1vh 1rem 0rem 1rem;
+  font-size: var(--font-medium);
+  font-weight: var(--weight-semi-bold);
+
+  margin: 1rem 0 0 1rem;
+`;
+
+const Title = styled.input`
+  width: 100%;
+  height: 6vh;
+  border: 0;
+  box-sizing: border-box;
+  background-color: var(--color-light-white);
+  border-radius: 15px;
+  grid-column-start: 2;
+  grid-row-start: 2;
+  margin: 3rem 0rem 0px 0rem;
+`;
+
+const FoodNameNoti = styled.p`
+  grid-column-start: 2;
+  grid-row-start: 3;
+  font-size: var(--font-medium);
+  font-weight: var(--weight-semi-bold);
+  margin: 1rem 0 0 1rem;
+`;
+const FoodNameInput = styled.input`
+  width: 100%;
+  height: 6vh;
+  border: 0;
+  box-sizing: border-box;
+  background-color: var(--color-light-white);
+  border-radius: 15px;
+  grid-column-start: 2;
+  grid-row-start: 3;
+  margin: 3rem 0rem 0px 0rem;
+`;
+const TagNoti = styled.p`
+  grid-column-start: 2;
+  grid-row-start: 4;
+  font-size: var(--font-medium);
+  font-weight: var(--weight-semi-bold);
+  margin: 1rem 0 0 1rem;
 `;
 const TagBox = styled.div`
   display: flex;
   align-items: center;
   flex-wrap: wrap;
-  width: 60vw;
-  min-height: 5vh;
-  margin: 1vh 1rem 0rem 1rem;
+  width: 100%;
+  height: 6vh;
+  max-height: 6vh;
+  overflow-y: scroll;
+  margin: 3rem 0rem 0px 0rem;
   padding: 0 10px;
-  border: 1px solid rgba(0, 0, 0, 0.3);
-  border-radius: 10px;
+  border: 0;
+  background-color: var(--color-light-white);
+  box-sizing: border-box;
+  border-radius: 15px;
   grid-column-start: 2;
-  grid-row-start: 3;
-  overflow: auto;
+  grid-row-start: 4;
   &:focus-within {
     border-color: var(--color-light-blue);
   }
@@ -203,52 +233,32 @@ const Button = styled.button`
 `;
 const SelectDiv = styled.div`
   grid-column-start: 2;
-  grid-row-start: 4;
-  margin: 1vh 1rem 1rem -10rem;
+  grid-row-start: 5;
+  margin: 1rem 0 0 1rem;
+  font-size: var(--font-medium);
+  font-weight: var(--weight-semi-bold);
 `;
 const TimeSelect = styled.select`
   box-sizing: border-box;
-  width: 20vw;
-  height: 3vh;
-  margin: 2vw 2px 0rem -1rem;
-  border: 1px solid #9c9c9c;
-  border-radius: 10px;
-  grid-column-start: 2;
-  grid-row-start: 4;
-`;
-const PreviewImg = styled.img`
-  /* background-color: blue; */
-  width: 60vw;
-  height: 20vh;
+  width: 40%;
+  height: 5vh;
+  margin: 3rem 0rem 0px 0rem;
   border: 0;
-  border-radius: 10px;
-  margin: 0rem 1rem 0rem 1rem;
+  box-sizing: border-box;
+  background-color: var(--color-light-white);
+  border-radius: 15px;
   grid-column-start: 2;
   grid-row-start: 5;
 `;
-const ImgInput = styled.input`
-  /* grid-column-start: 2;
-  grid-row-start: 6; */
-  display: none;
-`;
-
-const StyledFileInput = styled.button`
-  grid-column-start: 2;
-  grid-row-start: 6;
-  width: 25vw;
-  height: 2vh;
-  font-size: 10px;
+const PreviewImg = styled.img`
+  width: 70vw;
+  height: 30vh;
   border: 0;
-  border-radius: 5px;
-  background-color: #ffbb56;
-  margin-top: 3vw;
-`;
-
-const ImgNotion = styled.label`
-  font-size: 3px;
-  margin-top: 16px;
-  color: var(--color-dark-white);
+  border-radius: 10px;
+  margin: 1rem 1rem 0rem 2rem;
   grid-column-start: 2;
-  grid-row-start: 6;
-  margin-top: 10vw;
+  grid-row-start: 1;
+`;
+const ImgInput = styled.input`
+  display: none;
 `;

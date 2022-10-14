@@ -17,7 +17,7 @@ function WritePage() {
   const [ingredient, setIngredient] = useState([]);
   const [time, setTime] = useState("5분");
   const [imageURL, setImageURL] = useState(
-    "https://user-images.githubusercontent.com/110365677/194796076-31cf60cc-2ff0-4145-a538-f155f0793537.png"
+    "https://user-images.githubusercontent.com/110365677/195768702-db712364-f837-45c6-9adf-aee6d195dadb.png"
   );
   const navigate = useNavigate();
 
@@ -50,7 +50,7 @@ function WritePage() {
     }
     if (
       imageURL ===
-      "https://user-images.githubusercontent.com/110365677/194796076-31cf60cc-2ff0-4145-a538-f155f0793537.png"
+      "https://user-images.githubusercontent.com/110365677/195768702-db712364-f837-45c6-9adf-aee6d195dadb.png"
     ) {
       return alert("필수이미지를 추가해주세요❗️");
     }
@@ -72,7 +72,7 @@ function WritePage() {
   };
 
   return (
-    <LayoutPage background={"#fbd499"}>
+    <LayoutPage>
       <WriteHeader
         styled={{ position: "fixed" }}
         submit={submit}
@@ -87,7 +87,6 @@ function WritePage() {
         imgUpload={imgUpload}
         setImageURL={setImageURL}
       />
-      <Notion>레시피 단계별로 작성해주세요 !😋</Notion>
       <WriteAddCard
         imgUpload={imgUpload}
         formValues={formValues}
@@ -98,7 +97,3 @@ function WritePage() {
 }
 
 export default WritePage;
-
-const Notion = styled.div`
-  margin: 2rem 10vw 1rem 15vw;
-`;
