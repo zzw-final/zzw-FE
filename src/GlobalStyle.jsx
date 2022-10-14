@@ -14,7 +14,7 @@ const GlobalStyle = createGlobalStyle`
   --color-white: #ffffff;
   --color-light-white: #eeeeee;
   --color-dark-white: #bdbdbd;
-  --color-light-grey: #d3d3d3;
+  --color-light-grey: #D9D9D9;
   --color-grey: #616161;
   --color-black: #000000;
   --color-sky: #279eff;
@@ -26,9 +26,12 @@ const GlobalStyle = createGlobalStyle`
   --color-yellow: #fff7d1; 
   --color-white-orange: #faeedd;
   --color-light-orange: #ffddab;
-  --color-orange: #FFBB56;
+  --color-main-light-orange: #FFE8C6; // main light orange
+  --color-orange: #FFBB56; // main orange
+  --color-real-light-orange: #FF9800; // main dark orange
+  --color-main-dark-orange: #FF7A00; // main more dark orange
   --color-real-orange: #ffa113;
-  --color-dark-orange: #ff683e;
+  --color-dark-orange: #FF7A01;
   --color-primary-green: #e8f5e9;
   --color-light-green: #dcedc8;
   --color-green: #aabb97;
@@ -61,7 +64,7 @@ const GlobalStyle = createGlobalStyle`
   margin: 0;
   padding: 0;
   /* font-family: "EF_Diary"; */
-  font-family: "LeeSeoyun";
+  font-family: "GangwonEdu_OTFBoldA";
 }
 
 html,
@@ -91,12 +94,26 @@ ul {
   src: url("./font/EF_Diary.ttf");
 } */
 
-@font-face { 
+/* @font-face { 
   font-family: 'LeeSeoyun'; 
   src: url('https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_2202-2@1.0/LeeSeoyun.woff') 
   format('woff'); 
   font-weight: normal; 
   font-style: normal;
+} */
+
+/* @font-face {
+    font-family: 'SUIT-Medium';
+    src: url('https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_suit@1.0/SUIT-Medium.woff2') format('woff2');
+    font-weight: normal;
+    font-style: normal;
+} */
+
+@font-face {
+    font-family: 'GangwonEdu_OTFBoldA';
+    src: url('https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_2201-2@1.0/GangwonEdu_OTFBoldA.woff') format('woff');
+    font-weight: normal;
+    font-style: normal;
 }
 
 `;

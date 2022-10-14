@@ -2,14 +2,10 @@ import React from "react";
 import styled from "styled-components";
 import Avatar from "@mui/material/Avatar";
 import { useNavigate } from "react-router-dom";
-import { useCookies } from "react-cookie";
-import Button from "../UI/Button";
 
-const ChatListItem = ({ listItem, deleteChatRoom }) => {
+const ChatListItem = ({ listItem, onSubmit }) => {
   const { roomId, userId, profile, nickname, grade, message, isRead } =
     listItem;
-
-  console.log("listItem isRead > ", listItem.isRead);
 
   const navigate = useNavigate();
 
@@ -18,6 +14,7 @@ const ChatListItem = ({ listItem, deleteChatRoom }) => {
       state: {
         nickname,
         grade,
+        userId,
       },
     });
   };
@@ -29,7 +26,7 @@ const ChatListItem = ({ listItem, deleteChatRoom }) => {
         "나가기를 누르면 채팅 데이터가 모두 삭제됩니다. 정말 나가시겠습니까?"
       )
     ) {
-      deleteChatRoom(roomId);
+      onSubmit(roomId);
     } else {
     }
   };
