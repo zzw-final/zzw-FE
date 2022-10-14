@@ -79,7 +79,6 @@ const SwiperRecipeItemFirstPage = ({
       // setViewLikeNum(viewLikeNum - 1);
       setLikeToggleBtn(!isLike);
     }
-
   };
 
   useEffect(() => {

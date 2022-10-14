@@ -3,11 +3,9 @@ import { useState } from "react";
 import { useMutation } from "react-query";
 import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
-import { instance, imgInstance } from "../api/request";
-import { fetchImg, fetchpostWrite, writePostMutation } from "../api/writepage";
+import { fetchImg, fetchpostWrite } from "../api/writepage";
 import LayoutPage from "../components/common/LayoutPage";
 import WriteAddCard from "../components/write/WriteAddCard";
-import WriteHeader from "../components/write/WriteHeader";
 import WriteTitle from "../components/write/WriteTitle";
 
 function WritePage() {
@@ -77,9 +75,8 @@ function WritePage() {
       backBtnTypeArrow="true"
       isBtn="true"
       buttonText="등록"
-      buttonEvent={writepost}
+      buttonEvent={submit}
     >
-      <WriteHeader styled={{ position: "fixed" }} onSubmitHandler={writepost} />
       <WriteTitle
         setTitle={setTitle}
         setFoodName={setFoodName}
