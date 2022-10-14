@@ -77,9 +77,9 @@ function WritePage() {
       backBtnTypeArrow="true"
       isBtn="true"
       buttonText="등록"
-      buttonEvent={writepost}
+      buttonEvent={submit}
     >
-      <WriteHeader styled={{ position: "fixed" }} onSubmitHandler={writepost} />
+      <WriteHeader styled={{ position: "fixed" }} onSubmitHandler={submit} />
       <WriteTitle
         setTitle={setTitle}
         setFoodName={setFoodName}
