@@ -2,6 +2,7 @@ import React, { useCallback, useEffect, useMemo, useState } from "react";
 import { useMutation, useQuery, useQueryClient } from "react-query";
 import { options } from "../api/options";
 import { useNavigate, useParams } from "react-router-dom";
+import { imgInstance, instance, likes } from "../api/request";
 import LayoutPage from "../components/common/LayoutPage";
 import Detail from "../components/detail/Detail";
 import styled from "styled-components";
@@ -159,7 +160,7 @@ function DetailPage() {
   };
 
   return (
-    <LayoutPage background={"#fbd499"}>
+    <LayoutPage isShare="true">
       <DetailContainer>
         {editedValues && (
           <Detail

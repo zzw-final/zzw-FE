@@ -139,8 +139,6 @@ const Footer = ({ topTenTagList, tagAllList }) => {
     }
   }, [toggleTagList]);
 
-  console.log("window.location.href :>> ", window.location.pathname);
-
   return (
     <>
       <FooterContainer>
