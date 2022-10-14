@@ -1,11 +1,11 @@
-import { useEffect, useRef, useState } from "react";
 import * as StompJs from "@stomp/stompjs";
-import { getCookie } from "../util/cookie";
 import useInput from "../hooks/useInput";
 import ChatLayout from "../components/chat/ChatLayout";
-import { useNavigate, useParams } from "react-router-dom";
 import SendMsg from "../components/chat/SendMsg";
 import GetMsg from "../components/chat/GetMsg";
+import { useEffect, useRef, useState } from "react";
+import { useParams } from "react-router-dom";
+import { getCookie } from "../util/cookie";
 import { instance } from "../api/request";
 import { useLocation } from "react-router-dom";
 
@@ -15,7 +15,6 @@ function ChatPage() {
   const [msg, msgHandler, setMsg] = useInput();
   const [messages, setMessages] = useState([{}]);
   const { state: location } = useLocation();
-  const navigate = useNavigate();
 
   useEffect(() => {
     connect();

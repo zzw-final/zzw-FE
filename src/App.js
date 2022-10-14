@@ -18,8 +18,10 @@ import GoogleRedirect from "./components/login/google/GoogleRedirect";
 import SearchPage from "./pages/SearchPage";
 import NaverRedirect from "./components/login/naver/NaverRedirect";
 import ChatListPage from "./pages/ChatListPage";
+import { useState, useEffect } from "react";
 import { getCookie } from "./util/cookie";
-import { useEffect } from "react";
+
+
 
 const Desktop = ({ children }) => {
   const isDesktop = useMediaQuery({ minWidth: 768 });
@@ -39,6 +41,15 @@ const queryClient = new QueryClient();
 // console.log("now!!!! >", new Date().toString());
 
 function App() {
+
+  const [isLogin, setIsLogin] = useState(getCookie("loginUserId") ? true : false);
+
+  useEffect(() => {
+    setTimeout(() => {
+      if (getCookie("loginEmail")) setIsLogin(true);
+    }, 500);
+  }, []);
+
   // useEffect(() => {
   //   const myTimeout = setTimeout(() => {
   //     console.log(
@@ -66,8 +77,16 @@ function App() {
             <Route path="/" element={<MainPage />} />
             <Route path="/login" element={<LoginPage />} />
             <Route path="/Join" element={<JoinPage />} />
-            <Route path="/write" element={<WritePage />} />
-            <Route path="/mypage" element={<MyPage />} />
+            {isLogin ? (
+              <Route path="/write" element={<WritePage />} />
+            ) : (
+              <Route path="/write" element={<LoginPage />} />
+            )}
+            {isLogin ? (
+              <Route path="/mypage" element={<MyPage />} />
+            ) : (
+              <Route path="/mypage" element={<LoginPage />} />
+            )}
             <Route path="/mypage/:id" element={<UserPage />} />
             <Route path="/detail/:id" element={<DetailPage />} />
             <Route path="/follow" element={<FollowPage />} />

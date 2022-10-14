@@ -17,5 +17,5 @@ export const fetchFollower = async (id) => {
 };
 
 export const followHandler = async (userId) => {
-  return await instance.post(`/api/auth/mypage/follow/${userId}`);
+  await instance.post(`/api/auth/mypage/follow/${userId}`);
 };

@@ -39,9 +39,9 @@ const Container = styled.div`
 
 const Nickname = styled.div`
   width: 100%;
+  background-color: var(--color-light-orange);
   text-align: center;
-  padding: 0.5rem;
-  border-bottom: 2px solid var(--color-light-white);
+  padding: 1rem;
+  font-size: var(--font-regular);
   font-weight: var(--weight-bolder);
-  margin-bottom: 10px;
 `;
