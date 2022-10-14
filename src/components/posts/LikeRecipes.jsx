@@ -24,7 +24,7 @@ export default LikeRecipes;
 const Container = styled.div`
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(175px, 1fr));
-  margin-bottom: 60px;
+  margin-bottom: 90px;
 `;
 
 const AlignBox = styled.div`
