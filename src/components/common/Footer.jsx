@@ -143,7 +143,7 @@ const Footer = ({ topTenTagList, tagAllList }) => {
     <>
       <FooterContainer>
         <FooterIcon onClick={goChatList}>
-          <Badge badgeContent={!newChatText ? "N" : "0"} color="primary">
+          <Badge badgeContent={!newChatText ? "N" : "0"} color="warning">
             <TextsmsIcon sx={{ fontSize: 30 }} />
           </Badge>
         </FooterIcon>

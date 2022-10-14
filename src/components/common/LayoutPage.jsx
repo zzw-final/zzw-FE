@@ -5,7 +5,6 @@ import { instance } from "../../api/request";
 import { useState } from "react";
 import KeyboardBackspaceIcon from "@mui/icons-material/KeyboardBackspace";
 import { useNavigate } from "react-router-dom";
-import ArrowBackIosIcon from "@mui/icons-material/ArrowBackIos";
 import ChevronLeftIcon from "@mui/icons-material/ChevronLeft";
 import Button from "../UI/Button";
 import IosShareIcon from "@mui/icons-material/IosShare";
@@ -94,7 +93,11 @@ const LayoutPage = ({
       ) : (
         ""
       )}
-      <Wrapper background={background} backgroundMain={backgroundMain}>
+      <Wrapper
+        background={background}
+        backgroundMain={backgroundMain}
+        paddingTop={isHeader ? "80px" : ""}
+      >
         <div>{children}</div>
       </Wrapper>
       <Footer topTenTagList={topTenTagList} tagAllList={tagAllList} />
@@ -139,6 +142,7 @@ const Wrapper = styled.div`
     var(${({ backgroundMain }) => backgroundMain}) 50%,
     var(--color-white) 50%
   );
+  padding-top: ${({ paddingTop }) => paddingTop || 0};
 `;
 
 export default LayoutPage;

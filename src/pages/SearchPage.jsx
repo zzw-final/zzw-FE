@@ -1,14 +1,12 @@
 import React, { useEffect, useState } from "react";
-import { useLocation, useNavigate } from "react-router-dom";
-import { instance, likes, searchRecipe } from "../api/request";
+import { useNavigate } from "react-router-dom";
+import { likes, searchRecipe } from "../api/request";
 import LayoutPage from "../components/common/LayoutPage";
 import List from "../components/common/List";
 import SearchForm from "../components/main/SearchForm";
 import { useSearchParams } from "react-router-dom";
 import styled from "styled-components";
 import Toast from "../components/UI/Toast";
-import { options } from "../api/options";
-import { useQuery } from "react-query";
 
 const SearchPage = () => {
   const [searchResultList, setSearchResultList] = useState([]);
@@ -70,7 +68,7 @@ const SearchPage = () => {
             margin="0 0.5rem 0 0.5rem"
           />
         ) : (
-          <SearchListText>검색 결과가 없습니다. 😅</SearchListText>
+          <SearchListText>😅 검색 결과가 없습니다.</SearchListText>
         )}
       </SearchListBox>
     </LayoutPage>
@@ -85,8 +83,8 @@ const SearchListBox = styled.section`
 `;
 
 const SearchBox = styled.div`
-  background-color: var(--color-orange);
-  padding: 1rem 0;
+  background-color: var(--color-main-light-orange);
+  padding: 1.6rem 0;
 `;
 
 const SearchListText = styled.p`
