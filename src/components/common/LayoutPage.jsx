@@ -3,10 +3,28 @@ import Footer from "./Footer";
 import styled from "styled-components";
 import { instance } from "../../api/request";
 import { useState } from "react";
+import KeyboardBackspaceIcon from "@mui/icons-material/KeyboardBackspace";
+import { useNavigate } from "react-router-dom";
+import ArrowBackIosIcon from "@mui/icons-material/ArrowBackIos";
+import ChevronLeftIcon from "@mui/icons-material/ChevronLeft";
+import Button from "../UI/Button";
+import IosShareIcon from "@mui/icons-material/IosShare";
 
-const LayoutPage = ({ children, background, backgroundMain }) => {
+const LayoutPage = ({
+  children,
+  background,
+  backgroundMain,
+  headerTitle,
+  backBtnTypeArrow,
+  isShare,
+  isBtn,
+  buttonText,
+  buttonEvent,
+}) => {
   const [topTenTagList, setTopTenTagList] = useState();
   const [tagAllList, setTagAllList] = useState();
+  const pathName = window.location.pathname;
+  const navigate = useNavigate();
 
   useEffect(() => {
     async function fetchData() {
@@ -20,8 +38,51 @@ const LayoutPage = ({ children, background, backgroundMain }) => {
     fetchData();
   }, []);
 
+  const back = () => {
+    navigate(-1);
+  };
+
   return (
     <LayoutPageContainer>
+      {pathName !== "/" && pathName !== "/mypage" ? (
+        <>
+          <Header>
+            <BackBtn>
+              {backBtnTypeArrow ? (
+                <KeyboardBackspaceIcon onClick={back} />
+              ) : (
+                <ChevronLeftIcon
+                  onClick={back}
+                  color="warning"
+                  fontSize="large"
+                />
+              )}
+            </BackBtn>
+            {headerTitle}
+            <AddBtn>
+              {isShare ? <IosShareIcon color="warning" /> : ""}
+              {isBtn ? (
+                <Button
+                  name="commonBtn"
+                  width="4rem"
+                  height="2rem"
+                  fontSize="var(--font-regular)"
+                  fontWeight="var(--weight-semi-bold)"
+                  color="var(--color-white)"
+                  backgroundColor="var(--color-real-light-orange)"
+                  onClick={buttonEvent}
+                >
+                  {buttonText}
+                </Button>
+              ) : (
+                ""
+              )}
+            </AddBtn>
+          </Header>
+        </>
+      ) : (
+        ""
+      )}
       <Wrapper background={background} backgroundMain={backgroundMain}>
         <div>{children}</div>
       </Wrapper>
@@ -33,6 +94,26 @@ const LayoutPage = ({ children, background, backgroundMain }) => {
 const LayoutPageContainer = styled.div`
   position: relative;
   height: 100vh;
+`;
+
+const BackBtn = styled.span`
+  position: absolute;
+  left: 1.2rem;
+`;
+
+const AddBtn = styled.span`
+  position: absolute;
+  right: 1.2rem;
+`;
+
+const Header = styled.header`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 80px;
+  background-color: var(--color-main-light-orange);
+  font-size: var(--font-medium-large);
+  font-weight: var(--weight-semi-bold);
 `;
 
 const Wrapper = styled.div`

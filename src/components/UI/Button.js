@@ -9,7 +9,8 @@ export default Button;
 
 const MnBtn = styled.button`
   color: ${({ Color }) => Color || "black"};
-  background-color: ${({ backgroundColor }) => backgroundColor || "transparent"};
+  background-color: ${({ backgroundColor }) =>
+    backgroundColor || "transparent"};
   height: 2rem;
 
   ${({ name }) => {
@@ -135,7 +136,8 @@ const MnBtn = styled.button`
           background-color: ${({ backgroundColor }) =>
             backgroundColor || "var(--color-white)"};
           font-size: ${({ fontSize }) => fontSize || "var(--font-micro)"};
-          font-weight: ${({ fontWeight }) => fontWeight || "var(--weight-regular)"};
+          font-weight: ${({ fontWeight }) =>
+            fontWeight || "var(--weight-regular)"};
           border: ${({ border }) => border || "none"};
           border-radius: ${({ borderRadius }) => borderRadius || "5px"};
           position: ${({ position }) => position || ""};

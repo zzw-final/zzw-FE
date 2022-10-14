@@ -56,9 +56,8 @@ const ChatListPage = () => {
   };
 
   return (
-    <LayoutPage>
+    <LayoutPage headerTitle="DM" backBtnTypeArrow="true">
       <ChatListContainer>
-        <p>DM</p>
         <ChatList>
           {chatList ? (
             chatList.map((listItem, idx) => (
@@ -73,14 +72,7 @@ const ChatListPage = () => {
   );
 };
 
-const ChatListContainer = styled.div`
-  text-align: center;
-  padding: 1rem;
-  p {
-    font-size: var(--font-medium-large);
-    font-weight: var(--weight-semi-bold);
-  }
-`;
+const ChatListContainer = styled.div``;
 
 const ChatList = styled.div`
   padding: 1rem;
