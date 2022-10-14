@@ -47,8 +47,15 @@ function UserPage() {
       {userData && (
         <Profile profileRef={profileRef} userData={userData} DmRequest={DmRequest} />
       )}
-      <Button style={{ margin: `0.7rem` }} name="MyToggleBtn" myVisible={true}>
-        {userData?.nickname} 님의 레시피 🍳
+      <Button
+        style={{ margin: `0.7rem` }}
+        name="ProfileBtn"
+        width="13rem"
+        height="2rem"
+        myVisible={true}
+      >
+        <span style={{ fontSize: "15px", marginRight: "3px" }}>🫕</span>
+        {userData?.nickname} 님의 레시피
       </Button>
       <MyRecipes myRecipes={userRecipes} userNickname={userData?.nickname} />
     </LayoutPage>

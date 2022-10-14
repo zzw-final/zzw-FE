@@ -1,6 +1,6 @@
 import React from "react";
 import { useCookies } from "react-cookie";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import styled from "styled-components";
 import Avatar from "@mui/material/Avatar";
 import Like from "../common/Like";
@@ -8,10 +8,11 @@ import { useState } from "react";
 import { dateFormat } from "../../util/dateFormat";
 import { useEffect } from "react";
 import imageCompression from "browser-image-compression";
+import { likePost } from "../../api/writepage";
+import { useMutation, useQuery, useQueryClient } from "react-query";
 
 const SwiperRecipeItemFirstPage = ({
   postDetail,
-  likeToggle,
   isEditMode,
   imgUpload,
   editForm,
@@ -30,7 +31,7 @@ const SwiperRecipeItemFirstPage = ({
   } = postDetail;
 
   const [likeToggleBtn, setLikeToggleBtn] = useState(isLike);
-  const [viewLikeNum, setViewLikeNum] = useState(likeNum);
+  // const [viewLikeNum, setViewLikeNum] = useState(likeNum);
 
   const [cookies] = useCookies(["loginNickname"]);
   const navigate = useNavigate();
@@ -42,27 +43,44 @@ const SwiperRecipeItemFirstPage = ({
     if (+cookies.loginUserId === authorId) navigate(`/mypage`);
     else navigate(`/mypage/${authorId}`);
   };
+  //좋아요 수정해보자
+  const { id } = useParams();
+  const queryClient = useQueryClient();
 
-  const like = async () => {
+  const likeMutate = useMutation((postId) => likePost(postId), {
+    onMutate: async () => {
+      await queryClient.cancelQueries(["detail", id]); //업데이트 안될거임, 존재하는 query취소
+      const data = queryClient.getQueryData(["detail", id]).data?.data?.isLike; //현재데이터 가져오기
+      console.log("prevData->Like", data);
+      queryClient.setQueryData(["detail", id], (data) => {
+        return {
+          ...data,
+          isLike: !data,
+        };
+      });
+    },
+    onSuccess: (postId) => {
+      queryClient.invalidateQueries("detail", id);
+      console.log("좋아요성공?", postId);
+    },
+  });
+  const like = () => {
     if (loginNickname === undefined) {
       alert("로그인 유저만 사용 가능한 기능입니다.");
       return;
     }
-    const likeResult = await likeToggle(postId);
-    console.log("likeResult", likeResult);
-    // const likeResult = mutate(postId);
-    // console.log("isLike :>> ", isLike);
-    // mutate(postId);
-    setLikeToggleBtn(!likeToggleBtn);
-    if (likeResult.data.data === "post like success")
-      setViewLikeNum(viewLikeNum + 1);
-    else setViewLikeNum(viewLikeNum - 1);
-  };
 
-  // const getImgFoodUpload = async (e) => {
-  //   const result = await imgUpload(e);
-  //   setImgFoodUrlEdited(result.data.data.imageUrl);
-  // };
+    const likeResult = likeMutate.mutate(postId);
+    console.log("디테일페이지에서 가져온값", likeResult?.data?.data);
+    if (likeResult?.data?.data == "post like success") {
+      // setViewLikeNum(viewLikeNum + 1);
+      setLikeToggleBtn(!isLike);
+    } else {
+      // setViewLikeNum(viewLikeNum - 1);
+      setLikeToggleBtn(!isLike);
+    }
+
+  };
 
   useEffect(() => {
     editForm("imageUrl", imgFoodUrlEdited);
@@ -78,12 +96,14 @@ const SwiperRecipeItemFirstPage = ({
     const result = await imgUpload(resizingFile);
     setImgFoodUrlEdited(result.data.data.imageUrl);
   };
+
+  console.log(postDetail);
   return (
     <>
       <ItemContainer display={!isEditMode ? "Flex" : "none"}>
         <ItemImg src={foodImg} alt="Recipe" />
         <LikeBox>
-          <Like isLike={likeToggleBtn} btnClick={like} /> {viewLikeNum}
+          <Like isLike={likeToggleBtn} btnClick={like} /> {postDetail?.likeNum}
         </LikeBox>
         <ItemBox>
           <ItemInfo>

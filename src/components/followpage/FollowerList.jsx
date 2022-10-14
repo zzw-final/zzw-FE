@@ -19,7 +19,7 @@ function FollowerList({ followerList, mutate }) {
       <SearchBox>
         <Input
           type="search"
-          placeholder="🍳 닉네임을 검색하세요."
+          placeholder="🍳  닉네임을 검색하세요."
           onChange={searchInputHandler}
         ></Input>
       </SearchBox>
@@ -48,17 +48,23 @@ const SearchBox = styled.div`
 const Input = styled.input`
   width: 90%;
   height: 2.3rem;
-  margin: 0.5rem 0 0.5rem 0;
+  margin-bottom: 0.5rem;
   padding: 1rem;
-  border: 2px solid var(--color-light-grey);
-  border-radius: 20px;
+  background-color: var(--color-white-orange);
+  border: none;
+  border-radius: 10px;
   outline: none;
   caret-color: lightgray;
   font-weight: var(--weight-semi-bold);
   font-size: var(--font-small);
 
+  &::placeholder {
+    color: #777777;
+    font-size: var(--font-semi-small);
+    font-weight: var(--weight-regular-thick);
+  }
   &::-webkit-search-decoration,
-  &::-webkit-search-cancel-button,
+  &::--search-cancel-button,
   &::-webkit-search-results-button,
   &::-webkit-search-results-decoration {
     display: none;

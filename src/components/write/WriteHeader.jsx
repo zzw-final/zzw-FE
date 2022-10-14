@@ -1,10 +1,10 @@
 import React from "react";
 import styled from "styled-components";
 
-const WriteHeader = ({ onSubmitHandler }) => {
+const WriteHeader = ({ submit }) => {
   return (
     <WriteHeaderdiv>
-      <SubmitBtn onClick={onSubmitHandler}>등록</SubmitBtn>
+      <SubmitBtn onClick={submit}>등록</SubmitBtn>
     </WriteHeaderdiv>
   );
 };

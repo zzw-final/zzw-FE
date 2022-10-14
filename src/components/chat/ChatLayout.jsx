@@ -1,6 +1,7 @@
 import React from "react";
 import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
+import TextAreaAutoResize from "react-textarea-autosize";
 
 function ChatLayout({ publish, msg, msgHandler, setMsg, location, children, back }) {
   const navigate = useNavigate();
@@ -30,7 +31,7 @@ function ChatLayout({ publish, msg, msgHandler, setMsg, location, children, back
       </Header>
       {children}
       <Label style={{ position: "fixed" }}>
-        <textarea value={msg} onKeyPress={onEnterPress} onChange={msgHandler} />
+        <TextAreaAutoResize value={msg} onKeyPress={onEnterPress} onChange={msgHandler} />
         <div onClick={pub}>전송</div>
       </Label>
     </Container>
@@ -83,6 +84,7 @@ const Label = styled.label`
     margin: 10px auto 10px auto;
     width: 95%;
     height: 2rem;
+    max-height: 4rem;
     padding: 0.4rem 3.5rem 0.4rem 1rem;
     border: 1px solid var(--color-light-orange);
     font-size: var(--font-semi-small);
