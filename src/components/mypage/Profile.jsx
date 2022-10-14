@@ -40,14 +40,6 @@ function Profile({ userData, DmRequest, profileRef, editHandler }) {
     }
   };
 
-  const deleteAccount = async () => {
-    const loginUserId = getCookie("loginUserId");
-    if (loginUserId && window.confirm("탈퇴하시겠습니까?")) {
-      await instance.delete(`/api/member/resign/${loginUserId}`);
-      logout();
-    } else return;
-  };
-
   const followHandler = async () => {
     return await instance.post(`/api/auth/mypage/follow/${id}`);
   };
@@ -147,7 +139,14 @@ function Profile({ userData, DmRequest, profileRef, editHandler }) {
               </Dm>
             ) : (
               <Dm>
-                <Button onClick={mutate} name="DmBtn" width="70%" isFollow={greyButton}>
+                <Button
+                  onClick={mutate}
+                  name="DmBtn"
+                  width="70%"
+                  background={
+                    greyButton ? "var(--color-dark-white)" : "var(--color-real-orange)"
+                  }
+                >
                   {greyButton ? "팔로잉" : "팔로우"}
                 </Button>
                 <Button

@@ -90,13 +90,7 @@ const MnBtn = styled.button`
           border-radius: 8px;
           color: var(--color-white);
           font-size: ${({ size }) => size || "var(--font-regular)"};
-          font-weight: ${({ weight }) => weight}
-            ${({ isFollow }) =>
-              isFollow &&
-              css`
-                background-color: var(--color-dark-white);
-                color: white;
-              `};
+          font-weight: ${({ weight }) => weight};
         `;
 
       case "FollowBtn":
@@ -105,10 +99,10 @@ const MnBtn = styled.button`
           padding: 0.8rem 0.8rem;
           display: flex;
           align-items: center;
-          background-color: var(--color-light-grey);
+          background-color: var(--color-light-white);
           border: none;
           border-radius: 5px;
-          color: #4b4b4b;
+          color: var(--color-grey);
           font-size: var(--font-small);
           font-weight: var(--weight-semi-bold);
 

@@ -42,7 +42,6 @@ function App() {
     }, 500);
   }, []);
 
-  console.log(isLogin);
   return (
     <QueryClientProvider client={queryClient}>
       <BrowserRouter>

@@ -30,10 +30,6 @@ function EditProfileImage({ setModalIsOpen }) {
     }
   };
 
-  console.log(profileImg);
-
-  console.log(char);
-
   return (
     <>
       <Container>
