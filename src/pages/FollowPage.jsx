@@ -13,6 +13,7 @@ import {
   fetchMyFollower,
   followHandler,
 } from "../api/followpage";
+import { getCookie } from "../util/cookie";
 
 const FollowPage = () => {
   const { id } = useParams();
@@ -22,6 +23,7 @@ const FollowPage = () => {
   const [followView, setFollowView] = useState(follow);
   const [followerView, setFollowerView] = useState(follower);
   const queryClient = useQueryClient();
+  const loginNickname = getCookie("loginNickname");
 
   const { data: followList } = useQuery(
     ["follow", id ? id : "0"],
@@ -71,7 +73,7 @@ const FollowPage = () => {
   });
 
   return (
-    <LayoutPage>
+    <LayoutPage headerTitle={loginNickname}>
       <FollowLayout
         onClickFollower={followerBtn}
         onClickfollow={followBtn}
@@ -83,7 +85,9 @@ const FollowPage = () => {
         {followView && <FollowList followList={followList} mutate={mutate} />}
       </div>
       <div style={{ marginBottom: "60px", height: "auto" }}>
-        {followerView && <FollowerList followerList={followerList} mutate={mutate} />}
+        {followerView && (
+          <FollowerList followerList={followerList} mutate={mutate} />
+        )}
       </div>
     </LayoutPage>
   );

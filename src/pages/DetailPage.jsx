@@ -216,7 +216,7 @@ function DetailPage() {
   // };
 
   return (
-    <LayoutPage background={"#fbd499"}>
+    <LayoutPage isShare="true">
       <DetailContainer>
         {editedValues && (
           <Detail

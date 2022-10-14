@@ -24,7 +24,9 @@ function WritePage() {
   // const [formValues, setFomvalues] = useState([
   //   { imageUrl: "", content: "", page: 0 },
   // ]);
-  const [formValues, setFomvalues] = useState([{ imageUrl: "", content: "", page: 0 }]);
+  const [formValues, setFomvalues] = useState([
+    { imageUrl: "", content: "", page: 0 },
+  ]);
 
   //받은값 전부를 post
   const onSubmitHandler = async (e) => {
@@ -75,8 +77,17 @@ function WritePage() {
   };
 
   return (
-    <LayoutPage background={"#fbd499"}>
-      <WriteHeader styled={{ position: "fixed" }} onSubmitHandler={onSubmitHandler} />
+    <LayoutPage
+      headerTitle="레시피 작성"
+      backBtnTypeArrow="true"
+      isBtn="true"
+      buttonText="등록"
+      buttonEvent={onSubmitHandler}
+    >
+      <WriteHeader
+        styled={{ position: "fixed" }}
+        onSubmitHandler={onSubmitHandler}
+      />
       <WriteTitle
         setTitle={setTitle}
         setFoodName={setFoodName}
