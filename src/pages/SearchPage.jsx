@@ -81,7 +81,7 @@ const SearchListBox = styled.section`
   background-color: var(--color-white);
   padding: 1rem 0;
   margin: 1rem 0;
-  padding-bottom: 56px;
+  padding-bottom: 90px;
 `;
 
 const SearchBox = styled.div`

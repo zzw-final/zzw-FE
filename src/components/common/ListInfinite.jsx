@@ -1,22 +1,13 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect } from "react";
 import styled from "styled-components";
 import Recipe from "../posts/Recipe";
 import { useInView } from "react-intersection-observer";
 import { useInfiniteQueryScroll } from "../../hooks/useInfiniteQueryScroll";
-import { useRef } from "react";
 
 const ListInfinite = ({ list, likeToggle, listName, ...props }) => {
-  const [isLastFromServer, setIsLastFromServer] = useState("false");
-
   const { data, isSuccess, hasNextPage, fetchNextPage } =
-    useInfiniteQueryScroll(listName, isLastFromServer || "");
+    useInfiniteQueryScroll(listName);
   const { ref, inView } = useInView();
-
-  useEffect(() => {
-    setIsLastFromServer(
-      data?.pages[data?.pages?.length - 1].isLastFromServer + ""
-    );
-  }, [data]);
 
   useEffect(() => {
     if (inView && hasNextPage) {
@@ -52,25 +43,6 @@ const ListInfinite = ({ list, likeToggle, listName, ...props }) => {
             });
           })
         : null}
-      {/* {list &&
-        list.postList?.map((item, itemIdx) => {
-          if (itemIdx !== 5) {
-            return (
-              <Recipe
-                post={item}
-                key={item.postId}
-                likeToggle={likeToggle}
-                {...props}
-              />
-            );
-          } else {
-            return (
-              <div ref={ref} key={item.postId}>
-                <Recipe post={item} likeToggle={likeToggle} {...props} />
-              </div>
-            );
-          }
-        })} */}
     </ListContainer>
   );
 };

@@ -4,31 +4,27 @@ import {
   fetchRecentListInfinite,
 } from "../api/mainpage";
 
-export const useInfiniteQueryScroll = (listName, isLastFromServer) => {
+export const useInfiniteQueryScroll = (listName) => {
   const getPage = async ({ pageParam = "" }) => {
     const fetchSelect = (listName) => {
       switch (listName) {
         case "recentPost":
-          return fetchRecentListInfinite(pageParam, isLastFromServer);
+          return fetchRecentListInfinite(pageParam);
         case "followPost":
-          return fetchFollowListInfinite(pageParam, isLastFromServer);
+          return fetchFollowListInfinite(pageParam);
+        // case "searchPost":
+        //   return fetchFollowListInfinite(pageParam);
         default:
           throw new Error(`${listName} 은 찾을 수 없는 리스트입니다.`);
       }
     };
     const { data } = await fetchSelect(listName);
     const postList = data?.data.postList;
-    const getIsLast = data?.data.isLast;
-
-    // console.log("postList :>> ", postList);
-    // console.log("isLastFromServer :>> ", isLastFromServer);
-    // console.log("isLast :>> ", data.data.isLast);
 
     return {
       postList: postList,
-      lastPostId: postList[postList.length - 1].postId,
+      lastPostId: postList[postList.length - 1]?.postId,
       isLast: postList.length < 6,
-      isLastFromServer: getIsLast,
     };
   };
 

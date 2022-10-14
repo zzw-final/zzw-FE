@@ -88,6 +88,11 @@ export const likes = async (postId) => {
   return await instance.post(`/api/auth/post/${postId}`);
 };
 
-export const searchRecipe = async (postId) => {
-  return await instance.get(`/api/post/filter/${postId}`);
+export const searchRecipe = async (filterInfo) => {
+  return await instance.get(`/api/post/filter/${filterInfo}`);
+  // console.log("searchList 요청 ... ");
+  // const sendUrl = lastPostId ? `?lastPostId=${lastPostId}` : ``;
+  // return await instance.get(`/api/auth/post/follow${sendUrl}`);
+
+  //https://jeeyeon.shop/api/post/filter/title?title=김&lastPostId=2978
 };

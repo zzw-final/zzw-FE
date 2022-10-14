@@ -1,10 +1,11 @@
-import React, { useEffect } from "react";
+import React from "react";
 import styled from "styled-components";
 import List from "../common/List";
 import Tag from "../common/Tag";
-import Skeleton from "@mui/material/Skeleton";
 import { useCookies } from "react-cookie";
 import ListInfinite from "../common/ListInfinite";
+import KeyboardArrowRightIcon from "@mui/icons-material/KeyboardArrowRight";
+import KeyboardArrowDownIcon from "@mui/icons-material/KeyboardArrowDown";
 
 const Main = ({
   tagList,
@@ -37,24 +38,34 @@ const Main = ({
                 onClickTagHandler(tag.tagName);
               }}
               margin="0 0.5rem 0 0.5rem"
-              boxShadow="0px 2px 0px #868686"
+              boxShadow="0px 2px 0px var(--color-dark-white)"
             />
           ))}
       </TagsContainer>
       <ListBox>
-        <Title>베스트 🍲</Title>
+        <Title>
+          🍕 베스트 레시피
+          <ArrowSpan>
+            <KeyboardArrowRightIcon />
+          </ArrowSpan>
+        </Title>
         <BestRecipeContainer>
           <List
             list={bestPost}
             likeToggle={likeToggle}
-            mutate={mutate}
-            width="160px"
+            // width="160px"
             height="200px"
+            margin="0 0.5rem 0 0.5rem"
           />
         </BestRecipeContainer>
         {loginNickname === undefined ? (
           <>
-            <Title>NEW 레시피 🥦</Title>
+            <Title>
+              🍿 실시간 레시피
+              <ArrowSpan>
+                <KeyboardArrowDownIcon />
+              </ArrowSpan>
+            </Title>
             <NewRecipeScrollContainer>
               <ListInfinite
                 list={recentPostInfinite}
@@ -68,16 +79,27 @@ const Main = ({
           </>
         ) : (
           <>
-            <Title>NEW 레시피 🥦</Title>
+            <Title>
+              🍿 실시간 레시피
+              <ArrowSpan>
+                <KeyboardArrowRightIcon />
+              </ArrowSpan>
+            </Title>
             <NewRecipeContainer>
               <List
                 list={recentPost}
                 likeToggle={likeToggle}
                 width="160px"
                 height="200px"
+                margin="0 0.5rem 0 0.5rem"
               />
             </NewRecipeContainer>
-            <Title>follow List 🥕</Title>
+            <Title>
+              🥕 팔로우 레시피
+              <ArrowSpan>
+                <KeyboardArrowDownIcon />
+              </ArrowSpan>
+            </Title>
             <FollowContainer>
               <ListInfinite
                 list={followPost}
@@ -97,19 +119,26 @@ const Main = ({
 
 const MainContainer = styled.div`
   /* text-align: center; */
-  padding-bottom: 60px;
+  padding-bottom: 95px;
 `;
 
 const TagsContainer = styled.section`
   display: flex;
   justify-content: center;
-  padding: 0.6rem;
+  padding: 0.8rem;
 `;
 
 const Title = styled.div`
+  display: flex;
+  align-items: center;
   font-size: var(--font-medium);
   margin: 1rem;
   font-weight: bold;
+`;
+
+const ArrowSpan = styled.span`
+  display: flex;
+  color: var(--color-real-light-orange);
 `;
 
 const ListBox = styled.div`

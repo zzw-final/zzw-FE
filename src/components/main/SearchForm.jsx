@@ -17,8 +17,6 @@ const SearchForm = ({ mainSearch, searchPageSearch, showToast }) => {
   const searchedNickname = searchParams.get("nickname");
 
   const loginNickname = cookies.loginNickname || `반가운 손`;
-  const welcomeText = `🥘 ${loginNickname}님, 오늘의 식재료를 입력해보세요!`;
-  const helpText = `태그는 5개만 `;
 
   const selectRef = useRef();
 
@@ -87,7 +85,6 @@ const SearchForm = ({ mainSearch, searchPageSearch, showToast }) => {
     }
     const localTaglist = localStorage.getItem("tagList").split(",");
     if (localTaglist.length > 4) {
-      console.log("제한 5개..", localTaglist.length);
       showToast();
       return;
     }
@@ -131,7 +128,10 @@ const SearchForm = ({ mainSearch, searchPageSearch, showToast }) => {
 
   return (
     <SearchContainer>
-      {welcomeText}
+      <span>
+        <LoginNickname>{loginNickname}</LoginNickname>님, 오늘의 식재료를
+        입력해보세요!
+      </span>
       <SearchBox>
         <Form>
           <InputBox>
@@ -171,19 +171,26 @@ const SearchForm = ({ mainSearch, searchPageSearch, showToast }) => {
 
 const SearchContainer = styled.div`
   text-align: center;
+  font-size: var(--font-semi-small);
+`;
+
+const LoginNickname = styled.span`
+  color: var(--color-main-dark-orange);
+  font-weight: var(--weight-semi-bold);
 `;
 
 const SearchBox = styled.div`
   display: flex;
-  padding: 0 10px;
+  padding: 0 20px;
   margin-top: 0.5rem;
-  color: var(--color-white);
+  color: var(--color-real-light-orange);
 `;
 
 const Form = styled.div`
   display: flex;
   width: 100%;
-  border: 1px solid var(--color-white);
+  border: 2px solid var(--color-real-light-orange);
+  background-color: var(--color-white);
   border-radius: 1rem;
 `;
 
@@ -208,18 +215,11 @@ const TagList = styled.div`
   display: flex;
   margin-left: 5rem;
   overflow: scroll;
-  /* position: relative;
-  right: 0; */
-  /* max-width: 300%; */
-  /* background-color: red; */
-  /* overflow: auto; */
-  /* white-space: pre-line;
-  word-break: break-all; */
 `;
 
 const SearchIconDiv = styled.div`
   position: absolute;
-  right: 20px;
+  right: 30px;
 `;
 
 const InputForm = styled.input`

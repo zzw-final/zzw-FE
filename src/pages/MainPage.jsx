@@ -70,7 +70,7 @@ const MainPage = () => {
   };
 
   return (
-    <LayoutPage backgroundMain={"--color-orange"}>
+    <LayoutPage backgroundMain={"--color-main-light-orange"}>
       <Logo />
       <SearchForm mainSearch={search} showToast={showToast} />
       <MainContainer>
