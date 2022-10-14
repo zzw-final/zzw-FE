@@ -133,7 +133,12 @@ function Profile({ userData, DmRequest, profileRef, editHandler }) {
                 >
                   <div style={{ display: "inline-flex" }}>
                     <LogoutIcon fontSize="small" />
-                    <span style={{ fontSize: "16px", margin: "2.5px 0 0 7px" }}>
+                    <span
+                      style={{
+                        fontSize: "var(--font-semi-small)",
+                        margin: "1px 0 0 5px",
+                      }}
+                    >
                       Logout
                     </span>
                   </div>
@@ -226,8 +231,8 @@ const Follow = styled.div`
 
 const Num = styled.p`
   margin-top: 2px;
-  font-size: var(--font-medium);
-  font-weight: var(--weight-bold);
+  font-size: var(--font-medium-large);
+  font-weight: var(--weight-bolder);
 `;
 
 const BottomBox = styled.div`
@@ -236,7 +241,7 @@ const BottomBox = styled.div`
   gap: 3px;
   overflow-y: scroll;
   flex-wrap: wrap;
-  margin: 20px 0 20px 0;
+  margin: 17px 0 20px 0;
   &::-webkit-scrollbar {
     display: none;
   }
