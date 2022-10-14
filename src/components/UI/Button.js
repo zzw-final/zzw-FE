@@ -82,7 +82,7 @@ const MnBtn = styled.button`
         return css`
           width: ${({ width }) => width || "30%"};
           height: ${({ height }) => height || "1.8rem"};
-          margin-right: 5px;
+          margin-right: ${({ marginRight }) => marginRight || "5px"};
           background-color: ${({ background }) =>
             background || "var(--color-real-orange)"};
           color: white;
@@ -90,13 +90,13 @@ const MnBtn = styled.button`
           border-radius: 8px;
           color: var(--color-white);
           font-size: ${({ size }) => size || "var(--font-regular)"};
-
-          ${({ isFollow }) =>
-            isFollow &&
-            css`
-              background-color: var(--color-dark-white);
-              color: white;
-            `}
+          font-weight: ${({ weight }) => weight}
+            ${({ isFollow }) =>
+              isFollow &&
+              css`
+                background-color: var(--color-dark-white);
+                color: white;
+              `};
         `;
 
       case "FollowBtn":

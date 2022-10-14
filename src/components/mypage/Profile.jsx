@@ -1,17 +1,18 @@
-import React, { useState } from "react";
 import axios from "axios";
-import { useNavigate, useParams } from "react-router-dom";
 import styled from "styled-components";
 import Button from "../UI/Button";
+import LogoutIcon from "@mui/icons-material/Logout";
+import { useState } from "react";
+import { useNavigate, useParams } from "react-router-dom";
 import { instance } from "../../api/request";
 import { useMutation, useQueryClient } from "react-query";
 import { getCookie, removeCookie } from "../../util/cookie";
-import LogoutIcon from "@mui/icons-material/Logout";
 
-function Profile({ userData, DmRequest, profileRef }) {
+function Profile({ userData, DmRequest, profileRef, editHandler }) {
   const navigate = useNavigate();
   const { id } = useParams();
-  const { follow, follower, grade, gradeList, nickname, profile, isFollow } = userData;
+  const { follow, follower, grade, gradeList, nickname, profile, isFollow, postSize } =
+    userData;
   const [greyButton, setGreyButton] = useState(isFollow);
   const [followerNum, setFollowerNum] = useState(follower);
 
@@ -108,7 +109,7 @@ function Profile({ userData, DmRequest, profileRef }) {
             <FollowBox>
               <Follow>
                 <p>레시피</p>
-                <Num>3</Num>
+                <Num>{postSize}</Num>
               </Follow>
               <Follow onClick={followClick}>
                 <p>팔로우</p>
@@ -120,18 +121,13 @@ function Profile({ userData, DmRequest, profileRef }) {
               </Follow>
             </FollowBox>
             <BottomBox>
-              {gradeList.length === 0 && (
-                <EmptyGrade>
-                  아직 칭호가 없어요! <br></br> 열심히 활동해서 칭호를 획득해 보세요.
-                </EmptyGrade>
-              )}
               {gradeList?.map((grade, i) => (
                 <Grades key={i}>{grade.gradeName}</Grades>
               ))}
             </BottomBox>
             {!getCookie("loginUserId") ? null : !id ? (
               <Dm>
-                <Button name="DmBtn" width="60%" background="var(--color-dark-orange)">
+                <Button onClick={editHandler} name="DmBtn" width="60%">
                   <span style={{ fontSize: "13px" }}>✍️</span> 프로필 편집
                 </Button>
                 <Button
@@ -139,6 +135,7 @@ function Profile({ userData, DmRequest, profileRef }) {
                   name="DmBtn"
                   width="40%"
                   size="var(--font-small)"
+                  background="var(--color-dark-orange)"
                 >
                   <div style={{ display: "inline-flex" }}>
                     <LogoutIcon fontSize="small" />
@@ -242,11 +239,6 @@ const BottomBox = styled.div`
   &::-webkit-scrollbar {
     display: none;
   }
-`;
-
-const EmptyGrade = styled.div`
-  text-align: center;
-  padding: 1rem 0;
 `;
 
 const Grades = styled.div`
