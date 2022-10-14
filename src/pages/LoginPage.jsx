@@ -3,26 +3,28 @@ import styled from "styled-components";
 import GoogleLogin from "../components/login/google/GoogleLogin";
 import KakaoLogin from "../components/login/kakao/KakaoLogin";
 import NaverLogin from "../components/login/naver/NaverLogin";
+import loginbackground from "../assets/loginbackground.png";
 
 const LoginPage = () => {
   return (
     <Container>
-      <LoginBox>
-        <LoginText>로그인하고 냉장고를 비워봐요!</LoginText>
-        <EmojiBox>
+      {/* <LoginText>로그인하고 냉장고를 비워봐요!</LoginText> */}
+      {/* <EmojiBox>
           <Emoji>
             <span style={{ letterSpacing: "-0.1rem" }}>🥬 + 🥓</span> = 🍲
           </Emoji>
           <Emoji>
             <span style={{ letterSpacing: "-0.1rem" }}>🧀 + 🍞</span> = 🥪
           </Emoji>
-        </EmojiBox>
-        <Line>Login with</Line>
+        </EmojiBox> */}
+      <LoginBox>
+        {/* <Line>Login with</Line> */}
         <LoginSelect>
           <KakaoLogin />
           <NaverLogin />
           <GoogleLogin />
         </LoginSelect>
+        <LoginText>로그인하고 냉장고를 비워봐요!</LoginText>
       </LoginBox>
     </Container>
   );
@@ -33,7 +35,9 @@ const Container = styled.div`
   position: relative;
   width: 100%;
   height: 100vh;
-  background: linear-gradient(170deg, #bffdff7b, #f8f8f8, #f8f8f8, #bffdff7b);
+  /* background: #ffe8c6; */
+  background-image: url(${loginbackground});
+  background-size: 100%;
 `;
 
 const LoginBox = styled.div`
@@ -43,6 +47,7 @@ const LoginBox = styled.div`
   left: 50%;
   top: 50%;
   transform: translate(-50%, -50%);
+  margin-top: 30vh;
 `;
 
 const EmojiBox = styled.div`
