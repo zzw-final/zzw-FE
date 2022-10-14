@@ -26,6 +26,8 @@ const LayoutPage = ({
   const pathName = window.location.pathname;
   const navigate = useNavigate();
 
+  console.log("pathName :>> ", pathName);
+
   useEffect(() => {
     async function fetchData() {
       const result = await instance.get(`/api/post/filter`);
@@ -44,7 +46,7 @@ const LayoutPage = ({
 
   return (
     <LayoutPageContainer>
-      {pathName !== "/" && pathName !== "/mypage" ? (
+      {pathName !== "/" && pathName !== "/mypage" && pathName !== "/search" ? (
         <>
           <Header>
             <BackBtn>
