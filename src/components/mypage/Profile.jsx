@@ -6,11 +6,13 @@ import Button from "../UI/Button";
 import { instance } from "../../api/request";
 import { useMutation, useQueryClient } from "react-query";
 import { getCookie, removeCookie } from "../../util/cookie";
+import { useCookies } from "react-cookie";
 
 function Profile({ userData, DmRequest, profileRef }) {
   const navigate = useNavigate();
   const { id } = useParams();
-  const { follow, follower, grade, gradeList, nickname, profile, isFollow } = userData;
+  const { follow, follower, grade, gradeList, nickname, profile, isFollow } =
+    userData;
   const [greyButton, setGreyButton] = useState(isFollow);
   const [followerNum, setFollowerNum] = useState(follower);
 
@@ -34,6 +36,7 @@ function Profile({ userData, DmRequest, profileRef }) {
       removeCookie("loginProfile");
       removeCookie("loginOauth");
       removeCookie("loginEmail");
+      removeCookie("tokenInvalidtime");
       navigate("/");
     }
     return null;

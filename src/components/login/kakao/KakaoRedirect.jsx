@@ -13,20 +13,22 @@ const KakaoRedirect = () => {
         process.env.REACT_APP_API + `/api/member/login/kakao?code=${code}`
       );
 
-      console.log("result kakao > ", result);
+      console.log("result today > ", new Date().toString());
 
       if (result.data.success && result.data.error === null) {
         const newUser = result.data.data.isFirst;
         const EMAIL = result.data.data.email;
         const OAUTH = result.data.data.oauth;
+        const INVALIDTIME = result.data.data.invalidTime;
         setCookies("loginEmail", EMAIL);
         setCookies("loginOauth", OAUTH);
+        setCookies("tokenInvalidtime", INVALIDTIME);
 
         if (newUser) {
-          const EMAIL = result.data.data.email;
-          const OAUTH = result.data.data.oauth;
-          setCookies("loginEmail", EMAIL);
-          setCookies("loginOauth", OAUTH);
+          // const EMAIL = result.data.data.email;
+          // const OAUTH = result.data.data.oauth;
+          // setCookies("loginEmail", EMAIL);
+          // setCookies("loginOauth", OAUTH);
           navigate("/join");
         } else {
           onLogin(result);
@@ -43,6 +45,7 @@ const KakaoRedirect = () => {
       const PROFILE = result.data.data.profile;
       const USERID = result.data.data.userId;
       const GRADE = result.data.data.grade;
+      const INVALIDTIME = result.data.data.invalidTime;
       setCookies("accessToken", ACCESS_TOKEN);
       setCookies("refreshToken", REFRESH_TOKEN);
       setCookies("oauthToken", OAUTH_TOKEN);
@@ -51,6 +54,7 @@ const KakaoRedirect = () => {
       setCookies("loginProfile", PROFILE);
       setCookies("loginUserId", USERID);
       setCookies("loginGrade", GRADE);
+      setCookies("tokenInvalidtime", INVALIDTIME);
     };
     if (cookies.loginEmail === undefined) {
       fetchData();

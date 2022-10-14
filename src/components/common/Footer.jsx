@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useRef, useState } from "react";
 import BottomNavigation from "@mui/material/BottomNavigation";
 import BottomNavigationAction from "@mui/material/BottomNavigationAction";
 import styled from "styled-components";
@@ -10,6 +10,10 @@ import { useNavigate } from "react-router-dom";
 import Tag from "../../components/common/Tag";
 import { useEffect } from "react";
 import { useCookies } from "react-cookie";
+import TextsmsIcon from "@mui/icons-material/Textsms";
+import * as StompJs from "@stomp/stompjs";
+import { getCookie } from "../../util/cookie";
+import Badge from "@mui/material/Badge";
 
 const Footer = ({ topTenTagList, tagAllList }) => {
   const [toggleTagList, setToggleTagList] = useState(false);
@@ -21,9 +25,46 @@ const Footer = ({ topTenTagList, tagAllList }) => {
 
   const loginNickname = cookies.loginNickname;
 
-  const goHome = () => {
-    navigate("/");
+  const client = useRef({});
+  const [newChatText, setNewChatText] = useState();
+  const loginUserId = getCookie("loginUserId");
+
+  useEffect(() => {
+    connect();
+    return () => disconnect();
+  }, []);
+
+  const connect = () => {
+    client.current = new StompJs.Client({
+      brokerURL: `wss://${process.env.REACT_APP_CHAT_API}/zzw`,
+      connectHeaders: {
+        Authorization: getCookie("accessToken"),
+        oauth: getCookie("loginOauth"),
+      },
+      // debug: (str) => {
+      //   console.log(str);
+      // },
+      reconnectDelay: 100,
+      onConnect: () => {
+        subscribe();
+      },
+    });
+    client.current.activate();
   };
+
+  const disconnect = () => {
+    client.current.deactivate();
+  };
+
+  const subscribe = () => {
+    client.current.subscribe(`/sub/chat/member/${loginUserId}`, (res) => {
+      const body = JSON.parse(res.body);
+      console.log("body :>> ", body.isRead);
+      setNewChatText(body.isRead);
+    });
+  };
+
+  // console.log("newChatText > ", newChatText);
 
   const loginConfirm = (url) => {
     if (!loginNickname) {
@@ -38,6 +79,14 @@ const Footer = ({ topTenTagList, tagAllList }) => {
     } else {
       navigate(url);
     }
+  };
+
+  const goHome = () => {
+    navigate("/");
+  };
+
+  const goChatList = () => {
+    loginConfirm("/chatlist");
   };
 
   const goWrite = () => {
@@ -90,38 +139,28 @@ const Footer = ({ topTenTagList, tagAllList }) => {
     }
   }, [toggleTagList]);
 
+  console.log("window.location.href :>> ", window.location.pathname);
+
   return (
     <>
       <FooterContainer>
-        <BottomNavigation
-          sx={{ width: 500 }}
-          value={window.location.pathname || "/"}
-        >
-          <BottomNavigationAction
-            label="Home"
-            value="/"
-            icon={<HomeIcon />}
-            onClick={goHome}
-          />
-          <BottomNavigationAction
-            label="Write"
-            value="/write"
-            icon={<CreateIcon />}
-            onClick={goWrite}
-          />
-          <BottomNavigationAction
-            label="Mypage"
-            value="/mypage"
-            icon={<PersonIcon />}
-            onClick={goMypage}
-          />
-          <BottomNavigationAction
-            label="Tag"
-            value="tag"
-            icon={<TagIcon />}
-            onClick={openTagBox}
-          />
-        </BottomNavigation>
+        <FooterIcon onClick={goChatList}>
+          <Badge badgeContent={!newChatText ? "N" : "0"} color="primary">
+            <TextsmsIcon sx={{ fontSize: 30 }} />
+          </Badge>
+        </FooterIcon>
+        <FooterIcon onClick={openTagBox}>
+          <TagIcon sx={{ fontSize: 30 }} />
+        </FooterIcon>
+        <FooterIcon onClick={goHome}>
+          <HomeIcon sx={{ fontSize: 30 }} />
+        </FooterIcon>
+        <FooterIcon onClick={goWrite}>
+          <CreateIcon sx={{ fontSize: 30 }} />
+        </FooterIcon>
+        <FooterIcon onClick={goMypage}>
+          <PersonIcon sx={{ fontSize: 30 }} />
+        </FooterIcon>
       </FooterContainer>
       <TagList id="tagList" top={toggleTagList}>
         <TagListFoldLine onClick={openTagBox}></TagListFoldLine>
@@ -191,12 +230,19 @@ const Footer = ({ topTenTagList, tagAllList }) => {
 const FooterContainer = styled.div`
   width: 100%;
   display: flex;
-  justify-content: center;
-  height: 56px;
+  justify-content: space-between;
+  padding: 1.2rem 1rem 0 1rem;
+  height: 90px;
+  border-top: 1px solid var(--color-orange);
   position: fixed;
   bottom: 0;
   z-index: 1;
   background-color: var(--color-white);
+`;
+
+const FooterIcon = styled.div`
+  color: var(--color-orange);
+  //--color-real-light-orange << select
 `;
 
 const TagListFoldLine = styled.div`
