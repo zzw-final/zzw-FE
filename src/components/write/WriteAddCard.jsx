@@ -74,7 +74,7 @@ function WriteAddCard({ imgUpload, formValues, setFomvalues }) {
   return (
     <>
       <form
-        style={{ height: "auto", marginBottom: "60px" }}
+        style={{ height: "auto", marginBottom: "120px" }}
         onSubmit={handleSubmit}
       >
         {formValues.map((element, index) => (
@@ -195,10 +195,10 @@ const Addbutton = styled.button`
   font-size: var(--font-medium);
   font-weight: var(--weight-semi-bold);
   border: 0;
-  width: 80vw;
+  width: 85vw;
   height: 5vh;
   border-radius: 10px;
-  margin-left: 10vw;
+  margin-left: 6vw;
   &:hover {
     border: 2px white;
   }
