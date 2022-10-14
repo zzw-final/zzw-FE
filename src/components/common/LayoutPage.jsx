@@ -23,10 +23,19 @@ const LayoutPage = ({
 }) => {
   const [topTenTagList, setTopTenTagList] = useState();
   const [tagAllList, setTagAllList] = useState();
+  const [isHeader, setIsHeader] = useState(true);
   const pathName = window.location.pathname;
   const navigate = useNavigate();
 
-  console.log("pathName :>> ", pathName);
+  useEffect(() => {
+    if (pathName === "/") {
+      setIsHeader(false);
+    } else if (pathName.includes("search")) {
+      setIsHeader(false);
+    } else if (pathName.includes("mypage")) {
+      setIsHeader(false);
+    }
+  }, [pathName]);
 
   useEffect(() => {
     async function fetchData() {
@@ -46,7 +55,7 @@ const LayoutPage = ({
 
   return (
     <LayoutPageContainer>
-      {pathName !== "/" && pathName !== "/mypage" && pathName !== "/search" ? (
+      {isHeader ? (
         <>
           <Header>
             <BackBtn>
