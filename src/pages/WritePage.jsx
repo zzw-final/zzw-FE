@@ -72,12 +72,14 @@ function WritePage() {
   };
 
   return (
-    <LayoutPage>
-      <WriteHeader
-        styled={{ position: "fixed" }}
-        submit={submit}
-        mutate={mutate}
-      />
+    <LayoutPage
+      headerTitle="레시피 작성"
+      backBtnTypeArrow="true"
+      isBtn="true"
+      buttonText="등록"
+      buttonEvent={writepost}
+    >
+      <WriteHeader styled={{ position: "fixed" }} onSubmitHandler={writepost} />
       <WriteTitle
         setTitle={setTitle}
         setFoodName={setFoodName}

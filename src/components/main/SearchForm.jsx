@@ -16,7 +16,7 @@ const SearchForm = ({ mainSearch, searchPageSearch, showToast }) => {
   const searchedTag = searchParams.get("tag");
   const searchedNickname = searchParams.get("nickname");
 
-  const loginNickname = cookies.loginNickname || `반가운 손`;
+  const loginNickname = cookies.loginNickname;
 
   const selectRef = useRef();
 
@@ -129,8 +129,12 @@ const SearchForm = ({ mainSearch, searchPageSearch, showToast }) => {
   return (
     <SearchContainer>
       <span>
-        <LoginNickname>{loginNickname}</LoginNickname>님, 오늘의 식재료를
-        입력해보세요!
+        {loginNickname ? (
+          <LoginNickname>{loginNickname}</LoginNickname>
+        ) : (
+          `반가운 손`
+        )}
+        님, 오늘의 식재료를 입력해보세요!
       </span>
       <SearchBox>
         <Form>
