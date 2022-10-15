@@ -7,7 +7,6 @@ import { useNavigate, useParams } from "react-router-dom";
 import { instance } from "../../api/request";
 import { useMutation, useQueryClient } from "react-query";
 import { getCookie, removeCookie } from "../../util/cookie";
-import { useCookies } from "react-cookie";
 
 function Profile({ userData, DmRequest, profileRef, editHandler }) {
   const navigate = useNavigate();
@@ -197,8 +196,6 @@ const Img = styled.img`
   margin: 0.5rem 0.2rem;
   width: 8.2rem;
   height: 8.2rem;
-  border-radius: 50%;
-  background-color: var(--color-orange);
 `;
 
 const Dm = styled.div`
@@ -238,7 +235,7 @@ const Num = styled.p`
 const BottomBox = styled.div`
   height: 5rem;
   display: flex;
-  gap: 3px;
+  gap: 5px;
   overflow-y: scroll;
   flex-wrap: wrap;
   margin: 17px 0 20px 0;

@@ -3,7 +3,6 @@ import styled from "styled-components";
 import Tag from "../common/Tag";
 import CommentList from "../comment/CommentList";
 import { getCookie } from "../../util/cookie";
-import Toast from "../UI/Toast";
 import { useNavigate } from "react-router-dom";
 import TagList from "./TagList";
 import SwiperRecipe from "./SwiperRecipe";
@@ -26,23 +25,14 @@ function Detail({
   setEditedIngredient,
 }) {
   const nickname = getCookie("loginNickname");
-  const url = window.location.href;
-  const [toast, setToast] = useState(false);
   const [isEditMode, setIsEditMode] = useState(false);
   const navigate = useNavigate();
 
   const foodIngredientList = postDetail?.ingredient
-    .map((ingredient) =>
-      !ingredient.isName ? ingredient.ingredientName : undefined
-    )
+    .map((ingredient) => (!ingredient.isName ? ingredient.ingredientName : undefined))
     .filter((ingredient) => ingredient !== undefined);
 
   const [foodName, setFoodName] = useState();
-
-  const copyUrl = async () => {
-    setToast(true);
-    await navigator.clipboard.writeText(url);
-  };
 
   const commentListCnt = commentList?.length;
 
@@ -155,14 +145,9 @@ function Detail({
           />
         )}
       </Content>
-
-      {toast && (
-        <Toast setToast={setToast} text="🖇 클립보드에 복사되었습니다." />
-      )}
-
       <Footer>
         <FootLeft>
-          <Icon onClick={copyUrl} src={"/copy.png"} alt="공유하기" />
+          <Icon src={"/copy.png"} alt="공유하기" />
           <Icon src={"/eye-off.png"} alt="신고하기" />
         </FootLeft>
         <Comment onClick={openTagBox}>💬 {commentListCnt}</Comment>

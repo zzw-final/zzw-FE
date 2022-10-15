@@ -20,11 +20,23 @@ const LayoutPage = ({
   isBtn,
   buttonText,
   buttonEvent,
+  copyUrl,
 }) => {
   const [topTenTagList, setTopTenTagList] = useState();
   const [tagAllList, setTagAllList] = useState();
   const pathName = window.location.pathname;
   const navigate = useNavigate();
+  const [isHeader, setIsHeader] = useState(true);
+
+  useEffect(() => {
+    if (pathName === "/") {
+      setIsHeader(false);
+    } else if (pathName.includes("search")) {
+      setIsHeader(false);
+    } else if (pathName.includes("mypage")) {
+      setIsHeader(false);
+    }
+  }, [pathName]);
 
   useEffect(() => {
     async function fetchData() {
@@ -44,7 +56,7 @@ const LayoutPage = ({
 
   return (
     <LayoutPageContainer>
-      {pathName !== "/" && pathName !== "/mypage" ? (
+      {isHeader ? (
         <>
           <Header>
             <BackBtn>
@@ -56,7 +68,15 @@ const LayoutPage = ({
             </BackBtn>
             {headerTitle}
             <AddBtn>
-              {isShare ? <IosShareIcon color="warning" /> : ""}
+              {isShare ? (
+                <IosShareIcon
+                  sx={{ marginRight: "9px" }}
+                  onClick={copyUrl}
+                  color="warning"
+                />
+              ) : (
+                ""
+              )}
               {isBtn ? (
                 <Button
                   name="commonBtn"
