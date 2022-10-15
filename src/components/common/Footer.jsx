@@ -65,10 +65,15 @@ const Footer = ({ topTenTagList, tagAllList }) => {
     });
   };
 
+  // const footerColor = "";
+
   // console.log("newChatText > ", newChatText);
+
   // const home = document.querySelector(`#${pathName}`);
   // const home = document.querySelector("#write");
   // home.style.color = "var(--color-real-light-orange)";
+  // color="var(--color-real-light-orange)"
+  console.log("pathName :>> ", pathName);
 
   useEffect(() => {
     if (pathName === "/") {
@@ -153,7 +158,7 @@ const Footer = ({ topTenTagList, tagAllList }) => {
   return (
     <>
       <FooterContainer>
-        <FooterIcon onClick={goChatList}>
+        <FooterIcon id="chatlist" onClick={goChatList} className="icon active">
           <Badge badgeContent={!newChatText ? "N" : "0"} color="warning">
             <TextsmsIcon sx={{ fontSize: 30 }} />
           </Badge>
@@ -161,13 +166,13 @@ const Footer = ({ topTenTagList, tagAllList }) => {
         <FooterIcon onClick={openTagBox}>
           <TagIcon sx={{ fontSize: 30 }} />
         </FooterIcon>
-        <FooterIcon id="home" onClick={goHome}>
+        <FooterIcon id="home" onClick={goHome} className="icon">
           <HomeIcon sx={{ fontSize: 30 }} />
         </FooterIcon>
-        <FooterIcon id="write" onClick={goWrite}>
+        <FooterIcon id="write" onClick={goWrite} className="tetete">
           <CreateIcon sx={{ fontSize: 30 }} />
         </FooterIcon>
-        <FooterIcon onClick={goMypage}>
+        <FooterIcon id="mypage" onClick={goMypage} className="active">
           <PersonIcon sx={{ fontSize: 30 }} />
         </FooterIcon>
       </FooterContainer>
@@ -251,7 +256,16 @@ const FooterContainer = styled.div`
 
 const FooterIcon = styled.div`
   color: ${({ color }) => color || "var(--color-orange)"};
-  //--color-real-light-orange << select
+  /* background-color: red; */
+  /* background-color: ${(props) => props.backgroundColor || ""}; */
+  /* .active {
+    background-color: red;
+    color: var(--color-real-light-orange);
+  } */
+
+  &:tetete {
+    background-color: red;
+  }
 `;
 
 const TagListFoldLine = styled.div`

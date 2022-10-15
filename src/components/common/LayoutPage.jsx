@@ -49,7 +49,12 @@ const LayoutPage = ({
   }, []);
 
   const back = () => {
-    navigate(-1);
+    if (pathName === "chatlist") {
+      console.log("ㅎㅎㅎㅎㅎㅎㅎㅎㅎㅎㅎㅎㅎㅎ");
+      navigate("/");
+    } else {
+      navigate(-1);
+    }
   };
 
   return (
