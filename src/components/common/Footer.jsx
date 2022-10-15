@@ -1,6 +1,4 @@
 import React, { useRef, useState } from "react";
-import BottomNavigation from "@mui/material/BottomNavigation";
-import BottomNavigationAction from "@mui/material/BottomNavigationAction";
 import styled from "styled-components";
 import HomeIcon from "@mui/icons-material/Home";
 import CreateIcon from "@mui/icons-material/Create";
@@ -65,23 +63,6 @@ const Footer = ({ topTenTagList, tagAllList }) => {
     });
   };
 
-  // const footerColor = "";
-
-  // console.log("newChatText > ", newChatText);
-
-  // const home = document.querySelector(`#${pathName}`);
-  // const home = document.querySelector("#write");
-  // home.style.color = "var(--color-real-light-orange)";
-  // color="var(--color-real-light-orange)"
-  console.log("pathName :>> ", pathName);
-
-  useEffect(() => {
-    if (pathName === "/") {
-    } else if (pathName.includes("search")) {
-    } else if (pathName.includes("mypage")) {
-    }
-  }, [pathName]);
-
   const loginConfirm = (url) => {
     if (!loginNickname) {
       if (
@@ -97,19 +78,36 @@ const Footer = ({ topTenTagList, tagAllList }) => {
     }
   };
 
+  const changeColor = (id) => {
+    document.querySelector(`#${id}`).style.color =
+      "var(--color-real-light-orange)";
+  };
+
+  useEffect(() => {
+    const changeNav = pathName.split("/")[1];
+    if (changeNav === "") {
+      changeColor("home");
+      return;
+    }
+    changeColor(changeNav);
+  }, [pathName]);
+
   const goHome = () => {
     navigate("/");
   };
 
   const goChatList = () => {
+    changeColor("chatlist");
     loginConfirm("/chatlist");
   };
 
   const goWrite = () => {
+    changeColor("write");
     loginConfirm("/write");
   };
 
   const goMypage = () => {
+    changeColor("mypage");
     loginConfirm("/mypage");
   };
 
@@ -158,7 +156,7 @@ const Footer = ({ topTenTagList, tagAllList }) => {
   return (
     <>
       <FooterContainer>
-        <FooterIcon id="chatlist" onClick={goChatList} className="icon active">
+        <FooterIcon id="chatlist" onClick={goChatList}>
           <Badge badgeContent={!newChatText ? "N" : "0"} color="warning">
             <TextsmsIcon sx={{ fontSize: 30 }} />
           </Badge>
@@ -166,13 +164,13 @@ const Footer = ({ topTenTagList, tagAllList }) => {
         <FooterIcon onClick={openTagBox}>
           <TagIcon sx={{ fontSize: 30 }} />
         </FooterIcon>
-        <FooterIcon id="home" onClick={goHome} className="icon">
+        <FooterIcon id="home" onClick={goHome}>
           <HomeIcon sx={{ fontSize: 30 }} />
         </FooterIcon>
-        <FooterIcon id="write" onClick={goWrite} className="tetete">
+        <FooterIcon id="write" onClick={goWrite}>
           <CreateIcon sx={{ fontSize: 30 }} />
         </FooterIcon>
-        <FooterIcon id="mypage" onClick={goMypage} className="active">
+        <FooterIcon id="mypage" onClick={goMypage}>
           <PersonIcon sx={{ fontSize: 30 }} />
         </FooterIcon>
       </FooterContainer>
@@ -255,17 +253,7 @@ const FooterContainer = styled.div`
 `;
 
 const FooterIcon = styled.div`
-  color: ${({ color }) => color || "var(--color-orange)"};
-  /* background-color: red; */
-  /* background-color: ${(props) => props.backgroundColor || ""}; */
-  /* .active {
-    background-color: red;
-    color: var(--color-real-light-orange);
-  } */
-
-  &:tetete {
-    background-color: red;
-  }
+  color: ${({ color }) => color || "var(--color-light-orange)"};
 `;
 
 const TagListFoldLine = styled.div`
@@ -276,7 +264,6 @@ const TagListFoldLine = styled.div`
 `;
 
 const SearchBox = styled.div`
-  /* background-color: lavender; */
   display: flex;
   flex-direction: column;
   align-items: center;
