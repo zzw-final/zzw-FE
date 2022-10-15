@@ -192,16 +192,16 @@ const Cardtextarea = styled.textarea`
   grid-column-start: 2;
   grid-row-start: 3;
   width: 90vw;
-  max-width:95%
+  /* max-width:95% */
   margin: 0 5px 0 0;
   background-color: var(--color-light-white);
   height: 30vh;
   box-sizing: border-box;
   border: 0;
   border-radius: 10px;
-  resize:none;
-  outline:none;
-  padding: 20px
+  resize: none;
+  outline: none;
+  padding: 20px;
 `;
 
 const Addbutton = styled.button`
@@ -210,7 +210,7 @@ const Addbutton = styled.button`
   font-size: var(--font-medium);
   font-weight: var(--weight-semi-bold);
   border: 0;
-  width: 85vw;
+  width: 90vw;
   height: 5vh;
   border-radius: 10px;
   margin-left: 6vw;
