@@ -18,9 +18,6 @@ const ChatListPage = () => {
 
   const queryClient = useQueryClient();
 
-  console.log("채팅 페이지 렌더링..1", chatList);
-  // console.log("isFetching, :>> ", isFetching);
-
   const deleteChatRoom = async (roomId) => {
     return await fetchChatRoomDelete(roomId);
   };
