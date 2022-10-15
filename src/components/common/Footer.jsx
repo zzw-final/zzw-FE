@@ -84,12 +84,15 @@ const Footer = ({ topTenTagList, tagAllList }) => {
   };
 
   useEffect(() => {
-    const changeNav = pathName.split("/")[1];
-    if (changeNav === "") {
-      changeColor("home");
-      return;
+    const possibleNav = ["/chatlist", "/", "/write", "/mypage"];
+    if (possibleNav.includes(pathName)) {
+      const changeNav = pathName.split("/")[1];
+      if (changeNav === "") {
+        changeColor("home");
+        return;
+      }
+      changeColor(changeNav);
     }
-    changeColor(changeNav);
   }, [pathName]);
 
   const goHome = () => {
