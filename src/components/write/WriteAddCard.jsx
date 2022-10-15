@@ -74,76 +74,86 @@ function WriteAddCard({ imgUpload, formValues, setFomvalues }) {
   return (
     <>
       <form
-        style={{ height: "auto", marginBottom: "120px" }}
+        style={{
+          width: "400px",
+          height: "auto",
+          maxHeight: "auto",
+          marginBottom: "120px",
+        }}
         onSubmit={handleSubmit}
       >
-        {formValues.map((element, index) => (
-          <AddCardDiv key={index}>
-            <PreviewImg
-              onError={noImg}
-              src={
-                window.sessionStorage.getItem(index) ||
-                "https://user-images.githubusercontent.com/110365677/195768702-db712364-f837-45c6-9adf-aee6d195dadb.png"
-              }
-              onClick={onClickImageUpload}
-            ></PreviewImg>
-            <img
-              alt="submitImg"
-              style={{ display: "none" }}
-              name="imageUrl"
-              value={imageUrl}
-              onLoad={(e) => handleChangeIMG(index, e)}
-              src={imageUrl}
-            />
-            <input
-              style={{
-                display: "none",
-              }}
-              type="file"
-              accept="image/*"
-              ref={imageInput}
-              onChange={(e) => getImgUpload(index, e)}
-            />
-            <Cardtextarea
-              type="text"
-              name="content"
-              value={element.content || ""}
-              onChange={(e) => handleChange(index, e)}
-            />
-            <label
-              name="page"
-              value={element.page || ""}
-              onChange={(e) => handleChange(index, e)}
-              style={{
-                margin: "2rem 0rem 5px 1rem",
-                gridColumnStart: "2",
-                gridRowStart: "1",
-                fontSize: "19px",
-                fontWeight: "var(--weight-semi-bold)",
-              }}
-            >
-              조리페이지 - {index + 1}
-            </label>
-            {index ? (
-              <Dletbutton
-                type="button"
-                className="button remove"
-                onClick={() => removeFormFields(index)}
+        {formValues.length < 11 &&
+          formValues.map((element, index) => (
+            <AddCardDiv key={index} style={{ maxHeight: "548.56px" }}>
+              <PreviewImg
+                onError={noImg}
+                src={
+                  window.sessionStorage.getItem(index) ||
+                  "https://user-images.githubusercontent.com/110365677/195768702-db712364-f837-45c6-9adf-aee6d195dadb.png"
+                }
+                onClick={onClickImageUpload}
+              ></PreviewImg>
+              <img
+                alt="submitImg"
+                style={{ display: "none" }}
+                name="imageUrl"
+                value={imageUrl}
+                onLoad={(e) => handleChangeIMG(index, e)}
+                src={imageUrl}
+              />
+              <input
+                style={{
+                  display: "none",
+                }}
+                type="file"
+                accept="image/*"
+                ref={imageInput}
+                onChange={(e) => getImgUpload(index, e)}
+              />
+              <Cardtextarea
+                type="text"
+                name="content"
+                value={element.content || ""}
+                onChange={(e) => handleChange(index, e)}
+              />
+              <label
+                name="page"
+                value={element.page || ""}
+                onChange={(e) => handleChange(index, e)}
+                style={{
+                  margin: "2rem 0rem 5px 1rem",
+                  gridColumnStart: "2",
+                  gridRowStart: "1",
+                  fontSize: "19px",
+                  fontWeight: "var(--weight-semi-bold)",
+                }}
               >
-                X
-              </Dletbutton>
-            ) : null}
-          </AddCardDiv>
-        ))}
+                조리페이지 - {index + 1}
+              </label>
+              {index ? (
+                <Dletbutton
+                  type="button"
+                  className="button remove"
+                  onClick={() => removeFormFields(index)}
+                >
+                  X
+                </Dletbutton>
+              ) : null}
+            </AddCardDiv>
+          ))}
 
         <div className="button-section">
-          <Addbutton
-            className="button add"
-            type="button"
-            onClick={() => addFormFields()}
-          >
-            조리 페이지 추가하기
-          </Addbutton>
+          {formValues.length < 10 ? (
+            <Addbutton
+              className="button add"
+              type="button"
+              onClick={() => addFormFields()}
+            >
+              조리 페이지 추가하기
+            </Addbutton>
+          ) : (
+            <div />
+          )}
         </div>
       </form>
     </>
@@ -155,8 +165,10 @@ export default WriteAddCard;
 const AddCardDiv = styled.div`
   /* background-color: green; */
   margin: 5vh auto 4vh auto;
+  width:
   width: 97%;
-  max-width:97%
+  max-width: 97%;
+  min-width: 97%
   height: 70vh;
   display: grid;
   justify-items: left;
@@ -168,8 +180,8 @@ const AddCardDiv = styled.div`
 const PreviewImg = styled.img`
   grid-column-start: 2;
   grid-row-start: 2;
-  width: 60%;
-  height: 80%;
+  width: 55vw;
+  height: 25vh;
   margin: 2rem 0rem 0rem 0rem;
   box-sizing: border-box;
   border: 0;
@@ -179,14 +191,17 @@ const PreviewImg = styled.img`
 const Cardtextarea = styled.textarea`
   grid-column-start: 2;
   grid-row-start: 3;
-  width: 95%;
-  max-width:95%
+  width: 90vw;
+  /* max-width:95% */
   margin: 0 5px 0 0;
   background-color: var(--color-light-white);
   height: 30vh;
   box-sizing: border-box;
   border: 0;
   border-radius: 10px;
+  resize: none;
+  outline: none;
+  padding: 20px;
 `;
 
 const Addbutton = styled.button`
@@ -195,7 +210,7 @@ const Addbutton = styled.button`
   font-size: var(--font-medium);
   font-weight: var(--weight-semi-bold);
   border: 0;
-  width: 85vw;
+  width: 90vw;
   height: 5vh;
   border-radius: 10px;
   margin-left: 6vw;

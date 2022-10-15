@@ -50,9 +50,9 @@ function ChatPage() {
     const back = async () => {
       const newdata = {
         roomId: Number(roomId),
-        // messageId: messages[messages.length - 1].messageId,
-        userId: Number(getCookie("loginUserId")),
+        messageId: messages[messages.length - 1].messageId,
       };
+
       console.log(newdata);
       await instance.put("/api/chat/newmessage", newdata);
     };
@@ -71,6 +71,7 @@ function ChatPage() {
           sender: body.sender,
           sendTime: body.sendTime,
           profile: body.profile,
+          messageId: body.messageId,
         },
       ]);
     });

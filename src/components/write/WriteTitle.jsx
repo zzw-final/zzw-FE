@@ -153,6 +153,7 @@ const Title = styled.input`
   grid-column-start: 2;
   grid-row-start: 2;
   margin: 3rem 0rem 0px 0rem;
+  padding: 10px;
 `;
 
 const FoodNameNoti = styled.p`
@@ -172,6 +173,7 @@ const FoodNameInput = styled.input`
   grid-column-start: 2;
   grid-row-start: 3;
   margin: 3rem 0rem 0px 0rem;
+  padding: 10px;
 `;
 const TagNoti = styled.p`
   grid-column-start: 2;
@@ -251,6 +253,7 @@ const TimeSelect = styled.select`
   border-radius: 15px;
   grid-column-start: 2;
   grid-row-start: 5;
+  padding: 10px;
 `;
 const PreviewImg = styled.img`
   width: 70vw;

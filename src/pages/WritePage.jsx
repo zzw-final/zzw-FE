@@ -1,6 +1,6 @@
 import React from "react";
 import { useState } from "react";
-import { useMutation } from "react-query";
+import { useMutation, useQueryClient } from "react-query";
 import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
 import { fetchImg, fetchpostWrite } from "../api/writepage";
@@ -19,13 +19,28 @@ function WritePage() {
   );
   const navigate = useNavigate();
 
+  const queryClient = useQueryClient();
+
   // WriteAddCard에서 값을 받을 state
   const [formValues, setFomvalues] = useState([
     { imageUrl: "", content: "", page: 0 },
   ]);
 
   //받은값 전부를 post => mutate로 리팩토링
-  const writepost = async () => {
+  const postMutate = useMutation((data) => fetchpostWrite(data), {
+    onSuccess: () => {
+      queryClient.invalidateQueries(["mypage", "myRecipes"]);
+      queryClient.invalidateQueries(["mypage", "likeRecipes"]);
+      queryClient.invalidateQueries("recentPost");
+
+      alert("게시글 등록이 완료되었습니다!");
+      navigate(-1);
+      window.sessionStorage.clear();
+      window.localStorage.clear();
+    },
+  });
+
+  const submit = () => {
     const data = {
       title: title,
       foodName: foodname,
@@ -34,12 +49,6 @@ function WritePage() {
       time: time,
       pageList: formValues,
     };
-    return fetchpostWrite(data);
-  };
-
-  const { mutate } = useMutation(writepost);
-
-  const submit = () => {
     if (title === "") {
       return alert("제목을 입력해주세요❗️");
     }
@@ -55,11 +64,7 @@ function WritePage() {
     if (ingredient.length === 0) {
       return alert("재료 태그를 추가해주세요❗️");
     }
-    mutate();
-    alert("게시글 등록이 완료되었습니다!");
-    navigate(-1);
-    window.sessionStorage.clear();
-    window.localStorage.clear();
+    postMutate.mutate(data);
   };
 
   //이미지 파일 업로드시 url로 변경해주는 post
