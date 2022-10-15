@@ -74,12 +74,17 @@ function WriteAddCard({ imgUpload, formValues, setFomvalues }) {
   return (
     <>
       <form
-        style={{ height: "auto", marginBottom: "120px" }}
+        style={{
+          width: "400px",
+          height: "auto",
+          maxHeight: "auto",
+          marginBottom: "120px",
+        }}
         onSubmit={handleSubmit}
       >
         {formValues.length < 11 &&
           formValues.map((element, index) => (
-            <AddCardDiv key={index}>
+            <AddCardDiv key={index} style={{ maxHeight: "548.56px" }}>
               <PreviewImg
                 onError={noImg}
                 src={
@@ -161,9 +166,9 @@ const AddCardDiv = styled.div`
   /* background-color: green; */
   margin: 5vh auto 4vh auto;
   width:
-  /* width: 97%;
+  width: 97%;
   max-width: 97%;
-  min-width: 97% */
+  min-width: 97%
   height: 70vh;
   display: grid;
   justify-items: left;
@@ -175,8 +180,8 @@ const AddCardDiv = styled.div`
 const PreviewImg = styled.img`
   grid-column-start: 2;
   grid-row-start: 2;
-  width: 60%;
-  height: 80%;
+  width: 55vw;
+  height: 25vh;
   margin: 2rem 0rem 0rem 0rem;
   box-sizing: border-box;
   border: 0;
@@ -186,7 +191,7 @@ const PreviewImg = styled.img`
 const Cardtextarea = styled.textarea`
   grid-column-start: 2;
   grid-row-start: 3;
-  width: 95%;
+  width: 90vw;
   max-width:95%
   margin: 0 5px 0 0;
   background-color: var(--color-light-white);
