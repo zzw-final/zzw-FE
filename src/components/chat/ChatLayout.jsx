@@ -3,7 +3,15 @@ import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
 import TextAreaAutoResize from "react-textarea-autosize";
 
-function ChatLayout({ publish, msg, msgHandler, setMsg, location, children, back }) {
+function ChatLayout({
+  publish,
+  msg,
+  msgHandler,
+  setMsg,
+  location,
+  children,
+  out,
+}) {
   const navigate = useNavigate();
   const pub = () => {
     if (msg.trim() !== "") {
@@ -28,10 +36,15 @@ function ChatLayout({ publish, msg, msgHandler, setMsg, location, children, back
           {location?.nickname}
           <span>{location?.grade}</span>
         </div>
+        <OutChatBtn onClick={out}>나가기</OutChatBtn>
       </Header>
       {children}
       <Label style={{ position: "fixed" }}>
-        <TextAreaAutoResize value={msg} onKeyPress={onEnterPress} onChange={msgHandler} />
+        <TextAreaAutoResize
+          value={msg}
+          onKeyPress={onEnterPress}
+          onChange={msgHandler}
+        />
         <div onClick={pub}>전송</div>
       </Label>
     </Container>
@@ -70,6 +83,11 @@ const Header = styled.div`
     font-size: var(--font-regular);
     font-weight: var(--weight-regular);
   }
+`;
+const OutChatBtn = styled.button`
+  width: 20px;
+  height: 30px;
+  margin-left: -20px;
 `;
 
 const Label = styled.label`
