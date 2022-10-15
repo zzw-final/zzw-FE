@@ -50,7 +50,7 @@ function Recipe({ post, ...props }) {
       <Img alt="foodphoto" src={foodImg} onClick={goToDetail} />
       <Title>{title}</Title>
       <Tags>
-        {foodIngredientList.map((ingredient, idx) => (
+        {foodIngredientList?.map((ingredient, idx) => (
           <Tag tagName={ingredient} key={idx} />
         ))}
       </Tags>

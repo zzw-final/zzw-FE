@@ -17,15 +17,12 @@ const Like = ({ isLike, btnClick }) => {
 
 const LikeContainer = styled.div`
   font-size: var(--font-micro);
-  background-color: var(--color-white);
-  color: var(--color-dark-orange);
-  border-radius: 30%;
+  color: var(--color-main-dark-orange);
   width: 1.5rem;
   height: 1.5rem;
   display: flex;
   justify-content: center;
   align-items: center;
-  box-shadow: 0px 0px 5px #dcdcdc;
 `;
 
 export default Like;

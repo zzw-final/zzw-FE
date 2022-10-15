@@ -5,7 +5,6 @@ import { instance } from "../../api/request";
 import { useState } from "react";
 import KeyboardBackspaceIcon from "@mui/icons-material/KeyboardBackspace";
 import { useNavigate } from "react-router-dom";
-import ArrowBackIosIcon from "@mui/icons-material/ArrowBackIos";
 import ChevronLeftIcon from "@mui/icons-material/ChevronLeft";
 import Button from "../UI/Button";
 import IosShareIcon from "@mui/icons-material/IosShare";
@@ -24,9 +23,20 @@ const LayoutPage = ({
 }) => {
   const [topTenTagList, setTopTenTagList] = useState();
   const [tagAllList, setTagAllList] = useState();
+  const [isHeader, setIsHeader] = useState(true);
   const pathName = window.location.pathname;
   const navigate = useNavigate();
   const [isHeader, setIsHeader] = useState(true);
+
+  useEffect(() => {
+    if (pathName === "/") {
+      setIsHeader(false);
+    } else if (pathName.includes("search")) {
+      setIsHeader(false);
+    } else if (pathName.includes("mypage")) {
+      setIsHeader(false);
+    }
+  }, [pathName]);
 
   useEffect(() => {
     if (pathName === "/") {
@@ -99,7 +109,11 @@ const LayoutPage = ({
       ) : (
         ""
       )}
-      <Wrapper background={background} backgroundMain={backgroundMain}>
+      <Wrapper
+        background={background}
+        backgroundMain={backgroundMain}
+        paddingTop={isHeader ? "80px" : ""}
+      >
         <div>{children}</div>
       </Wrapper>
       <Footer topTenTagList={topTenTagList} tagAllList={tagAllList} />
@@ -130,6 +144,10 @@ const Header = styled.header`
   background-color: var(--color-main-light-orange);
   font-size: var(--font-medium-large);
   font-weight: var(--weight-semi-bold);
+  width: 100%;
+  position: fixed;
+  top: 0;
+  z-index: 1;
 `;
 
 const Wrapper = styled.div`
@@ -140,6 +158,7 @@ const Wrapper = styled.div`
     var(${({ backgroundMain }) => backgroundMain}) 50%,
     var(--color-white) 50%
   );
+  padding-top: ${({ paddingTop }) => paddingTop || 0};
 `;
 
 export default LayoutPage;

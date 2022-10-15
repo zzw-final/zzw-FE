@@ -28,31 +28,31 @@ const MainPage = () => {
   const loginNickname = cookies.loginNickname;
 
   const { data: tagList } = useQuery(
-    "tagList",
+    ["mainPage", "tagList"],
     fetchBestTagTopFive,
     options.eternal
   );
 
   const { data: bestPost } = useQuery(
-    "bestPost",
+    ["mainPage", "bestPost"],
     fetchBestList,
     options.eternal
   );
 
   const { data: recentPost } = useQuery(
-    "recentPost",
+    ["mainPage", "recentPost"],
     loginNickname ? fetchRecentList : "",
     options.eternal
   );
 
   const { data: recentPostInfinite } = useQuery(
-    "recentPostInfinite",
+    ["mainPage", "infinite"],
     loginNickname ? "" : () => fetchRecentListInfinite,
     options.eternal
   );
 
   const { data: followPost } = useQuery(
-    "followPost",
+    ["mainPage", "infinite"],
     loginNickname ? () => fetchFollowListInfinite : "",
     options.eternal
   );

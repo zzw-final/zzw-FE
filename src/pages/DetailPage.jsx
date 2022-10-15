@@ -59,6 +59,11 @@ function DetailPage() {
     onSuccess: () => {
       alert("삭제되었습니다.");
       navigate(-1);
+      queryClient.invalidateQueries(["mypage", "myRecipes"]);
+      queryClient.invalidateQueries(["mypage", "likeRecipes"]);
+      queryClient.invalidateQueries("bestPost");
+      queryClient.invalidateQueries("recentPost");
+      queryClient.invalidateQueries("followPost");
     },
   });
 
@@ -72,6 +77,11 @@ function DetailPage() {
     onSuccess: () => {
       alert("글 수정이 완료되었습니다!");
       navigate(`/`);
+      queryClient.invalidateQueries(["mypage", "myRecipes"]);
+      queryClient.invalidateQueries(["mypage", "likeRecipes"]);
+      queryClient.invalidateQueries("bestPost");
+      queryClient.invalidateQueries("recentPost");
+      queryClient.invalidateQueries("followPost");
     },
   });
 
