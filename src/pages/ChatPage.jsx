@@ -54,6 +54,7 @@ function ChatPage() {
     const back = async () => {
       const newdata = {
         roomId: Number(roomId),
+        userId: Number(getCookie("loginUserId")),
       };
       console.log(newdata);
       await instance.put("/api/chat/newmessage", newdata);
