@@ -18,10 +18,9 @@ import GoogleRedirect from "./components/login/google/GoogleRedirect";
 import SearchPage from "./pages/SearchPage";
 import NaverRedirect from "./components/login/naver/NaverRedirect";
 import ChatListPage from "./pages/ChatListPage";
+import ErrorPage from "./pages/ErrorPage";
 import { useState, useEffect } from "react";
 import { getCookie } from "./util/cookie";
-
-
 
 const Desktop = ({ children }) => {
   const isDesktop = useMediaQuery({ minWidth: 768 });
@@ -41,8 +40,9 @@ const queryClient = new QueryClient();
 // console.log("now!!!! >", new Date().toString());
 
 function App() {
-
-  const [isLogin, setIsLogin] = useState(getCookie("loginUserId") ? true : false);
+  const [isLogin, setIsLogin] = useState(
+    getCookie("loginUserId") ? true : false
+  );
 
   useEffect(() => {
     setTimeout(() => {
@@ -97,7 +97,8 @@ function App() {
             <Route path="/search" element={<SearchPage />} />
             <Route path="/chat/:roomId" element={<ChatPage />} />
             <Route path="/chatlist" element={<ChatListPage />} />
-            <Route path="*" element={<div>페이지를 찾을 수 없습니다.</div>} />
+            {/* <Route path="*" element={<div>페이지를 찾을 수 없습니다.</div>} /> */}
+            <Route path="*" element={<ErrorPage />} />
           </Routes>
         </Mobile>
       </BrowserRouter>
