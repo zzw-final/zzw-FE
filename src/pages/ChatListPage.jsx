@@ -7,6 +7,7 @@ import LayoutPage from "../components/common/LayoutPage";
 import { useMutation, useQuery, useQueryClient } from "react-query";
 import { fetchChatList, fetchChatRoomDelete } from "../api/chatList";
 import { options } from "../api/options";
+import useInput from "../hooks/useInput";
 
 const ChatListPage = () => {
   const { data: chatList } = useQuery(
@@ -16,9 +17,6 @@ const ChatListPage = () => {
   );
 
   const queryClient = useQueryClient();
-
-  console.log("채팅 페이지 렌더링..1", chatList);
-  // console.log("isFetching, :>> ", isFetching);
 
   const deleteChatRoom = async (roomId) => {
     return await fetchChatRoomDelete(roomId);
@@ -54,13 +52,24 @@ const ChatListPage = () => {
     // MutateDeleteChatRoom.mutate(roomId);
     deleteRoom(roomId);
   };
+  const [searchInput, searchInputHandler] = useInput();
+
+  const searchNickname = chatList?.filter((item) =>
+    item.nickname.includes(searchInput)
+  );
 
   return (
     <LayoutPage headerTitle="DM" backBtnTypeArrow="true">
       <ChatListContainer>
+        <SearchBox>
+          <Input
+            placeholder=" 닉네임을 검색하세요."
+            onChange={searchInputHandler}
+          ></Input>
+        </SearchBox>
         <ChatList>
-          {chatList ? (
-            chatList.map((listItem, idx) => (
+          {searchNickname ? (
+            searchNickname.map((listItem, idx) => (
               <ChatListItem listItem={listItem} key={idx} onSubmit={onSubmit} />
             ))
           ) : (
@@ -74,8 +83,27 @@ const ChatListPage = () => {
 
 const ChatListContainer = styled.div``;
 
-const ChatList = styled.div`
+const SearchBox = styled.div`
+  text-align: center;
+  position: relative;
+  margin-top: 1.4rem;
+`;
+
+const Input = styled.input`
+  width: 90%;
+  height: 2.3rem;
+  margin-bottom: 0.5rem;
   padding: 1rem;
+  background-color: var(--color-white-orange);
+  border: none;
+  border-radius: 10px;
+  outline: none;
+  font-weight: var(--weight-semi-bold);
+  font-size: var(--font-small);
+`;
+
+const ChatList = styled.div`
+  padding: 0rem 1rem;
   text-align: left;
 `;
 

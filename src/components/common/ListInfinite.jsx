@@ -4,9 +4,9 @@ import Recipe from "../posts/Recipe";
 import { useInView } from "react-intersection-observer";
 import { useInfiniteQueryScroll } from "../../hooks/useInfiniteQueryScroll";
 
-const ListInfinite = ({ list, likeToggle, listName, ...props }) => {
+const ListInfinite = ({ likeToggle, listName, resultSearch, ...props }) => {
   const { data, isSuccess, hasNextPage, fetchNextPage } =
-    useInfiniteQueryScroll(listName);
+    useInfiniteQueryScroll(listName, resultSearch);
   const { ref, inView } = useInView();
 
   useEffect(() => {

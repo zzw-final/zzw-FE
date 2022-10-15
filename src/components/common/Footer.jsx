@@ -19,15 +19,16 @@ const Footer = ({ topTenTagList, tagAllList }) => {
   const [toggleTagList, setToggleTagList] = useState(false);
   const [searchTagList, setSearchTagList] = useState([]);
   const [searchHelpText, setSearchHelpText] = useState(false);
-  const navigate = useNavigate();
-
+  const [newChatText, setNewChatText] = useState();
   const [cookies] = useCookies(["loginNickname"]);
+  const loginUserId = getCookie("loginUserId");
 
+  const pathName = window.location.pathname;
   const loginNickname = cookies.loginNickname;
 
+  const navigate = useNavigate();
+
   const client = useRef({});
-  const [newChatText, setNewChatText] = useState();
-  const loginUserId = getCookie("loginUserId");
 
   useEffect(() => {
     connect();
@@ -65,6 +66,16 @@ const Footer = ({ topTenTagList, tagAllList }) => {
   };
 
   // console.log("newChatText > ", newChatText);
+  // const home = document.querySelector(`#${pathName}`);
+  // const home = document.querySelector("#write");
+  // home.style.color = "var(--color-real-light-orange)";
+
+  useEffect(() => {
+    if (pathName === "/") {
+    } else if (pathName.includes("search")) {
+    } else if (pathName.includes("mypage")) {
+    }
+  }, [pathName]);
 
   const loginConfirm = (url) => {
     if (!loginNickname) {
@@ -143,17 +154,17 @@ const Footer = ({ topTenTagList, tagAllList }) => {
     <>
       <FooterContainer>
         <FooterIcon onClick={goChatList}>
-          <Badge badgeContent={!newChatText ? "N" : "0"} color="primary">
+          <Badge badgeContent={!newChatText ? "N" : "0"} color="warning">
             <TextsmsIcon sx={{ fontSize: 30 }} />
           </Badge>
         </FooterIcon>
         <FooterIcon onClick={openTagBox}>
           <TagIcon sx={{ fontSize: 30 }} />
         </FooterIcon>
-        <FooterIcon onClick={goHome}>
+        <FooterIcon id="home" onClick={goHome}>
           <HomeIcon sx={{ fontSize: 30 }} />
         </FooterIcon>
-        <FooterIcon onClick={goWrite}>
+        <FooterIcon id="write" onClick={goWrite}>
           <CreateIcon sx={{ fontSize: 30 }} />
         </FooterIcon>
         <FooterIcon onClick={goMypage}>
@@ -239,7 +250,7 @@ const FooterContainer = styled.div`
 `;
 
 const FooterIcon = styled.div`
-  color: var(--color-orange);
+  color: ${({ color }) => color || "var(--color-orange)"};
   //--color-real-light-orange << select
 `;
 
