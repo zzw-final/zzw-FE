@@ -16,17 +16,10 @@ const SearchForm = ({ mainSearch, searchPageSearch, showToast }) => {
   const searchedTag = searchParams.get("tag");
   const searchedNickname = searchParams.get("nickname");
 
+  const pathName = window.location.pathname;
   const loginNickname = cookies.loginNickname;
 
   const selectRef = useRef();
-
-  const moveScroll = () => {
-    const tagListBox = document.querySelector("#tagListBox");
-    if (tagListBox?.scrollWidth !== 0) {
-      tagListBox?.scrollTo(tagListBox?.clientWidth + 1000, 0);
-      // tagListBox?.scrollTo();
-    }
-  };
 
   const onPeriodChange = (event) => {
     setSelectOption(event.target?.value);
@@ -41,7 +34,7 @@ const SearchForm = ({ mainSearch, searchPageSearch, showToast }) => {
   ];
 
   const searchHandler = () => {
-    const searchText = inputRef?.current.value;
+    const searchText = inputRef?.current?.value;
     const selectOptionRef = selectRef?.current.value;
     if (selectOptionRef !== "tag" && searchText === "") {
       alert("빈 값은 검색할 수 없습니다.");
@@ -58,7 +51,7 @@ const SearchForm = ({ mainSearch, searchPageSearch, showToast }) => {
       makeTagList(searchText);
       return;
     }
-    window.location.pathname === "/"
+    pathName === "/"
       ? mainSearch(selectOptionRef, searchText)
       : searchPageSearch(selectOptionRef, searchText);
   };
@@ -68,7 +61,7 @@ const SearchForm = ({ mainSearch, searchPageSearch, showToast }) => {
   }, [tagList]);
 
   const tagSearchHandler = (selectOptionRef, searchText, tagList) => {
-    if (window.location.pathname === "/") {
+    if (pathName === "/") {
       if (tagList !== [] && searchText === "") {
         mainSearch(selectOptionRef, tagList.toString());
       }
@@ -91,7 +84,6 @@ const SearchForm = ({ mainSearch, searchPageSearch, showToast }) => {
     if (!localTaglist.includes(addedTag)) {
       setTagList((prevState) => [...prevState, addedTag]);
     }
-    moveScroll();
   };
 
   useEffect(() => {
@@ -115,16 +107,16 @@ const SearchForm = ({ mainSearch, searchPageSearch, showToast }) => {
     setTagList(tagList.filter((tag) => tag !== deleteTagName));
   };
 
-  // useEffect(() => {
-  //   inputRef.current.addEventListener("keypress", logKey);
-  //   function logKey(event) {
-  //     if (event.code === "Backspace") {
-  //       console.log("backspace..");
-  // submitAction();
-  // inputRef.current.reset();
-  //     }
-  //   }
-  // }, []);
+  useEffect(() => {
+    inputRef.current.addEventListener("keydown", logKey);
+    function logKey(event) {
+      if (event.code === "Backspace") {
+        if (inputRef?.current?.value === "") {
+          setTagList((prev) => prev.slice(0, prev.length - 1));
+        }
+      }
+    }
+  }, [inputRef]);
 
   return (
     <SearchContainer>
@@ -150,19 +142,21 @@ const SearchForm = ({ mainSearch, searchPageSearch, showToast }) => {
                 </option>
               ))}
             </SelectBox>
-            <TagList id="tagListBox">
-              {tagList.map((tag, idx) => (
-                <Tag
-                  tagName={tag}
-                  key={idx}
-                  isDelBtn={true}
-                  delBtnClick={() => {
-                    deleteSelectedTag(tag);
-                  }}
-                />
-              ))}
-            </TagList>
-            <InputForm ref={inputRef} />
+            <SearchInfo>
+              <TagList id="tagListBox">
+                {tagList?.map((tag, idx) => (
+                  <Tag
+                    tagName={tag}
+                    key={idx}
+                    isDelBtn={true}
+                    delBtnClick={() => {
+                      deleteSelectedTag(tag);
+                    }}
+                  />
+                ))}
+              </TagList>
+              <InputForm ref={inputRef} />
+            </SearchInfo>
             <SearchIconDiv>
               <SearchIcon onClick={searchHandler} />
             </SearchIconDiv>
@@ -203,22 +197,33 @@ const InputBox = styled.div`
   width: 100%;
   align-items: center;
   padding: 0.2rem 0.6rem;
-  /* overflow: scroll; */
 `;
 
 const SelectBox = styled.select`
   border: 0;
   outline: 0;
   background-color: transparent;
+  font-size: var(--font-small);
   cursor: pointer;
   position: absolute;
+`;
+
+const SearchInfo = styled.div`
+  display: flex;
+  align-items: center;
+  margin-left: 5rem;
+  margin-right: 1.5rem;
+  overflow: scroll;
+  ::-webkit-scrollbar {
+    display: none;
+  }
+  width: 100%;
+  height: 100%;
 `;
 
 const TagList = styled.div`
   color: var(--color-black);
   display: flex;
-  margin-left: 5rem;
-  overflow: scroll;
 `;
 
 const SearchIconDiv = styled.div`
@@ -227,12 +232,13 @@ const SearchIconDiv = styled.div`
 `;
 
 const InputForm = styled.input`
-  /* width: 100%; */
+  width: 100%;
   height: 36px;
-  /* padding: 0.8rem; */
+  padding: 0.4rem;
+  font-size: var(--font-small);
   outline: 0;
   border: 0;
-  min-width: 100px;
+  min-width: 80px;
   background-color: transparent;
   margin-right: 1.5rem;
 `;

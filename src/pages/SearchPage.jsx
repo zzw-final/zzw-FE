@@ -79,7 +79,7 @@ const SearchPage = () => {
         {toast && (
           <Toast
             setToast={setToast}
-            text={"태그는 5개까지 검색 가능합니다."}
+            text="태그는 5개까지 검색 가능합니다."
             margin="0.5rem"
           />
         )}
@@ -110,7 +110,6 @@ const SearchPage = () => {
 
 const ListContainer = styled.section`
   display: grid;
-  height: 210px;
   margin: 0 0.5rem 0 0.5rem;
   grid-template-columns: repeat(auto-fill, minmax(175px, 1fr));
   grid-row-gap: 1rem;
