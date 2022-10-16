@@ -12,6 +12,11 @@ export const fetchLikeRecipes = async () => {
   return await instance.get(`/api/auth/mypage/likeposts`);
 };
 
+export const fetchInfiniteLikeRecipes = async (lastPostId) => {
+  const params = lastPostId ? `?lastPostId=${lastPostId}` : ``;
+  return await instance.get(`/api/auth/mypage/likeposts${params}`);
+};
+
 export const withdrawal = async (loginUserId) => {
   return await instance.delete(`/api/member/resign/${loginUserId}`);
 };

@@ -26,17 +26,6 @@ const LayoutPage = ({
   const [isHeader, setIsHeader] = useState(true);
   const pathName = window.location.pathname;
   const navigate = useNavigate();
-  const [isHeader, setIsHeader] = useState(true);
-
-  useEffect(() => {
-    if (pathName === "/") {
-      setIsHeader(false);
-    } else if (pathName.includes("search")) {
-      setIsHeader(false);
-    } else if (pathName.includes("mypage")) {
-      setIsHeader(false);
-    }
-  }, [pathName]);
 
   useEffect(() => {
     if (pathName === "/") {

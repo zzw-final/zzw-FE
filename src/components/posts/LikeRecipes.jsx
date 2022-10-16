@@ -1,7 +1,7 @@
 import Recipe from "./Recipe";
 import styled from "styled-components";
 
-function LikeRecipes({ likeRecipes }) {
+function LikeRecipes({ likeRecipes, recipeRef }) {
   if (likeRecipes?.length === 0) {
     return (
       <AlignBox>
@@ -11,10 +11,12 @@ function LikeRecipes({ likeRecipes }) {
   }
 
   return (
-    <Container>
-      {likeRecipes?.map((likeRecipe) => (
-        <Recipe key={likeRecipe.postId} post={likeRecipe} />
-      ))}
+    <Container ref={recipeRef}>
+      {likeRecipes?.map((likeRecipe) =>
+        likeRecipe?.data.data.map((recipe) => (
+          <Recipe key={recipe.postId} post={recipe} />
+        ))
+      )}
     </Container>
   );
 }

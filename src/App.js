@@ -21,8 +21,6 @@ import ChatListPage from "./pages/ChatListPage";
 import { useState, useEffect } from "react";
 import { getCookie } from "./util/cookie";
 
-
-
 const Desktop = ({ children }) => {
   const isDesktop = useMediaQuery({ minWidth: 768 });
   return isDesktop ? children : null;
@@ -41,13 +39,12 @@ const queryClient = new QueryClient();
 // console.log("now!!!! >", new Date().toString());
 
 function App() {
-
   const [isLogin, setIsLogin] = useState(getCookie("loginUserId") ? true : false);
 
   useEffect(() => {
     setTimeout(() => {
       if (getCookie("loginEmail")) setIsLogin(true);
-    }, 500);
+    }, 700);
   }, []);
 
   // useEffect(() => {
@@ -101,7 +98,7 @@ function App() {
           </Routes>
         </Mobile>
       </BrowserRouter>
-      {/* <ReactQueryDevtools initialIsOpen={false} /> */}
+      <ReactQueryDevtools initialIsOpen={false} />
     </QueryClientProvider>
   );
 }
