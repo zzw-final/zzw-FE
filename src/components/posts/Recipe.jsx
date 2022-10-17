@@ -7,7 +7,7 @@ import { useNavigate } from "react-router-dom";
 import { useCookies } from "react-cookie";
 import { likes } from "../../api/request";
 
-function Recipe({ post, ...props }) {
+function Recipe({ post, recipeRef, ...props }) {
   const navigate = useNavigate();
   const { postId, title, isLike, ingredient, foodImg } = post;
   const [likeToggleBtn, setLikeToggleBtn] = useState(isLike);
@@ -48,7 +48,7 @@ function Recipe({ post, ...props }) {
         <Like isLike={likeToggleBtn} btnClick={like} />
       </TopBox>
       <Img alt="foodphoto" src={foodImg} onClick={goToDetail} />
-      <Title>{title}</Title>
+      <Title ref={recipeRef}>{title}</Title>
       <Tags>
         {foodIngredientList?.map((ingredient, idx) => (
           <Tag tagName={ingredient} key={idx} />

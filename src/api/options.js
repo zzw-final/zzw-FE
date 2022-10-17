@@ -1,5 +1,6 @@
 export const options = {
   basic: {
+    staleTime: 10 * 1000,
     select: (data) => data.data.data,
   },
   nocache: {
@@ -10,10 +11,12 @@ export const options = {
     cacheTime: Infinity,
     staleTime: Infinity,
     select: (data) => data.data.data,
+    notifyOnChangeProps: "tracked",
   },
   halfhour: {
     cacheTime: 30 * 60 * 1000,
     staleTime: 30 * 60 * 1000,
     select: (data) => data.data.data,
+    notifyOnChangeProps: "tracked",
   },
 };

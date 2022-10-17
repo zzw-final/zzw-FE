@@ -11,10 +11,10 @@ function LikeRecipes({ likeRecipes, recipeRef }) {
   }
 
   return (
-    <Container ref={recipeRef}>
+    <Container>
       {likeRecipes?.map((likeRecipe) =>
-        likeRecipe?.data.data.map((recipe) => (
-          <Recipe key={recipe.postId} post={recipe} />
+        likeRecipe?.data.data.postList.map((recipe) => (
+          <Recipe recipeRef={recipeRef} key={recipe.postId} post={recipe} />
         ))
       )}
     </Container>

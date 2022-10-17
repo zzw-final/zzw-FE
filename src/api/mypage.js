@@ -8,11 +8,7 @@ export const fetchMyRecipes = async () => {
   return await instance.get(`/api/auth/mypage/myposts`);
 };
 
-export const fetchLikeRecipes = async () => {
-  return await instance.get(`/api/auth/mypage/likeposts`);
-};
-
-export const fetchInfiniteLikeRecipes = async (lastPostId) => {
+export const fetchLikeRecipes = async (lastPostId) => {
   const params = lastPostId ? `?lastPostId=${lastPostId}` : ``;
   return await instance.get(`/api/auth/mypage/likeposts${params}`);
 };
