@@ -17,6 +17,7 @@ function WritePage() {
   const [imageURL, setImageURL] = useState(
     "https://user-images.githubusercontent.com/110365677/195768702-db712364-f837-45c6-9adf-aee6d195dadb.png"
   );
+  const [res, setRes] = useState();
   const navigate = useNavigate();
 
   const queryClient = useQueryClient();
@@ -28,13 +29,12 @@ function WritePage() {
 
   //받은값 전부를 post => mutate로 리팩토링
   const postMutate = useMutation((data) => fetchpostWrite(data), {
-    onSuccess: () => {
+    onSuccess: (data) => {
       queryClient.invalidateQueries(["mypage", "myRecipes"]);
       queryClient.invalidateQueries(["mypage", "likeRecipes"]);
       queryClient.invalidateQueries("recentPost");
-
       alert("게시글 등록이 완료되었습니다!");
-      navigate(-1);
+      navigate(`/detail/${data.data.data.postId}`);
       window.sessionStorage.clear();
       window.localStorage.clear();
     },
