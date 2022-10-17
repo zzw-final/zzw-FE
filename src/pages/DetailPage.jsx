@@ -64,6 +64,7 @@ function DetailPage() {
       queryClient.invalidateQueries("bestPost");
       queryClient.invalidateQueries("recentPost");
       queryClient.invalidateQueries("followPost");
+      queryClient.invalidateQueries("mainpage");
     },
   });
 
