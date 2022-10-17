@@ -133,7 +133,10 @@ function DetailPage() {
 
   //댓글 작성
   const commentPostMutate = useMutation((postInfo) => commentPost(postInfo), {
-    onSuccess: () => {
+    onSuccess: (res) => {
+      if (res.data.data.isGet) {
+        alert("🎉 새로운 칭호를 획득했습니다! 마이페이지에서 확인하세요.");
+      }
       queryClient.invalidateQueries("comment", id);
     },
   });
