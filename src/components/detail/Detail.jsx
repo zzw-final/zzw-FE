@@ -6,6 +6,7 @@ import { getCookie } from "../../util/cookie";
 import { useNavigate } from "react-router-dom";
 import TagList from "./TagList";
 import SwiperRecipe from "./SwiperRecipe";
+import { dateFormat } from "../../util/dateFormat";
 
 function Detail({
   postDetail,
@@ -65,51 +66,7 @@ function Detail({
 
   return (
     <DetailContainer>
-      <Header>
-        {/* <FoodnameDiv>
-          {!isEditMode ? (
-            <>
-              <Foodname>{foodName}</Foodname>
-              <Time>⏱ {postDetail?.time} min</Time>
-            </>
-          ) : (
-            <>
-              <FoodnameEdit
-                defaultValue={foodName}
-                onBlur={(e) => {
-                  editForm("foodName", e.target.value);
-                }}
-              ></FoodnameEdit>
-              <TimeSelect
-                placeholder="요리 시간을 선택해주세요"
-                onBlur={(e) => {
-                  editForm("time", e.target.value);
-                }}
-              >
-                <option value="5분">5분</option>
-                <option value="10분">10분</option>
-                <option value="15분">15분</option>
-                <option value="30분">30분 이상</option>
-              </TimeSelect>
-            </>
-          )}
-        </FoodnameDiv> */}
-        {nickname === postDetail?.nickname && (
-          <ButtonDiv>
-            {!isEditMode ? (
-              <>
-                <Button onClick={onEditPage}>수정</Button>
-                <Button onClick={onDelete}>삭제</Button>
-              </>
-            ) : (
-              <>
-                <ButtonEdit onClick={onSubmitHandler}>수정완료</ButtonEdit>
-                <ButtonEdit onClick={onCancle}>수정취소</ButtonEdit>
-              </>
-            )}
-          </ButtonDiv>
-        )}
-      </Header>
+      <Header></Header>
 
       {!isEditMode ? (
         <Tags>
@@ -144,15 +101,20 @@ function Detail({
             editedValues={editedValues}
             setEditedValues={setEditedValues}
             editForm={editForm}
+            toggleTagList={toggleTagList}
+            setToggleTagList={setToggleTagList}
+            openTagBox={openTagBox}
+            onEditPage={onEditPage}
+            onCancle={onCancle}
+            onSubmitHandler={onSubmitHandler}
+            onDelete={onDelete}
           />
         )}
       </Content>
       <Footer>
-        <FootLeft>
-          <Icon src={"/copy.png"} alt="공유하기" />
-          <Icon src={"/eye-off.png"} alt="신고하기" />
-        </FootLeft>
         <Comment onClick={openTagBox}>💬 {commentListCnt}</Comment>
+        <CreatedAt>{dateFormat(postDetail?.createAt)}</CreatedAt>
+
         <CommentListBox id="tagList" top={toggleTagList}>
           <CommentFoldLine onClick={openTagBox}></CommentFoldLine>
           <SearchBox>
@@ -178,72 +140,13 @@ const Header = styled.div`
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding: 2rem 1.9rem 1.5rem 1.9rem;
-`;
-
-const FoodnameDiv = styled.div`
-  display: flex;
-  align-items: center;
-`;
-
-const Foodname = styled.div`
-  font-size: var(--font-medium-large);
-  font-weight: var(--weight-bolder);
-`;
-
-const FoodnameEdit = styled.input`
-  font-size: var(--font-small);
-  width: 7rem;
+  padding: 0rem 1.9rem 1.5rem 1.9rem;
 `;
 
 // const Time = styled.div`
 //   font-size: var(--font-small);
 //   margin-left: 0.3rem;
 // `;
-
-const TimeSelect = styled.select`
-  box-sizing: border-box;
-  /* position: absolute; */
-  width: 4rem;
-  height: 1.4rem;
-  left: 273px;
-  top: 149px;
-  margin-left: 5px;
-
-  border: 1px solid #9c9c9c;
-  border-radius: 10px;
-`;
-
-const ButtonDiv = styled.div`
-  display: flex;
-  gap: 10px;
-`;
-
-const Button = styled.button`
-  font-size: var(--font-small);
-  font-weight: var(--weight-semi-bold);
-  color: #232323;
-  text-align: center;
-  width: 2.5rem;
-  height: 1.2rem;
-  background-color: #fbf8f0;
-  border-radius: 3px;
-  box-shadow: 2px 2px 5px #bebebe;
-  border: none;
-`;
-
-const ButtonEdit = styled.button`
-  font-size: var(--font-small);
-  font-weight: var(--weight-semi-bold);
-  color: #232323;
-  text-align: center;
-  width: 4rem;
-  height: 1.2rem;
-  background-color: #fbf8f0;
-  border-radius: 3px;
-  box-shadow: 2px 2px 5px #bebebe;
-  border: none;
-`;
 
 const Tags = styled.div`
   margin-left: 1rem;
@@ -280,16 +183,23 @@ const Icon = styled.img`
   height: 25px;
 `;
 
+const CreatedAt = styled.div`
+  font-size: var(--font-micro);
+  color: var(--color-grey);
+  right: 20vw;
+`;
+
 const Comment = styled.div`
-  background-color: var(--color-white);
+  background-color: var(#fff7eb);
   padding: 0.2rem 0.5rem;
   box-shadow: 0 0 10px rgb(0 0 0 / 30%);
-  border-radius: 15px;
+  border-radius: 14px;
   font-weight: var(--weight-bold);
+  width: 17vw;
 `;
 
 const SearchBox = styled.div`
-  /* background-color: lavender; */
+  /* background-color: #fff7eb; */
   display: flex;
   flex-direction: column;
   height: 14vh;
@@ -304,7 +214,7 @@ const CommentFoldLine = styled.div`
 `;
 
 const CommentListBox = styled.div`
-  background-color: var(--color-white);
+  background-color: white;
   z-index: 1;
   width: 100%;
   height: 100%;

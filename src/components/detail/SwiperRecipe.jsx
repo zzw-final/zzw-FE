@@ -18,6 +18,13 @@ const SwiperRecipe = ({
   editedValues,
   setEditedValues,
   editForm,
+  toggleTagList,
+  setToggleTagList,
+  openTagBox,
+  onEditPage,
+  onCancle,
+  onSubmitHandler,
+  onDelete,
 }) => {
   const contentList = postDetail.contentList;
 
@@ -39,6 +46,13 @@ const SwiperRecipe = ({
               isEditMode={isEditMode}
               imgUpload={imgUpload}
               editForm={editForm}
+              toggleTagList={toggleTagList}
+              setToggleTagList={setToggleTagList}
+              openTagBox={openTagBox}
+              onEditPage={onEditPage}
+              onCancle={onCancle}
+              onSubmitHandler={onSubmitHandler}
+              onDelete={onDelete}
             />
           </SwiperSlide>
           {contentList.map((content, idx) => (

@@ -10,12 +10,20 @@ import { useEffect } from "react";
 import imageCompression from "browser-image-compression";
 import { likePost } from "../../api/writepage";
 import { useMutation, useQuery, useQueryClient } from "react-query";
+import { getCookie } from "../../util/cookie";
 
 const SwiperRecipeItemFirstPage = ({
   postDetail,
   isEditMode,
   imgUpload,
   editForm,
+  toggleTagList,
+  setToggleTagList,
+  openTagBox,
+  onEditPage,
+  onCancle,
+  onSubmitHandler,
+  onDelete,
 }) => {
   const {
     postId,
@@ -97,6 +105,8 @@ const SwiperRecipeItemFirstPage = ({
     setImgFoodUrlEdited(result.data.data.imageUrl);
   };
 
+  const loninNickname = getCookie("loginNickname");
+
   console.log(postDetail);
   return (
     <>
@@ -120,7 +130,17 @@ const SwiperRecipeItemFirstPage = ({
               <Nickname onClick={userPage}>
                 {nickname}/{grade}
               </Nickname>
-              <FollowBtn>팔로우</FollowBtn>
+              {loninNickname === nickname ? (
+                <ButtonDiv>
+                  <>
+                    <Button onClick={onEditPage}>수정</Button>
+                    <Button onClick={onDelete}>삭제</Button>
+                  </>
+                </ButtonDiv>
+              ) : (
+                <FollowBtn>팔로우</FollowBtn>
+              )}
+
               {/* <CreatedAt>{dateFormat(createAt)}</CreatedAt> */}
             </NinknameCreatedAt>
           </ItemInfo>
@@ -142,6 +162,10 @@ const SwiperRecipeItemFirstPage = ({
               <Nickname onClick={userPage}>
                 {grade}/{nickname}
               </Nickname>
+              <>
+                <ButtonEdit onClick={onSubmitHandler}>수정완료</ButtonEdit>
+                <ButtonEdit onClick={onCancle}>수정취소</ButtonEdit>
+              </>
 
               {/* <CreatedAt>{dateFormat(createAt)}</CreatedAt> */}
             </NinknameCreatedAt>
@@ -173,10 +197,10 @@ const TimeBox = styled.div`
   color: var(--color-grey);
   position: absolute;
   top: 3%;
-  left: 5%;
+  left: 9%;
   border-radius: 15px;
   padding: 0.3rem;
-  width: 22%;
+  width: 25%;
 `;
 
 const Time = styled.div`
@@ -189,8 +213,8 @@ const Time = styled.div`
 `;
 
 const ItemImg = styled.img`
-  width: 95%;
-  height: 70%;
+  width: 90%;
+  height: 68%;
   border-radius: 18px;
   padding: 0.2rem;
   margin: 0 auto 1rem auto;
@@ -198,7 +222,7 @@ const ItemImg = styled.img`
 
 const ItemImgEdit = styled.input`
   position: absolute;
-  top: 300px;
+  top: 350px;
   left: 16px;
 `;
 
@@ -213,8 +237,8 @@ const LikeBox = styled.div`
   padding: 0.3rem;
   width: 15%;
   position: absolute;
-  right: 6%;
-  top: 61%;
+  right: 9%;
+  top: 59%;
   font-size: var(--font-regular);
 `;
 
@@ -264,7 +288,42 @@ const ItemTitle = styled.div`
 `;
 
 const ItemTitleEdit = styled.input`
-  width: 100%;
+  width: 97%;
+  border-radius: 10px;
+  height: 40%;
+  padding: 6px;
+`;
+
+const ButtonDiv = styled.div`
+  display: flex;
+  gap: 10px;
+`;
+
+const Button = styled.button`
+  font-size: var(--font-regular);
+  font-weight: var(--weight-bold);
+  color: white;
+  text-align: center;
+  width: 3rem;
+  height: 1.7rem;
+  background-color: #fbd499;
+  border-radius: 3px;
+  box-shadow: 2px 2px 5px #bebebe;
+  border: none;
+`;
+
+const ButtonEdit = styled.button`
+  font-size: var(--font-small);
+  font-weight: var(--weight-semi-bold);
+  color: #232323;
+  text-align: center;
+  width: 4rem;
+  height: 1.5rem;
+  background-color: #fbf8f0;
+  border-radius: 3px;
+  box-shadow: 2px 2px 5px #bebebe;
+  margin-top: 2px;
+  border: none;
 `;
 
 export default SwiperRecipeItemFirstPage;
