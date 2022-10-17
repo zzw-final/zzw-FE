@@ -3,7 +3,7 @@ import Tag from "./Tag";
 import styled from "styled-components";
 import { useNavigate } from "react-router-dom";
 
-const TagSearch = ({ topTenTagList, tagAllList, toggleTagBox, setSlideIsOpen }) => {
+const TagSearch = ({ topTenTagList, tagAllList, setSlideIsOpen }) => {
   const [searchTagList, setSearchTagList] = useState([]);
   const [searchHelpText, setSearchHelpText] = useState(false);
 
@@ -16,7 +16,6 @@ const TagSearch = ({ topTenTagList, tagAllList, toggleTagBox, setSlideIsOpen }) 
 
   const onClickTagHandler = () => {
     navigate(`/search?tag=${searchTagList.toString()}`);
-    // toggleTagBox();
   };
 
   const addSearchTag = (tagName) => {
@@ -32,7 +31,6 @@ const TagSearch = ({ topTenTagList, tagAllList, toggleTagBox, setSlideIsOpen }) 
   };
   return (
     <>
-      {/* <TagListFoldLine onClick={toggleTagBox}></TagListFoldLine> */}
       <TagListFoldLine
         onClick={() => {
           setSlideIsOpen(false);

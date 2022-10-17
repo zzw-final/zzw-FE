@@ -26,7 +26,7 @@ const ChatListItem = ({ listItem }) => {
       <Avatar alt="user_img" src={profile} sx={{ width: 48, height: 48, mr: 1 }} />
       <ItemContent>
         <Nickname>
-          {nickname}/{grade} {!isRead ? <IsReadAlert /> : ""}
+          <p>{nickname}</p> {grade} {!isRead ? <IsReadAlert /> : ""}
           <ChatTime>{dateFormat(chatTime)}</ChatTime>
         </Nickname>
         {message}
@@ -48,6 +48,12 @@ const Nickname = styled.div`
   align-items: center;
   font-weight: var(--weight-semi-bold);
   margin-bottom: 0.3rem;
+  font-size: var(--font-micro);
+  p {
+    font-size: var(--font-small);
+    color: var(--color-black);
+    margin-right: 0.3rem;
+  }
 `;
 
 const IsReadAlert = styled.p`
@@ -58,7 +64,7 @@ const IsReadAlert = styled.p`
   margin-left: 0.2rem;
 `;
 
-const ChatTime = styled.p`
+const ChatTime = styled.span`
   color: var(--color-dark-white);
   font-size: var(--font-micro);
   position: absolute;

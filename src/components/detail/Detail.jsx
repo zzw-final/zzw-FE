@@ -6,6 +6,7 @@ import { getCookie } from "../../util/cookie";
 import { useNavigate } from "react-router-dom";
 import TagList from "./TagList";
 import SwiperRecipe from "./SwiperRecipe";
+import Slide from "../UI/Slide";
 
 function Detail({
   postDetail,
@@ -26,6 +27,7 @@ function Detail({
 }) {
   const nickname = getCookie("loginNickname");
   const [isEditMode, setIsEditMode] = useState(false);
+  const [slideIsOpen, setSlideIsOpen] = useState(false);
   const navigate = useNavigate();
 
   const foodIngredientList = postDetail?.ingredient
@@ -36,20 +38,12 @@ function Detail({
 
   const commentListCnt = commentList?.length;
 
-  const [toggleTagList, setToggleTagList] = useState(false);
-
-  const openTagBox = () => {
-    setToggleTagList(!toggleTagList);
-  };
-
   const onEditPage = () => {
     setIsEditMode(!isEditMode);
   };
 
   useEffect(() => {
-    const foodName = postDetail?.ingredient?.find(
-      (item) => item.isName === true
-    )?.ingredientName;
+    const foodName = postDetail?.ingredient?.find((item) => item.isName === true)?.ingredientName;
     setFoodName(foodName);
   }, [postDetail]);
 
@@ -124,11 +118,7 @@ function Detail({
         </Tags>
       ) : (
         <Tags>
-          <TagList
-            postDetail={postDetail}
-            editForm={editForm}
-            setEditedIngredient={setEditedIngredient}
-          />
+          <TagList postDetail={postDetail} editForm={editForm} setEditedIngredient={setEditedIngredient} />
         </Tags>
       )}
 
@@ -150,10 +140,20 @@ function Detail({
           <Icon src={"/copy.png"} alt="공유하기" />
           <Icon src={"/eye-off.png"} alt="신고하기" />
         </FootLeft>
-        <Comment onClick={openTagBox}>💬 {commentListCnt}</Comment>
-        <CommentListBox id="tagList" top={toggleTagList}>
-          <CommentFoldLine onClick={openTagBox}></CommentFoldLine>
-          <SearchBox>
+        <Comment
+          onClick={() => {
+            setSlideIsOpen(true);
+          }}
+        >
+          💬 {commentListCnt}
+        </Comment>
+        {slideIsOpen && (
+          <Slide setSlideIsOpen={setSlideIsOpen}>
+            <CommentFoldLine
+              onClick={() => {
+                setSlideIsOpen(false);
+              }}
+            ></CommentFoldLine>
             <CommentBox>
               <CommentList
                 postId={postDetail?.postId}
@@ -163,8 +163,8 @@ function Detail({
                 commentList={commentList}
               />
             </CommentBox>
-          </SearchBox>
-        </CommentListBox>
+          </Slide>
+        )}
       </Footer>
     </DetailContainer>
   );
@@ -286,14 +286,6 @@ const Comment = styled.div`
   font-weight: var(--weight-bold);
 `;
 
-const SearchBox = styled.div`
-  /* background-color: lavender; */
-  display: flex;
-  flex-direction: column;
-  height: 14vh;
-  position: relative;
-`;
-
 const CommentFoldLine = styled.div`
   width: 20%;
   height: 0.2rem;
@@ -301,21 +293,9 @@ const CommentFoldLine = styled.div`
   margin: 0.5rem auto 2rem auto;
 `;
 
-const CommentListBox = styled.div`
-  background-color: var(--color-white);
-  z-index: 1;
-  width: 100%;
-  height: 100%;
-  border-radius: 2rem 2rem 0 0;
-  box-shadow: 0px 0px 20px #5b5b5b;
-  transition: all 600ms cubic-bezier(0.86, 0, 0.07, 1);
-  top: ${({ top }) => (top ? "9%" : "100%")};
-  position: fixed;
-  left: 0;
-`;
-
 const CommentBox = styled.div`
   width: 100%;
+  height: 85%;
 `;
 
 export default Detail;

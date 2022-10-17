@@ -41,11 +41,7 @@ function DetailPage() {
   const queryClient = useQueryClient();
 
   //기존 데이터 가져오는 useQuery
-  const { data: postDetail } = useQuery(
-    ["detail", id],
-    () => fetchDetail(id),
-    options.eternal
-  );
+  const { data: postDetail } = useQuery(["detail", id], () => fetchDetail(id), options.eternal);
 
   //이미지 업로드 시 url 반환요청
   const imgUpload = async (file) => {
@@ -124,9 +120,7 @@ function DetailPage() {
 
   //재료만 뽑아줌
   const foodIngredientList = postDetail?.ingredient
-    ?.map((ingredient) =>
-      ingredient.isName !== true ? ingredient.ingredientName : undefined
-    )
+    ?.map((ingredient) => (ingredient.isName !== true ? ingredient.ingredientName : undefined))
     .filter((ingredient) => ingredient !== undefined);
 
   // 2p~10p 데이터
@@ -135,11 +129,7 @@ function DetailPage() {
   }, [postDetail?.contentList]);
 
   //댓글 데이터 가져오는 useQuery
-  const { data: commentList } = useQuery(
-    ["comment", id],
-    () => commentFetch(id),
-    options.eternal
-  );
+  const { data: commentList } = useQuery(["comment", id], () => commentFetch(id), options.eternal);
 
   //댓글 작성
   const commentPostMutate = useMutation((postInfo) => commentPost(postInfo), {
