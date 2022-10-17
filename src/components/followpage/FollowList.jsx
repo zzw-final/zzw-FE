@@ -2,6 +2,7 @@ import React from "react";
 import Follow from "./Follow";
 import styled from "styled-components";
 import useInput from "../../hooks/useInput";
+import SearchIcon from "@mui/icons-material/Search";
 
 function FollowList({ followList, mutate }) {
   const [searchInput, searchInputHandler] = useInput();
@@ -17,9 +18,12 @@ function FollowList({ followList, mutate }) {
   return (
     <>
       <SearchBox>
+        <span>
+          <SearchIcon color="warning" />
+        </span>
         <Input
           type="search"
-          placeholder="🍳  닉네임을 검색하세요."
+          placeholder="닉네임을 검색하세요."
           onChange={searchInputHandler}
         ></Input>
       </SearchBox>
@@ -41,13 +45,18 @@ const Div = styled.div`
 const SearchBox = styled.div`
   text-align: center;
   position: relative;
+  span {
+    position: absolute;
+    top: 7px;
+    left: 7.5%;
+  }
 `;
 
 const Input = styled.input`
   width: 90%;
   height: 2.3rem;
-  margin-bottom: 0.5rem;
-  padding: 1rem;
+  margin-bottom: 0.3rem;
+  padding: 1rem 0 1rem 2.7rem;
   background-color: var(--color-white-orange);
   border: none;
   border-radius: 10px;

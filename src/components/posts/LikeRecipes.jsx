@@ -1,7 +1,7 @@
 import Recipe from "./Recipe";
 import styled from "styled-components";
 
-function LikeRecipes({ likeRecipes }) {
+function LikeRecipes({ likeRecipes, recipeRef }) {
   if (likeRecipes?.length === 0) {
     return (
       <AlignBox>
@@ -12,9 +12,11 @@ function LikeRecipes({ likeRecipes }) {
 
   return (
     <Container>
-      {likeRecipes?.map((likeRecipe) => (
-        <Recipe key={likeRecipe.postId} post={likeRecipe} />
-      ))}
+      {likeRecipes?.map((likeRecipe) =>
+        likeRecipe?.data.data.postList.map((recipe) => (
+          <Recipe recipeRef={recipeRef} key={recipe.postId} post={recipe} />
+        ))
+      )}
     </Container>
   );
 }
@@ -24,7 +26,7 @@ export default LikeRecipes;
 const Container = styled.div`
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(175px, 1fr));
-  margin-bottom: 60px;
+  margin-bottom: 90px;
 `;
 
 const AlignBox = styled.div`

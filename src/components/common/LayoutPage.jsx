@@ -19,6 +19,7 @@ const LayoutPage = ({
   isBtn,
   buttonText,
   buttonEvent,
+  copyUrl,
 }) => {
   const [topTenTagList, setTopTenTagList] = useState();
   const [tagAllList, setTagAllList] = useState();
@@ -61,16 +62,20 @@ const LayoutPage = ({
               {backBtnTypeArrow ? (
                 <KeyboardBackspaceIcon onClick={back} />
               ) : (
-                <ChevronLeftIcon
-                  onClick={back}
-                  color="warning"
-                  fontSize="large"
-                />
+                <ChevronLeftIcon onClick={back} color="warning" fontSize="large" />
               )}
             </BackBtn>
             {headerTitle}
             <AddBtn>
-              {isShare ? <IosShareIcon color="warning" /> : ""}
+              {isShare ? (
+                <IosShareIcon
+                  sx={{ marginRight: "9px" }}
+                  onClick={copyUrl}
+                  color="warning"
+                />
+              ) : (
+                ""
+              )}
               {isBtn ? (
                 <Button
                   name="commonBtn"

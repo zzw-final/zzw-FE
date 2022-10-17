@@ -1,4 +1,3 @@
-import axios from "axios";
 import styled from "styled-components";
 import Button from "../UI/Button";
 import EditIcon from "@mui/icons-material/Edit";
@@ -10,38 +9,30 @@ function Profile({ userData, editHandler, setModalIsOpen }) {
   const navigate = useNavigate();
   const { follow, grade, gradeList, follower, nickname, profile, postSize } = userData;
 
-  const DeleteAccountMsg =
-    "😢 정말 탈퇴하시겠어요? 작성한 글은 모두 삭제되고 복구되지 않습니다.";
+  const msg1 = "정말 탈퇴하시겠어요? 😢 작성한 글은 모두 삭제되고 복구되지 않습니다.";
+  const msg2 = "확인을 누르시면 탈퇴가 완료됩니다. 그동안 고마웠어요! 🥹";
 
   const logout = () => {
-    const alert = window.confirm("로그아웃 하시겠습니까?");
-    if (alert) {
-      if (getCookie("loginOauth") === "kakao") {
-        axios.get(`${process.env.REACT_APP_API}/api/member/kakao/logout`, {
-          headers: {
-            kakaoToken: getCookie("oauthToken"),
-            withCredentials: true,
-          },
-        });
-      }
-      removeCookie("loginNickname");
-      removeCookie("refreshToken");
-      removeCookie("loginUserId");
-      removeCookie("accessToken");
-      removeCookie("oauthToken");
-      removeCookie("loginGrade");
-      removeCookie("loginProfile");
-      removeCookie("loginOauth");
-      removeCookie("loginEmail");
-      navigate("/");
-    }
+    removeCookie("loginNickname");
+    removeCookie("refreshToken");
+    removeCookie("loginUserId");
+    removeCookie("accessToken");
+    removeCookie("oauthToken");
+    removeCookie("loginGrade");
+    removeCookie("loginProfile");
+    removeCookie("loginOauth");
+    removeCookie("loginEmail");
+    removeCookie("tokenInvalidtime");
+    navigate("/");
   };
 
   const deleteAccount = async () => {
     const loginUserId = getCookie("loginUserId");
-    if (loginUserId && window.confirm(DeleteAccountMsg)) {
-      await withdrawal(loginUserId);
-      logout();
+    if (loginUserId && window.confirm(msg1)) {
+      if (window.confirm(msg2)) {
+        await withdrawal(loginUserId);
+        logout();
+      }
     } else return;
   };
 
@@ -96,7 +87,7 @@ function Profile({ userData, editHandler, setModalIsOpen }) {
                 width="40%"
                 size="var(--font-semi-small)"
               >
-                😢 계정 삭제
+                😢 회원탈퇴
               </Button>
             </Dm>
           </div>
@@ -141,10 +132,10 @@ const Img = styled.img`
 const Btn = styled.div`
   position: absolute;
   border-radius: 50%;
-  height: 91%;
+  height: 89%;
   width: 100%;
-  background-color: white;
-  opacity: 0.8;
+  background-color: #fffaf4;
+  opacity: 0.85;
   top: 0.4rem;
   left: 0rem;
   padding-top: 3.3rem;
@@ -180,17 +171,17 @@ const Follow = styled.div`
 
 const Num = styled.p`
   margin-top: 2px;
-  font-size: var(--font-medium);
+  font-size: var(--font-medium-large);
   font-weight: var(--weight-bold);
 `;
 
 const BottomBox = styled.div`
   height: 5rem;
   display: flex;
-  gap: 3px;
+  gap: 5px;
   overflow-y: scroll;
   flex-wrap: wrap;
-  margin: 20px 0 20px 0;
+  margin: 17px 0 20px 0;
   &::-webkit-scrollbar {
     display: none;
   }

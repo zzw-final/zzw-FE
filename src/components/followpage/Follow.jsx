@@ -34,11 +34,7 @@ function Follow({ follow, mutate }) {
         : userId !== +getCookie("loginUserId") && (
             <RightBox>
               <div>
-                <Button
-                  onClick={followHandler}
-                  name="FollowBtn"
-                  isFollow={greyButton}
-                >
+                <Button onClick={followHandler} name="FollowBtn" isFollow={greyButton}>
                   {greyButton ? "팔로잉" : "팔로우"}
                 </Button>
               </div>
@@ -65,7 +61,7 @@ const LeftBox = styled.div`
 const Char = styled.img`
   width: 4rem;
   height: 4rem;
-  background-color: orange;
+  background-color: #fbd499;
   border-radius: 50%;
   margin-right: 1rem;
 `;

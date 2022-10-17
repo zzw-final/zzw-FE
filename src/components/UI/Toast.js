@@ -1,13 +1,11 @@
 import { useEffect } from "react";
 import styled from "styled-components";
 
-
 function Toast({ setToast, text, ...props }) {
-
   useEffect(() => {
     const timer = setTimeout(() => {
       setToast(false);
-    }, 1500);
+    }, 1800);
     return () => {
       clearTimeout(timer);
     };
@@ -23,11 +21,11 @@ function Toast({ setToast, text, ...props }) {
 export default Toast;
 
 const Box = styled.div`
-  margin: ${({ margin }) => margin || "-1.2rem 0px 0px 1.5rem"};
+  margin: ${({ margin }) => margin || "-4.3rem 0 2rem 6.5rem"};
   top: ${({ top }) => top};
   left: ${({ left }) => left};
   position: ${({ position }) => position || "fixed"};
-  padding: 0.8rem 1.2rem;
+  padding: 1rem 1.5rem;
   background-color: white;
   opacity: 90%;
   border-radius: 10px;

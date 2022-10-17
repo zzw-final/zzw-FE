@@ -63,7 +63,6 @@ const MnBtn = styled.button`
             myVisible &&
             css`
               background-color: var(--color-orange);
-              font-weight: var(--weight-bolder);
               color: var(--color-white);
               border: 2.5px solid transparent;
               outline: none;
@@ -72,7 +71,6 @@ const MnBtn = styled.button`
             likeVisible &&
             css`
               background-color: var(--color-orange);
-              font-weight: var(--weight-bolder);
               color: var(--color-white);
               border: 2.5px solid transparent;
               outline: none;

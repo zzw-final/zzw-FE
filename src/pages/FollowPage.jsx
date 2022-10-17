@@ -66,7 +66,7 @@ const FollowPage = () => {
   });
 
   return (
-    <LayoutPage headerTitle={loginNickname}>
+    <LayoutPage headerTitle={id ? nickname : loginNickname}>
       <FollowLayout
         onClickFollower={followerBtn}
         onClickfollow={followBtn}
@@ -74,13 +74,9 @@ const FollowPage = () => {
         followerView={followerView}
         nickname={nickname}
       />
-      <div style={{ height: "auto" }}>
+      <div style={{ marginBottom: "90px" }}>
         {followView && <FollowList followList={followList} mutate={mutate} />}
-      </div>
-      <div style={{ marginBottom: "60px", height: "auto" }}>
-        {followerView && (
-          <FollowerList followerList={followerList} mutate={mutate} />
-        )}
+        {followerView && <FollowerList followerList={followerList} mutate={mutate} />}
       </div>
     </LayoutPage>
   );

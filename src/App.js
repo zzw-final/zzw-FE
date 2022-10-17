@@ -40,14 +40,13 @@ const queryClient = new QueryClient();
 // console.log("now!!!! >", new Date().toString());
 
 function App() {
-  const [isLogin, setIsLogin] = useState(
-    getCookie("loginUserId") ? true : false
-  );
+  const [isLogin, setIsLogin] = useState(getCookie("loginUserId") ? true : false);
+
 
   useEffect(() => {
     setTimeout(() => {
       if (getCookie("loginEmail")) setIsLogin(true);
-    }, 500);
+    }, 700);
   }, []);
 
   // useEffect(() => {
@@ -102,7 +101,7 @@ function App() {
           </Routes>
         </Mobile>
       </BrowserRouter>
-      {/* <ReactQueryDevtools initialIsOpen={false} /> */}
+      <ReactQueryDevtools initialIsOpen={false} />
     </QueryClientProvider>
   );
 }

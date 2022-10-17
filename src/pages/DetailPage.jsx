@@ -3,6 +3,7 @@ import { useMutation, useQuery, useQueryClient } from "react-query";
 import { options } from "../api/options";
 import { useNavigate, useParams } from "react-router-dom";
 import { imgInstance, instance, likes } from "../api/request";
+import Toast from "../components/UI/Toast";
 import LayoutPage from "../components/common/LayoutPage";
 import Detail from "../components/detail/Detail";
 import styled from "styled-components";
@@ -28,6 +29,14 @@ function DetailPage() {
   const [editedImageUrl, setEditedImageUrl] = useState();
   const [editTime, setEditTime] = useState();
   const [editedValues, setEditedvalues] = useState();
+  const [toast, setToast] = useState(false);
+  const url = window.location.href;
+
+  // 공유 기능
+  const copyUrl = async () => {
+    setToast(true);
+    await navigator.clipboard.writeText(url);
+  };
 
   const queryClient = useQueryClient();
 
@@ -144,34 +153,29 @@ function DetailPage() {
   };
 
   //댓글 삭제
-  const commentDeleteMutate = useMutation(
-    (commentId) => commentDelete(commentId),
-    {
-      onSuccess: () => {
-        queryClient.invalidateQueries("comment", id);
-      },
-    }
-  );
+  const commentDeleteMutate = useMutation((commentId) => commentDelete(commentId), {
+    onSuccess: () => {
+      queryClient.invalidateQueries("comment", id);
+    },
+  });
   const remove = (commentId) => {
     commentDeleteMutate.mutate(commentId);
   };
 
   //댓글 수정
 
-  const commentUpdateMutate = useMutation(
-    (updateInfo) => commentUpdate(updateInfo),
-    {
-      onSuccess: () => {
-        queryClient.invalidateQueries("comment", id);
-      },
-    }
-  );
+  const commentUpdateMutate = useMutation((updateInfo) => commentUpdate(updateInfo), {
+    onSuccess: () => {
+      queryClient.invalidateQueries("comment", id);
+    },
+  });
   const update = (updateInfo) => {
     commentUpdateMutate.mutate(updateInfo);
   };
 
   return (
-    <LayoutPage isShare="true">
+    <LayoutPage isShare="true" copyUrl={copyUrl}>
+      {toast && <Toast setToast={setToast} text="🖇 클립보드에 복사되었습니다." />}
       <DetailContainer>
         {editedValues && (
           <Detail
