@@ -37,6 +37,6 @@ let ModalBox = styled.div`
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
-  padding: 20px 10px;
+  padding: 15px 10px;
   z-index: 1;
 `;

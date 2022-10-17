@@ -65,11 +65,7 @@ const Footer = ({ topTenTagList, tagAllList }) => {
 
   const loginConfirm = (url) => {
     if (!loginNickname) {
-      if (
-        window.confirm(
-          "로그인 사용자만 이용할 수 있습니다. 로그인 하시겠습니까?"
-        )
-      ) {
+      if (window.confirm("로그인 사용자만 이용할 수 있습니다. 로그인 하시겠습니까?")) {
         navigate("/login");
         return;
       }
@@ -136,8 +132,7 @@ const Footer = ({ topTenTagList, tagAllList }) => {
   };
 
   useEffect(() => {
-    if (searchTagList.length !== 0 && searchTagList.length > 5)
-      setSearchHelpText(true);
+    if (searchTagList.length !== 0 && searchTagList.length > 5) setSearchHelpText(true);
     else setSearchHelpText(false);
   }, [searchTagList]);
 

@@ -6,16 +6,27 @@ import TogglePosts from "../components/mypage/TogglePosts";
 import MyRecipes from "../components/posts/MyRecipes";
 import LikeRecipes from "../components/posts/LikeRecipes";
 import LayoutPage from "../components/common/LayoutPage";
-import { useState } from "react";
+import useInfinity from "../hooks/useInfinity";
+import { useEffect, useState } from "react";
 import { options } from "../api/options";
 import { fetchProfile, fetchMyRecipes, fetchLikeRecipes } from "../api/mypage";
 import { useQuery } from "react-query";
+import { useInView } from "react-intersection-observer";
 
 const MyPage = () => {
   const [myVisible, setMyVisible] = useState(true);
   const [likeVisible, setLikeVisible] = useState(false);
   const [editMode, setEditMode] = useState(false);
   const [modalIsOpen, setModalIsOpen] = useState(false);
+  const { ref, inView } = useInView();
+
+  const {
+    data: likeRecipes,
+    fetchNextPage,
+    hasNextPage,
+  } = useInfinity(["mypage", "likeRecipes"], fetchLikeRecipes, {
+    enabled: likeVisible,
+  });
 
   const { data: userData } = useQuery(
     ["mypage", "profile"],
@@ -29,14 +40,9 @@ const MyPage = () => {
     options.eternal
   );
 
-  const { data: likeRecipes } = useQuery(
-    ["mypage", "likeRecipes"],
-    fetchLikeRecipes,
-    {
-      ...options.eternal,
-      enabled: likeVisible,
-    }
-  );
+  useEffect(() => {
+    if (inView && hasNextPage) fetchNextPage();
+  }, [inView, hasNextPage, fetchNextPage]);
 
   const likeRecipeClick = () => {
     setMyVisible(false);
@@ -69,7 +75,7 @@ const MyPage = () => {
         likeVisible={likeVisible}
       />
       {myVisible && <MyRecipes myRecipes={myRecipes} />}
-      {likeVisible && <LikeRecipes likeRecipes={likeRecipes} />}
+      {likeVisible && <LikeRecipes likeRecipes={likeRecipes} recipeRef={ref} />}
       {modalIsOpen && (
         <Modal setModalIsOpen={setModalIsOpen}>
           <EditProfileImage setModalIsOpen={setModalIsOpen} />
