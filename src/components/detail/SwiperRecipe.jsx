@@ -65,6 +65,11 @@ const SwiperRecipe = ({
                 imgUpload={imgUpload}
                 editedValues={editedValues}
                 setEditedValues={setEditedValues}
+                postDetail={postDetail}
+                onEditPage={onEditPage}
+                onCancle={onCancle}
+                onSubmitHandler={onSubmitHandler}
+                onDelete={onDelete}
               />
             </SwiperSlide>
           ))}
@@ -87,7 +92,7 @@ const SwiperContainer = styled.div`
 const SwiperBox = styled.div`
   .swiper {
     width: 400px;
-    height: 540px;
+    height: 600px;
     margin: auto;
     border: 0;
   }

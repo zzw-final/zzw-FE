@@ -214,7 +214,7 @@ const Time = styled.div`
 
 const ItemImg = styled.img`
   width: 90%;
-  height: 68%;
+  height: 63%;
   border-radius: 18px;
   padding: 0.2rem;
   margin: 0 auto 1rem auto;
@@ -223,7 +223,7 @@ const ItemImg = styled.img`
 const ItemImgEdit = styled.input`
   position: absolute;
   top: 350px;
-  left: 16px;
+  left: 28px;
 `;
 
 const LikeBox = styled.div`
@@ -238,7 +238,7 @@ const LikeBox = styled.div`
   width: 15%;
   position: absolute;
   right: 9%;
-  top: 59%;
+  top: 55%;
   font-size: var(--font-regular);
 `;
 
@@ -276,11 +276,6 @@ const FollowBtn = styled.button`
   margin: 0 10px 3px 0;
   margin-right: 10px;
 `;
-
-// const CreatedAt = styled.div`
-//   font-size: var(--font-micro);
-//   color: var(--color-grey);
-// `;
 
 const ItemTitle = styled.div`
   font-size: var(--font-semi-small);
