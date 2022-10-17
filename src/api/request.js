@@ -1,4 +1,5 @@
 import axios from "axios";
+import { getCookie } from "../util/cookie";
 
 export const instance = axios.create({
   baseURL: process.env.REACT_APP_API,
@@ -12,7 +13,6 @@ export const imgInstance = axios.create({
   baseURL: process.env.REACT_APP_API,
   headers: {
     "Content-Type": "multipart/form-data",
-    // withCredentials: true,
   },
 });
 
@@ -63,11 +63,6 @@ imgInstance.interceptors.request.use(
     return Promise.reject(error);
   }
 );
-
-function getCookie(key) {
-  key = new RegExp(key + "=([^;]*)");
-  return key.test(document.cookie) ? unescape(RegExp.$1) : "";
-}
 
 export const kakaoLoginInstance = async (code) => {
   return await axios.get(`${process.env.REACT_APP_API}/api/member/login/kakao?code=${code}`, {

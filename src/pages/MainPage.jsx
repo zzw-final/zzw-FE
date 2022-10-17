@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { instance } from "../api/request";
+import { instance, likes } from "../api/request";
 import styled from "styled-components";
 import LayoutPage from "../components/common/LayoutPage";
 import Logo from "../components/common/Logo";
@@ -50,7 +50,7 @@ const MainPage = () => {
   );
 
   const likeToggle = async (postId) => {
-    return await instance.post(`/api/auth/post/${postId}`);
+    return likes(postId);
   };
 
   const search = async (searchOption, sendData) => {
