@@ -12,6 +12,7 @@ import TextsmsIcon from "@mui/icons-material/Textsms";
 import * as StompJs from "@stomp/stompjs";
 import { getCookie } from "../../util/cookie";
 import Badge from "@mui/material/Badge";
+import { fetchAlarm } from "../../api/request";
 
 const Footer = ({ topTenTagList, tagAllList }) => {
   const [toggleTagList, setToggleTagList] = useState(false);
@@ -29,6 +30,7 @@ const Footer = ({ topTenTagList, tagAllList }) => {
   const client = useRef({});
 
   useEffect(() => {
+    fetchAlarm().then((res) => setNewChatText(res.data.data.isRead));
     connect();
     return () => disconnect();
   }, []);
@@ -58,7 +60,7 @@ const Footer = ({ topTenTagList, tagAllList }) => {
   const subscribe = () => {
     client.current.subscribe(`/sub/chat/member/${loginUserId}`, (res) => {
       const body = JSON.parse(res.body);
-      console.log("body :>> ", body.isRead);
+      // console.log("body :>> ", body.isRead);
       setNewChatText(body.isRead);
     });
   };
@@ -75,8 +77,7 @@ const Footer = ({ topTenTagList, tagAllList }) => {
   };
 
   const changeColor = (id) => {
-    document.querySelector(`#${id}`).style.color =
-      "var(--color-real-light-orange)";
+    document.querySelector(`#${id}`).style.color = "var(--color-real-light-orange)";
   };
 
   useEffect(() => {
@@ -194,11 +195,7 @@ const Footer = ({ topTenTagList, tagAllList }) => {
               <SearchBtn onClick={onClickTagHandler} disabled={searchHelpText}>
                 검색
               </SearchBtn>
-              {searchHelpText ? (
-                <SearchHelpText>최대 5개까지 선택 가능합니다.</SearchHelpText>
-              ) : (
-                ""
-              )}
+              {searchHelpText ? <SearchHelpText>최대 5개까지 선택 가능합니다.</SearchHelpText> : ""}
             </>
           ) : (
             <IntroText>냉장고 속 재료들을 클릭 하세요 🥬</IntroText>

@@ -70,14 +70,11 @@ function getCookie(key) {
 }
 
 export const kakaoLoginInstance = async (code) => {
-  return await axios.get(
-    `${process.env.REACT_APP_API}/api/member/login/kakao?code=${code}`,
-    {
-      headers: {
-        "Content-Type": "application/json",
-      },
-    }
-  );
+  return await axios.get(`${process.env.REACT_APP_API}/api/member/login/kakao?code=${code}`, {
+    headers: {
+      "Content-Type": "application/json",
+    },
+  });
 };
 
 export const join = async (sendData) => {
@@ -91,4 +88,8 @@ export const likes = async (postId) => {
 export const fetchSearchRecipe = async (filterInfo, lastPostId) => {
   const sendLastPostId = lastPostId ? `&lastPostId=${lastPostId}` : ``;
   return await instance.get(`/api/post/filter/${filterInfo}${sendLastPostId}`);
+};
+
+export const fetchAlarm = async () => {
+  return await instance.get(`/api/chat/alarm`);
 };
