@@ -5,7 +5,8 @@ import "swiper/css/bundle";
 import "swiper/css";
 import "swiper/css/effect-cards";
 import "swiper/css/pagination";
-import { EffectCards } from "swiper";
+// import { EffectCards } from "swiper";
+import { Pagination } from "swiper";
 import SwiperRecipeItem from "./SwiperRecipeItem";
 import SwiperRecipeItemFirstPage from "./SwiperRecipeItemFirstPage";
 
@@ -26,7 +27,9 @@ const SwiperRecipe = ({
         <Swiper
           effect={"cards"}
           grabCursor={true}
-          modules={[EffectCards]}
+          pagination={true}
+          modules={[Pagination]}
+          // modules={[EffectCards]}
           className="mySwiper"
         >
           <SwiperSlide>
@@ -64,14 +67,15 @@ const SwiperContainer = styled.div`
   align-items: center;
   width: 100%;
   height: 100%;
-  margin: 2rem 0;
+  margin: 1rem 0;
 `;
 
 const SwiperBox = styled.div`
   .swiper {
-    width: 320px;
+    width: 400px;
     height: 540px;
     margin: auto;
+    border: 0;
   }
 
   .swiper-slide {

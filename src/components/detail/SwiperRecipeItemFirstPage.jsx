@@ -28,6 +28,7 @@ const SwiperRecipeItemFirstPage = ({
     likeNum,
     foodImg,
     createAt,
+    time,
   } = postDetail;
 
   const [likeToggleBtn, setLikeToggleBtn] = useState(isLike);
@@ -101,6 +102,9 @@ const SwiperRecipeItemFirstPage = ({
     <>
       <ItemContainer display={!isEditMode ? "Flex" : "none"}>
         <ItemImg src={foodImg} alt="Recipe" />
+        <TimeBox>
+          <Time>⏱ {postDetail?.time} min</Time>
+        </TimeBox>
         <LikeBox>
           <Like isLike={likeToggleBtn} btnClick={like} /> {postDetail?.likeNum}
         </LikeBox>
@@ -109,14 +113,15 @@ const SwiperRecipeItemFirstPage = ({
             <Avatar
               alt="user_img"
               src={profile}
-              sx={{ width: 28, height: 28, mr: 1 }}
+              sx={{ width: 40, height: 40, mr: 1 }}
               onClick={userPage}
             />
             <NinknameCreatedAt>
               <Nickname onClick={userPage}>
                 {nickname}/{grade}
               </Nickname>
-              <CreatedAt>{dateFormat(createAt)}</CreatedAt>
+              <FollowBtn>팔로우</FollowBtn>
+              {/* <CreatedAt>{dateFormat(createAt)}</CreatedAt> */}
             </NinknameCreatedAt>
           </ItemInfo>
           <ItemTitle>{title}</ItemTitle>
@@ -130,14 +135,15 @@ const SwiperRecipeItemFirstPage = ({
             <Avatar
               alt="user_img"
               src={profile}
-              sx={{ width: 28, height: 28, mr: 1 }}
+              sx={{ width: 40, height: 40, mr: 1 }}
               onClick={userPage}
             />
             <NinknameCreatedAt>
               <Nickname onClick={userPage}>
                 {grade}/{nickname}
               </Nickname>
-              <CreatedAt>{dateFormat(createAt)}</CreatedAt>
+
+              {/* <CreatedAt>{dateFormat(createAt)}</CreatedAt> */}
             </NinknameCreatedAt>
           </ItemInfo>
           <ItemTitleEdit
@@ -161,12 +167,33 @@ const ItemContainer = styled.div`
   position: relative;
 `;
 
+const TimeBox = styled.div`
+  display: flex;
+  background-color: var(--color-white);
+  color: var(--color-grey);
+  position: absolute;
+  top: 3%;
+  left: 5%;
+  border-radius: 15px;
+  padding: 0.3rem;
+  width: 22%;
+`;
+
+const Time = styled.div`
+  font-size: var(--font-regular);
+  margin-left: 0.3rem;
+  font-weight: var(--weight-bold);
+  /* position: absolute;
+  top: 3%;
+  left: 5%; */
+`;
+
 const ItemImg = styled.img`
-  width: 100%;
-  height: 60%;
+  width: 95%;
+  height: 70%;
   border-radius: 18px;
   padding: 0.2rem;
-  margin-bottom: 1.5rem;
+  margin: 0 auto 1rem auto;
 `;
 
 const ItemImgEdit = styled.input`
@@ -181,13 +208,14 @@ const LikeBox = styled.div`
   color: var(--color-grey);
   align-items: center;
   justify-content: center;
-  box-shadow: 0px 0px 5px #dcdcdc;
-  border-radius: 18px;
+  /* box-shadow: 0px 0px 5px #dcdcdc; */
+  border-radius: 15px;
   padding: 0.3rem;
-  width: 22%;
+  width: 15%;
   position: absolute;
-  right: 8%;
-  top: 56%;
+  right: 6%;
+  top: 61%;
+  font-size: var(--font-regular);
 `;
 
 const ItemBox = styled.div`
@@ -199,6 +227,7 @@ const ItemInfo = styled.div`
   display: flex;
   align-items: center;
   padding-bottom: 1rem;
+  margin-left: 5px;
 `;
 
 const NinknameCreatedAt = styled.div`
@@ -208,17 +237,30 @@ const NinknameCreatedAt = styled.div`
 `;
 
 const Nickname = styled.div`
-  font-size: var(--font-small);
+  font-size: var(--font-semi-small);
   color: var(--color-black);
+  margin-top: 3px;
 `;
 
-const CreatedAt = styled.div`
-  font-size: var(--font-micro);
-  color: var(--color-grey);
+const FollowBtn = styled.button`
+  width: 15vw;
+  height: 3.5vh;
+  border: 0;
+  border-radius: 8px;
+  background-color: #ff7a00;
+  color: white;
+  margin: 0 10px 3px 0;
+  margin-right: 10px;
 `;
+
+// const CreatedAt = styled.div`
+//   font-size: var(--font-micro);
+//   color: var(--color-grey);
+// `;
 
 const ItemTitle = styled.div`
-  font-size: var(--font-medium);
+  font-size: var(--font-semi-small);
+  margin-left: 15px;
 `;
 
 const ItemTitleEdit = styled.input`

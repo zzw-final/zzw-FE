@@ -29,7 +29,9 @@ function Detail({
   const navigate = useNavigate();
 
   const foodIngredientList = postDetail?.ingredient
-    .map((ingredient) => (!ingredient.isName ? ingredient.ingredientName : undefined))
+    .map((ingredient) =>
+      !ingredient.isName ? ingredient.ingredientName : undefined
+    )
     .filter((ingredient) => ingredient !== undefined);
 
   const [foodName, setFoodName] = useState();
@@ -64,7 +66,7 @@ function Detail({
   return (
     <DetailContainer>
       <Header>
-        <FoodnameDiv>
+        {/* <FoodnameDiv>
           {!isEditMode ? (
             <>
               <Foodname>{foodName}</Foodname>
@@ -91,7 +93,7 @@ function Detail({
               </TimeSelect>
             </>
           )}
-        </FoodnameDiv>
+        </FoodnameDiv> */}
         {nickname === postDetail?.nickname && (
           <ButtonDiv>
             {!isEditMode ? (
@@ -194,10 +196,10 @@ const FoodnameEdit = styled.input`
   width: 7rem;
 `;
 
-const Time = styled.div`
-  font-size: var(--font-small);
-  margin-left: 0.3rem;
-`;
+// const Time = styled.div`
+//   font-size: var(--font-small);
+//   margin-left: 0.3rem;
+// `;
 
 const TimeSelect = styled.select`
   box-sizing: border-box;
