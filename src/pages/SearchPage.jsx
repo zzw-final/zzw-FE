@@ -76,13 +76,7 @@ const SearchPage = () => {
         <SearchForm searchPageSearch={search} showToast={showToast} />
       </SearchBox>
       <SearchListBox>
-        {toast && (
-          <Toast
-            setToast={setToast}
-            text="태그는 5개까지 검색 가능합니다."
-            margin="0.5rem"
-          />
-        )}
+        {toast && <Toast setToast={setToast} text="태그는 5개까지 검색 가능합니다." margin="0.5rem" />}
         {searchResultList?.length !== 0 ? (
           <ListContainer>
             {searchResultList &&
@@ -92,11 +86,7 @@ const SearchPage = () => {
                     <Recipe post={item} likeToggle={likeToggle} />
                   </div>
                 ) : (
-                  <Recipe
-                    post={item}
-                    key={item.postId}
-                    likeToggle={likeToggle}
-                  />
+                  <Recipe post={item} key={item.postId} likeToggle={likeToggle} />
                 )
               )}
           </ListContainer>
