@@ -6,6 +6,7 @@ import { getCookie } from "../../util/cookie";
 import { useNavigate } from "react-router-dom";
 import TagList from "./TagList";
 import SwiperRecipe from "./SwiperRecipe";
+import { dateFormat } from "../../util/dateFormat";
 import Slide from "../UI/Slide";
 
 function Detail({
@@ -24,6 +25,8 @@ function Detail({
   onSubmitHandler,
   editForm,
   setEditedIngredient,
+  greyButton,
+  followHandler,
 }) {
   const nickname = getCookie("loginNickname");
   const [isEditMode, setIsEditMode] = useState(false);
@@ -57,51 +60,7 @@ function Detail({
 
   return (
     <DetailContainer>
-      <Header>
-        <FoodnameDiv>
-          {!isEditMode ? (
-            <>
-              <Foodname>{foodName}</Foodname>
-              <Time>⏱ {postDetail?.time} min</Time>
-            </>
-          ) : (
-            <>
-              <FoodnameEdit
-                defaultValue={foodName}
-                onBlur={(e) => {
-                  editForm("foodName", e.target.value);
-                }}
-              ></FoodnameEdit>
-              <TimeSelect
-                placeholder="요리 시간을 선택해주세요"
-                onBlur={(e) => {
-                  editForm("time", e.target.value);
-                }}
-              >
-                <option value="5분">5분</option>
-                <option value="10분">10분</option>
-                <option value="15분">15분</option>
-                <option value="30분">30분 이상</option>
-              </TimeSelect>
-            </>
-          )}
-        </FoodnameDiv>
-        {nickname === postDetail?.nickname && (
-          <ButtonDiv>
-            {!isEditMode ? (
-              <>
-                <Button onClick={onEditPage}>수정</Button>
-                <Button onClick={onDelete}>삭제</Button>
-              </>
-            ) : (
-              <>
-                <ButtonEdit onClick={onSubmitHandler}>수정완료</ButtonEdit>
-                <ButtonEdit onClick={onCancle}>수정취소</ButtonEdit>
-              </>
-            )}
-          </ButtonDiv>
-        )}
-      </Header>
+      <Header></Header>
 
       {!isEditMode ? (
         <Tags>
@@ -132,6 +91,15 @@ function Detail({
             editedValues={editedValues}
             setEditedValues={setEditedValues}
             editForm={editForm}
+            // toggleTagList={toggleTagList}
+            // setToggleTagList={setToggleTagList}
+            // openTagBox={openTagBox}
+            onEditPage={onEditPage}
+            onCancle={onCancle}
+            onSubmitHandler={onSubmitHandler}
+            onDelete={onDelete}
+            greyButton={greyButton}
+            followHandler={followHandler}
           />
         )}
       </Content>
@@ -278,12 +246,19 @@ const Icon = styled.img`
   height: 25px;
 `;
 
+const CreatedAt = styled.div`
+  font-size: var(--font-micro);
+  color: var(--color-grey);
+  right: 20vw;
+`;
+
 const Comment = styled.div`
-  background-color: var(--color-white);
+  background-color: var(#fff7eb);
   padding: 0.2rem 0.5rem;
   box-shadow: 0 0 10px rgb(0 0 0 / 30%);
-  border-radius: 15px;
+  border-radius: 14px;
   font-weight: var(--weight-bold);
+  width: 17vw;
 `;
 
 const CommentFoldLine = styled.div`

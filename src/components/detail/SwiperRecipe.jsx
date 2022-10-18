@@ -5,7 +5,8 @@ import "swiper/css/bundle";
 import "swiper/css";
 import "swiper/css/effect-cards";
 import "swiper/css/pagination";
-import { EffectCards } from "swiper";
+// import { EffectCards } from "swiper";
+import { Pagination } from "swiper";
 import SwiperRecipeItem from "./SwiperRecipeItem";
 import SwiperRecipeItemFirstPage from "./SwiperRecipeItemFirstPage";
 
@@ -17,6 +18,15 @@ const SwiperRecipe = ({
   editedValues,
   setEditedValues,
   editForm,
+  toggleTagList,
+  setToggleTagList,
+  openTagBox,
+  onEditPage,
+  onCancle,
+  onSubmitHandler,
+  onDelete,
+  greyButton,
+  followHandler,
 }) => {
   const contentList = postDetail.contentList;
 
@@ -26,7 +36,9 @@ const SwiperRecipe = ({
         <Swiper
           effect={"cards"}
           grabCursor={true}
-          modules={[EffectCards]}
+          pagination={true}
+          modules={[Pagination]}
+          // modules={[EffectCards]}
           className="mySwiper"
         >
           <SwiperSlide>
@@ -36,6 +48,15 @@ const SwiperRecipe = ({
               isEditMode={isEditMode}
               imgUpload={imgUpload}
               editForm={editForm}
+              toggleTagList={toggleTagList}
+              setToggleTagList={setToggleTagList}
+              openTagBox={openTagBox}
+              onEditPage={onEditPage}
+              onCancle={onCancle}
+              onSubmitHandler={onSubmitHandler}
+              onDelete={onDelete}
+              greyButton={greyButton}
+              followHandler={followHandler}
             />
           </SwiperSlide>
           {contentList.map((content, idx) => (
@@ -48,6 +69,13 @@ const SwiperRecipe = ({
                 imgUpload={imgUpload}
                 editedValues={editedValues}
                 setEditedValues={setEditedValues}
+                postDetail={postDetail}
+                onEditPage={onEditPage}
+                onCancle={onCancle}
+                onSubmitHandler={onSubmitHandler}
+                onDelete={onDelete}
+                greyButton={greyButton}
+                followHandler={followHandler}
               />
             </SwiperSlide>
           ))}
@@ -64,14 +92,15 @@ const SwiperContainer = styled.div`
   align-items: center;
   width: 100%;
   height: 100%;
-  margin: 2rem 0;
+  margin: 1rem 0;
 `;
 
 const SwiperBox = styled.div`
   .swiper {
-    width: 320px;
-    height: 540px;
+    width: 400px;
+    height: 600px;
     margin: auto;
+    border: 0;
   }
 
   .swiper-slide {

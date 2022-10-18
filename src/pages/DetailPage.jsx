@@ -128,6 +128,16 @@ function DetailPage() {
     setEditedvalues(postDetail?.contentList);
   }, [postDetail?.contentList]);
 
+  //디테일 페이지 내에서 팔로우 기능
+  const [greyButton, setGreyButton] = useState(postDetail?.isFollow);
+  const followHandler = async () => {
+    setGreyButton((prev) => !prev);
+    const data = await instance.post(`/api/post/${postDetail?.postId}/follow`);
+    console.log(data);
+  };
+
+  useEffect(() => {}, [greyButton]);
+
   //댓글 데이터 가져오는 useQuery
   const { data: commentList } = useQuery(["comment", id], () => commentFetch(id), options.eternal);
 
@@ -146,29 +156,41 @@ function DetailPage() {
   };
 
   //댓글 삭제
-  const commentDeleteMutate = useMutation((commentId) => commentDelete(commentId), {
-    onSuccess: () => {
-      queryClient.invalidateQueries("comment", id);
-    },
-  });
+  const commentDeleteMutate = useMutation(
+    (commentId) => commentDelete(commentId),
+    {
+      onSuccess: () => {
+        queryClient.invalidateQueries("comment", id);
+      },
+    }
+  );
   const remove = (commentId) => {
     commentDeleteMutate.mutate(commentId);
   };
 
   //댓글 수정
 
-  const commentUpdateMutate = useMutation((updateInfo) => commentUpdate(updateInfo), {
-    onSuccess: () => {
-      queryClient.invalidateQueries("comment", id);
-    },
-  });
+  const commentUpdateMutate = useMutation(
+    (updateInfo) => commentUpdate(updateInfo),
+    {
+      onSuccess: () => {
+        queryClient.invalidateQueries("comment", id);
+      },
+    }
+  );
   const update = (updateInfo) => {
     commentUpdateMutate.mutate(updateInfo);
   };
 
   return (
-    <LayoutPage isShare="true" copyUrl={copyUrl}>
-      {toast && <Toast setToast={setToast} text="🖇 클립보드에 복사되었습니다." />}
+    <LayoutPage
+      isShare="true"
+      copyUrl={copyUrl}
+      headerTitle={postDetail?.ingredient[0]?.ingredientName}
+    >
+      {toast && (
+        <Toast setToast={setToast} text="🖇 클립보드에 복사되었습니다." />
+      )}
       <DetailContainer>
         {editedValues && (
           <Detail
@@ -185,6 +207,8 @@ function DetailPage() {
             onSubmitHandler={onSubmitHandler}
             editForm={editForm}
             setEditedIngredient={setEditedIngredient}
+            greyButton={greyButton}
+            followHandler={followHandler}
           />
         )}
       </DetailContainer>

@@ -32,8 +32,6 @@ function ChatPage() {
     getChat();
   }, []);
 
-  console.log("기존메세지2", messages);
-
   const connect = () => {
     client.current = new StompJs.Client({
       brokerURL: `wss://${process.env.REACT_APP_CHAT_API}/zzw`,
@@ -56,7 +54,6 @@ function ChatPage() {
         roomId: Number(roomId),
         userId: Number(getCookie("loginUserId")),
       };
-      console.log(newdata);
       await instance.put("/api/chat/newmessage", newdata);
     };
 
@@ -115,6 +112,9 @@ function ChatPage() {
 
   //채팅방 나가기
   const out = async () => {
+    window.confirm(
+      "채팅방을 나가면 모든 대화내역이 삭제 됩니다. 그래도 나가시겠습니까?"
+    );
     await instance.delete(`/api/chat/member/${roomId}`);
     navigate(-1);
   };
@@ -128,7 +128,6 @@ function ChatPage() {
       location={location}
       out={out}
     >
-      {/* <button onClick={out} /> */}
       <div style={{ margin: "50px 0px 50px 0px", width: "95%", height: "90%" }}>
         {messages &&
           messages.map((mag, idx) =>
