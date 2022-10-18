@@ -5,7 +5,6 @@ export const fetchBestTagTopFive = async () => {
 };
 
 export const fetchBestList = async () => {
-  console.log("best가져오는중....");
   return await instance.get(`/api/post/best`);
 };
 

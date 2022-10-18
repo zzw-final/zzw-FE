@@ -24,8 +24,6 @@ const Like = ({ isLike, postId }) => {
     },
   });
 
-  console.log("isLike :>> ", isLike);
-
   const like = async () => {
     if (loginNickname === undefined) {
       alert("로그인 유저만 사용 가능한 기능입니다.");
