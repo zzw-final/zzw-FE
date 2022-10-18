@@ -46,7 +46,9 @@ function Detail({
   };
 
   useEffect(() => {
-    const foodName = postDetail?.ingredient?.find((item) => item.isName === true)?.ingredientName;
+    const foodName = postDetail?.ingredient?.find(
+      (item) => item.isName === true
+    )?.ingredientName;
     setFoodName(foodName);
   }, [postDetail]);
 
@@ -77,7 +79,11 @@ function Detail({
         </Tags>
       ) : (
         <Tags>
-          <TagList postDetail={postDetail} editForm={editForm} setEditedIngredient={setEditedIngredient} />
+          <TagList
+            postDetail={postDetail}
+            editForm={editForm}
+            setEditedIngredient={setEditedIngredient}
+          />
         </Tags>
       )}
 
@@ -186,7 +192,8 @@ const Icon = styled.img`
 
 const Comment = styled.div`
   background-color: var(#fff7eb);
-  padding: 0.2rem 0.5rem;
+  padding: 0.2rem;
+  text-align: center;
   box-shadow: 0 0 10px rgb(0 0 0 / 30%);
   border-radius: 14px;
   font-weight: var(--weight-bold);
