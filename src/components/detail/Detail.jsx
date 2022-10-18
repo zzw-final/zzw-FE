@@ -34,7 +34,9 @@ function Detail({
   const navigate = useNavigate();
 
   const foodIngredientList = postDetail?.ingredient
-    .map((ingredient) => (!ingredient.isName ? ingredient.ingredientName : undefined))
+    .map((ingredient) =>
+      !ingredient.isName ? ingredient.ingredientName : undefined
+    )
     .filter((ingredient) => ingredient !== undefined);
 
   const [foodName, setFoodName] = useState();
@@ -46,7 +48,9 @@ function Detail({
   };
 
   useEffect(() => {
-    const foodName = postDetail?.ingredient?.find((item) => item.isName === true)?.ingredientName;
+    const foodName = postDetail?.ingredient?.find(
+      (item) => item.isName === true
+    )?.ingredientName;
     setFoodName(foodName);
   }, [postDetail]);
 
@@ -77,7 +81,11 @@ function Detail({
         </Tags>
       ) : (
         <Tags>
-          <TagList postDetail={postDetail} editForm={editForm} setEditedIngredient={setEditedIngredient} />
+          <TagList
+            postDetail={postDetail}
+            editForm={editForm}
+            setEditedIngredient={setEditedIngredient}
+          />
         </Tags>
       )}
 
@@ -101,10 +109,6 @@ function Detail({
         )}
       </Content>
       <Footer>
-        <FootLeft>
-          <Icon src={"/copy.png"} alt="공유하기" />
-          <Icon src={"/eye-off.png"} alt="신고하기" />
-        </FootLeft>
         <Comment
           onClick={() => {
             setSlideIsOpen(true);
@@ -112,6 +116,7 @@ function Detail({
         >
           💬 {commentListCnt}
         </Comment>
+        <CreatedAt>{dateFormat(postDetail?.createAt)}</CreatedAt>
         {slideIsOpen && (
           <Slide setSlideIsOpen={setSlideIsOpen}>
             <CommentFoldLine
@@ -144,11 +149,6 @@ const Header = styled.div`
   padding: 0rem 1.9rem 1.5rem 1.9rem;
 `;
 
-// const Time = styled.div`
-//   font-size: var(--font-small);
-//   margin-left: 0.3rem;
-// `;
-
 const Tags = styled.div`
   margin-left: 1rem;
   display: flex;
@@ -173,15 +173,10 @@ const Footer = styled.div`
   align-items: center;
 `;
 
-const FootLeft = styled.div`
-  display: flex;
-  align-items: center;
-  gap: 20px;
-`;
-
-const Icon = styled.img`
-  width: 25px;
-  height: 25px;
+const CreatedAt = styled.div`
+  font-size: var(--font-micro);
+  color: var(--color-grey);
+  right: 20vw;
 `;
 
 const Comment = styled.div`
