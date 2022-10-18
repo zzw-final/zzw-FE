@@ -198,7 +198,8 @@ const CreatedAt = styled.div`
 
 const Comment = styled.div`
   background-color: var(#fff7eb);
-  padding: 0.2rem 0.5rem;
+  padding: 0.2rem;
+  text-align: center;
   box-shadow: 0 0 10px rgb(0 0 0 / 30%);
   border-radius: 14px;
   font-weight: var(--weight-bold);
