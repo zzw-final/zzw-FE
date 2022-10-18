@@ -34,9 +34,7 @@ function Detail({
   const navigate = useNavigate();
 
   const foodIngredientList = postDetail?.ingredient
-    .map((ingredient) =>
-      !ingredient.isName ? ingredient.ingredientName : undefined
-    )
+    .map((ingredient) => (!ingredient.isName ? ingredient.ingredientName : undefined))
     .filter((ingredient) => ingredient !== undefined);
 
   const [foodName, setFoodName] = useState();
@@ -93,9 +91,6 @@ function Detail({
             editedValues={editedValues}
             setEditedValues={setEditedValues}
             editForm={editForm}
-            toggleTagList={toggleTagList}
-            setToggleTagList={setToggleTagList}
-            openTagBox={openTagBox}
             onEditPage={onEditPage}
             onCancle={onCancle}
             onSubmitHandler={onSubmitHandler}
@@ -189,12 +184,6 @@ const Icon = styled.img`
   height: 25px;
 `;
 
-const CreatedAt = styled.div`
-  font-size: var(--font-micro);
-  color: var(--color-grey);
-  right: 20vw;
-`;
-
 const Comment = styled.div`
   background-color: var(#fff7eb);
   padding: 0.2rem 0.5rem;
@@ -204,21 +193,12 @@ const Comment = styled.div`
   width: 17vw;
 `;
 
-const SearchBox = styled.div`
-  /* background-color: #fff7eb; */
-  display: flex;
-  flex-direction: column;
-  height: 14vh;
-  position: relative;
-`;
-
 const CommentFoldLine = styled.div`
   width: 20%;
   height: 0.2rem;
   background-color: var(--color-orange);
   margin: 0.5rem auto 2rem auto;
 `;
-
 
 const CommentBox = styled.div`
   width: 100%;

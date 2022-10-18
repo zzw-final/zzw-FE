@@ -2,15 +2,43 @@ import React from "react";
 import styled from "styled-components";
 import FavoriteIcon from "@mui/icons-material/Favorite";
 import FavoriteBorderIcon from "@mui/icons-material/FavoriteBorder";
+import { useCookies } from "react-cookie";
+import { likes } from "../../api/request";
+import { useMutation, useQueryClient } from "react-query";
 
-const Like = ({ isLike, btnClick }) => {
+const Like = ({ isLike, setLikeToggleBtn, postId }) => {
+  const [cookies] = useCookies(["loginNickname"]);
+  const loginNickname = cookies.loginNickname;
+  const queryClient = useQueryClient();
+
+  const likeMutate = useMutation((postId) => likes(postId), {
+    onSuccess: (list, value) => {
+      queryClient.invalidateQueries(["detail", "" + value]);
+      queryClient.invalidateQueries(["mainPage"]);
+      queryClient.invalidateQueries(["follow"]);
+      queryClient.invalidateQueries(["follower"]);
+      queryClient.invalidateQueries(["userpage", "profile"]);
+      queryClient.invalidateQueries(["mypage", "profile"]);
+      queryClient.invalidateQueries(["mypage", "likeRecipes"]);
+      const isVisible = list?.data?.data;
+      if (isVisible) {
+        setLikeToggleBtn(!isLike);
+      }
+      return list;
+    },
+  });
+
+  const like = async () => {
+    if (loginNickname === undefined) {
+      alert("로그인 유저만 사용 가능한 기능입니다.");
+      return;
+    }
+    likeMutate.mutate(postId);
+  };
+
   return (
-    <LikeContainer onClick={btnClick}>
-      {isLike ? (
-        <FavoriteIcon fontSize="small" />
-      ) : (
-        <FavoriteBorderIcon fontSize="small" />
-      )}
+    <LikeContainer onClick={like}>
+      {isLike ? <FavoriteIcon fontSize="small" /> : <FavoriteBorderIcon fontSize="small" />}
     </LikeContainer>
   );
 };

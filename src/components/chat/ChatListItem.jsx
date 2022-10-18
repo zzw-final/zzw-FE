@@ -19,8 +19,6 @@ const ChatListItem = ({ listItem }) => {
     });
   };
 
-  console.log("chatTime :>> ", chatTime);
-
   return (
     <ListItemContainer onClick={chatPage}>
       <Avatar alt="user_img" src={profile} sx={{ width: 48, height: 48, mr: 1 }} />

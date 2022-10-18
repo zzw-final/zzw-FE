@@ -2,10 +2,10 @@ import React from "react";
 import styled from "styled-components";
 import Recipe from "../posts/Recipe";
 
-const List = ({ list, likeToggle, listName, ...props }) => {
+const List = ({ list, listName, ...props }) => {
   return (
     <ListContainer {...props}>
-      {list && list?.map((item) => <Recipe post={item} key={item.postId} likeToggle={likeToggle} {...props} />)}
+      {list && list?.map((item) => <Recipe post={item} key={item.postId} {...props} />)}
     </ListContainer>
   );
 };

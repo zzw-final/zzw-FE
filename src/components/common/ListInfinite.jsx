@@ -5,7 +5,7 @@ import { useInView } from "react-intersection-observer";
 import useInfinity from "../../hooks/useInfinity";
 import { fetchFollowListInfinite, fetchRecentListInfinite } from "../../api/mainpage";
 
-const ListInfinite = ({ likeToggle, listName, resultSearch, ...props }) => {
+const ListInfinite = ({ listName, resultSearch, ...props }) => {
   const { ref, inView } = useInView();
   let api;
 
@@ -37,11 +37,11 @@ const ListInfinite = ({ likeToggle, listName, resultSearch, ...props }) => {
           if (data.length === pageIndex + 1 && list.length === itemIdx + 1) {
             return (
               <div ref={ref} key={item.postId}>
-                <Recipe post={item} likeToggle={likeToggle} {...props} />
+                <Recipe post={item} {...props} />
               </div>
             );
           } else {
-            return <Recipe post={item} key={item.postId} likeToggle={likeToggle} {...props} />;
+            return <Recipe post={item} key={item.postId} {...props} />;
           }
         });
       })}
@@ -54,7 +54,7 @@ const ListContainer = styled.section`
   grid-template-columns: repeat(auto-fill, minmax(175px, 1fr));
   grid-row-gap: 1rem;
   justify-items: center;
-  margin: 0 0.5rem 1.2rem 0.5rem;
+  margin: 0 0.5rem 1.6rem 0.5rem;
   position: relative;
 `;
 

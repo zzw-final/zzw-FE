@@ -42,7 +42,9 @@
     "build": "react-scripts build",
     "test": "react-scripts test",
     "eject": "react-scripts eject",
-    "server": "json-server --watch db.json --port 3001"
+    "aws": "aws s3 sync ./build s3://zeze --profile=zeze",
+    "invalidate": "aws cloudfront create-invalidation --profile=zeze --distribution-id EUROXVUXFVQAD --paths /*",
+    "deploy": "yarn build && yarn aws && yarn invalidate"
   },
   "eslintConfig": {
     "extends": [

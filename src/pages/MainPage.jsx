@@ -28,10 +28,6 @@ const MainPage = () => {
     options.eternal
   );
 
-  const likeToggle = async (postId) => {
-    return likes(postId);
-  };
-
   const search = async (searchOption, sendData) => {
     navigate(`/search?${searchOption}=${sendData}`);
   };
@@ -46,7 +42,7 @@ const MainPage = () => {
       <SearchForm mainSearch={search} showToast={showToast} />
       <MainContainer>
         {toast && <Toast setToast={setToast} text={"태그는 5개까지 검색 가능합니다."} margin="0.5rem" />}
-        <Main tagList={tagList} bestPost={bestPost} recentPost={recentPost} likeToggle={likeToggle} search={search} />
+        <Main tagList={tagList} bestPost={bestPost} recentPost={recentPost} search={search} />
       </MainContainer>
     </LayoutPage>
   );
