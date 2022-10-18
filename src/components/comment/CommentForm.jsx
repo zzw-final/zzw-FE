@@ -32,7 +32,10 @@ const CommentForm = ({ postId, post }) => {
   return (
     <FormContainer>
       <Avatar alt="user_img" src={loginProfile} sx={{ width: 28, height: 28 }} />
-      <CommentInput ref={commentRef} placeholder={` ${loginNickname}(으)로 댓글 달기`} />
+      <CommentInput
+        ref={commentRef}
+        placeholder={loginNickname ? ` ${loginNickname}(으)로 댓글 달기` : `로그인하고 댓글 달기`}
+      />
       <Button name="commonBtn" onClick={postComment} width="5rem" height="2rem" backgroundColor="var(--color-orange)">
         등록
       </Button>

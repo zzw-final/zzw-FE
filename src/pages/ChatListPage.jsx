@@ -1,11 +1,9 @@
-import React, { useEffect, useMemo } from "react";
+import React from "react";
 import styled from "styled-components";
-import { useState } from "react";
-import { instance } from "../api/request";
 import ChatListItem from "../components/chat/ChatListItem";
 import LayoutPage from "../components/common/LayoutPage";
-import { useMutation, useQuery, useQueryClient } from "react-query";
-import { fetchChatList, fetchChatRoomDelete } from "../api/chatList";
+import { useQuery } from "react-query";
+import { fetchChatList } from "../api/chatList";
 import { options } from "../api/options";
 import useInput from "../hooks/useInput";
 
@@ -25,7 +23,8 @@ const ChatListPage = () => {
           {searchNickname ? (
             searchNickname.map((listItem, idx) => <ChatListItem listItem={listItem} key={idx} />)
           ) : (
-            <ListText>채팅 리스트가 없습니다.</ListText>
+            <></>
+            // <ListText>채팅 리스트가 없습니다.</ListText>
           )}
         </ChatList>
       </ChatListContainer>

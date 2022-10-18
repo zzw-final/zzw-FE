@@ -19,7 +19,7 @@ const MainPage = () => {
   const loginNickname = cookies.loginNickname;
 
   const navigate = useNavigate();
-
+  console.log("메인페이지 로딩중...");
   const { data: tagList } = useQuery(["mainPage", "tagList"], fetchBestTagTopFive, options.eternal);
   const { data: bestPost } = useQuery(["mainPage", "bestPost"], fetchBestList, options.eternal);
   const { data: recentPost } = useQuery(
@@ -27,10 +27,6 @@ const MainPage = () => {
     loginNickname ? fetchRecentList : () => {},
     options.eternal
   );
-
-  const likeToggle = async (postId) => {
-    return likes(postId);
-  };
 
   const search = async (searchOption, sendData) => {
     navigate(`/search?${searchOption}=${sendData}`);
@@ -46,7 +42,7 @@ const MainPage = () => {
       <SearchForm mainSearch={search} showToast={showToast} />
       <MainContainer>
         {toast && <Toast setToast={setToast} text={"태그는 5개까지 검색 가능합니다."} margin="0.5rem" />}
-        <Main tagList={tagList} bestPost={bestPost} recentPost={recentPost} likeToggle={likeToggle} search={search} />
+        <Main tagList={tagList} bestPost={bestPost} recentPost={recentPost} search={search} />
       </MainContainer>
     </LayoutPage>
   );

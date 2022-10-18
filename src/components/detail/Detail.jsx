@@ -34,9 +34,7 @@ function Detail({
   const navigate = useNavigate();
 
   const foodIngredientList = postDetail?.ingredient
-    .map((ingredient) =>
-      !ingredient.isName ? ingredient.ingredientName : undefined
-    )
+    .map((ingredient) => (!ingredient.isName ? ingredient.ingredientName : undefined))
     .filter((ingredient) => ingredient !== undefined);
 
   const [foodName, setFoodName] = useState();
@@ -48,9 +46,7 @@ function Detail({
   };
 
   useEffect(() => {
-    const foodName = postDetail?.ingredient?.find(
-      (item) => item.isName === true
-    )?.ingredientName;
+    const foodName = postDetail?.ingredient?.find((item) => item.isName === true)?.ingredientName;
     setFoodName(foodName);
   }, [postDetail]);
 
@@ -81,11 +77,7 @@ function Detail({
         </Tags>
       ) : (
         <Tags>
-          <TagList
-            postDetail={postDetail}
-            editForm={editForm}
-            setEditedIngredient={setEditedIngredient}
-          />
+          <TagList postDetail={postDetail} editForm={editForm} setEditedIngredient={setEditedIngredient} />
         </Tags>
       )}
 
@@ -192,12 +184,6 @@ const Icon = styled.img`
   height: 25px;
 `;
 
-const CreatedAt = styled.div`
-  font-size: var(--font-micro);
-  color: var(--color-grey);
-  right: 20vw;
-`;
-
 const Comment = styled.div`
   background-color: var(#fff7eb);
   padding: 0.2rem;
@@ -206,14 +192,6 @@ const Comment = styled.div`
   border-radius: 14px;
   font-weight: var(--weight-bold);
   width: 17vw;
-`;
-
-const SearchBox = styled.div`
-  /* background-color: #fff7eb; */
-  display: flex;
-  flex-direction: column;
-  height: 14vh;
-  position: relative;
 `;
 
 const CommentFoldLine = styled.div`
