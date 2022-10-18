@@ -7,7 +7,7 @@ import ListInfinite from "../common/ListInfinite";
 import KeyboardArrowRightIcon from "@mui/icons-material/KeyboardArrowRight";
 import KeyboardArrowDownIcon from "@mui/icons-material/KeyboardArrowDown";
 
-const Main = ({ tagList, bestPost, recentPost, recentPostInfinite, followPost, likeToggle, search, mutate }) => {
+const Main = ({ tagList, bestPost, recentPost, followPost, likeToggle, search, mutate }) => {
   const onClickTagHandler = (tagName) => {
     search("tag", tagName);
   };
@@ -52,14 +52,7 @@ const Main = ({ tagList, bestPost, recentPost, recentPostInfinite, followPost, l
               </ArrowSpan>
             </Title>
             <NewRecipeScrollContainer>
-              <ListInfinite
-                list={recentPostInfinite}
-                listName="recentPost"
-                likeToggle={likeToggle}
-                display="grid"
-                height="210px"
-                margin="0 0.5rem 0 0.5rem"
-              />
+              <ListInfinite listName="recentPost" likeToggle={likeToggle} />
             </NewRecipeScrollContainer>
           </>
         ) : (
@@ -79,16 +72,13 @@ const Main = ({ tagList, bestPost, recentPost, recentPostInfinite, followPost, l
                 <KeyboardArrowDownIcon />
               </ArrowSpan>
             </Title>
-            <FollowContainer>
-              <ListInfinite
-                list={followPost}
-                likeToggle={likeToggle}
-                listName="followPost"
-                display="grid"
-                height="210px"
-                margin="0 0.5rem 0 0.5rem"
-              />
-            </FollowContainer>
+            {loginNickname ? (
+              <FollowContainer>
+                <ListInfinite likeToggle={likeToggle} listName="followPost" />
+              </FollowContainer>
+            ) : (
+              ""
+            )}
           </>
         )}
       </ListBox>

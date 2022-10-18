@@ -21,8 +21,6 @@ function NaverRedirect() {
         setCookie("loginEmail", EMAIL);
         setCookie("loginOauth", OAUTH);
 
-        console.log("newUser :>> ", newUser);
-
         if (newUser) {
           navigate("/join", { replace: true });
         } else {
@@ -32,7 +30,6 @@ function NaverRedirect() {
       }
     }
     const onLogin = (res) => {
-      console.log("res onLogin :>> ", res);
       const ACCESS_TOKEN = `Bearer ${res.headers["authorization"]}`;
       const REFRESH_TOKEN = res.headers["refresh-token"];
       const EMAIL = res.data.data.email;
