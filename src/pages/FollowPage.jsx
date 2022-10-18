@@ -57,7 +57,8 @@ const FollowPage = () => {
   };
 
   const { mutate } = useMutation((userId) => followHandler(userId), {
-    onSuccess: () => {
+    onSuccess: (res) => {
+      console.log(res);
       queryClient.invalidateQueries(["userpage", "profile"]);
       queryClient.invalidateQueries(["mypage", "profile"]);
       queryClient.invalidateQueries(["follow"]);
