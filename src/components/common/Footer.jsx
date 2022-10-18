@@ -1,13 +1,11 @@
-import React, { useRef, useState } from "react";
+import React, { useRef, useState, useEffect } from "react";
+import { useNavigate } from "react-router-dom";
+import { useCookies } from "react-cookie";
 import styled from "styled-components";
 import HomeIcon from "@mui/icons-material/Home";
 import CreateIcon from "@mui/icons-material/Create";
 import PersonIcon from "@mui/icons-material/Person";
 import TagIcon from "@mui/icons-material/Tag";
-import { useNavigate } from "react-router-dom";
-import Tag from "../../components/common/Tag";
-import { useEffect } from "react";
-import { useCookies } from "react-cookie";
 import TextsmsIcon from "@mui/icons-material/Textsms";
 import * as StompJs from "@stomp/stompjs";
 import { getCookie } from "../../util/cookie";
@@ -64,7 +62,6 @@ const Footer = ({ topTenTagList, tagAllList }) => {
   const subscribe = () => {
     client.current.subscribe(`/sub/chat/member/${loginUserId}`, (res) => {
       const body = JSON.parse(res.body);
-      // console.log("body :>> ", body.isRead);
       setNewChatText(body.isRead);
     });
   };

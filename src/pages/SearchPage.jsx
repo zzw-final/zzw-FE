@@ -1,17 +1,12 @@
 import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { fetchSearchRecipe, likes, searchRecipe } from "../api/request";
+import { fetchSearchRecipe, likes } from "../api/request";
 import LayoutPage from "../components/common/LayoutPage";
-import List from "../components/common/List";
 import SearchForm from "../components/main/SearchForm";
 import { useSearchParams } from "react-router-dom";
 import styled from "styled-components";
 import { useInView } from "react-intersection-observer";
 import Toast from "../components/UI/Toast";
-import { useInfiniteQueryScroll } from "../hooks/useInfiniteQueryScroll";
-import ListInfinite from "../components/common/ListInfinite";
-import { options } from "../api/options";
-import { useQuery } from "react-query";
 import Recipe from "../components/posts/Recipe";
 
 const SearchPage = () => {

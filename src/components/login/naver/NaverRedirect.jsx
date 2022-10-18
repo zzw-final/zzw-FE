@@ -11,8 +11,7 @@ function NaverRedirect() {
   useEffect(() => {
     async function NaverLogin() {
       const res = await axios.get(
-        process.env.REACT_APP_API +
-          `/api/member/login/naver?code=${code}&state=${process.env.NAVER_STATE}`
+        process.env.REACT_APP_API + `/api/member/login/naver?code=${code}&state=${process.env.NAVER_STATE}`
       );
 
       if (res.data.success && res.data.error === null) {
@@ -31,7 +30,6 @@ function NaverRedirect() {
       }
     }
     const onLogin = (res) => {
-      console.log("res onLogin :>> ", res);
       const ACCESS_TOKEN = `Bearer ${res.headers["authorization"]}`;
       const REFRESH_TOKEN = res.headers["refresh-token"];
       const EMAIL = res.data.data.email;

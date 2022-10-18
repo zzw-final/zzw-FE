@@ -11,6 +11,11 @@ import imageCompression from "browser-image-compression";
 import { likePost } from "../../api/writepage";
 import { useMutation, useQuery, useQueryClient } from "react-query";
 import { getCookie } from "../../util/cookie";
+import { followHandler } from "../../api/followpage";
+import { options } from "../../api/options";
+import FollowerList from "../followpage/FollowerList";
+import Button from "../UI/Button";
+import { instance } from "../../api/request";
 
 const SwiperRecipeItemFirstPage = ({
   postDetail,
@@ -24,6 +29,8 @@ const SwiperRecipeItemFirstPage = ({
   onCancle,
   onSubmitHandler,
   onDelete,
+  greyButton,
+  followHandler,
 }) => {
   const {
     postId,
@@ -37,6 +44,7 @@ const SwiperRecipeItemFirstPage = ({
     foodImg,
     createAt,
     time,
+    isFollow,
   } = postDetail;
 
   const [likeToggleBtn, setLikeToggleBtn] = useState(isLike);
@@ -107,7 +115,6 @@ const SwiperRecipeItemFirstPage = ({
 
   const loninNickname = getCookie("loginNickname");
 
-  console.log(postDetail);
   return (
     <>
       <ItemContainer display={!isEditMode ? "Flex" : "none"}>
@@ -116,7 +123,7 @@ const SwiperRecipeItemFirstPage = ({
           <Time>⏱ {postDetail?.time} min</Time>
         </TimeBox>
         <LikeBox>
-          <Like isLike={likeToggleBtn} btnClick={like} /> {postDetail?.likeNum}
+          <Like isLike={likeToggleBtn} btnClick={like} /> {likeNum}
         </LikeBox>
         <ItemBox>
           <ItemInfo>
@@ -133,12 +140,19 @@ const SwiperRecipeItemFirstPage = ({
               {loninNickname === nickname ? (
                 <ButtonDiv>
                   <>
-                    <Button onClick={onEditPage}>수정</Button>
-                    <Button onClick={onDelete}>삭제</Button>
+                    <Button1 onClick={onEditPage}>수정</Button1>
+                    <Button1 onClick={onDelete}>삭제</Button1>
                   </>
                 </ButtonDiv>
               ) : (
-                <FollowBtn>팔로우</FollowBtn>
+                // <FollowBtn>팔로우</FollowBtn>
+                <Button
+                  onClick={followHandler}
+                  name="FollowBtn"
+                  isFollow={greyButton}
+                >
+                  {isFollow ? "팔로잉" : "팔로우"}
+                </Button>
               )}
 
               {/* <CreatedAt>{dateFormat(createAt)}</CreatedAt> */}
@@ -294,7 +308,7 @@ const ButtonDiv = styled.div`
   gap: 10px;
 `;
 
-const Button = styled.button`
+const Button1 = styled.button`
   font-size: var(--font-regular);
   font-weight: var(--weight-bold);
   color: white;

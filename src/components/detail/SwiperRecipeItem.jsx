@@ -5,6 +5,8 @@ import { getCookie } from "../../util/cookie";
 import { useNavigate } from "react-router-dom";
 import { useCookies } from "react-cookie";
 import Avatar from "@mui/material/Avatar";
+import Button from "../UI/Button";
+
 
 const SwiperRecipeItem = ({
   contentList,
@@ -18,6 +20,8 @@ const SwiperRecipeItem = ({
   onCancle,
   onSubmitHandler,
   onDelete,
+  greyButton,
+  followHandler,
 }) => {
   const { imageUrl, content, page } = contentList;
   const [imgContentUrlEdited, setImgContentUrlEdited] = useState(imageUrl);
@@ -34,8 +38,6 @@ const SwiperRecipeItem = ({
     console.log("수정이미지", result);
     setImgContentUrlEdited(result.data.data.imageUrl);
   };
-
-  // console.log(imgContentUrlEdited);
 
   let handleChangeIMG = (i, e) => {
     let newFormValues = [...editedValues];
@@ -81,12 +83,18 @@ const SwiperRecipeItem = ({
               {loninNickname === postDetail?.nickname ? (
                 <ButtonDiv>
                   <>
-                    <Button onClick={onEditPage}>수정</Button>
-                    <Button onClick={onDelete}>삭제</Button>
+                    <Button1 onClick={onEditPage}>수정</Button1>
+                    <Button1 onClick={onDelete}>삭제</Button1>
                   </>
                 </ButtonDiv>
               ) : (
-                <FollowBtn>팔로우</FollowBtn>
+                <Button
+                  onClick={followHandler}
+                  name="FollowBtn"
+                  isFollow={greyButton}
+                >
+                  {postDetail?.isFollow ? "팔로잉" : "팔로우"}
+                </Button>
               )}
             </NinknameCreatedAt>
           </ItemInfo>
@@ -194,7 +202,8 @@ const ButtonDiv = styled.div`
   gap: 10px;
 `;
 
-const Button = styled.button`
+
+const Button1 = styled.button`
   font-size: var(--font-regular);
   font-weight: var(--weight-bold);
   color: white;

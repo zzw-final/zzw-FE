@@ -41,11 +41,7 @@ function DetailPage() {
   const queryClient = useQueryClient();
 
   //기존 데이터 가져오는 useQuery
-  const { data: postDetail } = useQuery(
-    ["detail", id],
-    () => fetchDetail(id),
-    options.eternal
-  );
+  const { data: postDetail } = useQuery(["detail", id], () => fetchDetail(id), options.eternal);
 
   //이미지 업로드 시 url 반환요청
   const imgUpload = async (file) => {
@@ -124,9 +120,7 @@ function DetailPage() {
 
   //재료만 뽑아줌
   const foodIngredientList = postDetail?.ingredient
-    ?.map((ingredient) =>
-      ingredient.isName !== true ? ingredient.ingredientName : undefined
-    )
+    ?.map((ingredient) => (ingredient.isName !== true ? ingredient.ingredientName : undefined))
     .filter((ingredient) => ingredient !== undefined);
 
   // 2p~10p 데이터
@@ -134,16 +128,25 @@ function DetailPage() {
     setEditedvalues(postDetail?.contentList);
   }, [postDetail?.contentList]);
 
+  //디테일 페이지 내에서 팔로우 기능
+  const [greyButton, setGreyButton] = useState(postDetail?.isFollow);
+  const followHandler = async () => {
+    setGreyButton((prev) => !prev);
+    const data = await instance.post(`/api/post/${postDetail?.postId}/follow`);
+    console.log(data);
+  };
+
+  useEffect(() => {}, [greyButton]);
+
   //댓글 데이터 가져오는 useQuery
-  const { data: commentList } = useQuery(
-    ["comment", id],
-    () => commentFetch(id),
-    options.eternal
-  );
+  const { data: commentList } = useQuery(["comment", id], () => commentFetch(id), options.eternal);
 
   //댓글 작성
   const commentPostMutate = useMutation((postInfo) => commentPost(postInfo), {
-    onSuccess: () => {
+    onSuccess: (res) => {
+      if (res.data.data.isGet) {
+        alert("🎉 새로운 칭호를 획득했습니다! 마이페이지에서 확인하세요.");
+      }
       queryClient.invalidateQueries("comment", id);
     },
   });
@@ -204,6 +207,8 @@ function DetailPage() {
             onSubmitHandler={onSubmitHandler}
             editForm={editForm}
             setEditedIngredient={setEditedIngredient}
+            greyButton={greyButton}
+            followHandler={followHandler}
           />
         )}
       </DetailContainer>
