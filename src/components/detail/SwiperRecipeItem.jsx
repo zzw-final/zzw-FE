@@ -7,6 +7,7 @@ import { useCookies } from "react-cookie";
 import Avatar from "@mui/material/Avatar";
 import Button from "../UI/Button";
 
+
 const SwiperRecipeItem = ({
   contentList,
   isEditMode,
@@ -200,6 +201,7 @@ const ButtonDiv = styled.div`
   display: flex;
   gap: 10px;
 `;
+
 
 const Button1 = styled.button`
   font-size: var(--font-regular);
