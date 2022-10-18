@@ -20,7 +20,7 @@ const ListInfinite = ({ likeToggle, listName, resultSearch, ...props }) => {
       throw new Error(`${listName} 는 조회 가능한 리스트가 아닙니다.`);
   }
 
-  const { data, fetchNextPage, hasNextPage } = useInfinity(["mainPage"], api);
+  const { data, fetchNextPage, hasNextPage } = useInfinity(["mainPage", "infinite"], api);
 
   useEffect(() => {
     if (inView && hasNextPage) fetchNextPage();

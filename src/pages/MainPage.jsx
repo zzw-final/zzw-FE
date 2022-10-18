@@ -24,7 +24,7 @@ const MainPage = () => {
   const { data: bestPost } = useQuery(["mainPage", "bestPost"], fetchBestList, options.eternal);
   const { data: recentPost } = useQuery(
     ["mainPage", "recentPost"],
-    loginNickname ? fetchRecentList : "",
+    loginNickname ? fetchRecentList : () => {},
     options.eternal
   );
 
