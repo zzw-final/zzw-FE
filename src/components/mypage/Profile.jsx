@@ -11,8 +11,16 @@ import { getCookie, removeCookie } from "../../util/cookie";
 function Profile({ userData, DmRequest, profileRef, editHandler }) {
   const navigate = useNavigate();
   const { id } = useParams();
-  const { follow, follower, grade, gradeList, nickname, profile, isFollow, postSize } =
-    userData;
+  const {
+    follow,
+    follower,
+    grade,
+    gradeList,
+    nickname,
+    profile,
+    isFollow,
+    postSize,
+  } = userData;
   const [greyButton, setGreyButton] = useState(isFollow);
   const [followerNum, setFollowerNum] = useState(follower);
 
@@ -150,7 +158,9 @@ function Profile({ userData, DmRequest, profileRef, editHandler }) {
                   name="DmBtn"
                   width="70%"
                   background={
-                    greyButton ? "var(--color-dark-white)" : "var(--color-real-orange)"
+                    greyButton
+                      ? "var(--color-dark-white)"
+                      : "var(--color-real-orange)"
                   }
                 >
                   {greyButton ? "팔로잉" : "팔로우"}

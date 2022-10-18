@@ -7,16 +7,7 @@ import ListInfinite from "../common/ListInfinite";
 import KeyboardArrowRightIcon from "@mui/icons-material/KeyboardArrowRight";
 import KeyboardArrowDownIcon from "@mui/icons-material/KeyboardArrowDown";
 
-const Main = ({
-  tagList,
-  bestPost,
-  recentPost,
-  recentPostInfinite,
-  followPost,
-  likeToggle,
-  search,
-  mutate,
-}) => {
+const Main = ({ tagList, bestPost, recentPost, followPost, likeToggle, search, mutate }) => {
   const onClickTagHandler = (tagName) => {
     search("tag", tagName);
   };
@@ -50,13 +41,7 @@ const Main = ({
           </ArrowSpan>
         </Title>
         <BestRecipeContainer>
-          <List
-            list={bestPost}
-            likeToggle={likeToggle}
-            // width="160px"
-            height="200px"
-            margin="0 0.5rem 0 0.5rem"
-          />
+          <List list={bestPost} likeToggle={likeToggle} height="200px" margin="0 0.5rem 0 0.5rem" />
         </BestRecipeContainer>
         {loginNickname === undefined ? (
           <>
@@ -67,14 +52,7 @@ const Main = ({
               </ArrowSpan>
             </Title>
             <NewRecipeScrollContainer>
-              <ListInfinite
-                list={recentPostInfinite}
-                listName="recentPost"
-                likeToggle={likeToggle}
-                display="grid"
-                height="210px"
-                margin="0 0.5rem 0 0.5rem"
-              />
+              <ListInfinite listName="recentPost" likeToggle={likeToggle} />
             </NewRecipeScrollContainer>
           </>
         ) : (
@@ -86,13 +64,7 @@ const Main = ({
               </ArrowSpan>
             </Title>
             <NewRecipeContainer>
-              <List
-                list={recentPost}
-                likeToggle={likeToggle}
-                width="160px"
-                height="200px"
-                margin="0 0.5rem 0 0.5rem"
-              />
+              <List list={recentPost} likeToggle={likeToggle} width="160px" height="200px" margin="0 0.5rem 0 0.5rem" />
             </NewRecipeContainer>
             <Title>
               🥕 팔로우 레시피
@@ -100,16 +72,13 @@ const Main = ({
                 <KeyboardArrowDownIcon />
               </ArrowSpan>
             </Title>
-            <FollowContainer>
-              <ListInfinite
-                list={followPost}
-                likeToggle={likeToggle}
-                listName="followPost"
-                display="grid"
-                height="210px"
-                margin="0 0.5rem 0 0.5rem"
-              />
-            </FollowContainer>
+            {loginNickname ? (
+              <FollowContainer>
+                <ListInfinite likeToggle={likeToggle} listName="followPost" />
+              </FollowContainer>
+            ) : (
+              ""
+            )}
           </>
         )}
       </ListBox>

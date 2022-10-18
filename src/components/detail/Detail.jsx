@@ -7,6 +7,7 @@ import { useNavigate } from "react-router-dom";
 import TagList from "./TagList";
 import SwiperRecipe from "./SwiperRecipe";
 import { dateFormat } from "../../util/dateFormat";
+import Slide from "../UI/Slide";
 
 function Detail({
   postDetail,
@@ -29,32 +30,23 @@ function Detail({
 }) {
   const nickname = getCookie("loginNickname");
   const [isEditMode, setIsEditMode] = useState(false);
+  const [slideIsOpen, setSlideIsOpen] = useState(false);
   const navigate = useNavigate();
 
   const foodIngredientList = postDetail?.ingredient
-    .map((ingredient) =>
-      !ingredient.isName ? ingredient.ingredientName : undefined
-    )
+    .map((ingredient) => (!ingredient.isName ? ingredient.ingredientName : undefined))
     .filter((ingredient) => ingredient !== undefined);
 
   const [foodName, setFoodName] = useState();
 
   const commentListCnt = commentList?.length;
 
-  const [toggleTagList, setToggleTagList] = useState(false);
-
-  const openTagBox = () => {
-    setToggleTagList(!toggleTagList);
-  };
-
   const onEditPage = () => {
     setIsEditMode(!isEditMode);
   };
 
   useEffect(() => {
-    const foodName = postDetail?.ingredient?.find(
-      (item) => item.isName === true
-    )?.ingredientName;
+    const foodName = postDetail?.ingredient?.find((item) => item.isName === true)?.ingredientName;
     setFoodName(foodName);
   }, [postDetail]);
 
@@ -85,11 +77,7 @@ function Detail({
         </Tags>
       ) : (
         <Tags>
-          <TagList
-            postDetail={postDetail}
-            editForm={editForm}
-            setEditedIngredient={setEditedIngredient}
-          />
+          <TagList postDetail={postDetail} editForm={editForm} setEditedIngredient={setEditedIngredient} />
         </Tags>
       )}
 
@@ -103,9 +91,9 @@ function Detail({
             editedValues={editedValues}
             setEditedValues={setEditedValues}
             editForm={editForm}
-            toggleTagList={toggleTagList}
-            setToggleTagList={setToggleTagList}
-            openTagBox={openTagBox}
+            // toggleTagList={toggleTagList}
+            // setToggleTagList={setToggleTagList}
+            // openTagBox={openTagBox}
             onEditPage={onEditPage}
             onCancle={onCancle}
             onSubmitHandler={onSubmitHandler}
@@ -116,12 +104,24 @@ function Detail({
         )}
       </Content>
       <Footer>
-        <Comment onClick={openTagBox}>💬 {commentListCnt}</Comment>
-        <CreatedAt>{dateFormat(postDetail?.createAt)}</CreatedAt>
-
-        <CommentListBox id="tagList" top={toggleTagList}>
-          <CommentFoldLine onClick={openTagBox}></CommentFoldLine>
-          <SearchBox>
+        <FootLeft>
+          <Icon src={"/copy.png"} alt="공유하기" />
+          <Icon src={"/eye-off.png"} alt="신고하기" />
+        </FootLeft>
+        <Comment
+          onClick={() => {
+            setSlideIsOpen(true);
+          }}
+        >
+          💬 {commentListCnt}
+        </Comment>
+        {slideIsOpen && (
+          <Slide setSlideIsOpen={setSlideIsOpen}>
+            <CommentFoldLine
+              onClick={() => {
+                setSlideIsOpen(false);
+              }}
+            ></CommentFoldLine>
             <CommentBox>
               <CommentList
                 postId={postDetail?.postId}
@@ -131,8 +131,8 @@ function Detail({
                 commentList={commentList}
               />
             </CommentBox>
-          </SearchBox>
-        </CommentListBox>
+          </Slide>
+        )}
       </Footer>
     </DetailContainer>
   );
@@ -144,13 +144,72 @@ const Header = styled.div`
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding: 0rem 1.9rem 1.5rem 1.9rem;
+  padding: 2rem 1.9rem 1.5rem 1.9rem;
 `;
 
-// const Time = styled.div`
-//   font-size: var(--font-small);
-//   margin-left: 0.3rem;
-// `;
+const FoodnameDiv = styled.div`
+  display: flex;
+  align-items: center;
+`;
+
+const Foodname = styled.div`
+  font-size: var(--font-medium-large);
+  font-weight: var(--weight-bolder);
+`;
+
+const FoodnameEdit = styled.input`
+  font-size: var(--font-small);
+  width: 7rem;
+`;
+
+const Time = styled.div`
+  font-size: var(--font-small);
+  margin-left: 0.3rem;
+`;
+
+const TimeSelect = styled.select`
+  box-sizing: border-box;
+  /* position: absolute; */
+  width: 4rem;
+  height: 1.4rem;
+  left: 273px;
+  top: 149px;
+  margin-left: 5px;
+
+  border: 1px solid #9c9c9c;
+  border-radius: 10px;
+`;
+
+const ButtonDiv = styled.div`
+  display: flex;
+  gap: 10px;
+`;
+
+const Button = styled.button`
+  font-size: var(--font-small);
+  font-weight: var(--weight-semi-bold);
+  color: #232323;
+  text-align: center;
+  width: 2.5rem;
+  height: 1.2rem;
+  background-color: #fbf8f0;
+  border-radius: 3px;
+  box-shadow: 2px 2px 5px #bebebe;
+  border: none;
+`;
+
+const ButtonEdit = styled.button`
+  font-size: var(--font-small);
+  font-weight: var(--weight-semi-bold);
+  color: #232323;
+  text-align: center;
+  width: 4rem;
+  height: 1.2rem;
+  background-color: #fbf8f0;
+  border-radius: 3px;
+  box-shadow: 2px 2px 5px #bebebe;
+  border: none;
+`;
 
 const Tags = styled.div`
   margin-left: 1rem;
@@ -202,14 +261,6 @@ const Comment = styled.div`
   width: 17vw;
 `;
 
-const SearchBox = styled.div`
-  /* background-color: #fff7eb; */
-  display: flex;
-  flex-direction: column;
-  height: 14vh;
-  position: relative;
-`;
-
 const CommentFoldLine = styled.div`
   width: 20%;
   height: 0.2rem;
@@ -217,21 +268,9 @@ const CommentFoldLine = styled.div`
   margin: 0.5rem auto 2rem auto;
 `;
 
-const CommentListBox = styled.div`
-  background-color: white;
-  z-index: 1;
-  width: 100%;
-  height: 100%;
-  border-radius: 2rem 2rem 0 0;
-  box-shadow: 0px 0px 20px #5b5b5b;
-  transition: all 600ms cubic-bezier(0.86, 0, 0.07, 1);
-  top: ${({ top }) => (top ? "9%" : "100%")};
-  position: fixed;
-  left: 0;
-`;
-
 const CommentBox = styled.div`
   width: 100%;
+  height: 85%;
 `;
 
 export default Detail;

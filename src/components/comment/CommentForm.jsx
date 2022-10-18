@@ -3,10 +3,12 @@ import styled from "styled-components";
 import Button from "../UI/Button";
 import { useCookies } from "react-cookie";
 import useInputRef from "../../hooks/useInputRef";
+import { Avatar } from "@mui/material";
 
 const CommentForm = ({ postId, post }) => {
-  const [cookies] = useCookies(["loginProfile"]);
+  const [cookies] = useCookies(["loginProfile", "loginNickname"]);
   const loginProfile = cookies.loginProfile;
+  const loginNickname = cookies.loginNickname;
 
   const postComment = () => {
     if (loginProfile === undefined) {
@@ -29,15 +31,10 @@ const CommentForm = ({ postId, post }) => {
 
   return (
     <FormContainer>
-      <CommentInput ref={commentRef} />
-      <Button
-        name="commonBtn"
-        onClick={postComment}
-        width="5rem"
-        height="2rem"
-        border="1px solid var(--color-grey)"
-      >
-        댓글 달기
+      <Avatar alt="user_img" src={loginProfile} sx={{ width: 28, height: 28 }} />
+      <CommentInput ref={commentRef} placeholder={` ${loginNickname}(으)로 댓글 달기`} />
+      <Button name="commonBtn" onClick={postComment} width="5rem" height="2rem" backgroundColor="var(--color-orange)">
+        등록
       </Button>
     </FormContainer>
   );
@@ -53,6 +50,9 @@ const CommentInput = styled.input`
   width: 100%;
   height: 4vh;
   margin: 0.5rem;
+  padding: 0.2rem;
+  border: 0.5px solid var(--color-orange);
+  border-radius: 0.5rem;
 `;
 
 export default CommentForm;

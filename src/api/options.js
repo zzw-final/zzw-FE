@@ -1,4 +1,7 @@
 export const options = {
+  noSelect: {
+    staleTime: 10 * 1000,
+  },
   basic: {
     staleTime: 10 * 1000,
     select: (data) => data.data.data,

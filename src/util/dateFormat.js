@@ -14,6 +14,6 @@ export const dateFormat = (date) => {
   } else if (days === 1) {
     return `어제 ${time}`;
   } else {
-    return `${getDate.format("YY년 MM월 DD일")}`;
+    return `${getDate.format("YYYY.MM.DD")}`;
   }
 };
