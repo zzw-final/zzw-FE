@@ -1,6 +1,10 @@
 import { React, useState } from "react";
 import styled from "styled-components";
 import imageCompression from "browser-image-compression";
+import { getCookie } from "../../util/cookie";
+import { useNavigate } from "react-router-dom";
+import { useCookies } from "react-cookie";
+import Avatar from "@mui/material/Avatar";
 
 const SwiperRecipeItem = ({
   contentList,
@@ -9,6 +13,11 @@ const SwiperRecipeItem = ({
   editedValues,
   setEditedValues,
   idx,
+  postDetail,
+  onEditPage,
+  onCancle,
+  onSubmitHandler,
+  onDelete,
 }) => {
   const { imageUrl, content, page } = contentList;
   const [imgContentUrlEdited, setImgContentUrlEdited] = useState(imageUrl);
@@ -45,13 +54,42 @@ const SwiperRecipeItem = ({
     const result = await imgUpload(e.target.files[0]);
     setImgContentUrlEdited(result.data.data.imageUrl);
   };
+  const loninNickname = getCookie("loginNickname");
+  const [cookies] = useCookies(["loginNickname"]);
+  const navigate = useNavigate();
+  const userPage = () => {
+    if (+cookies.loginUserId === postDetail?.authorId) navigate(`/mypage`);
+    else navigate(`/mypage/${postDetail?.authorId}`);
+  };
 
   return (
     <>
       <ItemContainer display={!isEditMode ? "Flex" : "none"}>
         <ItemImg src={imageUrl} alt="RecipeImg" />
         <ItemBox>
-          <ItemStep>STEP {page + 1}</ItemStep>
+          <ItemInfo>
+            <Avatar
+              alt="user_img"
+              src={postDetail?.profile}
+              sx={{ width: 40, height: 40, mr: 1 }}
+              onClick={userPage}
+            />
+            <NinknameCreatedAt>
+              <Nickname onClick={userPage}>
+                {postDetail?.nickname}/{postDetail?.grade}
+              </Nickname>
+              {loninNickname === postDetail?.nickname ? (
+                <ButtonDiv>
+                  <>
+                    <Button onClick={onEditPage}>수정</Button>
+                    <Button onClick={onDelete}>삭제</Button>
+                  </>
+                </ButtonDiv>
+              ) : (
+                <FollowBtn>팔로우</FollowBtn>
+              )}
+            </NinknameCreatedAt>
+          </ItemInfo>
           <ItemContent>{content}</ItemContent>
         </ItemBox>
       </ItemContainer>
@@ -65,7 +103,23 @@ const SwiperRecipeItem = ({
         />
         <ItemImgEdit type="file" accept="image/*" onChange={getImgUpload} />
         <ItemBox>
-          <ItemStep>STEP {page + 1}</ItemStep>
+          <ItemInfo>
+            <Avatar
+              alt="user_img"
+              src={postDetail?.profile}
+              sx={{ width: 35, height: 35, mr: 1 }}
+              onClick={userPage}
+            />
+            <NinknameCreatedAt>
+              <Nickname onClick={userPage}>
+                {postDetail?.grade}/{postDetail?.nickname}
+              </Nickname>
+              <>
+                <ButtonEdit onClick={onSubmitHandler}>수정완료</ButtonEdit>
+                <ButtonEdit onClick={onCancle}>수정취소</ButtonEdit>
+              </>
+            </NinknameCreatedAt>
+          </ItemInfo>
           <ItemContentEdit
             type="text"
             name="content"
@@ -88,21 +142,83 @@ const ItemContainer = styled.div`
 `;
 
 const ItemImg = styled.img`
-  width: 100%;
-  height: 60%;
+  width: 90%;
+  height: 63%;
   border-radius: 18px;
   padding: 0.2rem;
-  margin-bottom: 1.5rem;
+  margin: 0 auto 1rem auto;
 `;
 
 const ItemImgEdit = styled.input`
   position: absolute;
-  top: 300px;
-  left: 16px;
+  top: 350px;
+  left: 30px;
 `;
 
 const ItemBox = styled.div`
   padding: 0 1rem;
+`;
+
+const ItemInfo = styled.div`
+  display: flex;
+  align-items: center;
+  padding-bottom: 1rem;
+  margin-left: 5px;
+`;
+
+const NinknameCreatedAt = styled.div`
+  display: flex;
+  justify-content: space-between;
+  width: 100%;
+`;
+
+const Nickname = styled.div`
+  font-size: var(--font-semi-small);
+  color: var(--color-black);
+  margin-top: 3px;
+`;
+
+const FollowBtn = styled.button`
+  width: 15vw;
+  height: 3.5vh;
+  border: 0;
+  border-radius: 8px;
+  background-color: #ff7a00;
+  color: white;
+  margin: 0 10px 3px 0;
+  margin-right: 10px;
+`;
+
+const ButtonDiv = styled.div`
+  display: flex;
+  gap: 10px;
+`;
+
+const Button = styled.button`
+  font-size: var(--font-regular);
+  font-weight: var(--weight-bold);
+  color: white;
+  text-align: center;
+  width: 3rem;
+  height: 1.7rem;
+  background-color: #fbd499;
+  border-radius: 3px;
+  box-shadow: 2px 2px 5px #bebebe;
+  border: none;
+`;
+
+const ButtonEdit = styled.button`
+  font-size: var(--font-small);
+  font-weight: var(--weight-semi-bold);
+  color: #232323;
+  text-align: center;
+  width: 4rem;
+  height: 1.5rem;
+  background-color: #fbf8f0;
+  border-radius: 3px;
+  box-shadow: 2px 2px 5px #bebebe;
+  margin-top: 2px;
+  border: none;
 `;
 
 const ItemStep = styled.div`
@@ -113,13 +229,20 @@ const ItemStep = styled.div`
 `;
 
 const ItemContent = styled.div`
-  font-size: var(--font-medium);
+  font-size: var(--font-semi-small);
   overflow: scroll;
-  height: 100%;
+  height: auto;
+  width: 90%;
+  margin: 0 auto 1rem auto;
+  background-color: #ffe8c6;
+  padding: 20px;
+  border-radius: 10px;
 `;
 
 const ItemContentEdit = styled.textarea`
-  width: 100%;
+  width: 90%;
+  height: 90%;
+  margin: 0 1rem 0 1rem;
 `;
 
 export default SwiperRecipeItem;
