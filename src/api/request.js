@@ -1,4 +1,5 @@
 import axios from "axios";
+import { getCookie } from "../util/cookie";
 
 export const instance = axios.create({
   baseURL: process.env.REACT_APP_API,
@@ -12,7 +13,6 @@ export const imgInstance = axios.create({
   baseURL: process.env.REACT_APP_API,
   headers: {
     "Content-Type": "multipart/form-data",
-    // withCredentials: true,
   },
 });
 
@@ -64,20 +64,12 @@ imgInstance.interceptors.request.use(
   }
 );
 
-function getCookie(key) {
-  key = new RegExp(key + "=([^;]*)");
-  return key.test(document.cookie) ? unescape(RegExp.$1) : "";
-}
-
 export const kakaoLoginInstance = async (code) => {
-  return await axios.get(
-    `${process.env.REACT_APP_API}/api/member/login/kakao?code=${code}`,
-    {
-      headers: {
-        "Content-Type": "application/json",
-      },
-    }
-  );
+  return await axios.get(`${process.env.REACT_APP_API}/api/member/login/kakao?code=${code}`, {
+    headers: {
+      "Content-Type": "application/json",
+    },
+  });
 };
 
 export const join = async (sendData) => {
@@ -86,4 +78,13 @@ export const join = async (sendData) => {
 
 export const likes = async (postId) => {
   return await instance.post(`/api/auth/post/${postId}`);
+};
+
+export const fetchSearchRecipe = async (filterInfo, lastPostId) => {
+  const sendLastPostId = lastPostId ? `&lastPostId=${lastPostId}` : ``;
+  return await instance.get(`/api/post/filter/${filterInfo}${sendLastPostId}`);
+};
+
+export const fetchAlarm = async () => {
+  return await instance.get(`/api/chat/alarm`);
 };

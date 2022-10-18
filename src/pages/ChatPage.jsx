@@ -1,11 +1,11 @@
-import { useEffect, useRef, useState } from "react";
 import * as StompJs from "@stomp/stompjs";
-import { getCookie } from "../util/cookie";
 import useInput from "../hooks/useInput";
 import ChatLayout from "../components/chat/ChatLayout";
-import { useNavigate, useParams } from "react-router-dom";
 import SendMsg from "../components/chat/SendMsg";
 import GetMsg from "../components/chat/GetMsg";
+import { useEffect, useRef, useState } from "react";
+import { useNavigate, useParams } from "react-router-dom";
+import { getCookie } from "../util/cookie";
 import { instance } from "../api/request";
 import { useLocation } from "react-router-dom";
 
@@ -15,6 +15,7 @@ function ChatPage() {
   const [msg, msgHandler, setMsg] = useInput();
   const [messages, setMessages] = useState([{}]);
   const { state: location } = useLocation();
+  const navigate = useNavigate();
 
   useEffect(() => {
     connect();
@@ -45,17 +46,17 @@ function ChatPage() {
     });
     client.current.activate();
   };
+
   //disconnect시 메세지 어디까지 확인했는지 체크해주는 put 요청
   const disconnect = () => {
     const back = async () => {
       const newdata = {
         roomId: Number(roomId),
-        // messageId: messages[messages.length - 1].messageId,
         userId: Number(getCookie("loginUserId")),
       };
-      console.log(newdata);
       await instance.put("/api/chat/newmessage", newdata);
     };
+
     back();
     client.current.deactivate();
   };
@@ -63,7 +64,6 @@ function ChatPage() {
   const subscribe = () => {
     client.current.subscribe(`/sub/chat/room/${roomId}`, (res) => {
       const body = JSON.parse(res.body);
-      // console.log("sub body ->", JSON.parse(res.body));
       setMessages((msg) => [
         ...msg,
         {
@@ -71,6 +71,7 @@ function ChatPage() {
           sender: body.sender,
           sendTime: body.sendTime,
           profile: body.profile,
+          messageId: body.messageId,
         },
       ]);
     });
@@ -109,6 +110,15 @@ function ChatPage() {
     scrollRef.current?.scrollIntoView({ behavior: "smooth" });
   }, [messages]);
 
+  //채팅방 나가기
+  const out = async () => {
+    window.confirm(
+      "채팅방을 나가면 모든 대화내역이 삭제 됩니다. 그래도 나가시겠습니까?"
+    );
+    await instance.delete(`/api/chat/member/${roomId}`);
+    navigate(-1);
+  };
+
   return (
     <ChatLayout
       msg={msg}
@@ -116,12 +126,14 @@ function ChatPage() {
       publish={publish}
       msgHandler={msgHandler}
       location={location}
+      out={out}
     >
-      <div style={{ margin: "50px 0px 50px 0px", width: "90%", height: "90%" }}>
+      <div style={{ margin: "50px 0px 50px 0px", width: "95%", height: "90%" }}>
         {messages &&
           messages.map((mag, idx) =>
             loginNickname === messages[idx].sender ? (
               <SendMsg
+                key={idx}
                 messages={messages}
                 mag={mag}
                 idx={idx}
@@ -129,6 +141,7 @@ function ChatPage() {
               />
             ) : (
               <GetMsg
+                key={idx}
                 location={location}
                 messages={messages}
                 mag={mag}

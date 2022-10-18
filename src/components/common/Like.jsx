@@ -1,31 +1,52 @@
-import React from "react";
+import React, { useState } from "react";
 import styled from "styled-components";
 import FavoriteIcon from "@mui/icons-material/Favorite";
 import FavoriteBorderIcon from "@mui/icons-material/FavoriteBorder";
+import { useCookies } from "react-cookie";
+import { likes } from "../../api/request";
+import { useMutation, useQueryClient } from "react-query";
 
-const Like = ({ isLike, btnClick }) => {
+const Like = ({ isLike, postId }) => {
+  const [cookies] = useCookies(["loginNickname"]);
+  const loginNickname = cookies.loginNickname;
+  const queryClient = useQueryClient();
+
+  const likeMutate = useMutation((postId) => likes(postId), {
+    onSuccess: (list, value) => {
+      queryClient.invalidateQueries(["detail", "" + value]);
+      queryClient.invalidateQueries(["mainPage"]);
+      queryClient.invalidateQueries(["follow"]);
+      queryClient.invalidateQueries(["follower"]);
+      queryClient.invalidateQueries(["userpage", "profile"]);
+      queryClient.invalidateQueries(["mypage", "profile"]);
+      queryClient.invalidateQueries(["mypage", "likeRecipes"]);
+      return list;
+    },
+  });
+
+  const like = async () => {
+    if (loginNickname === undefined) {
+      alert("로그인 유저만 사용 가능한 기능입니다.");
+      return;
+    }
+    likeMutate.mutate(postId);
+  };
+
   return (
-    <LikeContainer onClick={btnClick}>
-      {isLike ? (
-        <FavoriteIcon fontSize="small" />
-      ) : (
-        <FavoriteBorderIcon fontSize="small" />
-      )}
+    <LikeContainer onClick={like}>
+      {isLike ? <FavoriteIcon fontSize="small" /> : <FavoriteBorderIcon fontSize="small" />}
     </LikeContainer>
   );
 };
 
 const LikeContainer = styled.div`
   font-size: var(--font-micro);
-  background-color: var(--color-white);
-  color: var(--color-dark-orange);
-  border-radius: 30%;
+  color: var(--color-main-dark-orange);
   width: 1.5rem;
   height: 1.5rem;
   display: flex;
   justify-content: center;
   align-items: center;
-  box-shadow: 0px 0px 5px #dcdcdc;
 `;
 
 export default Like;

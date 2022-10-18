@@ -1,47 +1,30 @@
-import React, { useEffect } from "react";
+import React from "react";
 import styled from "styled-components";
-import { useState } from "react";
-import { instance } from "../api/request";
 import ChatListItem from "../components/chat/ChatListItem";
 import LayoutPage from "../components/common/LayoutPage";
+import { useQuery } from "react-query";
+import { fetchChatList } from "../api/chatList";
+import { options } from "../api/options";
+import useInput from "../hooks/useInput";
 
 const ChatListPage = () => {
-  const [chatList, setChatList] = useState([]);
+  const { data: chatList } = useQuery("chatList", fetchChatList, options.nocache);
+  const [searchInput, searchInputHandler] = useInput();
 
-  useEffect(() => {
-    const getData = async () => {
-      const result = await instance.get(`/api/chat`);
-      if (result.data.success && result.data.erorr === undefined) {
-        setChatList(result.data.data);
-      }
-    };
-    getData();
-  }, []);
-
-  const deleteChatRoom = async (roomId) => {
-    const result = await instance.delete(`/api/chat/member/${roomId}`);
-    if (result.data.success && result.data.erorr === undefined) {
-      setChatList((prev) =>
-        prev.filter((listItem) => listItem.roomId !== roomId)
-      );
-    }
-  };
+  const searchNickname = chatList?.filter((item) => item.nickname.includes(searchInput));
 
   return (
-    <LayoutPage>
+    <LayoutPage headerTitle="DM" backBtnTypeArrow="true">
       <ChatListContainer>
-        <p>DM</p>
+        <SearchBox>
+          <Input placeholder=" 닉네임을 검색하세요." onChange={searchInputHandler}></Input>
+        </SearchBox>
         <ChatList>
-          {chatList.length !== 0 ? (
-            chatList.map((listItem, idx) => (
-              <ChatListItem
-                listItem={listItem}
-                key={idx}
-                deleteChatRoom={deleteChatRoom}
-              />
-            ))
+          {searchNickname ? (
+            searchNickname.map((listItem, idx) => <ChatListItem listItem={listItem} key={idx} />)
           ) : (
-            <ListText>채팅 리스트가 없습니다.</ListText>
+            <></>
+            // <ListText>채팅 리스트가 없습니다.</ListText>
           )}
         </ChatList>
       </ChatListContainer>
@@ -49,17 +32,29 @@ const ChatListPage = () => {
   );
 };
 
-const ChatListContainer = styled.div`
+const ChatListContainer = styled.div``;
+
+const SearchBox = styled.div`
   text-align: center;
+  position: relative;
+  margin-top: 1.4rem;
+`;
+
+const Input = styled.input`
+  width: 90%;
+  height: 2.3rem;
+  margin-bottom: 0.5rem;
   padding: 1rem;
-  p {
-    font-size: var(--font-medium-large);
-    font-weight: var(--weight-semi-bold);
-  }
+  background-color: var(--color-white-orange);
+  border: none;
+  border-radius: 10px;
+  outline: none;
+  font-weight: var(--weight-semi-bold);
+  font-size: var(--font-small);
 `;
 
 const ChatList = styled.div`
-  padding: 1rem;
+  padding: 0rem 1rem;
   text-align: left;
 `;
 

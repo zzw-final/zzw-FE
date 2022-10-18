@@ -1,8 +1,8 @@
 import Recipe from "./Recipe";
 import styled from "styled-components";
 
-function LikeRecipes({ likeRecipes }) {
-  if (likeRecipes?.length === 0) {
+function LikeRecipes({ likeRecipes, recipeRef }) {
+  if (!likeRecipes) {
     return (
       <AlignBox>
         <Text>좋아요 누르고 함께 요리해요!</Text>
@@ -12,9 +12,15 @@ function LikeRecipes({ likeRecipes }) {
 
   return (
     <Container>
-      {likeRecipes?.map((likeRecipe) => (
-        <Recipe key={likeRecipe.postId} post={likeRecipe} />
-      ))}
+      {likeRecipes[0]?.data.data.length > 0 ? (
+        likeRecipes?.map((likeRecipe) =>
+          likeRecipe?.data.data.postList.map((recipe) => (
+            <Recipe recipeRef={recipeRef} key={recipe.postId} post={recipe} />
+          ))
+        )
+      ) : (
+        <Text>좋아요 누르고 함께 요리해요!</Text>
+      )}
     </Container>
   );
 }
@@ -24,7 +30,7 @@ export default LikeRecipes;
 const Container = styled.div`
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(175px, 1fr));
-  margin-bottom: 60px;
+  margin-bottom: 90px;
 `;
 
 const AlignBox = styled.div`
@@ -34,7 +40,9 @@ const AlignBox = styled.div`
 `;
 
 const Text = styled.div`
+  margin-top: 150px;
+  text-align: center;
   font-size: var(--font-medium);
-  padding: 1rem;
+  width: 24rem;
   color: grey;
 `;

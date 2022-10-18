@@ -1,6 +1,8 @@
 import React from "react";
 import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
+import TextAreaAutoResize from "react-textarea-autosize";
+import DeleteOutlinedIcon from "@mui/icons-material/DeleteOutlined";
 
 function ChatLayout({
   publish,
@@ -9,7 +11,7 @@ function ChatLayout({
   setMsg,
   location,
   children,
-  back,
+  out,
 }) {
   const navigate = useNavigate();
   const pub = () => {
@@ -35,10 +37,17 @@ function ChatLayout({
           {location?.nickname}
           <span>{location?.grade}</span>
         </div>
+        <OutChatBtn onClick={out}>
+          <DeleteOutlinedIcon />
+        </OutChatBtn>
       </Header>
       {children}
       <Label style={{ position: "fixed" }}>
-        <textarea value={msg} onKeyPress={onEnterPress} onChange={msgHandler} />
+        <TextAreaAutoResize
+          value={msg}
+          onKeyPress={onEnterPress}
+          onChange={msgHandler}
+        />
         <div onClick={pub}>전송</div>
       </Label>
     </Container>
@@ -59,7 +68,7 @@ const Header = styled.div`
   display: flex;
   border-bottom: 1px solid var(--color-light-orange);
   align-items: center;
-  margin: auto auto 10px auto;
+  margin: auto auto 10px 10px;
   background-color: white;
   position: fixed;
   p {
@@ -68,7 +77,7 @@ const Header = styled.div`
     margin: 15px auto auto 20px;
   }
   div {
-    margin: auto 90px auto 20px;
+    margin: auto 25px auto 20px;
     font-size: var(--font-medium-large);
     font-weight: var(--weight-semi-bold);
   }
@@ -77,6 +86,14 @@ const Header = styled.div`
     font-size: var(--font-regular);
     font-weight: var(--weight-regular);
   }
+`;
+const OutChatBtn = styled.button`
+  width: 10vw;
+  height: 3vh;
+  margin: 3px 20px 0 0;
+  border: 0;
+  border-radius: 8px;
+  background: none;
 `;
 
 const Label = styled.label`
@@ -91,6 +108,7 @@ const Label = styled.label`
     margin: 10px auto 10px auto;
     width: 95%;
     height: 2rem;
+    max-height: 4rem;
     padding: 0.4rem 3.5rem 0.4rem 1rem;
     border: 1px solid var(--color-light-orange);
     font-size: var(--font-semi-small);

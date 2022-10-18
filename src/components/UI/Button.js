@@ -9,7 +9,8 @@ export default Button;
 
 const MnBtn = styled.button`
   color: ${({ Color }) => Color || "black"};
-  background-color: ${({ backgroundColor }) => backgroundColor || "transparent"};
+  background-color: ${({ backgroundColor }) =>
+    backgroundColor || "transparent"};
   height: 2rem;
 
   ${({ name }) => {
@@ -25,43 +26,24 @@ const MnBtn = styled.button`
           font-weight: var(--weight-regular-thick);
           font-size: var(--font-regular);
           cursor: pointer;
-
-          ${({ myVisible }) =>
-            myVisible &&
-            css`
-              background-color: var(--color-orange);
-              font-weight: var(--weight-bolder);
-              color: var(--color-white);
-              border: 2.5px solid transparent;
-              outline: none;
-            `}
-
-          ${({ likeVisible }) =>
-            likeVisible &&
-            css`
-              background-color: var(--color-pink);
-              font-weight: var(--weight-bolder);
-              color: var(--color-white);
-              border: 2.5px solid transparent;
-              outline: none;
-            `}
         `;
 
       case "followPageBtn":
         return css`
+          width: 50%;
           margin: 1rem auto;
           background-color: transparent;
           border: 3px solid transparent;
           font-size: var(--font-regular);
           font-weight: var(--weight-semi-bold);
           color: var(--color-grey);
-          padding: 0rem 0.7rem;
+          padding-bottom: 1.7em;
 
           ${({ view }) =>
             view &&
             css`
               color: black;
-              border-bottom: 1.5px solid gray;
+              border-bottom: 2px solid var(--color-orange);
               font-weight: var(--weight-bold);
             `}
         `;
@@ -72,50 +54,61 @@ const MnBtn = styled.button`
           height: ${({ height }) => height || "1.7rem"};
           background-color: var(--color-dark-white);
           border: none;
-          border-radius: 5px;
+          border-radius: 7px;
           color: var(--color-white);
-          font-size: var(--font-regular);
+          font-size: var(--font-semi-small);
           font-weight: var(--weight-bold);
-          ${({ isFollow }) =>
-            !isFollow &&
+          padding: 1px;
+          ${({ myVisible }) =>
+            myVisible &&
             css`
-              background-color: var(--color-sky);
-              color: white;
-              font-weight: var(--weight-bolder);
+              background-color: var(--color-orange);
+              color: var(--color-white);
+              border: 2.5px solid transparent;
+              outline: none;
+            `}
+          ${({ likeVisible }) =>
+            likeVisible &&
+            css`
+              background-color: var(--color-orange);
+              color: var(--color-white);
+              border: 2.5px solid transparent;
+              outline: none;
             `}
         `;
 
       case "DmBtn":
         return css`
-          width: ${({ width }) => width || "23%"};
-          height: ${({ height }) => height || "1.7rem"};
-          margin-left: 5px;
+          width: ${({ width }) => width || "30%"};
+          height: ${({ height }) => height || "1.8rem"};
+          margin-right: ${({ marginRight }) => marginRight || "5px"};
           background-color: ${({ background }) =>
             background || "var(--color-real-orange)"};
-          font-weight: var(--weight-bolder);
           color: white;
           border: none;
-          border-radius: 5px;
+          border-radius: 8px;
           color: var(--color-white);
           font-size: ${({ size }) => size || "var(--font-regular)"};
+          font-weight: ${({ weight }) => weight};
         `;
 
       case "FollowBtn":
         return css`
           height: 1.7rem;
-          padding: 1rem 1rem;
+          padding: 0.8rem 0.8rem;
           display: flex;
           align-items: center;
           background-color: var(--color-light-white);
           border: none;
           border-radius: 5px;
+          color: var(--color-grey);
           font-size: var(--font-small);
           font-weight: var(--weight-semi-bold);
 
           ${({ isFollow }) =>
             !isFollow &&
             css`
-              background-color: var(--color-sky);
+              background-color: var(--color-dark-orange);
               color: white;
               font-weight: var(--weight-bolder);
             `}
@@ -143,7 +136,8 @@ const MnBtn = styled.button`
           background-color: ${({ backgroundColor }) =>
             backgroundColor || "var(--color-white)"};
           font-size: ${({ fontSize }) => fontSize || "var(--font-micro)"};
-          font-weight: ${({ fontWeight }) => fontWeight || "var(--weight-regular)"};
+          font-weight: ${({ fontWeight }) =>
+            fontWeight || "var(--weight-regular)"};
           border: ${({ border }) => border || "none"};
           border-radius: ${({ borderRadius }) => borderRadius || "5px"};
           position: ${({ position }) => position || ""};

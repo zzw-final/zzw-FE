@@ -1,24 +1,10 @@
 import styled from "styled-components";
 import React from "react";
 import Button from "../UI/Button";
-import { getCookie } from "../../util/cookie";
-import { useParams } from "react-router-dom";
 
-function FollowLayout({
-  onClickFollower,
-  onClickfollow,
-  followView,
-  followerView,
-  nickname,
-}) {
-  const myName = getCookie("loginNickname");
-  const { id } = useParams();
-
+function FollowLayout({ onClickFollower, onClickfollow, followView, followerView }) {
   return (
     <>
-      <Container>
-        <Nickname>{id ? nickname : myName}</Nickname>
-      </Container>
       <Container>
         <Button name="followPageBtn" onClick={onClickfollow} view={followView}>
           팔로우
@@ -35,13 +21,4 @@ export default FollowLayout;
 
 const Container = styled.div`
   display: flex;
-`;
-
-const Nickname = styled.div`
-  width: 100%;
-  text-align: center;
-  padding: 0.5rem;
-  border-bottom: 2px solid var(--color-light-white);
-  font-weight: var(--weight-bolder);
-  margin-bottom: 10px;
 `;

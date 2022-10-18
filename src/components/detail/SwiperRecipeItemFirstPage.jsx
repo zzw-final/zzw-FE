@@ -1,83 +1,41 @@
 import React from "react";
 import { useCookies } from "react-cookie";
-import { useNavigate, useParams } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
 import Avatar from "@mui/material/Avatar";
 import Like from "../common/Like";
 import { useState } from "react";
-import { dateFormat } from "../../util/dateFormat";
 import { useEffect } from "react";
 import imageCompression from "browser-image-compression";
-import { likePost } from "../../api/writepage";
-import { useMutation, useQuery, useQueryClient } from "react-query";
+import { getCookie } from "../../util/cookie";
+import Button from "../UI/Button";
 
 const SwiperRecipeItemFirstPage = ({
   postDetail,
   isEditMode,
   imgUpload,
   editForm,
+  toggleTagList,
+  setToggleTagList,
+  openTagBox,
+  onEditPage,
+  onCancle,
+  onSubmitHandler,
+  onDelete,
+  greyButton,
+  followHandler,
 }) => {
-  const {
-    postId,
-    title,
-    nickname,
-    profile,
-    grade,
-    authorId,
-    isLike,
-    likeNum,
-    foodImg,
-    createAt,
-  } = postDetail;
-
-  const [likeToggleBtn, setLikeToggleBtn] = useState(isLike);
-  // const [viewLikeNum, setViewLikeNum] = useState(likeNum);
+  const { postId, title, nickname, profile, grade, authorId, isLike, likeNum, foodImg, createAt, time, isFollow } =
+    postDetail;
 
   const [cookies] = useCookies(["loginNickname"]);
   const navigate = useNavigate();
 
   const [imgFoodUrlEdited, setImgFoodUrlEdited] = useState(foodImg);
-  const loginNickname = cookies.loginNickname;
 
   const userPage = () => {
     if (+cookies.loginUserId === authorId) navigate(`/mypage`);
     else navigate(`/mypage/${authorId}`);
-  };
-  //좋아요 수정해보자
-  const { id } = useParams();
-  const queryClient = useQueryClient();
-
-  const likeMutate = useMutation((postId) => likePost(postId), {
-    onMutate: async () => {
-      await queryClient.cancelQueries(["detail", id]); //업데이트 안될거임, 존재하는 query취소
-      const data = queryClient.getQueryData(["detail", id]).data?.data?.isLike; //현재데이터 가져오기
-      console.log("prevData->Like", data);
-      queryClient.setQueryData(["detail", id], (data) => {
-        return {
-          ...data,
-          isLike: !data,
-        };
-      });
-    },
-    onSuccess: (postId) => {
-      queryClient.invalidateQueries("detail", id);
-      console.log("좋아요성공?", postId);
-    },
-  });
-  const like = () => {
-    if (loginNickname === undefined) {
-      alert("로그인 유저만 사용 가능한 기능입니다.");
-      return;
-    }
-    const likeResult = likeMutate.mutate(postId);
-    console.log("디테일페이지에서 가져온값", likeResult?.data?.data);
-    if (likeResult?.data?.data == "post like success") {
-      // setViewLikeNum(viewLikeNum + 1);
-      setLikeToggleBtn(!isLike);
-    } else {
-      // setViewLikeNum(viewLikeNum - 1);
-      setLikeToggleBtn(!isLike);
-    }
   };
 
   useEffect(() => {
@@ -95,27 +53,40 @@ const SwiperRecipeItemFirstPage = ({
     setImgFoodUrlEdited(result.data.data.imageUrl);
   };
 
-  console.log(postDetail);
+  const loninNickname = getCookie("loginNickname");
+
   return (
     <>
       <ItemContainer display={!isEditMode ? "Flex" : "none"}>
         <ItemImg src={foodImg} alt="Recipe" />
+        <TimeBox>
+          <Time>⏱ {postDetail?.time} min</Time>
+        </TimeBox>
         <LikeBox>
-          <Like isLike={likeToggleBtn} btnClick={like} /> {postDetail?.likeNum}
+          <Like isLike={isLike} postId={postId} /> {likeNum}
         </LikeBox>
         <ItemBox>
           <ItemInfo>
-            <Avatar
-              alt="user_img"
-              src={profile}
-              sx={{ width: 28, height: 28, mr: 1 }}
-              onClick={userPage}
-            />
+            <Avatar alt="user_img" src={profile} sx={{ width: 40, height: 40, mr: 1 }} onClick={userPage} />
             <NinknameCreatedAt>
               <Nickname onClick={userPage}>
                 {nickname}/{grade}
               </Nickname>
-              <CreatedAt>{dateFormat(createAt)}</CreatedAt>
+              {loninNickname === nickname ? (
+                <ButtonDiv>
+                  <>
+                    <Button1 onClick={onEditPage}>수정</Button1>
+                    <Button1 onClick={onDelete}>삭제</Button1>
+                  </>
+                </ButtonDiv>
+              ) : (
+                // <FollowBtn>팔로우</FollowBtn>
+                <Button onClick={followHandler} name="FollowBtn" isFollow={greyButton}>
+                  {isFollow ? "팔로잉" : "팔로우"}
+                </Button>
+              )}
+
+              {/* <CreatedAt>{dateFormat(createAt)}</CreatedAt> */}
             </NinknameCreatedAt>
           </ItemInfo>
           <ItemTitle>{title}</ItemTitle>
@@ -126,17 +97,17 @@ const SwiperRecipeItemFirstPage = ({
         <ItemImgEdit type="file" accept="image/*" onChange={getImgUpload} />
         <ItemBox>
           <ItemInfo>
-            <Avatar
-              alt="user_img"
-              src={profile}
-              sx={{ width: 28, height: 28, mr: 1 }}
-              onClick={userPage}
-            />
+            <Avatar alt="user_img" src={profile} sx={{ width: 40, height: 40, mr: 1 }} onClick={userPage} />
             <NinknameCreatedAt>
               <Nickname onClick={userPage}>
                 {grade}/{nickname}
               </Nickname>
-              <CreatedAt>{dateFormat(createAt)}</CreatedAt>
+              <>
+                <ButtonEdit onClick={onSubmitHandler}>수정완료</ButtonEdit>
+                <ButtonEdit onClick={onCancle}>수정취소</ButtonEdit>
+              </>
+
+              {/* <CreatedAt>{dateFormat(createAt)}</CreatedAt> */}
             </NinknameCreatedAt>
           </ItemInfo>
           <ItemTitleEdit
@@ -160,18 +131,39 @@ const ItemContainer = styled.div`
   position: relative;
 `;
 
+const TimeBox = styled.div`
+  display: flex;
+  background-color: var(--color-white);
+  color: var(--color-grey);
+  position: absolute;
+  top: 3%;
+  left: 9%;
+  border-radius: 15px;
+  padding: 0.3rem;
+  width: 25%;
+`;
+
+const Time = styled.div`
+  font-size: var(--font-regular);
+  margin-left: 0.3rem;
+  font-weight: var(--weight-bold);
+  /* position: absolute;
+  top: 3%;
+  left: 5%; */
+`;
+
 const ItemImg = styled.img`
-  width: 100%;
-  height: 60%;
+  width: 90%;
+  height: 63%;
   border-radius: 18px;
   padding: 0.2rem;
-  margin-bottom: 1.5rem;
+  margin: 0 auto 1rem auto;
 `;
 
 const ItemImgEdit = styled.input`
   position: absolute;
-  top: 300px;
-  left: 16px;
+  top: 350px;
+  left: 28px;
 `;
 
 const LikeBox = styled.div`
@@ -180,13 +172,14 @@ const LikeBox = styled.div`
   color: var(--color-grey);
   align-items: center;
   justify-content: center;
-  box-shadow: 0px 0px 5px #dcdcdc;
-  border-radius: 18px;
+  /* box-shadow: 0px 0px 5px #dcdcdc; */
+  border-radius: 15px;
   padding: 0.3rem;
-  width: 22%;
+  width: 15%;
   position: absolute;
-  right: 8%;
-  top: 56%;
+  right: 9%;
+  top: 55%;
+  font-size: var(--font-regular);
 `;
 
 const ItemBox = styled.div`
@@ -198,6 +191,7 @@ const ItemInfo = styled.div`
   display: flex;
   align-items: center;
   padding-bottom: 1rem;
+  margin-left: 5px;
 `;
 
 const NinknameCreatedAt = styled.div`
@@ -207,21 +201,64 @@ const NinknameCreatedAt = styled.div`
 `;
 
 const Nickname = styled.div`
-  font-size: var(--font-small);
+  font-size: var(--font-semi-small);
   color: var(--color-black);
+  margin-top: 3px;
 `;
 
-const CreatedAt = styled.div`
-  font-size: var(--font-micro);
-  color: var(--color-grey);
+const FollowBtn = styled.button`
+  width: 15vw;
+  height: 3.5vh;
+  border: 0;
+  border-radius: 8px;
+  background-color: #ff7a00;
+  color: white;
+  margin: 0 10px 3px 0;
+  margin-right: 10px;
 `;
 
 const ItemTitle = styled.div`
-  font-size: var(--font-medium);
+  font-size: var(--font-semi-small);
+  margin-left: 15px;
 `;
 
 const ItemTitleEdit = styled.input`
-  width: 100%;
+  width: 97%;
+  border-radius: 10px;
+  height: 40%;
+  padding: 6px;
+`;
+
+const ButtonDiv = styled.div`
+  display: flex;
+  gap: 10px;
+`;
+
+const Button1 = styled.button`
+  font-size: var(--font-regular);
+  font-weight: var(--weight-bold);
+  color: white;
+  text-align: center;
+  width: 3rem;
+  height: 1.7rem;
+  background-color: #fbd499;
+  border-radius: 3px;
+  box-shadow: 2px 2px 5px #bebebe;
+  border: none;
+`;
+
+const ButtonEdit = styled.button`
+  font-size: var(--font-small);
+  font-weight: var(--weight-semi-bold);
+  color: #232323;
+  text-align: center;
+  width: 4rem;
+  height: 1.5rem;
+  background-color: #fbf8f0;
+  border-radius: 3px;
+  box-shadow: 2px 2px 5px #bebebe;
+  margin-top: 2px;
+  border: none;
 `;
 
 export default SwiperRecipeItemFirstPage;

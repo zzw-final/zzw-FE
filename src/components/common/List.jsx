@@ -1,33 +1,11 @@
 import React from "react";
 import styled from "styled-components";
-import Skeleton from "@mui/material/Skeleton";
-import Card from "../UI/Card";
 import Recipe from "../posts/Recipe";
 
-const List = ({ list, likeToggle, mutate, ...props }) => {
+const List = ({ list, listName, ...props }) => {
   return (
     <ListContainer {...props}>
-      {list ? (
-        list?.map((item) => (
-          <Recipe
-            post={item}
-            key={item.postId}
-            likeToggle={likeToggle}
-            mutate={mutate}
-            {...props}
-          />
-        ))
-      ) : (
-        // 3번 반복
-        <Card width="160px" height="200px" margin="1px 6px">
-          <Skeleton
-            variant="rectangular"
-            width={160}
-            height={200}
-            sx={{ borderRadius: "15px" }}
-          />
-        </Card>
-      )}
+      {list && list?.map((item) => <Recipe post={item} key={item.postId} {...props} />)}
     </ListContainer>
   );
 };
@@ -37,7 +15,6 @@ const ListContainer = styled.section`
   grid-template-columns: repeat(auto-fill, minmax(175px, 1fr));
   grid-row-gap: 1rem;
   justify-items: center;
-  /* height: 220px; */
   margin: ${(props) => props.margin};
 `;
 

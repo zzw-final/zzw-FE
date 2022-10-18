@@ -2,6 +2,8 @@ import React, { useCallback, useEffect, useMemo, useState } from "react";
 import { useMutation, useQuery, useQueryClient } from "react-query";
 import { options } from "../api/options";
 import { useNavigate, useParams } from "react-router-dom";
+import { imgInstance, instance, likes } from "../api/request";
+import Toast from "../components/UI/Toast";
 import LayoutPage from "../components/common/LayoutPage";
 import Detail from "../components/detail/Detail";
 import styled from "styled-components";
@@ -15,6 +17,7 @@ import {
   commentDelete,
   commentUpdate,
   likePost,
+  fetchFollowDe,
 } from "../api/writepage";
 
 function DetailPage() {
@@ -27,6 +30,14 @@ function DetailPage() {
   const [editedImageUrl, setEditedImageUrl] = useState();
   const [editTime, setEditTime] = useState();
   const [editedValues, setEditedvalues] = useState();
+  const [toast, setToast] = useState(false);
+  const url = window.location.href;
+
+  // 공유 기능
+  const copyUrl = async () => {
+    setToast(true);
+    await navigator.clipboard.writeText(url);
+  };
 
   const queryClient = useQueryClient();
 
@@ -49,6 +60,12 @@ function DetailPage() {
     onSuccess: () => {
       alert("삭제되었습니다.");
       navigate(-1);
+      queryClient.invalidateQueries(["mypage", "myRecipes"]);
+      queryClient.invalidateQueries(["mypage", "likeRecipes"]);
+      queryClient.invalidateQueries("bestPost");
+      queryClient.invalidateQueries("recentPost");
+      queryClient.invalidateQueries("followPost");
+      queryClient.invalidateQueries("mainpage");
     },
   });
 
@@ -62,6 +79,11 @@ function DetailPage() {
     onSuccess: () => {
       alert("글 수정이 완료되었습니다!");
       navigate(`/`);
+      queryClient.invalidateQueries(["mypage", "myRecipes"]);
+      queryClient.invalidateQueries(["mypage", "likeRecipes"]);
+      queryClient.invalidateQueries("bestPost");
+      queryClient.invalidateQueries("recentPost");
+      queryClient.invalidateQueries("followPost");
     },
   });
 
@@ -113,6 +135,26 @@ function DetailPage() {
     setEditedvalues(postDetail?.contentList);
   }, [postDetail?.contentList]);
 
+  //디테일 페이지 내에서 팔로우 기능
+  const postId = useParams().id;
+
+  const [greyButton, setGreyButton] = useState(postDetail?.isFollow);
+
+  const { mutate } = useMutation((postId) => fetchFollowDe(postId), {
+    onSuccess: () => {
+      queryClient.invalidateQueries(["detail", id]);
+      queryClient.invalidateQueries(["userpage", "profile"]);
+      queryClient.invalidateQueries(["mypage", "profile"]);
+      queryClient.invalidateQueries(["follow"]);
+      queryClient.invalidateQueries(["follower"]);
+      queryClient.invalidateQueries(["mainPage", "infinite"]);
+    },
+  });
+  const followHandler = async () => {
+    setGreyButton((prev) => !prev);
+    mutate(postId);
+  };
+
   //댓글 데이터 가져오는 useQuery
   const { data: commentList } = useQuery(
     ["comment", id],
@@ -122,7 +164,10 @@ function DetailPage() {
 
   //댓글 작성
   const commentPostMutate = useMutation((postInfo) => commentPost(postInfo), {
-    onSuccess: () => {
+    onSuccess: (res) => {
+      if (res.data.data.isGet) {
+        alert("🎉 새로운 칭호를 획득했습니다! 마이페이지에서 확인하세요.");
+      }
       queryClient.invalidateQueries("comment", id);
     },
   });
@@ -132,34 +177,33 @@ function DetailPage() {
   };
 
   //댓글 삭제
-  const commentDeleteMutate = useMutation(
-    (commentId) => commentDelete(commentId),
-    {
-      onSuccess: () => {
-        queryClient.invalidateQueries("comment", id);
-      },
-    }
-  );
+  const commentDeleteMutate = useMutation((commentId) => commentDelete(commentId), {
+    onSuccess: () => {
+      queryClient.invalidateQueries("comment", id);
+    },
+  });
   const remove = (commentId) => {
     commentDeleteMutate.mutate(commentId);
   };
 
   //댓글 수정
 
-  const commentUpdateMutate = useMutation(
-    (updateInfo) => commentUpdate(updateInfo),
-    {
-      onSuccess: () => {
-        queryClient.invalidateQueries("comment", id);
-      },
-    }
-  );
+  const commentUpdateMutate = useMutation((updateInfo) => commentUpdate(updateInfo), {
+    onSuccess: () => {
+      queryClient.invalidateQueries("comment", id);
+    },
+  });
   const update = (updateInfo) => {
     commentUpdateMutate.mutate(updateInfo);
   };
 
   return (
-    <LayoutPage background={"#fbd499"}>
+    <LayoutPage
+      isShare="true"
+      copyUrl={copyUrl}
+      headerTitle={postDetail?.ingredient[0]?.ingredientName}
+    >
+      {toast && <Toast setToast={setToast} text="🖇 클립보드에 복사되었습니다." />}
       <DetailContainer>
         {editedValues && (
           <Detail
@@ -176,6 +220,8 @@ function DetailPage() {
             onSubmitHandler={onSubmitHandler}
             editForm={editForm}
             setEditedIngredient={setEditedIngredient}
+            greyButton={greyButton}
+            followHandler={followHandler}
           />
         )}
       </DetailContainer>
@@ -186,7 +232,7 @@ function DetailPage() {
 const DetailContainer = styled.div`
   height: calc(var(--vh, 1vh) * 100 - 56px);
   height: auto;
-  margin-bottom: 60px;
+  margin-bottom: 110px;
 `;
 
 export default DetailPage;

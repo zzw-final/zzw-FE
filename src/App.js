@@ -2,23 +2,16 @@ import { useMediaQuery } from "react-responsive";
 import { BrowserRouter, Route, Routes } from "react-router-dom";
 import { QueryClientProvider, QueryClient } from "react-query";
 import { ReactQueryDevtools } from "react-query/devtools";
-import {
-  MainPage,
-  DetailPage,
-  FollowPage,
-  JoinPage,
-  LoginPage,
-  MyPage,
-  WritePage,
-  UserPage,
-  ChatPage,
-} from "./pages";
+import { MainPage, DetailPage, FollowPage, JoinPage, LoginPage, MyPage, WritePage, UserPage, ChatPage } from "./pages";
 import KakaoRedirect from "./components/login/kakao/KakaoRedirect";
 import GoogleRedirect from "./components/login/google/GoogleRedirect";
 import SearchPage from "./pages/SearchPage";
 import NaverRedirect from "./components/login/naver/NaverRedirect";
-import { getCookie } from "./util/cookie";
 import ChatListPage from "./pages/ChatListPage";
+import ErrorPage from "./pages/ErrorPage";
+import { useState, useEffect } from "react";
+import { getCookie } from "./util/cookie";
+import styled from "styled-components";
 
 const Desktop = ({ children }) => {
   const isDesktop = useMediaQuery({ minWidth: 768 });
@@ -33,17 +26,39 @@ const Mobile = ({ children }) => {
 const queryClient = new QueryClient();
 
 function App() {
+  const [isLogin, setIsLogin] = useState(getCookie("loginUserId") ? true : false);
+
+  if (process.env.NODE_ENV === "production") {
+    console.log = function no_console() {};
+    console.warn = function () {};
+  }
+
+  useEffect(() => {
+    setTimeout(() => {
+      if (getCookie("loginEmail")) setIsLogin(true);
+    }, 700);
+  }, []);
+
   return (
     <QueryClientProvider client={queryClient}>
       <BrowserRouter>
-        <Desktop>웹사이트를 이용하려면 화면을 줄여 주세요</Desktop>
+        <Desktop>
+          <HelpText>
+            모바일 환경에서 이용해주세요 😅 <br />
+            (꿀팁: 화면을 줄여도 이용 가능합니다!)
+          </HelpText>
+        </Desktop>
         <Mobile>
           <Routes>
             <Route path="/" element={<MainPage />} />
             <Route path="/login" element={<LoginPage />} />
             <Route path="/Join" element={<JoinPage />} />
-            <Route path="/write" element={<WritePage />} />
-            <Route path="/mypage" element={<MyPage />} />
+            {isLogin ? (
+              <Route path="/write" element={<WritePage />} />
+            ) : (
+              <Route path="/write" element={<LoginPage />} />
+            )}
+            {isLogin ? <Route path="/mypage" element={<MyPage />} /> : <Route path="/mypage" element={<LoginPage />} />}
             <Route path="/mypage/:id" element={<UserPage />} />
             <Route path="/detail/:id" element={<DetailPage />} />
             <Route path="/follow" element={<FollowPage />} />
@@ -54,7 +69,7 @@ function App() {
             <Route path="/search" element={<SearchPage />} />
             <Route path="/chat/:roomId" element={<ChatPage />} />
             <Route path="/chatlist" element={<ChatListPage />} />
-            <Route path="*" element={<div>페이지를 찾을 수 없습니다.</div>} />
+            <Route path="*" element={<ErrorPage />} />
           </Routes>
         </Mobile>
       </BrowserRouter>
@@ -62,5 +77,14 @@ function App() {
     </QueryClientProvider>
   );
 }
+
+const HelpText = styled.div`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  height: 100vh;
+  font-size: var(--font-large);
+`;
 
 export default App;

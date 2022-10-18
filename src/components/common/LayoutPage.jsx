@@ -3,10 +3,39 @@ import Footer from "./Footer";
 import styled from "styled-components";
 import { instance } from "../../api/request";
 import { useState } from "react";
+import KeyboardBackspaceIcon from "@mui/icons-material/KeyboardBackspace";
+import { useNavigate } from "react-router-dom";
+import ChevronLeftIcon from "@mui/icons-material/ChevronLeft";
+import Button from "../UI/Button";
+import IosShareIcon from "@mui/icons-material/IosShare";
 
-const LayoutPage = ({ children, background, backgroundMain }) => {
+const LayoutPage = ({
+  children,
+  background,
+  backgroundMain,
+  headerTitle,
+  backBtnTypeArrow,
+  isShare,
+  isBtn,
+  buttonText,
+  buttonEvent,
+  copyUrl,
+}) => {
   const [topTenTagList, setTopTenTagList] = useState();
   const [tagAllList, setTagAllList] = useState();
+  const [isHeader, setIsHeader] = useState(true);
+  const pathName = window.location.pathname;
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    if (pathName === "/") {
+      setIsHeader(false);
+    } else if (pathName.includes("search")) {
+      setIsHeader(false);
+    } else if (pathName.includes("mypage")) {
+      setIsHeader(false);
+    }
+  }, [pathName]);
 
   useEffect(() => {
     async function fetchData() {
@@ -20,9 +49,69 @@ const LayoutPage = ({ children, background, backgroundMain }) => {
     fetchData();
   }, []);
 
+  const back = () => {
+    if (pathName === "chatlist") {
+      console.log("ㅎㅎㅎㅎㅎㅎㅎㅎㅎㅎㅎㅎㅎㅎ");
+      navigate("/");
+    } else {
+      navigate(-1);
+    }
+  };
+
   return (
     <LayoutPageContainer>
-      <Wrapper background={background} backgroundMain={backgroundMain}>
+      {isHeader ? (
+        <>
+          <Header>
+            <BackBtn>
+              {backBtnTypeArrow ? (
+                <KeyboardBackspaceIcon onClick={back} />
+              ) : (
+                <ChevronLeftIcon
+                  onClick={back}
+                  color="warning"
+                  fontSize="large"
+                />
+              )}
+            </BackBtn>
+            {headerTitle}
+            <AddBtn>
+              {isShare ? (
+                <IosShareIcon
+                  sx={{ marginRight: "9px" }}
+                  onClick={copyUrl}
+                  color="warning"
+                />
+              ) : (
+                ""
+              )}
+              {isBtn ? (
+                <Button
+                  name="commonBtn"
+                  width="4rem"
+                  height="2rem"
+                  fontSize="var(--font-regular)"
+                  fontWeight="var(--weight-semi-bold)"
+                  color="var(--color-white)"
+                  backgroundColor="var(--color-real-light-orange)"
+                  onClick={buttonEvent}
+                >
+                  {buttonText}
+                </Button>
+              ) : (
+                ""
+              )}
+            </AddBtn>
+          </Header>
+        </>
+      ) : (
+        ""
+      )}
+      <Wrapper
+        background={background}
+        backgroundMain={backgroundMain}
+        paddingTop={isHeader ? "80px" : ""}
+      >
         <div>{children}</div>
       </Wrapper>
       <Footer topTenTagList={topTenTagList} tagAllList={tagAllList} />
@@ -35,6 +124,30 @@ const LayoutPageContainer = styled.div`
   height: 100vh;
 `;
 
+const BackBtn = styled.span`
+  position: absolute;
+  left: 1.2rem;
+`;
+
+const AddBtn = styled.span`
+  position: absolute;
+  right: 1.2rem;
+`;
+
+const Header = styled.header`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 80px;
+  background-color: var(--color-main-light-orange);
+  font-size: var(--font-medium-large);
+  font-weight: var(--weight-semi-bold);
+  width: 100%;
+  position: fixed;
+  top: 0;
+  z-index: 1;
+`;
+
 const Wrapper = styled.div`
   width: 100%;
   overflow: hidden;
@@ -43,6 +156,7 @@ const Wrapper = styled.div`
     var(${({ backgroundMain }) => backgroundMain}) 50%,
     var(--color-white) 50%
   );
+  padding-top: ${({ paddingTop }) => paddingTop || 0};
 `;
 
 export default LayoutPage;

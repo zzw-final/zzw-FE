@@ -22,13 +22,14 @@ function WriteAddCard({ imgUpload, formValues, setFomvalues }) {
 
   // 이미지 추가하기위한 핸들러
   let handleChangeIMG = (i, e) => {
+    console.log("i", i);
     let newFormValues = [...formValues];
     if (!newFormValues[i].imageUrl) {
-      newFormValues[i][e.target.name] = window.localStorage.getItem("titleIMG");
+      newFormValues[i].imageUrl = window.localStorage.getItem("titleIMG");
     } else {
-      newFormValues[i][e.target.name] = window.sessionStorage.getItem(i);
+      newFormValues[i].imageUrl = window.sessionStorage.getItem(i);
     }
-
+    console.log(newFormValues[i].imageUrl);
     //page 추가 (0페이지부터 시작)
     newFormValues[i].page = i;
     setFomvalues(newFormValues);
@@ -65,83 +66,94 @@ function WriteAddCard({ imgUpload, formValues, setFomvalues }) {
     imageInput.current.click();
   };
 
+  const noImg = (e) => {
+    e.target.src =
+      "https://user-images.githubusercontent.com/110365677/195792478-d66b388e-f214-434e-affe-40f18f7463a2.png";
+  };
+
   return (
     <>
       <form
-        style={{ height: "auto", marginBottom: "60px" }}
+        style={{
+          width: "400px",
+          height: "auto",
+          maxHeight: "auto",
+          marginBottom: "120px",
+        }}
         onSubmit={handleSubmit}
       >
-        {formValues.map((element, index) => (
-          <AddCardDiv key={index}>
-            <PreviewImg src={window.sessionStorage.getItem(index)}></PreviewImg>
-            <img
-              alt="submitImg"
-              style={{ display: "none" }}
-              name="imageUrl"
-              value={imageUrl}
-              onLoad={(e) => handleChangeIMG(index, e)}
-              src={imageUrl}
-            />
-            <StyledFileInput
-              onClick={() => {
-                imageInput.current?.click();
-              }}
-            >
-              이미지 선택
-            </StyledFileInput>
-            <ImgNotion>최대 1MB까지 업로드 가능합니다.</ImgNotion>
-            <input
-              style={{
-                display: "none",
-              }}
-              type="file"
-              accept="image/*"
-              ref={imageInput}
-              onChange={(e) => onClickImageUpload && getImgUpload(index, e)}
-            />
-            <Cardtextarea
-              type="text"
-              name="content"
-              value={element.content || ""}
-              onChange={(e) => handleChange(index, e)}
-            />
-            <label
-              name="page"
-              value={element.page || ""}
-              onChange={(e) => handleChange(index, e)}
-              style={{
-                marginTop: "2px",
-                marginBottom: "5px",
-                gridColumnStart: "2",
-                gridRowStart: "4",
-                fontSize: "10px",
-              }}
-            >
-              {index + 1}
-            </label>
-            {index ? (
-              <Dletbutton
-                type="button"
-                className="button remove"
-                onClick={() => removeFormFields(index)}
+        {formValues.length < 11 &&
+          formValues.map((element, index) => (
+            <AddCardDiv key={index} style={{ maxHeight: "548.56px" }}>
+              <PreviewImg
+                onError={noImg}
+                src={
+                  window.sessionStorage.getItem(index) ||
+                  "https://user-images.githubusercontent.com/110365677/195768702-db712364-f837-45c6-9adf-aee6d195dadb.png"
+                }
+                onClick={onClickImageUpload}
+              ></PreviewImg>
+              <img
+                alt="submitImg"
+                style={{ display: "none" }}
+                name="imageUrl"
+                value={imageUrl}
+                onLoad={(e) => handleChangeIMG(index, e)}
+                src={imageUrl}
+              />
+              <input
+                style={{
+                  display: "none",
+                }}
+                type="file"
+                accept="image/*"
+                ref={imageInput}
+                onChange={(e) => getImgUpload(index, e)}
+              />
+              <Cardtextarea
+                type="text"
+                name="content"
+                value={element.content || ""}
+                onChange={(e) => handleChange(index, e)}
+              />
+              <label
+                name="page"
+                value={element.page || ""}
+                onChange={(e) => handleChange(index, e)}
+                style={{
+                  margin: "2rem 0rem 5px 1rem",
+                  gridColumnStart: "2",
+                  gridRowStart: "1",
+                  fontSize: "19px",
+                  fontWeight: "var(--weight-semi-bold)",
+                }}
               >
-                X
-              </Dletbutton>
-            ) : null}
-          </AddCardDiv>
-        ))}
+                조리페이지 - {index + 1}
+              </label>
+              {index ? (
+                <Dletbutton
+                  type="button"
+                  className="button remove"
+                  onClick={() => removeFormFields(index)}
+                >
+                  X
+                </Dletbutton>
+              ) : null}
+            </AddCardDiv>
+          ))}
 
         <div className="button-section">
-          <Addbutton
-            className="button add"
-            type="button"
-            onClick={() => addFormFields()}
-          >
-            새로운 단계 추가하기
-          </Addbutton>
-          {/* <button className="button submit" type="submit">
-            Submit
-          </button> */}
+          {formValues.length < 10 ? (
+            <Addbutton
+              className="button add"
+              type="button"
+              onClick={() => addFormFields()}
+            >
+              조리 페이지 추가하기
+            </Addbutton>
+          ) : (
+            <div />
+          )}
         </div>
       </form>
     </>
@@ -151,75 +163,69 @@ function WriteAddCard({ imgUpload, formValues, setFomvalues }) {
 export default WriteAddCard;
 
 const AddCardDiv = styled.div`
-  background-color: white;
+  /* background-color: green; */
   margin: 5vh auto 4vh auto;
-  width: 80vw;
-  height: 40vh;
-  border-radius: 20px;
+  width:
+  width: 97%;
+  max-width: 97%;
+  min-width: 97%
+  height: 70vh;
   display: grid;
-  grid-template-columns: 1rem 1fr 2rem;
-  grid-template-rows: 18vh 4vh 1fr 1fr;
-  justify-items: center;
-  align-items: stretch;
+  justify-items: left;
+  grid-template-columns: 1rem 1fr 1rem;
+  grid-template-rows: 5vh 1fr 1fr;
+  /* align-items: stretch; */
 `;
 
 const PreviewImg = styled.img`
   grid-column-start: 2;
-  grid-row-start: 1;
-  width: 50vw;
-  height: 15vh;
-  margin: 1rem 0rem 0rem 0.5rem;
-  border: 0
-  border-radius : 10px
+  grid-row-start: 2;
+  width: 55vw;
+  height: 25vh;
+  margin: 2rem 0rem 0rem 0rem;
+  box-sizing: border-box;
+  border: 0;
+  border-radius: 10px;
 `;
 
 const Cardtextarea = styled.textarea`
   grid-column-start: 2;
   grid-row-start: 3;
-  width: 60vw;
-  height: 10vh;
-  margin: 0.5rem 0rem 0rem 0.5rem;
+  width: 90vw;
+  /* max-width:95% */
+  margin: 0 5px 0 0;
+  background-color: var(--color-light-white);
+  height: 30vh;
+  box-sizing: border-box;
+  border: 0;
+  border-radius: 10px;
+  resize: none;
+  outline: none;
+  padding: 20px;
 `;
 
 const Addbutton = styled.button`
-  background-color: white;
+  background-color: #ffbb56;
+  color: white;
+  font-size: var(--font-medium);
+  font-weight: var(--weight-semi-bold);
   border: 0;
-  width: 80vw;
+  width: 90vw;
   height: 5vh;
   border-radius: 10px;
-  margin-left: 10vw;
+  margin-left: 6vw;
   &:hover {
-    background: var(--color-dark-white);
-    color: white;
+    border: 2px white;
   }
 `;
 
 const Dletbutton = styled.button`
-  grid-column-start: 3;
+  grid-column-start: 2;
   grid-row-start: 1;
+  background-color: none;
   width: 5vw;
-  height: 4vh;
+  height: 2vh;
   border: 0;
   border-radius: 10px;
-  margin: 0.5rem 1rem 0rem 0rem;
-`;
-
-const StyledFileInput = styled.button`
-  grid-column-start: 2;
-  grid-row-start: 2;
-  width: 25vw;
-  height: 2vh;
-  font-size: 10px;
-  border: 0;
-  border-radius: 5px;
-  background-color: #ffbb56;
-  margin-top: 2vw;
-`;
-
-const ImgNotion = styled.label`
-  font-size: 3px;
-  grid-column-start: 2;
-  grid-row-start: 2;
-  margin-top: 7vw;
-  color: var(--color-dark-white);
+  margin: 2rem 1rem 0rem 23rem;
 `;

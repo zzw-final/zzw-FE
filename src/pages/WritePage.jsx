@@ -1,13 +1,11 @@
 import React from "react";
 import { useState } from "react";
-import { useMutation } from "react-query";
+import { useMutation, useQueryClient } from "react-query";
 import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
-import { instance, imgInstance } from "../api/request";
-import { fetchImg, fetchpostWrite, writePostMutation } from "../api/writepage";
+import { fetchImg, fetchpostWrite } from "../api/writepage";
 import LayoutPage from "../components/common/LayoutPage";
 import WriteAddCard from "../components/write/WriteAddCard";
-import WriteHeader from "../components/write/WriteHeader";
 import WriteTitle from "../components/write/WriteTitle";
 
 function WritePage() {
@@ -17,9 +15,12 @@ function WritePage() {
   const [ingredient, setIngredient] = useState([]);
   const [time, setTime] = useState("5분");
   const [imageURL, setImageURL] = useState(
-    "https://user-images.githubusercontent.com/110365677/194796076-31cf60cc-2ff0-4145-a538-f155f0793537.png"
+    "https://user-images.githubusercontent.com/110365677/195768702-db712364-f837-45c6-9adf-aee6d195dadb.png"
   );
+  const [res, setRes] = useState();
   const navigate = useNavigate();
+
+  const queryClient = useQueryClient();
 
   // WriteAddCard에서 값을 받을 state
   const [formValues, setFomvalues] = useState([
@@ -27,7 +28,19 @@ function WritePage() {
   ]);
 
   //받은값 전부를 post => mutate로 리팩토링
-  const writepost = async () => {
+  const postMutate = useMutation((data) => fetchpostWrite(data), {
+    onSuccess: (data) => {
+      queryClient.invalidateQueries(["mypage", "myRecipes"]);
+      queryClient.invalidateQueries(["mypage", "likeRecipes"]);
+      queryClient.invalidateQueries("recentPost");
+      alert("게시글 등록이 완료되었습니다!");
+      navigate(`/detail/${data.data.data.postId}`);
+      window.sessionStorage.clear();
+      window.localStorage.clear();
+    },
+  });
+
+  const submit = () => {
     const data = {
       title: title,
       foodName: foodname,
@@ -36,12 +49,6 @@ function WritePage() {
       time: time,
       pageList: formValues,
     };
-    return fetchpostWrite(data);
-  };
-
-  const { mutate } = useMutation(writepost);
-
-  const submit = () => {
     if (title === "") {
       return alert("제목을 입력해주세요❗️");
     }
@@ -50,18 +57,14 @@ function WritePage() {
     }
     if (
       imageURL ===
-      "https://user-images.githubusercontent.com/110365677/194796076-31cf60cc-2ff0-4145-a538-f155f0793537.png"
+      "https://user-images.githubusercontent.com/110365677/195768702-db712364-f837-45c6-9adf-aee6d195dadb.png"
     ) {
       return alert("필수이미지를 추가해주세요❗️");
     }
     if (ingredient.length === 0) {
       return alert("재료 태그를 추가해주세요❗️");
     }
-    mutate();
-    alert("게시글 등록이 완료되었습니다!");
-    navigate(-1);
-    window.sessionStorage.clear();
-    window.localStorage.clear();
+    postMutate.mutate(data);
   };
 
   //이미지 파일 업로드시 url로 변경해주는 post
@@ -72,12 +75,13 @@ function WritePage() {
   };
 
   return (
-    <LayoutPage background={"#fbd499"}>
-      <WriteHeader
-        styled={{ position: "fixed" }}
-        submit={submit}
-        mutate={mutate}
-      />
+    <LayoutPage
+      headerTitle="레시피 작성"
+      backBtnTypeArrow="true"
+      isBtn="true"
+      buttonText="등록"
+      buttonEvent={submit}
+    >
       <WriteTitle
         setTitle={setTitle}
         setFoodName={setFoodName}
@@ -87,7 +91,6 @@ function WritePage() {
         imgUpload={imgUpload}
         setImageURL={setImageURL}
       />
-      <Notion>레시피 단계별로 작성해주세요 !😋</Notion>
       <WriteAddCard
         imgUpload={imgUpload}
         formValues={formValues}
@@ -98,7 +101,3 @@ function WritePage() {
 }
 
 export default WritePage;
-
-const Notion = styled.div`
-  margin: 2rem 10vw 1rem 15vw;
-`;

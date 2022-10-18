@@ -1,33 +1,19 @@
-const moment = require("moment");
+import dayjs from "dayjs";
 
 export const dateFormat = (date) => {
-  // 어제 시간, 오늘 시간, 일주일 전 이면 요일과 시간
-  const getDate = moment(date);
-  const time = getDate.format("hh:mm");
-  const today = moment();
-  const checkDate = today
-    .subtract(today.diff(getDate, "days"), "days")
-    .calendar("");
+  // 어제 시간, 오늘 시간, 그 외는 날짜
+  dayjs.locale("ko");
+  const getDate = dayjs(date, "YYYY-MM-DD HH:mm");
+  const time = dayjs(date).format("hh:mm");
+  const today = dayjs();
+  const hours = today.diff(getDate, "hours");
+  const days = Math.floor(hours / 24);
 
-  if (checkDate.includes("Monday")) {
-    return `월요일 ${time}`;
-  } else if (checkDate.includes("Tuesday")) {
-    return `화요일 ${time}`;
-  } else if (checkDate.includes("Wednesday")) {
-    return `수요일 ${time}`;
-  } else if (checkDate.includes("Thursday")) {
-    return `목요일 ${time}`;
-  } else if (checkDate.includes("Friday")) {
-    return `금요일 ${time}`;
-  } else if (checkDate.includes("Saturday")) {
-    return `토요일 ${time}`;
-  } else if (checkDate.includes("Sunday")) {
-    return `일요일 ${time}`;
-  } else if (checkDate.includes("Today")) {
+  if (days === 0) {
     return `오늘 ${time}`;
-  } else if (checkDate.includes("Yesterday")) {
+  } else if (days === 1) {
     return `어제 ${time}`;
   } else {
-    return `${getDate.format("YY년 MM월 DD일")}`;
+    return `${getDate.format("YYYY.MM.DD")}`;
   }
 };

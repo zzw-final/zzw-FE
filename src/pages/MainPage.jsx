@@ -1,93 +1,31 @@
-import React, { useEffect, useState } from "react";
-import { instance } from "../api/request";
+import React, { useState } from "react";
+import { likes } from "../api/request";
 import styled from "styled-components";
 import LayoutPage from "../components/common/LayoutPage";
 import Logo from "../components/common/Logo";
 import Main from "../components/main/Main";
 import SearchForm from "../components/main/SearchForm";
 import { useNavigate } from "react-router-dom";
-import { useMutation, useQueries, useQuery, useQueryClient } from "react-query";
+import { useQuery } from "react-query";
 import Toast from "../components/UI/Toast";
+import { options } from "../api/options";
+import { fetchBestList, fetchBestTagTopFive, fetchRecentList } from "../api/mainpage";
+import { useCookies } from "react-cookie";
 
 const MainPage = () => {
-  const navigate = useNavigate();
-
-  const [bestPost, setBestPost] = useState([]);
-  const [recentPost, setRecentPost] = useState([]);
-  const [tagList, setTagList] = useState([]);
-  const [followPost, setFollowPost] = useState([]);
   const [toast, setToast] = useState(false);
+  const [cookies] = useCookies(["loginNickname"]);
 
-  useEffect(() => {
-    async function fetchData() {
-      const result = await instance.get(`/api/post`);
-      if (result.data.success && result.data.error === null) {
-        setBestPost(result.data.data.bestPost);
-        setRecentPost(result.data.data.recentPost);
-        setTagList(result.data.data.tagList);
-        setFollowPost(result.data.data.followPost);
-      }
-    }
-    fetchData();
-  }, []);
+  const loginNickname = cookies.loginNickname;
 
-  // const fetchData = async () => {
-  //   console.log("요청...");
-  //   return await instance.get(`/api/post`);
-  // };
-
-  // const { data: bestPost } = useQuery(["allList"], fetchData, {
-  //   select: (data) => data.data.data.bestPost,
-  //   cacheTime: 0,
-  // });
-  // const { data: recentPost } = useQuery(["allList"], fetchData, {
-  //   select: (data) => data.data.data.recentPost,
-  //   cacheTime: 0,
-  // });
-  // const { data: followPost } = useQuery(["allList"], fetchData, {
-  //   select: (data) => data.data.data.followPost,
-  //   cacheTime: 0,
-  // });
-  // const { data: tagList } = useQuery(["allList"], fetchData, {
-  //   select: (data) => data.data.data.tagList,
-  //   cacheTime: 0,
-  // });
-
-  const likeToggle = async (postId) => {
-    return await instance.post(`/api/auth/post/${postId}`);
-  };
-
-  // const queryClient = useQueryClient();
-
-  // const { mutate } = useMutation(likeToggle, {
-  //   onSuccess: (result, context) => {
-  //     // 위의 파라미터 찍어보기
-  //     queryClient.invalidateQueries(["allList"]);
-  //   },
-  // });
-
-  // const { mutate } = useMutation(likeToggle, {
-  //   onMutate: async (postId) => {
-  //     await queryClient.cancelQueries(["allList"]);
-  //     const previousData = queryClient.getQueryData(["allList"]);
-  // queryClient.setQueryData(["allList"], (prevData) => {
-  // console.log("prevData :>> ", prevData?.data?.data.bestPost);
-  // return prevData?.data?.data.bestPost.map((post) =>
-  //   post.postId === postId ? { ...post, isLike: !post.isLike } : post
-  // );
-  // return prevData;
-  // });
-  //     return { previousData };
-  //   },
-  //   onError: (err, context) => {
-  //     queryClient.setQueryData(["allList"], context.previousData);
-  //   },
-  // });
-
-  // onSuccess: (result, context) => {
-  // 위의 파라미터 찍어보기
-  //   queryClient.invalidateQueries(["allList"]);
-  // },
+  const navigate = useNavigate();
+  const { data: tagList } = useQuery(["mainPage", "tagList"], fetchBestTagTopFive, options.eternal);
+  const { data: bestPost } = useQuery(["mainPage", "bestPost"], fetchBestList, options.eternal);
+  const { data: recentPost } = useQuery(
+    ["mainPage", "recentPost"],
+    loginNickname ? fetchRecentList : () => {},
+    options.eternal
+  );
 
   const search = async (searchOption, sendData) => {
     navigate(`/search?${searchOption}=${sendData}`);
@@ -98,26 +36,12 @@ const MainPage = () => {
   };
 
   return (
-    <LayoutPage backgroundMain={"--color-orange"}>
+    <LayoutPage backgroundMain={"--color-main-light-orange"}>
       <Logo />
       <SearchForm mainSearch={search} showToast={showToast} />
       <MainContainer>
-        {toast && (
-          <Toast
-            setToast={setToast}
-            text={"태그는 5개까지 검색 가능합니다."}
-            margin="0.5rem"
-          />
-        )}
-        <Main
-          bestPost={bestPost}
-          recentPost={recentPost}
-          tagList={tagList}
-          followPost={followPost}
-          likeToggle={likeToggle}
-          search={search}
-          // mutate={mutate}
-        />
+        {toast && <Toast setToast={setToast} text={"태그는 5개까지 검색 가능합니다."} margin="0.5rem" />}
+        <Main tagList={tagList} bestPost={bestPost} recentPost={recentPost} search={search} />
       </MainContainer>
     </LayoutPage>
   );
