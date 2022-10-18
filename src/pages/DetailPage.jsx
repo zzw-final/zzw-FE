@@ -202,7 +202,7 @@ function DetailPage() {
 const DetailContainer = styled.div`
   height: calc(var(--vh, 1vh) * 100 - 56px);
   height: auto;
-  margin-bottom: 60px;
+  margin-bottom: 110px;
 `;
 
 export default DetailPage;

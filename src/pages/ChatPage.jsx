@@ -134,6 +134,7 @@ function ChatPage() {
           messages.map((mag, idx) =>
             loginNickname === messages[idx].sender ? (
               <SendMsg
+                key={idx}
                 messages={messages}
                 mag={mag}
                 idx={idx}
@@ -141,6 +142,7 @@ function ChatPage() {
               />
             ) : (
               <GetMsg
+                key={idx}
                 location={location}
                 messages={messages}
                 mag={mag}

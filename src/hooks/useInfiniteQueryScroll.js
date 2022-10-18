@@ -1,8 +1,5 @@
 import { useInfiniteQuery } from "react-query";
-import {
-  fetchFollowListInfinite,
-  fetchRecentListInfinite,
-} from "../api/mainpage";
+import { fetchFollowListInfinite, fetchRecentListInfinite } from "../api/mainpage";
 
 export const useInfiniteQueryScroll = (listName) => {
   const getPage = async ({ pageParam = "" }) => {
@@ -25,13 +22,16 @@ export const useInfiniteQueryScroll = (listName) => {
     };
   };
 
-  const { data, isSuccess, hasNextPage, isFetchingNextPage, fetchNextPage } =
-    useInfiniteQuery(["mainPage", "infinite"], getPage, {
+  const { data, isSuccess, hasNextPage, isFetchingNextPage, fetchNextPage } = useInfiniteQuery(
+    ["mainPage", "infinite"],
+    getPage,
+    {
       getNextPageParam: ({ lastPostId, isLast }) => {
         return isLast ? false : lastPostId;
       },
       refetchOnWindowFocus: false,
-    });
+    }
+  );
 
   return {
     data,

@@ -7,16 +7,7 @@ import ListInfinite from "../common/ListInfinite";
 import KeyboardArrowRightIcon from "@mui/icons-material/KeyboardArrowRight";
 import KeyboardArrowDownIcon from "@mui/icons-material/KeyboardArrowDown";
 
-const Main = ({
-  tagList,
-  bestPost,
-  recentPost,
-  recentPostInfinite,
-  followPost,
-  likeToggle,
-  search,
-  mutate,
-}) => {
+const Main = ({ tagList, bestPost, recentPost, recentPostInfinite, followPost, likeToggle, search, mutate }) => {
   const onClickTagHandler = (tagName) => {
     search("tag", tagName);
   };
@@ -50,13 +41,7 @@ const Main = ({
           </ArrowSpan>
         </Title>
         <BestRecipeContainer>
-          <List
-            list={bestPost}
-            likeToggle={likeToggle}
-            // width="160px"
-            height="200px"
-            margin="0 0.5rem 0 0.5rem"
-          />
+          <List list={bestPost} likeToggle={likeToggle} height="200px" margin="0 0.5rem 0 0.5rem" />
         </BestRecipeContainer>
         {loginNickname === undefined ? (
           <>
@@ -86,13 +71,7 @@ const Main = ({
               </ArrowSpan>
             </Title>
             <NewRecipeContainer>
-              <List
-                list={recentPost}
-                likeToggle={likeToggle}
-                width="160px"
-                height="200px"
-                margin="0 0.5rem 0 0.5rem"
-              />
+              <List list={recentPost} likeToggle={likeToggle} width="160px" height="200px" margin="0 0.5rem 0 0.5rem" />
             </NewRecipeContainer>
             <Title>
               🥕 팔로우 레시피

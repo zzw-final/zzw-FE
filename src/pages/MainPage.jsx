@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { instance } from "../api/request";
+import { instance, likes } from "../api/request";
 import styled from "styled-components";
 import LayoutPage from "../components/common/LayoutPage";
 import Logo from "../components/common/Logo";
@@ -27,17 +27,9 @@ const MainPage = () => {
 
   const loginNickname = cookies.loginNickname;
 
-  const { data: tagList } = useQuery(
-    ["mainPage", "tagList"],
-    fetchBestTagTopFive,
-    options.eternal
-  );
+  const { data: tagList } = useQuery(["mainPage", "tagList"], fetchBestTagTopFive, options.eternal);
 
-  const { data: bestPost } = useQuery(
-    ["mainPage", "bestPost"],
-    fetchBestList,
-    options.eternal
-  );
+  const { data: bestPost } = useQuery(["mainPage", "bestPost"], fetchBestList, options.eternal);
 
   const { data: recentPost } = useQuery(
     ["mainPage", "recentPost"],
@@ -48,17 +40,17 @@ const MainPage = () => {
   const { data: recentPostInfinite } = useQuery(
     ["mainPage", "infinite"],
     loginNickname ? "" : () => fetchRecentListInfinite,
-    options.eternal
+    options.noSelect
   );
 
   const { data: followPost } = useQuery(
     ["mainPage", "infinite"],
     loginNickname ? () => fetchFollowListInfinite : "",
-    options.eternal
+    options.noSelect
   );
 
   const likeToggle = async (postId) => {
-    return await instance.post(`/api/auth/post/${postId}`);
+    return likes(postId);
   };
 
   const search = async (searchOption, sendData) => {
@@ -74,13 +66,7 @@ const MainPage = () => {
       <Logo />
       <SearchForm mainSearch={search} showToast={showToast} />
       <MainContainer>
-        {toast && (
-          <Toast
-            setToast={setToast}
-            text={"태그는 5개까지 검색 가능합니다."}
-            margin="0.5rem"
-          />
-        )}
+        {toast && <Toast setToast={setToast} text={"태그는 5개까지 검색 가능합니다."} margin="0.5rem" />}
         <Main
           tagList={tagList}
           bestPost={bestPost}
