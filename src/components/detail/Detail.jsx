@@ -48,7 +48,9 @@ function Detail({
   };
 
   useEffect(() => {
-    const foodName = postDetail?.ingredient?.find((item) => item.isName === true)?.ingredientName;
+    const foodName = postDetail?.ingredient?.find(
+      (item) => item.isName === true
+    )?.ingredientName;
     setFoodName(foodName);
   }, [postDetail]);
 
@@ -79,7 +81,11 @@ function Detail({
         </Tags>
       ) : (
         <Tags>
-          <TagList postDetail={postDetail} editForm={editForm} setEditedIngredient={setEditedIngredient} />
+          <TagList
+            postDetail={postDetail}
+            editForm={editForm}
+            setEditedIngredient={setEditedIngredient}
+          />
         </Tags>
       )}
 
@@ -93,9 +99,6 @@ function Detail({
             editedValues={editedValues}
             setEditedValues={setEditedValues}
             editForm={editForm}
-            toggleTagList={toggleTagList}
-            setToggleTagList={setToggleTagList}
-            openTagBox={openTagBox}
             onEditPage={onEditPage}
             onCancle={onCancle}
             onSubmitHandler={onSubmitHandler}
@@ -197,7 +200,8 @@ const CreatedAt = styled.div`
 
 const Comment = styled.div`
   background-color: var(#fff7eb);
-  padding: 0.2rem 0.5rem;
+  padding: 0.2rem;
+  text-align: center;
   box-shadow: 0 0 10px rgb(0 0 0 / 30%);
   border-radius: 14px;
   font-weight: var(--weight-bold);
@@ -218,7 +222,6 @@ const CommentFoldLine = styled.div`
   background-color: var(--color-orange);
   margin: 0.5rem auto 2rem auto;
 `;
-
 
 const CommentBox = styled.div`
   width: 100%;
