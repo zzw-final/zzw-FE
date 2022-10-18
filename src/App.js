@@ -11,6 +11,7 @@ import ChatListPage from "./pages/ChatListPage";
 import ErrorPage from "./pages/ErrorPage";
 import { useState, useEffect } from "react";
 import { getCookie } from "./util/cookie";
+import styled from "styled-components";
 
 const Desktop = ({ children }) => {
   const isDesktop = useMediaQuery({ minWidth: 768 });
@@ -24,13 +25,13 @@ const Mobile = ({ children }) => {
 
 const queryClient = new QueryClient();
 
-// console.log("loginUserId app :>> ", getCookie("loginUserId"));
-// console.log("loginNickname app :>> ", getCookie("loginNickname"));
-
-// console.log("now!!!! >", new Date().toString());
-
 function App() {
   const [isLogin, setIsLogin] = useState(getCookie("loginUserId") ? true : false);
+
+  if (process.env.NODE_ENV === "production") {
+    console.log = function no_console() {};
+    console.warn = function () {};
+  }
 
   useEffect(() => {
     setTimeout(() => {
@@ -38,28 +39,15 @@ function App() {
     }, 700);
   }, []);
 
-  // useEffect(() => {
-  //   const myTimeout = setTimeout(() => {
-  //     console.log(
-  //       'getCookie("tokenInvalidtime")  app :>> ',
-  //       getCookie("tokenInvalidtime")
-  //     );
-  //   }, 1000);
-  //   function myStopFunction() {
-  //     clearTimeout(myTimeout);
-  //   }
-
-  //   return () => {
-  //     myStopFunction();
-  //   };
-  // }, []);
-
-  // console.log("app 렌더링...");
-
   return (
     <QueryClientProvider client={queryClient}>
       <BrowserRouter>
-        <Desktop>웹사이트를 이용하려면 화면을 줄여 주세요</Desktop>
+        <Desktop>
+          <HelpText>
+            모바일 환경에서 이용해주세요 😅 <br />
+            (꿀팁: 화면을 줄여도 이용 가능합니다!)
+          </HelpText>
+        </Desktop>
         <Mobile>
           <Routes>
             <Route path="/" element={<MainPage />} />
@@ -81,7 +69,6 @@ function App() {
             <Route path="/search" element={<SearchPage />} />
             <Route path="/chat/:roomId" element={<ChatPage />} />
             <Route path="/chatlist" element={<ChatListPage />} />
-            {/* <Route path="*" element={<div>페이지를 찾을 수 없습니다.</div>} /> */}
             <Route path="*" element={<ErrorPage />} />
           </Routes>
         </Mobile>
@@ -90,5 +77,14 @@ function App() {
     </QueryClientProvider>
   );
 }
+
+const HelpText = styled.div`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  height: 100vh;
+  font-size: var(--font-large);
+`;
 
 export default App;
