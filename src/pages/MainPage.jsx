@@ -19,7 +19,7 @@ const MainPage = () => {
   const loginNickname = cookies.loginNickname;
 
   const navigate = useNavigate();
-
+  console.log("메인페이지 로딩중...");
   const { data: tagList } = useQuery(["mainPage", "tagList"], fetchBestTagTopFive, options.eternal);
   const { data: bestPost } = useQuery(["mainPage", "bestPost"], fetchBestList, options.eternal);
   const { data: recentPost } = useQuery(

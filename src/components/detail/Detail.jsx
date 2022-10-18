@@ -46,9 +46,7 @@ function Detail({
   };
 
   useEffect(() => {
-    const foodName = postDetail?.ingredient?.find(
-      (item) => item.isName === true
-    )?.ingredientName;
+    const foodName = postDetail?.ingredient?.find((item) => item.isName === true)?.ingredientName;
     setFoodName(foodName);
   }, [postDetail]);
 
@@ -79,11 +77,7 @@ function Detail({
         </Tags>
       ) : (
         <Tags>
-          <TagList
-            postDetail={postDetail}
-            editForm={editForm}
-            setEditedIngredient={setEditedIngredient}
-          />
+          <TagList postDetail={postDetail} editForm={editForm} setEditedIngredient={setEditedIngredient} />
         </Tags>
       )}
 

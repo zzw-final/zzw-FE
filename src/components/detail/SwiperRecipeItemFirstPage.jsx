@@ -1,21 +1,14 @@
 import React from "react";
 import { useCookies } from "react-cookie";
-import { useNavigate, useParams } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
 import Avatar from "@mui/material/Avatar";
 import Like from "../common/Like";
 import { useState } from "react";
-import { dateFormat } from "../../util/dateFormat";
 import { useEffect } from "react";
 import imageCompression from "browser-image-compression";
-import { likePost } from "../../api/writepage";
-import { useMutation, useQuery, useQueryClient } from "react-query";
 import { getCookie } from "../../util/cookie";
-import { followHandler } from "../../api/followpage";
-import { options } from "../../api/options";
-import FollowerList from "../followpage/FollowerList";
 import Button from "../UI/Button";
-import { instance } from "../../api/request";
 
 const SwiperRecipeItemFirstPage = ({
   postDetail,
@@ -34,9 +27,6 @@ const SwiperRecipeItemFirstPage = ({
 }) => {
   const { postId, title, nickname, profile, grade, authorId, isLike, likeNum, foodImg, createAt, time, isFollow } =
     postDetail;
-
-  const [likeToggleBtn, setLikeToggleBtn] = useState(isLike);
-  // const [viewLikeNum, setViewLikeNum] = useState(likeNum);
 
   const [cookies] = useCookies(["loginNickname"]);
   const navigate = useNavigate();
@@ -73,7 +63,7 @@ const SwiperRecipeItemFirstPage = ({
           <Time>⏱ {postDetail?.time} min</Time>
         </TimeBox>
         <LikeBox>
-          <Like isLike={likeToggleBtn} setLikeToggleBtn={setLikeToggleBtn} postId={postId} /> {likeNum}
+          <Like isLike={isLike} postId={postId} /> {likeNum}
         </LikeBox>
         <ItemBox>
           <ItemInfo>

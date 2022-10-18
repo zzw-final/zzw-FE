@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import styled from "styled-components";
 import FavoriteIcon from "@mui/icons-material/Favorite";
 import FavoriteBorderIcon from "@mui/icons-material/FavoriteBorder";
@@ -6,7 +6,7 @@ import { useCookies } from "react-cookie";
 import { likes } from "../../api/request";
 import { useMutation, useQueryClient } from "react-query";
 
-const Like = ({ isLike, setLikeToggleBtn, postId }) => {
+const Like = ({ isLike, postId }) => {
   const [cookies] = useCookies(["loginNickname"]);
   const loginNickname = cookies.loginNickname;
   const queryClient = useQueryClient();
@@ -20,13 +20,11 @@ const Like = ({ isLike, setLikeToggleBtn, postId }) => {
       queryClient.invalidateQueries(["userpage", "profile"]);
       queryClient.invalidateQueries(["mypage", "profile"]);
       queryClient.invalidateQueries(["mypage", "likeRecipes"]);
-      const isVisible = list?.data?.data;
-      if (isVisible) {
-        setLikeToggleBtn(!isLike);
-      }
       return list;
     },
   });
+
+  console.log("isLike :>> ", isLike);
 
   const like = async () => {
     if (loginNickname === undefined) {

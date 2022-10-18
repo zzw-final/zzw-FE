@@ -23,7 +23,8 @@ const ChatListPage = () => {
           {searchNickname ? (
             searchNickname.map((listItem, idx) => <ChatListItem listItem={listItem} key={idx} />)
           ) : (
-            <ListText>채팅 리스트가 없습니다.</ListText>
+            <></>
+            // <ListText>채팅 리스트가 없습니다.</ListText>
           )}
         </ChatList>
       </ChatListContainer>
