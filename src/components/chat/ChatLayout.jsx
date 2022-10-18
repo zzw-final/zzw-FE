@@ -2,6 +2,7 @@ import React from "react";
 import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
 import TextAreaAutoResize from "react-textarea-autosize";
+import DeleteOutlinedIcon from "@mui/icons-material/DeleteOutlined";
 
 function ChatLayout({
   publish,
@@ -36,7 +37,9 @@ function ChatLayout({
           {location?.nickname}
           <span>{location?.grade}</span>
         </div>
-        <OutChatBtn onClick={out}>나가기</OutChatBtn>
+        <OutChatBtn onClick={out}>
+          <DeleteOutlinedIcon />
+        </OutChatBtn>
       </Header>
       {children}
       <Label style={{ position: "fixed" }}>
@@ -74,7 +77,7 @@ const Header = styled.div`
     margin: 15px auto auto 20px;
   }
   div {
-    margin: auto 90px auto 20px;
+    margin: auto 25px auto 20px;
     font-size: var(--font-medium-large);
     font-weight: var(--weight-semi-bold);
   }
@@ -85,9 +88,12 @@ const Header = styled.div`
   }
 `;
 const OutChatBtn = styled.button`
-  width: 20px;
-  height: 30px;
-  margin-left: -20px;
+  width: 10vw;
+  height: 3vh;
+  margin: 3px 20px 0 0;
+  border: 0;
+  border-radius: 8px;
+  background: none;
 `;
 
 const Label = styled.label`

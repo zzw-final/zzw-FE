@@ -62,7 +62,11 @@ const LayoutPage = ({
               {backBtnTypeArrow ? (
                 <KeyboardBackspaceIcon onClick={back} />
               ) : (
-                <ChevronLeftIcon onClick={back} color="warning" fontSize="large" />
+                <ChevronLeftIcon
+                  onClick={back}
+                  color="warning"
+                  fontSize="large"
+                />
               )}
             </BackBtn>
             {headerTitle}
