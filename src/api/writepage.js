@@ -57,3 +57,8 @@ export const commentUpdate = async (updatedInfo) => {
 export const likePost = async (postId) => {
   return await instance.post(`/api/auth/post/${postId}`);
 };
+
+//팔로우
+export const fetchFollowDe = async (postId) => {
+  return await instance.post(`/api/post/${postId}/follow`);
+};
