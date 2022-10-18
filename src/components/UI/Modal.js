@@ -32,11 +32,13 @@ let ModalBox = styled.div`
   border-radius: 10px;
   background-color: white;
   width: 22rem;
-  height: 38.5rem;
+  min-height: 35rem;
   position: absolute;
-  top: 50%;
+  top: 45%;
   left: 50%;
   transform: translate(-50%, -50%);
   padding: 15px 10px;
   z-index: 1;
+  overflow-y: scroll;
+  bottom: 1px;
 `;
