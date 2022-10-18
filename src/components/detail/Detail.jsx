@@ -34,9 +34,7 @@ function Detail({
   const navigate = useNavigate();
 
   const foodIngredientList = postDetail?.ingredient
-    .map((ingredient) =>
-      !ingredient.isName ? ingredient.ingredientName : undefined
-    )
+    .map((ingredient) => (!ingredient.isName ? ingredient.ingredientName : undefined))
     .filter((ingredient) => ingredient !== undefined);
 
   const [foodName, setFoodName] = useState();

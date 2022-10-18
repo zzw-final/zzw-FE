@@ -177,28 +177,22 @@ function DetailPage() {
   };
 
   //댓글 삭제
-  const commentDeleteMutate = useMutation(
-    (commentId) => commentDelete(commentId),
-    {
-      onSuccess: () => {
-        queryClient.invalidateQueries("comment", id);
-      },
-    }
-  );
+  const commentDeleteMutate = useMutation((commentId) => commentDelete(commentId), {
+    onSuccess: () => {
+      queryClient.invalidateQueries("comment", id);
+    },
+  });
   const remove = (commentId) => {
     commentDeleteMutate.mutate(commentId);
   };
 
   //댓글 수정
 
-  const commentUpdateMutate = useMutation(
-    (updateInfo) => commentUpdate(updateInfo),
-    {
-      onSuccess: () => {
-        queryClient.invalidateQueries("comment", id);
-      },
-    }
-  );
+  const commentUpdateMutate = useMutation((updateInfo) => commentUpdate(updateInfo), {
+    onSuccess: () => {
+      queryClient.invalidateQueries("comment", id);
+    },
+  });
   const update = (updateInfo) => {
     commentUpdateMutate.mutate(updateInfo);
   };
@@ -209,9 +203,7 @@ function DetailPage() {
       copyUrl={copyUrl}
       headerTitle={postDetail?.ingredient[0]?.ingredientName}
     >
-      {toast && (
-        <Toast setToast={setToast} text="🖇 클립보드에 복사되었습니다." />
-      )}
+      {toast && <Toast setToast={setToast} text="🖇 클립보드에 복사되었습니다." />}
       <DetailContainer>
         {editedValues && (
           <Detail
