@@ -38,6 +38,7 @@ function Profile({ userData, DmRequest, profileRef, editHandler }) {
       removeCookie("loginEmail");
       removeCookie("tokenInvalidtime");
       navigate("/");
+      window.location.reload();
     }
   };
 

@@ -58,7 +58,7 @@ const FollowPage = () => {
 
   const { mutate } = useMutation((userId) => followHandler(userId), {
     onSuccess: (res) => {
-      console.log(res);
+      if (res.data.data.isGet) alert("새로운 칭호를 획득했습니다!");
       queryClient.invalidateQueries(["userpage", "profile"]);
       queryClient.invalidateQueries(["mypage", "profile"]);
       queryClient.invalidateQueries(["follow"]);
