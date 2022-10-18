@@ -62,6 +62,7 @@ const FollowPage = () => {
       queryClient.invalidateQueries(["mypage", "profile"]);
       queryClient.invalidateQueries(["follow"]);
       queryClient.invalidateQueries(["follower"]);
+      queryClient.invalidateQueries(["mainPage", "infinite"]);
     },
   });
 
