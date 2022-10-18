@@ -134,6 +134,16 @@ function DetailPage() {
     setEditedvalues(postDetail?.contentList);
   }, [postDetail?.contentList]);
 
+  //디테일 페이지 내에서 팔로우 기능
+  const [greyButton, setGreyButton] = useState(postDetail?.isFollow);
+  const followHandler = async () => {
+    setGreyButton((prev) => !prev);
+    const data = await instance.post(`/api/post/${postDetail?.postId}/follow`);
+    console.log(data);
+  };
+
+  useEffect(() => {}, [greyButton]);
+
   //댓글 데이터 가져오는 useQuery
   const { data: commentList } = useQuery(
     ["comment", id],
@@ -204,6 +214,8 @@ function DetailPage() {
             onSubmitHandler={onSubmitHandler}
             editForm={editForm}
             setEditedIngredient={setEditedIngredient}
+            greyButton={greyButton}
+            followHandler={followHandler}
           />
         )}
       </DetailContainer>

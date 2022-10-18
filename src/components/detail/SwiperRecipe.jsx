@@ -25,6 +25,8 @@ const SwiperRecipe = ({
   onCancle,
   onSubmitHandler,
   onDelete,
+  greyButton,
+  followHandler,
 }) => {
   const contentList = postDetail.contentList;
 
@@ -53,6 +55,8 @@ const SwiperRecipe = ({
               onCancle={onCancle}
               onSubmitHandler={onSubmitHandler}
               onDelete={onDelete}
+              greyButton={greyButton}
+              followHandler={followHandler}
             />
           </SwiperSlide>
           {contentList.map((content, idx) => (
@@ -70,6 +74,8 @@ const SwiperRecipe = ({
                 onCancle={onCancle}
                 onSubmitHandler={onSubmitHandler}
                 onDelete={onDelete}
+                greyButton={greyButton}
+                followHandler={followHandler}
               />
             </SwiperSlide>
           ))}

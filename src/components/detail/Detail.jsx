@@ -24,6 +24,8 @@ function Detail({
   onSubmitHandler,
   editForm,
   setEditedIngredient,
+  greyButton,
+  followHandler,
 }) {
   const nickname = getCookie("loginNickname");
   const [isEditMode, setIsEditMode] = useState(false);
@@ -108,6 +110,8 @@ function Detail({
             onCancle={onCancle}
             onSubmitHandler={onSubmitHandler}
             onDelete={onDelete}
+            greyButton={greyButton}
+            followHandler={followHandler}
           />
         )}
       </Content>
