@@ -4,12 +4,12 @@ import Button from "@mui/material/Button";
 import TextField from "@mui/material/TextField";
 import Box from "@mui/material/Box";
 import ArrowForwardIcon from "@mui/icons-material/ArrowForward";
-import { useLocation, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { join } from "../../api/request";
 import { useCookies } from "react-cookie";
 
-const JoinForm = (props) => {
-  const REGEX_NICKNAME = /[ㄱ-ㅎ|가-힣]+$/;
+const JoinForm = () => {
+  const REGEX_NICKNAME = /^(?=.*[가-힣])[가-힣]{1,6}$/;
 
   const [nickname, setNickname] = useState("");
   const [isNickname, setIsNickname] = useState(false);
@@ -31,6 +31,10 @@ const JoinForm = (props) => {
       oauth: loginOauth,
       nickname,
     });
+
+    if (result.data.error === "DUPLICATE_NICKNAME") {
+      alert("이미 등록된 닉네임입니다 🥲");
+    }
 
     const onLogin = (result) => {
       const ACCESS_TOKEN = `Bearer ${result.headers["authorization"]}`;
@@ -78,9 +82,7 @@ const JoinForm = (props) => {
   }, [nickname, REGEX_NICKNAME]);
 
   useEffect(() => {
-    nickname && validation_nickname() === false
-      ? setIsNickname(true)
-      : setIsNickname(false);
+    nickname && validation_nickname() === false ? setIsNickname(true) : setIsNickname(false);
   }, [nickname, validation_nickname]);
 
   useEffect(() => {
@@ -104,18 +106,9 @@ const JoinForm = (props) => {
             name="nickname"
             onChange={onChange}
             error={validation_nickname()}
-            helperText={
-              validation_nickname() ? "한글만 입력할 수 있습니다." : ""
-            }
+            helperText={validation_nickname() ? "닉네임은 한글로 최대 6글자까지만 입력할 수 있습니다." : ""}
           />
-
-          <Button
-            fullWidth
-            type="submit"
-            variant="contained"
-            color="success"
-            endIcon={<ArrowForwardIcon />}
-          >
+          <Button fullWidth type="submit" variant="contained" color="warning" endIcon={<ArrowForwardIcon />}>
             Sign Up
           </Button>
         </Box>

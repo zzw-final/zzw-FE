@@ -11,8 +11,7 @@ function NaverRedirect() {
   useEffect(() => {
     async function NaverLogin() {
       const res = await axios.get(
-        process.env.REACT_APP_API +
-          `/api/member/login/naver?code=${code}&state=${process.env.NAVER_STATE}`
+        process.env.REACT_APP_API + `/api/member/login/naver?code=${code}&state=${process.env.NAVER_STATE}`
       );
 
       if (res.data.success && res.data.error === null) {
@@ -21,6 +20,8 @@ function NaverRedirect() {
         const OAUTH = res.data.data.oauth;
         setCookie("loginEmail", EMAIL);
         setCookie("loginOauth", OAUTH);
+
+        console.log("newUser :>> ", newUser);
 
         if (newUser) {
           navigate("/join", { replace: true });
