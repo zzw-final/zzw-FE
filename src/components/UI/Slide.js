@@ -39,7 +39,7 @@ const SlideBox = styled.div`
   max-height: 70%;
   position: absolute;
   bottom: 90px;
-  padding: 1rem 2rem 2rem 2rem;
+  padding: 1rem 2rem 4.3rem 2rem;
   transition: all 600ms cubic-bezier(0.86, 0, 0.07, 1);
   z-index: 2;
   overflow: auto;
