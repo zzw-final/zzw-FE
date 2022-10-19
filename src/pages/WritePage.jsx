@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { useState } from "react";
 import { useMutation, useQueryClient } from "react-query";
 import { useNavigate } from "react-router-dom";
@@ -73,6 +73,20 @@ function WritePage() {
     formdata.append("file", file);
     return fetchImg(formdata);
   };
+
+  const outconfirm = () => {
+    if (
+      window.confirm(
+        "나가시면 작성한 데이터가 모두 사라집니다. 그래도 나가시겠습니까?"
+      )
+    ) {
+      window.sessionStorage.clear();
+      window.localStorage.clear();
+    }
+  };
+  useEffect(() => {
+    return outconfirm;
+  }, []);
 
   return (
     <LayoutPage
