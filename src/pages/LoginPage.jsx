@@ -8,7 +8,7 @@ import { useEffect } from "react";
 
 const LoginPage = () => {
   useEffect(() => {
-    if (navigator.vendor.toUpperCase().includes("KAKAO"))
+    if (navigator.userAgent.includes("KAKAO"))
       alert("카카오 인앱 브라우저에서는 카카오 로그인만 가능해요!");
   }, []);
 
