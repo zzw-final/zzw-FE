@@ -2,7 +2,17 @@ import { useMediaQuery } from "react-responsive";
 import { BrowserRouter, Route, Routes } from "react-router-dom";
 import { QueryClientProvider, QueryClient } from "react-query";
 import { ReactQueryDevtools } from "react-query/devtools";
-import { MainPage, DetailPage, FollowPage, JoinPage, LoginPage, MyPage, WritePage, UserPage, ChatPage } from "./pages";
+import {
+  MainPage,
+  DetailPage,
+  FollowPage,
+  JoinPage,
+  LoginPage,
+  MyPage,
+  WritePage,
+  UserPage,
+  ChatPage,
+} from "./pages";
 import KakaoRedirect from "./components/login/kakao/KakaoRedirect";
 import GoogleRedirect from "./components/login/google/GoogleRedirect";
 import SearchPage from "./pages/SearchPage";
@@ -30,6 +40,7 @@ function App() {
 
   if (process.env.NODE_ENV === "production") {
     console.log = function no_console() {};
+    console.warn = function no_console() {};
     console.warn = function () {};
   }
 
@@ -58,7 +69,11 @@ function App() {
             ) : (
               <Route path="/write" element={<LoginPage />} />
             )}
-            {isLogin ? <Route path="/mypage" element={<MyPage />} /> : <Route path="/mypage" element={<LoginPage />} />}
+            {isLogin ? (
+              <Route path="/mypage" element={<MyPage />} />
+            ) : (
+              <Route path="/mypage" element={<LoginPage />} />
+            )}
             <Route path="/mypage/:id" element={<UserPage />} />
             <Route path="/detail/:id" element={<DetailPage />} />
             <Route path="/follow" element={<FollowPage />} />

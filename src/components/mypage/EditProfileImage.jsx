@@ -4,6 +4,7 @@ import { useState } from "react";
 import { useQuery, useMutation, useQueryClient } from "react-query";
 import { editImgList, editProfileImg } from "../../api/mypage";
 import { options } from "../../api/options";
+import { setCookie } from "../../util/cookie";
 
 function EditProfileImage({ setModalIsOpen }) {
   const [char, setChar] = useState();
@@ -17,6 +18,10 @@ function EditProfileImage({ setModalIsOpen }) {
 
   const { mutate } = useMutation(() => editProfileImg(char), {
     onSuccess: () => {
+      setCookie(
+        "loginProfile",
+        profileImg.find((item) => item.profileId === +char).imageUrl
+      );
       queryClient.invalidateQueries(["mypage", "profile"]);
     },
   });
