@@ -7,7 +7,6 @@ import { useCookies } from "react-cookie";
 import Avatar from "@mui/material/Avatar";
 import Button from "../UI/Button";
 
-
 const SwiperRecipeItem = ({
   contentList,
   isEditMode,
@@ -70,12 +69,7 @@ const SwiperRecipeItem = ({
         <ItemImg src={imageUrl} alt="RecipeImg" />
         <ItemBox>
           <ItemInfo>
-            <Avatar
-              alt="user_img"
-              src={postDetail?.profile}
-              sx={{ width: 40, height: 40, mr: 1 }}
-              onClick={userPage}
-            />
+            <Avatar alt="user_img" src={postDetail?.profile} sx={{ width: 40, height: 40, mr: 1 }} onClick={userPage} />
             <NinknameCreatedAt>
               <Nickname onClick={userPage}>
                 {postDetail?.nickname}/{postDetail?.grade}
@@ -88,13 +82,11 @@ const SwiperRecipeItem = ({
                   </>
                 </ButtonDiv>
               ) : (
-                <Button
-                  onClick={followHandler}
-                  name="FollowBtn"
-                  isFollow={greyButton}
-                >
-                  {postDetail?.isFollow ? "팔로잉" : "팔로우"}
-                </Button>
+                <ButtonDiv>
+                  <Button onClick={followHandler} name="FollowBtn" isFollow={greyButton}>
+                    {postDetail?.isFollow ? "팔로잉" : "팔로우"}
+                  </Button>
+                </ButtonDiv>
               )}
             </NinknameCreatedAt>
           </ItemInfo>
@@ -112,20 +104,15 @@ const SwiperRecipeItem = ({
         <ItemImgEdit type="file" accept="image/*" onChange={getImgUpload} />
         <ItemBox>
           <ItemInfo>
-            <Avatar
-              alt="user_img"
-              src={postDetail?.profile}
-              sx={{ width: 35, height: 35, mr: 1 }}
-              onClick={userPage}
-            />
+            <Avatar alt="user_img" src={postDetail?.profile} sx={{ width: 35, height: 35, mr: 1 }} onClick={userPage} />
             <NinknameCreatedAt>
               <Nickname onClick={userPage}>
                 {postDetail?.grade}/{postDetail?.nickname}
               </Nickname>
-              <>
+              <ButtonDiv>
                 <ButtonEdit onClick={onSubmitHandler}>수정완료</ButtonEdit>
                 <ButtonEdit onClick={onCancle}>수정취소</ButtonEdit>
-              </>
+              </ButtonDiv>
             </NinknameCreatedAt>
           </ItemInfo>
           <ItemContentEdit
@@ -186,22 +173,11 @@ const Nickname = styled.div`
   margin-top: 3px;
 `;
 
-const FollowBtn = styled.button`
-  width: 15vw;
-  height: 3.5vh;
-  border: 0;
-  border-radius: 8px;
-  background-color: #ff7a00;
-  color: white;
-  margin: 0 10px 3px 0;
-  margin-right: 10px;
-`;
-
 const ButtonDiv = styled.div`
   display: flex;
   gap: 10px;
+  margin-right: 0.6rem;
 `;
-
 
 const Button1 = styled.button`
   font-size: var(--font-regular);

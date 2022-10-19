@@ -104,10 +104,10 @@ const SwiperRecipeItemFirstPage = ({
               <Nickname onClick={userPage}>
                 {grade}/{nickname}
               </Nickname>
-              <>
+              <ButtonDiv>
                 <ButtonEdit onClick={onSubmitHandler}>수정완료</ButtonEdit>
                 <ButtonEdit onClick={onCancle}>수정취소</ButtonEdit>
-              </>
+              </ButtonDiv>
 
               {/* <CreatedAt>{dateFormat(createAt)}</CreatedAt> */}
             </NinknameCreatedAt>
@@ -223,7 +223,7 @@ const ItemTitleEdit = styled.input`
 const ButtonDiv = styled.div`
   display: flex;
   gap: 10px;
-  margin-right: 0.5rem;
+  margin-right: 0.6rem;
 `;
 
 const Button1 = styled.button`
