@@ -34,7 +34,9 @@ function Detail({
   const navigate = useNavigate();
 
   const foodIngredientList = postDetail?.ingredient
-    .map((ingredient) => (!ingredient.isName ? ingredient.ingredientName : undefined))
+    .map((ingredient) =>
+      !ingredient.isName ? ingredient.ingredientName : undefined
+    )
     .filter((ingredient) => ingredient !== undefined);
 
   const [foodName, setFoodName] = useState();
@@ -46,7 +48,9 @@ function Detail({
   };
 
   useEffect(() => {
-    const foodName = postDetail?.ingredient?.find((item) => item.isName === true)?.ingredientName;
+    const foodName = postDetail?.ingredient?.find(
+      (item) => item.isName === true
+    )?.ingredientName;
     setFoodName(foodName);
   }, [postDetail]);
 
@@ -77,7 +81,11 @@ function Detail({
         </Tags>
       ) : (
         <Tags>
-          <TagList postDetail={postDetail} editForm={editForm} setEditedIngredient={setEditedIngredient} />
+          <TagList
+            postDetail={postDetail}
+            editForm={editForm}
+            setEditedIngredient={setEditedIngredient}
+          />
         </Tags>
       )}
 
@@ -87,6 +95,7 @@ function Detail({
             postDetail={postDetail}
             likeToggle={likeToggle}
             isEditMode={isEditMode}
+            setIsEditMode={setIsEditMode}
             imgUpload={imgUpload}
             editedValues={editedValues}
             setEditedValues={setEditedValues}

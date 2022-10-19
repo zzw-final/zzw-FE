@@ -14,6 +14,7 @@ const SwiperRecipe = ({
   postDetail,
   likeToggle,
   isEditMode,
+  setIsEditMode,
   imgUpload,
   editedValues,
   setEditedValues,
@@ -46,6 +47,7 @@ const SwiperRecipe = ({
               postDetail={postDetail}
               likeToggle={likeToggle}
               isEditMode={isEditMode}
+              setIsEditMode={setIsEditMode}
               imgUpload={imgUpload}
               editForm={editForm}
               toggleTagList={toggleTagList}
@@ -66,6 +68,7 @@ const SwiperRecipe = ({
                 idx={idx}
                 contentList={content}
                 isEditMode={isEditMode}
+                setIsEditMode={setIsEditMode}
                 imgUpload={imgUpload}
                 editedValues={editedValues}
                 setEditedValues={setEditedValues}

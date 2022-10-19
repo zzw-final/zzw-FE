@@ -10,6 +10,7 @@ import Button from "../UI/Button";
 const SwiperRecipeItem = ({
   contentList,
   isEditMode,
+  setIsEditMode,
   imgUpload,
   editedValues,
   setEditedValues,
@@ -63,13 +64,23 @@ const SwiperRecipeItem = ({
     else navigate(`/mypage/${postDetail?.authorId}`);
   };
 
+  const onSubmit = () => {
+    onSubmitHandler();
+    setIsEditMode(!isEditMode);
+  };
+
   return (
     <>
       <ItemContainer display={!isEditMode ? "Flex" : "none"}>
         <ItemImg src={imageUrl} alt="RecipeImg" />
         <ItemBox>
           <ItemInfo>
-            <Avatar alt="user_img" src={postDetail?.profile} sx={{ width: 40, height: 40, mr: 1 }} onClick={userPage} />
+            <Avatar
+              alt="user_img"
+              src={postDetail?.profile}
+              sx={{ width: 40, height: 40, mr: 1 }}
+              onClick={userPage}
+            />
             <NinknameCreatedAt>
               <Nickname onClick={userPage}>
                 {postDetail?.nickname}/{postDetail?.grade}
@@ -83,7 +94,11 @@ const SwiperRecipeItem = ({
                 </ButtonDiv>
               ) : loninNickname ? (
                 <ButtonDiv>
-                  <Button onClick={followHandler} name="FollowBtn" isFollow={greyButton}>
+                  <Button
+                    onClick={followHandler}
+                    name="FollowBtn"
+                    isFollow={greyButton}
+                  >
                     {postDetail?.isFollow ? "팔로잉" : "팔로우"}
                   </Button>
                 </ButtonDiv>
@@ -106,13 +121,18 @@ const SwiperRecipeItem = ({
         <ItemImgEdit type="file" accept="image/*" onChange={getImgUpload} />
         <ItemBox>
           <ItemInfo>
-            <Avatar alt="user_img" src={postDetail?.profile} sx={{ width: 35, height: 35, mr: 1 }} onClick={userPage} />
+            <Avatar
+              alt="user_img"
+              src={postDetail?.profile}
+              sx={{ width: 35, height: 35, mr: 1 }}
+              onClick={userPage}
+            />
             <NinknameCreatedAt>
               <Nickname onClick={userPage}>
                 {postDetail?.grade}/{postDetail?.nickname}
               </Nickname>
               <ButtonDiv>
-                <ButtonEdit onClick={onSubmitHandler}>수정완료</ButtonEdit>
+                <ButtonEdit onClick={onSubmit}>수정완료</ButtonEdit>
                 <ButtonEdit onClick={onCancle}>수정취소</ButtonEdit>
               </ButtonDiv>
             </NinknameCreatedAt>

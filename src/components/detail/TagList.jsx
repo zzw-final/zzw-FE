@@ -55,29 +55,32 @@ const TagList = ({ postDetail, editForm, setEditedIngredient }) => {
   );
 };
 
-const Button = styled.button`
-  font-size: var(--font-small);
-  font-weight: var(--weight-semi-bold);
-  color: #232323;
-  text-align: center;
-  width: 2.5rem;
-  height: 1.2rem;
-  background-color: #fbf8f0;
-  border-radius: 3px;
-  box-shadow: 2px 2px 5px #bebebe;
-  border: none;
+const Button = styled.p`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 15px;
+  height: 15px;
+  margin-left: 1px;
+  font-weight: var(--weight-bold);
+  background-color: none;
+  border: 0;
+  border-radius: 50%;
+  color: white;
 `;
 
 const TagBox = styled.div`
   display: flex;
   align-items: center;
   flex-wrap: wrap;
-  width: 340px;
+  width: 90%;
+  overflow-y: scroll;
   min-height: 5vh;
-  margin: 8px;
+  margin: 0rem 1rem 0px 1rem;
   padding: 0 10px;
-  border: 1px solid rgba(0, 0, 0, 0.3);
+  border: 0;
   border-radius: 10px;
+  background-color: var(--color-light-white);
 
   &:focus-within {
     border-color: var(--color-light-blue);
@@ -90,9 +93,9 @@ const Tagdiv = styled.div`
   justify-content: space-between;
   margin: 5px;
   padding: 5px;
-  background-color: var(--color-dark-pink);
+  background-color: #ffb84e;
   border-radius: 5px;
-  color: white;
+  color: black;
   font-size: 13px;
 `;
 
