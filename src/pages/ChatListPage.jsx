@@ -20,11 +20,10 @@ const ChatListPage = () => {
           <Input placeholder=" 닉네임을 검색하세요." onChange={searchInputHandler}></Input>
         </SearchBox>
         <ChatList>
-          {searchNickname ? (
+          {searchNickname && searchNickname.length !== 0 ? (
             searchNickname.map((listItem, idx) => <ChatListItem listItem={listItem} key={idx} />)
           ) : (
-            <></>
-            // <ListText>채팅 리스트가 없습니다.</ListText>
+            <ListText>채팅 리스트가 없습니다.</ListText>
           )}
         </ChatList>
       </ChatListContainer>
@@ -60,6 +59,8 @@ const ChatList = styled.div`
 
 const ListText = styled.p`
   padding-top: 2rem;
+  text-align: center;
+  font-size: var(--font-medium);
 `;
 
 export default ChatListPage;
