@@ -20,7 +20,7 @@ const CommentList = ({ postId, post, remove, update, commentList }) => {
 const CommentsConatiner = styled.div`
   text-align: left;
   height: 100%;
-  overflow-y: scroll;
+  margin-top: 1.2rem;
 
   ::-webkit-scrollbar {
     width: 0.3rem;

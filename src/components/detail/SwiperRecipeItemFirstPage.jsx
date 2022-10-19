@@ -79,11 +79,14 @@ const SwiperRecipeItemFirstPage = ({
                     <Button1 onClick={onDelete}>삭제</Button1>
                   </>
                 </ButtonDiv>
+              ) : loninNickname ? (
+                <ButtonDiv>
+                  <Button onClick={followHandler} name="FollowBtn" isFollow={greyButton}>
+                    {isFollow ? "팔로잉" : "팔로우"}
+                  </Button>
+                </ButtonDiv>
               ) : (
-                // <FollowBtn>팔로우</FollowBtn>
-                <Button onClick={followHandler} name="FollowBtn" isFollow={greyButton}>
-                  {isFollow ? "팔로잉" : "팔로우"}
-                </Button>
+                ""
               )}
 
               {/* <CreatedAt>{dateFormat(createAt)}</CreatedAt> */}
@@ -102,10 +105,10 @@ const SwiperRecipeItemFirstPage = ({
               <Nickname onClick={userPage}>
                 {grade}/{nickname}
               </Nickname>
-              <>
+              <ButtonDiv>
                 <ButtonEdit onClick={onSubmitHandler}>수정완료</ButtonEdit>
                 <ButtonEdit onClick={onCancle}>수정취소</ButtonEdit>
-              </>
+              </ButtonDiv>
 
               {/* <CreatedAt>{dateFormat(createAt)}</CreatedAt> */}
             </NinknameCreatedAt>
@@ -206,17 +209,6 @@ const Nickname = styled.div`
   margin-top: 3px;
 `;
 
-const FollowBtn = styled.button`
-  width: 15vw;
-  height: 3.5vh;
-  border: 0;
-  border-radius: 8px;
-  background-color: #ff7a00;
-  color: white;
-  margin: 0 10px 3px 0;
-  margin-right: 10px;
-`;
-
 const ItemTitle = styled.div`
   font-size: var(--font-semi-small);
   margin-left: 15px;
@@ -232,6 +224,7 @@ const ItemTitleEdit = styled.input`
 const ButtonDiv = styled.div`
   display: flex;
   gap: 10px;
+  margin-right: 0.6rem;
 `;
 
 const Button1 = styled.button`

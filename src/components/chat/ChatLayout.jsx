@@ -2,17 +2,10 @@ import React from "react";
 import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
 import TextAreaAutoResize from "react-textarea-autosize";
-import DeleteOutlinedIcon from "@mui/icons-material/DeleteOutlined";
+import DeleteIcon from "@mui/icons-material/Delete";
+import KeyboardBackspaceIcon from "@mui/icons-material/KeyboardBackspace";
 
-function ChatLayout({
-  publish,
-  msg,
-  msgHandler,
-  setMsg,
-  location,
-  children,
-  out,
-}) {
+function ChatLayout({ publish, msg, msgHandler, setMsg, location, children, out }) {
   const navigate = useNavigate();
   const pub = () => {
     if (msg.trim() !== "") {
@@ -32,22 +25,16 @@ function ChatLayout({
   return (
     <Container>
       <Header>
-        <p onClick={() => navigate("/chatlist")}>↩︎</p>
+        <KeyboardBackspaceIcon onClick={() => navigate("/chatlist")} />
         <div>
           {location?.nickname}
           <span>{location?.grade}</span>
         </div>
-        <OutChatBtn onClick={out}>
-          <DeleteOutlinedIcon />
-        </OutChatBtn>
+        <DeleteIcon onClick={out} sx={{ outline: "none" }} />
       </Header>
       {children}
       <Label style={{ position: "fixed" }}>
-        <TextAreaAutoResize
-          value={msg}
-          onKeyPress={onEnterPress}
-          onChange={msgHandler}
-        />
+        <TextAreaAutoResize value={msg} onKeyPress={onEnterPress} onChange={msgHandler} />
         <div onClick={pub}>전송</div>
       </Label>
     </Container>
@@ -65,17 +52,15 @@ const Container = styled.div`
 const Header = styled.div`
   width: 95%;
   height: 50px;
+  padding: 10px;
   display: flex;
+  justify-content: space-between;
   border-bottom: 1px solid var(--color-light-orange);
   align-items: center;
   margin: auto auto 10px 10px;
   background-color: white;
   position: fixed;
-  p {
-    font-size: var(--font-regular);
-    font-weight: var(--weight-semi-bold);
-    margin: 15px auto auto 20px;
-  }
+
   div {
     margin: auto 25px auto 20px;
     font-size: var(--font-medium-large);
@@ -86,14 +71,6 @@ const Header = styled.div`
     font-size: var(--font-regular);
     font-weight: var(--weight-regular);
   }
-`;
-const OutChatBtn = styled.button`
-  width: 10vw;
-  height: 3vh;
-  margin: 3px 20px 0 0;
-  border: 0;
-  border-radius: 8px;
-  background: none;
 `;
 
 const Label = styled.label`

@@ -96,6 +96,8 @@ const SwiperContainer = styled.div`
 `;
 
 const SwiperBox = styled.div`
+  z-index: 0;
+
   .swiper {
     width: 400px;
     height: 600px;
@@ -111,8 +113,8 @@ const SwiperBox = styled.div`
   }
 
   .swiper-slide {
-    background-color: var(--color-white);
-    box-shadow: 0px 0px 10px #dcdcdc;
+    /* background-color: var(--color-white);
+    box-shadow: 0px 0px 10px #dcdcdc; */
   }
 `;
 

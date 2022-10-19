@@ -42,18 +42,12 @@ const SearchForm = ({ mainSearch, searchPageSearch, showToast }) => {
     }
     inputRef.current.value = "";
     if (searchText === "" && selectOptionRef === "tag") {
-      return tagSearchHandler(
-        selectOptionRef,
-        searchText,
-        localStorage.getItem("tagList")
-      );
+      return tagSearchHandler(selectOptionRef, searchText, localStorage.getItem("tagList"));
     } else if (selectOptionRef === "tag") {
       makeTagList(searchText);
       return;
     }
-    pathName === "/"
-      ? mainSearch(selectOptionRef, searchText)
-      : searchPageSearch(selectOptionRef, searchText);
+    pathName === "/" ? mainSearch(selectOptionRef, searchText) : searchPageSearch(selectOptionRef, searchText);
   };
 
   useEffect(() => {
@@ -121,21 +115,13 @@ const SearchForm = ({ mainSearch, searchPageSearch, showToast }) => {
   return (
     <SearchContainer>
       <span>
-        {loginNickname ? (
-          <LoginNickname>{loginNickname}</LoginNickname>
-        ) : (
-          `반가운 손`
-        )}
+        {loginNickname ? <LoginNickname>{loginNickname}</LoginNickname> : `반가운 손`}
         님, 오늘의 식재료를 입력해보세요!
       </span>
       <SearchBox>
         <Form>
           <InputBox>
-            <SelectBox
-              value={selectOption}
-              ref={selectRef}
-              onChange={onPeriodChange}
-            >
+            <SelectBox value={selectOption} ref={selectRef} onChange={onPeriodChange}>
               {options.map((option, idx) => (
                 <option value={option.value} key={idx}>
                   {option.label}
@@ -229,6 +215,7 @@ const TagList = styled.div`
 const SearchIconDiv = styled.div`
   position: absolute;
   right: 30px;
+  display: flex;
 `;
 
 const InputForm = styled.input`

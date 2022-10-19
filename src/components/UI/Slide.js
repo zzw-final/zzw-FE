@@ -35,11 +35,14 @@ const SlideBox = styled.div`
   box-shadow: 0 0 10px rgb(0 0 0 / 30%);
   text-align: center;
   width: 100%;
-  height: 85%;
+  height: auto;
+  max-height: 70%;
+  position: absolute;
+  bottom: 90px;
   padding: 1rem 2rem 2rem 2rem;
   transition: all 600ms cubic-bezier(0.86, 0, 0.07, 1);
   z-index: 2;
-  overflow: scroll;
+  overflow: auto;
 
   ::-webkit-scrollbar {
     width: 0.3rem;
@@ -58,10 +61,10 @@ const SlideBox = styled.div`
 
   @keyframes slideMotion {
     from {
-      margin-top: 100vh;
+      bottom: 0px;
     }
     to {
-      margin-top: 0%;
+      bottom: 90px;
     }
   }
 `;
