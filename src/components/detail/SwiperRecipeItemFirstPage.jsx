@@ -5,17 +5,10 @@ import styled from "styled-components";
 import Avatar from "@mui/material/Avatar";
 import Like from "../common/Like";
 import { useState } from "react";
-import { dateFormat } from "../../util/dateFormat";
 import { useEffect } from "react";
 import imageCompression from "browser-image-compression";
-import { likePost } from "../../api/writepage";
-import { useMutation, useQuery, useQueryClient } from "react-query";
 import { getCookie } from "../../util/cookie";
-import { followHandler } from "../../api/followpage";
-import { options } from "../../api/options";
-import FollowerList from "../followpage/FollowerList";
 import Button from "../UI/Button";
-import { instance } from "../../api/request";
 
 const SwiperRecipeItemFirstPage = ({
   postDetail,
@@ -23,9 +16,6 @@ const SwiperRecipeItemFirstPage = ({
   setIsEditMode,
   imgUpload,
   editForm,
-  toggleTagList,
-  setToggleTagList,
-  openTagBox,
   onEditPage,
   onCancle,
   onSubmitHandler,
@@ -33,29 +23,13 @@ const SwiperRecipeItemFirstPage = ({
   greyButton,
   followHandler,
 }) => {
-  const {
-    postId,
-    title,
-    nickname,
-    profile,
-    grade,
-    authorId,
-    isLike,
-    likeNum,
-    foodImg,
-    createAt,
-    time,
-    isFollow,
-  } = postDetail;
-
-  const [likeToggleBtn, setLikeToggleBtn] = useState(isLike);
-  // const [viewLikeNum, setViewLikeNum] = useState(likeNum);
+  const { postId, title, nickname, profile, grade, authorId, isLike, likeNum, foodImg, createAt, time, isFollow } =
+    postDetail;
 
   const [cookies] = useCookies(["loginNickname"]);
   const navigate = useNavigate();
 
   const [imgFoodUrlEdited, setImgFoodUrlEdited] = useState(foodImg);
-  const loginNickname = cookies.loginNickname;
 
   const userPage = () => {
     if (+cookies.loginUserId === authorId) navigate(`/mypage`);
@@ -63,41 +37,6 @@ const SwiperRecipeItemFirstPage = ({
   };
   //좋아요 수정해보자
   const { id } = useParams();
-  const queryClient = useQueryClient();
-
-  const likeMutate = useMutation((postId) => likePost(postId), {
-    onMutate: async () => {
-      await queryClient.cancelQueries(["detail", id]); //업데이트 안될거임, 존재하는 query취소
-      const data = queryClient.getQueryData(["detail", id]).data?.data?.isLike; //현재데이터 가져오기
-      console.log("prevData->Like", data);
-      queryClient.setQueryData(["detail", id], (data) => {
-        return {
-          ...data,
-          isLike: !data,
-        };
-      });
-    },
-    onSuccess: (postId) => {
-      queryClient.invalidateQueries("detail", id);
-      console.log("좋아요성공?", postId);
-    },
-  });
-  const like = () => {
-    if (loginNickname === undefined) {
-      alert("로그인 유저만 사용 가능한 기능입니다.");
-      return;
-    }
-
-    const likeResult = likeMutate.mutate(postId);
-    console.log("디테일페이지에서 가져온값", likeResult?.data?.data);
-    if (likeResult?.data?.data == "post like success") {
-      // setViewLikeNum(viewLikeNum + 1);
-      setLikeToggleBtn(!isLike);
-    } else {
-      // setViewLikeNum(viewLikeNum - 1);
-      setLikeToggleBtn(!isLike);
-    }
-  };
 
   useEffect(() => {
     editForm("imageUrl", imgFoodUrlEdited);
@@ -129,39 +68,29 @@ const SwiperRecipeItemFirstPage = ({
           <Time>⏱ {postDetail?.time} min</Time>
         </TimeBox>
         <LikeBox>
-          <Like isLike={likeToggleBtn} btnClick={like} /> {likeNum}
+          <Like isLike={isLike} postId={id} /> {likeNum}
         </LikeBox>
         <ItemBox>
           <ItemInfo>
-            <Avatar
-              alt="user_img"
-              src={profile}
-              sx={{ width: 40, height: 40, mr: 1 }}
-              onClick={userPage}
-            />
+            <Avatar alt="user_img" src={profile} sx={{ width: 40, height: 40, mr: 1 }} onClick={userPage} />
             <NinknameCreatedAt>
               <Nickname onClick={userPage}>
                 {nickname}/{grade}
               </Nickname>
               {loninNickname === nickname ? (
                 <ButtonDiv>
-                  <>
-                    <Button1 onClick={onEditPage}>수정</Button1>
-                    <Button1 onClick={onDelete}>삭제</Button1>
-                  </>
+                  <Button1 onClick={onEditPage}>수정</Button1>
+                  <Button1 onClick={onDelete}>삭제</Button1>
+                </ButtonDiv>
+              ) : loninNickname ? (
+                <ButtonDiv>
+                  <Button onClick={followHandler} name="FollowBtn" isFollow={greyButton}>
+                    {postDetail?.isFollow ? "팔로잉" : "팔로우"}
+                  </Button>
                 </ButtonDiv>
               ) : (
-                // <FollowBtn>팔로우</FollowBtn>
-                <Button
-                  onClick={followHandler}
-                  name="FollowBtn"
-                  isFollow={greyButton}
-                >
-                  {isFollow ? "팔로잉" : "팔로우"}
-                </Button>
+                ""
               )}
-
-              {/* <CreatedAt>{dateFormat(createAt)}</CreatedAt> */}
             </NinknameCreatedAt>
           </ItemInfo>
           <ItemTitle>{title}</ItemTitle>
@@ -172,22 +101,15 @@ const SwiperRecipeItemFirstPage = ({
         <ItemImgEdit type="file" accept="image/*" onChange={getImgUpload} />
         <ItemBox>
           <ItemInfo>
-            <Avatar
-              alt="user_img"
-              src={profile}
-              sx={{ width: 40, height: 40, mr: 1 }}
-              onClick={userPage}
-            />
+            <Avatar alt="user_img" src={profile} sx={{ width: 40, height: 40, mr: 1 }} onClick={userPage} />
             <NinknameCreatedAt>
               <Nickname onClick={userPage}>
                 {grade}/{nickname}
               </Nickname>
-              <>
+              <ButtonDiv>
                 <ButtonEdit onClick={onSubmit}>수정완료</ButtonEdit>
                 <ButtonEdit onClick={onCancle}>수정취소</ButtonEdit>
-              </>
-
-              {/* <CreatedAt>{dateFormat(createAt)}</CreatedAt> */}
+              </ButtonDiv>
             </NinknameCreatedAt>
           </ItemInfo>
           <ItemTitleEdit
@@ -286,17 +208,6 @@ const Nickname = styled.div`
   margin-top: 3px;
 `;
 
-const FollowBtn = styled.button`
-  width: 15vw;
-  height: 3.5vh;
-  border: 0;
-  border-radius: 8px;
-  background-color: #ff7a00;
-  color: white;
-  margin: 0 10px 3px 0;
-  margin-right: 10px;
-`;
-
 const ItemTitle = styled.div`
   font-size: var(--font-semi-small);
   margin-left: 15px;
@@ -312,6 +223,7 @@ const ItemTitleEdit = styled.input`
 const ButtonDiv = styled.div`
   display: flex;
   gap: 10px;
+  margin-right: 0.5rem;
 `;
 
 const Button1 = styled.button`
