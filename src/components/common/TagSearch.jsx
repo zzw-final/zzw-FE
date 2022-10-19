@@ -31,11 +31,6 @@ const TagSearch = ({ topTenTagList, tagAllList, setSlideIsOpen }) => {
   };
   return (
     <>
-      <TagListFoldLine
-        onClick={() => {
-          setSlideIsOpen(false);
-        }}
-      />
       <SearchBoxTag>
         {searchTagList &&
           searchTagList?.map((tag, idx) => (

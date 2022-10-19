@@ -46,9 +46,7 @@ function Detail({
   };
 
   useEffect(() => {
-    const foodName = postDetail?.ingredient?.find(
-      (item) => item.isName === true
-    )?.ingredientName;
+    const foodName = postDetail?.ingredient?.find((item) => item.isName === true)?.ingredientName;
     setFoodName(foodName);
   }, [postDetail]);
 
@@ -79,11 +77,7 @@ function Detail({
         </Tags>
       ) : (
         <Tags>
-          <TagList
-            postDetail={postDetail}
-            editForm={editForm}
-            setEditedIngredient={setEditedIngredient}
-          />
+          <TagList postDetail={postDetail} editForm={editForm} setEditedIngredient={setEditedIngredient} />
         </Tags>
       )}
 
@@ -117,11 +111,6 @@ function Detail({
         <CreatedAt>{dateFormat(postDetail?.createAt)}</CreatedAt>
         {slideIsOpen && (
           <Slide setSlideIsOpen={setSlideIsOpen}>
-            <CommentFoldLine
-              onClick={() => {
-                setSlideIsOpen(false);
-              }}
-            ></CommentFoldLine>
             <CommentBox>
               <CommentList
                 postId={postDetail?.postId}
@@ -181,22 +170,17 @@ const Comment = styled.div`
   background-color: var(#fff7eb);
   padding: 0.2rem;
   text-align: center;
-  box-shadow: 0 0 10px rgb(0 0 0 / 30%);
+  box-shadow: 0 0 10px rgb(0 0 0 / 15%);
   border-radius: 14px;
   font-weight: var(--weight-bold);
   width: 17vw;
 `;
 
-const CommentFoldLine = styled.div`
-  width: 20%;
-  height: 0.2rem;
-  background-color: var(--color-orange);
-  margin: 0.5rem auto 2rem auto;
-`;
-
 const CommentBox = styled.div`
   width: 100%;
-  height: 85%;
+  height: 100%;
+  max-height: 400px;
+  overflow: auto;
 `;
 
 export default Detail;

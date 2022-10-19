@@ -7,7 +7,7 @@ import { useNavigate } from "react-router-dom";
 
 function Recipe({ post, recipeRef, ...props }) {
   const navigate = useNavigate();
-  const { postId, title, isLike, ingredient, foodImg } = post;
+  const { postId, title, ingredient, foodImg } = post;
 
   const foodName = ingredient?.find((ingredient) => ingredient.isName === true).ingredientName;
 
@@ -23,7 +23,6 @@ function Recipe({ post, recipeRef, ...props }) {
     <Card {...props} margin="3px 6px">
       <TopBox>
         <Tag tagName={`#${foodName}`} isFoodName={true} height="24px" opacity={0.8} />
-        <Like isLike={isLike} postId={postId} />
       </TopBox>
       <Img alt="foodphoto" src={foodImg} onClick={goToDetail} />
       <Title ref={recipeRef}>{title}</Title>
@@ -60,6 +59,8 @@ const Title = styled.div`
   font-weight: var(--weight-regular-thick);
   //DESC: width 넘어가면 ...으로 생략되는 부분
   width: 100%;
+  max-height: 1.6rem;
+  line-height: 1.6rem;
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;

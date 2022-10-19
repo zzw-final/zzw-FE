@@ -59,18 +59,26 @@ const GlobalStyle = createGlobalStyle`
 }
 
 /* Universal tags  */
-* {
+* { 
   box-sizing: border-box;
   margin: 0;
   padding: 0;
   /* font-family: "EF_Diary"; */
   font-family: "GangwonEdu_OTFBoldA";
+
+  -ms-overflow-style: none;
+
+  ::-webkit-scrollbar {
+    display: none;
+    width: 0 !important;
+  }
 }
 
 html,
 body {
   margin: 0;
   padding: 0;
+
 }
 
 html, body{
