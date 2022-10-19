@@ -9,7 +9,7 @@ function Recipe({ post, recipeRef, ...props }) {
   const navigate = useNavigate();
   const { postId, title, ingredient, foodImg } = post;
 
-  const foodName = ingredient?.find((ingredient) => ingredient.isName === true).ingredientName;
+  const foodName = ingredient?.find((ingredient) => ingredient && ingredient.isName === true)?.ingredientName;
 
   const foodIngredientList = ingredient
     ?.map((ingredient) => (ingredient.isName !== true ? ingredient.ingredientName : undefined))
