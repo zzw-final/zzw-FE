@@ -33,8 +33,8 @@ const MyPage = () => {
   const { data: myRecipes } = useQuery(["mypage", "myRecipes"], fetchMyRecipes, options.eternal);
 
   useEffect(() => {
-    if (inView && hasNextPage && myVisible) fetchNextPage();
-  }, [inView, hasNextPage, fetchNextPage, myVisible]);
+    if (inView && hasNextPage && likeVisible) fetchNextPage();
+  }, [inView, hasNextPage, fetchNextPage, likeVisible]);
 
   const likeRecipeClick = () => {
     setMyVisible(false);
