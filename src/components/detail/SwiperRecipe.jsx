@@ -113,8 +113,8 @@ const SwiperBox = styled.div`
   }
 
   .swiper-slide {
-    background-color: var(--color-white);
-    box-shadow: 0px 0px 10px #dcdcdc;
+    /* background-color: var(--color-white);
+    box-shadow: 0px 0px 10px #dcdcdc; */
   }
 `;
 
