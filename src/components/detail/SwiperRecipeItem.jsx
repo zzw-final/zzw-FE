@@ -81,12 +81,14 @@ const SwiperRecipeItem = ({
                     <Button1 onClick={onDelete}>삭제</Button1>
                   </>
                 </ButtonDiv>
-              ) : (
+              ) : loninNickname ? (
                 <ButtonDiv>
                   <Button onClick={followHandler} name="FollowBtn" isFollow={greyButton}>
                     {postDetail?.isFollow ? "팔로잉" : "팔로우"}
                   </Button>
                 </ButtonDiv>
+              ) : (
+                ""
               )}
             </NinknameCreatedAt>
           </ItemInfo>

@@ -79,13 +79,14 @@ const SwiperRecipeItemFirstPage = ({
                     <Button1 onClick={onDelete}>삭제</Button1>
                   </>
                 </ButtonDiv>
-              ) : (
+              ) : loninNickname ? (
                 <ButtonDiv>
-                  {/* <FollowBtn>팔로우</FollowBtn> */}
                   <Button onClick={followHandler} name="FollowBtn" isFollow={greyButton}>
                     {isFollow ? "팔로잉" : "팔로우"}
                   </Button>
                 </ButtonDiv>
+              ) : (
+                ""
               )}
 
               {/* <CreatedAt>{dateFormat(createAt)}</CreatedAt> */}
