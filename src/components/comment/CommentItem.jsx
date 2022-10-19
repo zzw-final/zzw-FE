@@ -138,7 +138,7 @@ const CommentItem = ({ commentItem, remove, update }) => {
 const ItemContainer = styled.div`
   display: flex;
   flex-direction: row;
-  padding: 0.3rem 1rem;
+  padding: 0.3rem 0rem;
   /* background-color: red; */
 `;
 

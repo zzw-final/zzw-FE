@@ -96,6 +96,8 @@ const SwiperContainer = styled.div`
 `;
 
 const SwiperBox = styled.div`
+  z-index: 0;
+
   .swiper {
     width: 400px;
     height: 600px;

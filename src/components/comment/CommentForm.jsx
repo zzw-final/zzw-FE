@@ -46,7 +46,8 @@ const CommentForm = ({ postId, post }) => {
 const FormContainer = styled.div`
   display: flex;
   align-items: center;
-  margin: 0.4rem;
+  width: 100%;
+  /* background-color: red; */
 `;
 
 const CommentInput = styled.input`

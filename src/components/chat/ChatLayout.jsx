@@ -3,16 +3,9 @@ import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
 import TextAreaAutoResize from "react-textarea-autosize";
 import DeleteOutlinedIcon from "@mui/icons-material/DeleteOutlined";
+import DeleteIcon from "@mui/icons-material/Delete";
 
-function ChatLayout({
-  publish,
-  msg,
-  msgHandler,
-  setMsg,
-  location,
-  children,
-  out,
-}) {
+function ChatLayout({ publish, msg, msgHandler, setMsg, location, children, out }) {
   const navigate = useNavigate();
   const pub = () => {
     if (msg.trim() !== "") {
@@ -38,16 +31,12 @@ function ChatLayout({
           <span>{location?.grade}</span>
         </div>
         <OutChatBtn onClick={out}>
-          <DeleteOutlinedIcon />
+          <DeleteIcon color="black" />
         </OutChatBtn>
       </Header>
       {children}
       <Label style={{ position: "fixed" }}>
-        <TextAreaAutoResize
-          value={msg}
-          onKeyPress={onEnterPress}
-          onChange={msgHandler}
-        />
+        <TextAreaAutoResize value={msg} onKeyPress={onEnterPress} onChange={msgHandler} />
         <div onClick={pub}>전송</div>
       </Label>
     </Container>

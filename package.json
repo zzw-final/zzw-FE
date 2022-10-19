@@ -42,8 +42,8 @@
     "build": "react-scripts build",
     "test": "react-scripts test",
     "eject": "react-scripts eject",
-    "aws": "aws s3 sync ./build s3://zeze --profile=zeze",
-    "invalidate": "aws cloudfront create-invalidation --profile=zeze --distribution-id EUROXVUXFVQAD --paths /*",
+    "aws": "aws s3 sync ./build s3://zeze --profile=zzw",
+    "invalidate": "aws cloudfront create-invalidation --profile=zzw --distribution-id EUROXVUXFVQAD --paths /*",
     "deploy": "yarn build && yarn aws && yarn invalidate"
   },
   "eslintConfig": {
