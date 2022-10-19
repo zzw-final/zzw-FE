@@ -116,9 +116,13 @@ const Footer = ({ topTenTagList, tagAllList }) => {
     <>
       <FooterContainer>
         <FooterIcon id="chatlist" onClick={goChatList}>
-          <Badge badgeContent={!newChatText ? "N" : "0"} color="warning">
+          {!newChatText ? (
+            <Badge badgeContent="N" color="warning">
+              <TextsmsIcon sx={{ fontSize: 30 }} />
+            </Badge>
+          ) : (
             <TextsmsIcon sx={{ fontSize: 30 }} />
-          </Badge>
+          )}
         </FooterIcon>
         <FooterIcon onClick={toggleTagBox}>
           <TagIcon sx={{ fontSize: 30 }} />
