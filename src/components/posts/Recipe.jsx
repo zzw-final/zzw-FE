@@ -59,6 +59,8 @@ const Title = styled.div`
   font-weight: var(--weight-regular-thick);
   //DESC: width 넘어가면 ...으로 생략되는 부분
   width: 100%;
+  max-height: 1.6rem;
+  line-height: 1.6rem;
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;

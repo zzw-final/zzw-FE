@@ -21,11 +21,7 @@ function FollowList({ followList, mutate }) {
         <span>
           <SearchIcon color="warning" />
         </span>
-        <Input
-          type="search"
-          placeholder="닉네임을 검색하세요."
-          onChange={searchInputHandler}
-        ></Input>
+        <Input placeholder="닉네임을 검색하세요." onChange={searchInputHandler}></Input>
       </SearchBox>
       {searchFollowList?.map((follow) => (
         <Follow key={follow.userId} follow={follow} mutate={mutate} />

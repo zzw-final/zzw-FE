@@ -112,11 +112,15 @@ function ChatPage() {
 
   //채팅방 나가기
   const out = async () => {
-    window.confirm(
+    const alert = window.confirm(
       "채팅방을 나가면 모든 대화내역이 삭제 됩니다. 그래도 나가시겠습니까?"
     );
-    await instance.delete(`/api/chat/member/${roomId}`);
-    navigate(-1);
+    if (alert) {
+      await instance.delete(`/api/chat/member/${roomId}`);
+      navigate(-1);
+    } else {
+      return;
+    }
   };
 
   return (
