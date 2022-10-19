@@ -23,9 +23,7 @@ function WritePage() {
   const queryClient = useQueryClient();
 
   // WriteAddCard에서 값을 받을 state
-  const [formValues, setFomvalues] = useState([
-    { imageUrl: "", content: "", page: 0 },
-  ]);
+  const [formValues, setFomvalues] = useState([{ imageUrl: "", content: "", page: 0 }]);
 
   //받은값 전부를 post => mutate로 리팩토링
   const postMutate = useMutation((data) => fetchpostWrite(data), {
@@ -33,6 +31,7 @@ function WritePage() {
       queryClient.invalidateQueries(["mypage", "myRecipes"]);
       queryClient.invalidateQueries(["mypage", "likeRecipes"]);
       queryClient.invalidateQueries("recentPost");
+      if (data.data.data.isGet) alert("새로운 칭호를 획득했습니다!");
       alert("게시글 등록이 완료되었습니다!");
       navigate(`/detail/${data.data.data.postId}`);
       window.sessionStorage.clear();
@@ -64,6 +63,9 @@ function WritePage() {
     if (ingredient.length === 0) {
       return alert("재료 태그를 추가해주세요❗️");
     }
+    if (!formValues.every((item) => !!item.content)) {
+      return alert("비어있는 항목이 있습니다!");
+    }
     postMutate.mutate(data);
   };
 
@@ -75,15 +77,13 @@ function WritePage() {
   };
 
   const outconfirm = () => {
-    if (
-      window.confirm(
-        "나가시면 작성한 데이터가 모두 사라집니다. 그래도 나가시겠습니까?"
-      )
-    ) {
-      window.sessionStorage.clear();
-      window.localStorage.clear();
-    }
+    window.sessionStorage.clear();
+    window.localStorage.clear();
   };
+
+  // 얘가 언디파인드이면 전부 다 비어있다는 뜻. -> 얼럿 실행
+  console.log(formValues.every((item) => !!item.content));
+
   useEffect(() => {
     return outconfirm;
   }, []);
@@ -105,11 +105,7 @@ function WritePage() {
         imgUpload={imgUpload}
         setImageURL={setImageURL}
       />
-      <WriteAddCard
-        imgUpload={imgUpload}
-        formValues={formValues}
-        setFomvalues={setFomvalues}
-      />
+      <WriteAddCard imgUpload={imgUpload} formValues={formValues} setFomvalues={setFomvalues} />
     </LayoutPage>
   );
 }

@@ -14,17 +14,7 @@ const LoginPage = () => {
 
   return (
     <Container>
-      {/* <LoginText>로그인하고 냉장고를 비워봐요!</LoginText> */}
-      {/* <EmojiBox>
-          <Emoji>
-            <span style={{ letterSpacing: "-0.1rem" }}>🥬 + 🥓</span> = 🍲
-          </Emoji>
-          <Emoji>
-            <span style={{ letterSpacing: "-0.1rem" }}>🧀 + 🍞</span> = 🥪
-          </Emoji>
-        </EmojiBox> */}
       <LoginBox>
-        {/* <Line>Login with</Line> */}
         <LoginSelect>
           <KakaoLogin />
           <NaverLogin />
