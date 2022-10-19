@@ -20,7 +20,7 @@ function Recipe({ post, recipeRef, ...props }) {
   };
 
   return (
-    <Card {...props} margin="3px 6px">
+    <Card {...props}>
       <TopBox>
         <Tag tagName={`#${foodName}`} isFoodName={true} height="24px" opacity={0.8} />
       </TopBox>

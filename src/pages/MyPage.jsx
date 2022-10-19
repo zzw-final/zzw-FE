@@ -28,21 +28,13 @@ const MyPage = () => {
     enabled: likeVisible,
   });
 
-  const { data: userData } = useQuery(
-    ["mypage", "profile"],
-    fetchProfile,
-    options.eternal
-  );
+  const { data: userData } = useQuery(["mypage", "profile"], fetchProfile, options.eternal);
 
-  const { data: myRecipes } = useQuery(
-    ["mypage", "myRecipes"],
-    fetchMyRecipes,
-    options.eternal
-  );
+  const { data: myRecipes } = useQuery(["mypage", "myRecipes"], fetchMyRecipes, options.eternal);
 
   useEffect(() => {
-    if (inView && hasNextPage) fetchNextPage();
-  }, [inView, hasNextPage, fetchNextPage]);
+    if (inView && hasNextPage && likeVisible) fetchNextPage();
+  }, [inView, hasNextPage, fetchNextPage, likeVisible]);
 
   const likeRecipeClick = () => {
     setMyVisible(false);
