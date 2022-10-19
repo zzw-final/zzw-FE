@@ -14,7 +14,7 @@ const useInfinity = (queryKey, apiFn, option) => {
       // 첫 번째 인자로는 직전에 받아온 페이지를, 두 번째 인자로는 전체 페이지 배열을 반환해 줍니다
       // 저희는 직전 페이지에서 마지막 아이템의 postId를 추출해서 리턴해야겠쥬?
       // 여기서 undefined가 리턴되면 hasNextPage의 값이 false가 됩니다 (다음페이지가 없다는 뜻!)
-      if (lastPage.data.success) {
+      if (lastPage.data.data === "" || lastPage.data.success) {
         return lastPage.data.data.isLast
           ? undefined
           : lastPage.data.data.postList[lastPage.data.data.postList.length - 1].postId;
