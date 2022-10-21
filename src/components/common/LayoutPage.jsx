@@ -49,8 +49,6 @@ const LayoutPage = ({
     fetchData();
   }, []);
 
-  console.log("pathName", pathName);
-
   const back = () => {
     if (pathName === "/chatlist") {
       navigate("/");

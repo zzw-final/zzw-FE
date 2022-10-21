@@ -28,7 +28,7 @@ const Footer = ({ topTenTagList, tagAllList }) => {
   const client = useRef({});
 
   useEffect(() => {
-    fetchAlarm().then((res) => setNewChatText(res.data.data.isRead));
+    fetchAlarm().then((res) => setNewChatText(res.data.data.isRead && res.data.data.isRead));
     connect();
     return () => disconnect();
   }, []);
@@ -116,7 +116,7 @@ const Footer = ({ topTenTagList, tagAllList }) => {
     <>
       <FooterContainer>
         <FooterIcon id="chatlist" onClick={goChatList}>
-          {!newChatText ? (
+          {newChatText !== undefined && !newChatText ? (
             <Badge badgeContent="N" color="warning">
               <TextsmsIcon sx={{ fontSize: 30 }} />
             </Badge>
