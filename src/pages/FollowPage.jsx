@@ -14,6 +14,7 @@ import {
   followHandler,
 } from "../api/followpage";
 import { getCookie } from "../util/cookie";
+import Spinner from "../components/UI/Spinner";
 
 const FollowPage = () => {
   const { id } = useParams();
@@ -25,7 +26,7 @@ const FollowPage = () => {
   const queryClient = useQueryClient();
   const loginNickname = getCookie("loginNickname");
 
-  const { data: followList } = useQuery(
+  const { data: followList, isLoading: loadingFollowList } = useQuery(
     ["follow", id ? id : "0"],
     id ? () => fetchFollow(id) : fetchMyFollow,
     {
@@ -33,7 +34,7 @@ const FollowPage = () => {
       enabled: !click,
     }
   );
-  const { data: followerList } = useQuery(
+  const { data: followerList, isLoading: loadingFollowerList } = useQuery(
     ["follower", id ? id : "0"],
     id ? () => fetchFollower(id) : fetchMyFollower,
     {
@@ -66,6 +67,8 @@ const FollowPage = () => {
       queryClient.invalidateQueries(["mainPage", "infinite"]);
     },
   });
+
+  if (loadingFollowList || loadingFollowerList) return <Spinner />;
 
   return (
     <LayoutPage headerTitle={id ? nickname : loginNickname}>
