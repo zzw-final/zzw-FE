@@ -23,7 +23,9 @@ function WritePage() {
   const queryClient = useQueryClient();
 
   // WriteAddCard에서 값을 받을 state
-  const [formValues, setFomvalues] = useState([{ imageUrl: "", content: "", page: 0 }]);
+  const [formValues, setFomvalues] = useState([
+    { imageUrl: "", content: "", page: 0 },
+  ]);
 
   //받은값 전부를 post => mutate로 리팩토링
   const postMutate = useMutation((data) => fetchpostWrite(data), {
@@ -105,7 +107,11 @@ function WritePage() {
         imgUpload={imgUpload}
         setImageURL={setImageURL}
       />
-      <WriteAddCard imgUpload={imgUpload} formValues={formValues} setFomvalues={setFomvalues} />
+      <WriteAddCard
+        imgUpload={imgUpload}
+        formValues={formValues}
+        setFomvalues={setFomvalues}
+      />
     </LayoutPage>
   );
 }
