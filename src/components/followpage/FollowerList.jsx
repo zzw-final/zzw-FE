@@ -5,7 +5,7 @@ import useInput from "../../hooks/useInput";
 import SearchIcon from "@mui/icons-material/Search";
 
 function FollowerList({ followerList, mutate }) {
-  const [searchInput, searchInputHandler] = useInput("");
+  const [searchInput, searchInputHandler] = useInput();
 
   if (followerList?.length === 0) {
     return <Div>팔로워 목록이 여기에 표시됩니다.</Div>;
