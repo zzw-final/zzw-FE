@@ -232,5 +232,5 @@ const Dletbutton = styled.button`
   height: 2vh;
   border: 0;
   border-radius: 10px;
-  margin: 2rem 1rem 0rem 18rem;
+  margin: 2.1rem 1rem 0rem 8rem;
 `;
