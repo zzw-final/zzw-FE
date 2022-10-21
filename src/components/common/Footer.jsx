@@ -150,8 +150,8 @@ const FooterContainer = styled.div`
   width: 100%;
   display: flex;
   justify-content: space-between;
-  padding: 1.2rem 1rem 0 1rem;
-  height: 90px;
+  padding: 1rem;
+  height: 60px;
   border-top: 1px solid var(--color-orange);
   position: fixed;
   bottom: 0;
