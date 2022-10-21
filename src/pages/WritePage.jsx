@@ -5,6 +5,7 @@ import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
 import { fetchImg, fetchpostWrite } from "../api/writepage";
 import LayoutPage from "../components/common/LayoutPage";
+import Spinner from "../components/UI/Spinner";
 import WriteAddCard from "../components/write/WriteAddCard";
 import WriteTitle from "../components/write/WriteTitle";
 
@@ -89,6 +90,8 @@ function WritePage() {
   useEffect(() => {
     return outconfirm;
   }, []);
+
+  if (postMutate.isLoading) return <Spinner />;
 
   return (
     <LayoutPage
