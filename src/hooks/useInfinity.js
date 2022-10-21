@@ -8,7 +8,7 @@ const useInfinity = (queryKey, apiFn, option) => {
   // 2번째 요청부터는 마지막 아이템의 postId를 같이 보내줘야 하기 때문에 여기서는 pageParam을 빈 값으로 둡니다
   const fetchData = ({ pageParam = "" }) => apiFn(pageParam);
 
-  const { data, fetchNextPage, hasNextPage } = useInfiniteQuery(queryKey, fetchData, {
+  const { data, fetchNextPage, hasNextPage, isLoading } = useInfiniteQuery(queryKey, fetchData, {
     getNextPageParam: (lastPage, pages) => {
       // getNextPageParam은 API 요청에 쓰이는 pageParam을 리턴합니다(빈 값이었던 그거)
       // 첫 번째 인자로는 직전에 받아온 페이지를, 두 번째 인자로는 전체 페이지 배열을 반환해 줍니다
@@ -33,7 +33,7 @@ const useInfinity = (queryKey, apiFn, option) => {
     ...option,
   });
 
-  return { data, fetchNextPage, hasNextPage };
+  return { data, fetchNextPage, hasNextPage, isLoading };
 
   // data: 받아와서 가공할 데이터 (주로 map을 돌리게 됩니다)
   // fetchNextPage: inView가 true가 되면 실행시킬 다음 페이지를 받아오는 함수
