@@ -159,8 +159,8 @@ const ItemContainer = styled.div`
 `;
 
 const ItemImg = styled.img`
-  width: 90%;
-  height: 63%;
+  width: 80%;
+  height: 50%;
   border-radius: 18px;
   padding: 0.2rem;
   margin: 0 auto 1rem auto;
@@ -237,8 +237,9 @@ const ItemStep = styled.div`
 
 const ItemContent = styled.div`
   font-size: var(--font-semi-small);
-  overflow: scroll;
+  overflow-y: scroll;
   height: auto;
+  max-height: 200px;
   width: 90%;
   margin: 0 auto 1rem auto;
   background-color: #ffe8c6;
