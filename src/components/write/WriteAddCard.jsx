@@ -218,6 +218,7 @@ const Addbutton = styled.button`
   width: 90vw;
   height: 5vh;
   border-radius: 10px;
+  margin-top: 1rem;
   margin-left: 6vw;
   &:hover {
     border: 2px white;
