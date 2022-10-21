@@ -9,7 +9,7 @@ import useInput from "../hooks/useInput";
 
 const ChatListPage = () => {
   const { data: chatList } = useQuery("chatList", fetchChatList, options.nocache);
-  const [searchInput, searchInputHandler] = useInput();
+  const [searchInput, searchInputHandler] = useInput("");
 
   const searchNickname = chatList?.filter((item) => item.nickname.includes(searchInput));
 

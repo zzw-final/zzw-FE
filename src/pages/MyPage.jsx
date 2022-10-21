@@ -10,15 +10,19 @@ import useInfinity from "../hooks/useInfinity";
 import Spinner from "../components/UI/Spinner";
 import { useEffect, useState } from "react";
 import { options } from "../api/options";
-import { fetchProfile, fetchMyRecipes, fetchLikeRecipes } from "../api/mypage";
-import { useQuery } from "react-query";
+import { fetchProfile, fetchMyRecipes, fetchLikeRecipes, editApi } from "../api/mypage";
+import { useQuery, useMutation, useQueryClient } from "react-query";
+import { setCookie, getCookie } from "../util/cookie";
 import { useInView } from "react-intersection-observer";
+
+export const vaildNickname = /^(?=.*[가-힣])[가-힣]{2,6}$/;
 
 const MyPage = () => {
   const [myVisible, setMyVisible] = useState(true);
   const [likeVisible, setLikeVisible] = useState(false);
   const [editMode, setEditMode] = useState(false);
   const [modalIsOpen, setModalIsOpen] = useState(false);
+  const queryClient = useQueryClient();
   const { ref, inView } = useInView();
 
   const {
@@ -56,6 +60,29 @@ const MyPage = () => {
     setLikeVisible(false);
   };
 
+  const { mutate: nicknameMutate } = useMutation(
+    (newNickname) => editApi.editNickname(newNickname),
+    {
+      onSuccess: (res, nickname) => {
+        setCookie("loginNickname", nickname);
+        queryClient.invalidateQueries(["mypage", "profile"]);
+      },
+    }
+  );
+
+  const nicknameEditHandler = (newNickname) => {
+    if (getCookie("loginNickname") === newNickname) {
+      setEditMode((prev) => !prev);
+      return;
+    }
+    if (vaildNickname.test(newNickname)) {
+      nicknameMutate(newNickname);
+      setEditMode((prev) => !prev);
+    } else {
+      alert("닉네임은 한글 최대 여섯 자까지 허용됩니다");
+    }
+  };
+
   const editHandler = () => {
     setEditMode((prev) => !prev);
   };
@@ -68,8 +95,9 @@ const MyPage = () => {
       {userData && editMode && (
         <EditProfile
           userData={userData}
-          editHandler={editHandler}
+          nicknameEditHandler={nicknameEditHandler}
           setModalIsOpen={setModalIsOpen}
+          nicknameMutate={nicknameMutate}
         />
       )}
       <TogglePosts
