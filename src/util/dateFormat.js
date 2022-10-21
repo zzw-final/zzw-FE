@@ -1,19 +1,19 @@
 import dayjs from "dayjs";
+const localizedFormat = require("dayjs/plugin/localizedFormat");
+const calendar = require("dayjs/plugin/calendar");
 
 export const dateFormat = (date) => {
   // 어제 시간, 오늘 시간, 그 외는 날짜
   dayjs.locale("ko");
-  const getDate = dayjs(date, "YYYY-MM-DD HH:mm");
-  const time = dayjs(date).format("hh:mm");
-  const today = dayjs();
-  const hours = today.diff(getDate, "hours");
-  const days = Math.floor(hours / 24);
+  dayjs.extend(localizedFormat);
+  dayjs.extend(calendar);
 
-  if (days === 0) {
-    return `오늘 ${time}`;
-  } else if (days === 1) {
-    return `어제 ${time}`;
-  } else {
-    return `${getDate.format("YYYY.MM.DD")}`;
-  }
+  const getDate = dayjs(date, "YYYY-MM-DD HH:mm");
+
+  return dayjs(getDate).calendar(null, {
+    sameDay: "[오늘] h:mm A",
+    lastDay: "[어제] h:mm A",
+    lastWeek: "DD/MM/YYYY",
+    sameElse: "DD/MM/YYYY",
+  });
 };

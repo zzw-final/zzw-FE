@@ -72,6 +72,15 @@ export const kakaoLoginInstance = async (code) => {
   });
 };
 
+export const kakaoLogoutInstance = async () => {
+  return await axios.get(`${process.env.REACT_APP_API}/api/member/kakao/logout`, {
+    headers: {
+      kakaoToken: getCookie("oauthToken"),
+      withCredentials: true,
+    },
+  });
+};
+
 export const join = async (sendData) => {
   return instance.post(`/api/member/signup`, sendData);
 };

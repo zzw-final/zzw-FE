@@ -19,6 +19,7 @@ import {
   likePost,
   fetchFollowDe,
 } from "../api/writepage";
+import Spinner from "../components/UI/Spinner";
 
 function DetailPage() {
   const navigate = useNavigate();
@@ -42,7 +43,7 @@ function DetailPage() {
   const queryClient = useQueryClient();
 
   //기존 데이터 가져오는 useQuery
-  const { data: postDetail } = useQuery(
+  const { data: postDetail, isLoading: loadingDetailData } = useQuery(
     ["detail", id],
     () => fetchDetail(id),
     options.eternal
@@ -200,6 +201,9 @@ function DetailPage() {
   const update = (updateInfo) => {
     commentUpdateMutate.mutate(updateInfo);
   };
+
+  if (loadingDetailData || delteMutate.isLoading || editMutate.isLoading)
+    return <Spinner />;
 
   return (
     <LayoutPage

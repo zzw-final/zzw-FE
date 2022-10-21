@@ -1,5 +1,4 @@
 import React, { useState } from "react";
-import { likes } from "../api/request";
 import styled from "styled-components";
 import LayoutPage from "../components/common/LayoutPage";
 import Logo from "../components/common/Logo";
@@ -10,13 +9,11 @@ import { useQuery } from "react-query";
 import Toast from "../components/UI/Toast";
 import { options } from "../api/options";
 import { fetchBestList, fetchBestTagTopFive, fetchRecentList } from "../api/mainpage";
-import { useCookies } from "react-cookie";
+import { getCookie } from "../util/cookie";
 
 const MainPage = () => {
   const [toast, setToast] = useState(false);
-  const [cookies] = useCookies(["loginNickname"]);
-
-  const loginNickname = cookies.loginNickname;
+  const loginNickname = getCookie("loginNickname");
 
   const navigate = useNavigate();
   const { data: tagList } = useQuery(["mainPage", "tagList"], fetchBestTagTopFive, options.eternal);
@@ -40,7 +37,9 @@ const MainPage = () => {
       <Logo />
       <SearchForm mainSearch={search} showToast={showToast} />
       <MainContainer>
-        {toast && <Toast setToast={setToast} text={"태그는 5개까지 검색 가능합니다."} margin="0.5rem" />}
+        {toast && (
+          <Toast setToast={setToast} text="태그는 5개까지 검색 가능합니다." margin="0.5rem" />
+        )}
         <Main tagList={tagList} bestPost={bestPost} recentPost={recentPost} search={search} />
       </MainContainer>
     </LayoutPage>

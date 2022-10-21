@@ -13,6 +13,7 @@ const Like = ({ isLike, postId }) => {
 
   const likeMutate = useMutation((postId) => likes(postId), {
     onSuccess: (list, value) => {
+      if (list.data.data.isGet) alert("새로운 칭호를 획득했습니다!");
       queryClient.invalidateQueries(["detail", "" + value]);
       queryClient.invalidateQueries(["mainPage"]);
       queryClient.invalidateQueries(["follow"]);

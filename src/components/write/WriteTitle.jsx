@@ -31,6 +31,8 @@ const WriteTitle = ({
     if (e.target.value !== "" && e.key === "Enter") {
       if (tagList.length < 11) {
         submitTag();
+      } else {
+        alert("재료태그는 10개 까지 등록이 가능합니다!");
       }
     }
   };
@@ -89,7 +91,7 @@ const WriteTitle = ({
         })}
         <IngredintTag
           value={tagItem}
-          placeholder="재료를 태그로 입력해주세요"
+          placeholder="재료입력 후 엔터를 눌러 태그를 생성해주세요!"
           onChange={(e) => {
             setTagItem(e.target.value);
           }}
@@ -185,11 +187,11 @@ const TagNoti = styled.p`
 const TagBox = styled.div`
   display: flex;
   align-items: center;
-  flex-wrap: wrap;
+  /* flex-wrap: wrap; */
   width: 100%;
   height: 6vh;
   max-height: 6vh;
-  overflow-y: scroll;
+  overflow-x: scroll;
   margin: 3rem 0rem 0px 0rem;
   padding: 0 10px;
   border: 0;
@@ -202,17 +204,25 @@ const TagBox = styled.div`
     border-color: var(--color-light-blue);
   }
 `;
-const IngredintTag = styled.input`
+const IngredintTag = styled.textarea`
   box-sizing: border-box;
-  display: inline-flex;
-  min-width: 150px;
+  width: 230px;
+  resize: none;
+  margin-left: 10px;
+  /* max-width: 230px; */
+  height: 3.5vh;
   background: transparent;
+  overflow-x: scroll;
   border: none;
   outline: none;
   cursor: text;
 `;
 const Tagdiv = styled.div`
-  display: flex;
+  /* display: flex; */
+  white-space: nowrap;
+  display: inline-flex;
+  width: auto;
+  height: 3.5vh;
   align-items: center;
   justify-content: space-between;
   margin: 5px;

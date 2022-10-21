@@ -1,13 +1,12 @@
 import React, { useCallback, useEffect, useRef, useState } from "react";
 import SearchIcon from "@mui/icons-material/Search";
 import styled from "styled-components";
-import { useCookies } from "react-cookie";
 import useInputRef from "../../hooks/useInputRef";
 import Tag from "../common/Tag";
 import { useSearchParams } from "react-router-dom";
+import { getCookie } from "../../util/cookie";
 
 const SearchForm = ({ mainSearch, searchPageSearch, showToast }) => {
-  const [cookies] = useCookies(["loginNickname"]);
   const [selectOption, setSelectOption] = useState("tag");
   const [tagList, setTagList] = useState([]);
 
@@ -17,7 +16,7 @@ const SearchForm = ({ mainSearch, searchPageSearch, showToast }) => {
   const searchedNickname = searchParams.get("nickname");
 
   const pathName = window.location.pathname;
-  const loginNickname = cookies.loginNickname;
+  const loginNickname = getCookie("loginNickname");
 
   const selectRef = useRef();
 
@@ -27,6 +26,10 @@ const SearchForm = ({ mainSearch, searchPageSearch, showToast }) => {
     setTagList([]);
   };
 
+  useEffect(() => {
+    localStorage.setItem("tagList", tagList);
+  }, [tagList]);
+
   const options = [
     { value: "tag", label: "재료 | 음식" },
     { value: "title", label: "제목" },
@@ -35,67 +38,46 @@ const SearchForm = ({ mainSearch, searchPageSearch, showToast }) => {
 
   const searchHandler = () => {
     const searchText = inputRef?.current?.value;
-    const selectOptionRef = selectRef?.current.value;
-    if (selectOptionRef !== "tag" && searchText === "") {
-      alert("빈 값은 검색할 수 없습니다.");
-      return;
-    }
+    const selectOptionRef = selectRef?.current?.value;
+    const savedTagList = localStorage.getItem("tagList");
     inputRef.current.value = "";
-    if (searchText === "" && selectOptionRef === "tag") {
-      return tagSearchHandler(selectOptionRef, searchText, localStorage.getItem("tagList"));
-    } else if (selectOptionRef === "tag") {
-      makeTagList(searchText);
-      return;
-    }
-    pathName === "/" ? mainSearch(selectOptionRef, searchText) : searchPageSearch(selectOptionRef, searchText);
+
+    if (!searchText && !savedTagList.length) return alert("빈 값은 검색할 수 없습니다.");
+    if (!searchText && selectOptionRef === "tag")
+      return searchRequest(selectOptionRef, savedTagList);
+    if (selectOptionRef === "tag") return makeTagList(searchText);
+    searchRequest(selectOptionRef, "", searchText);
   };
 
-  useEffect(() => {
-    localStorage.setItem("tagList", tagList);
-  }, [tagList]);
-
-  const tagSearchHandler = (selectOptionRef, searchText, tagList) => {
-    if (pathName === "/") {
-      if (tagList !== [] && searchText === "") {
-        mainSearch(selectOptionRef, tagList.toString());
-      }
-      return;
-    }
-    searchPageSearch(selectOptionRef, tagList.toString());
+  const searchRequest = (selectOptionRef, tagList, searchText) => {
+    pathName === "/"
+      ? mainSearch(selectOptionRef, tagList ? tagList.toString() : searchText)
+      : searchPageSearch(selectOptionRef, tagList ? tagList.toString() : searchText);
   };
 
   const inputRef = useInputRef("", searchHandler);
 
-  const makeTagList = (addedTag) => {
-    if (addedTag === "") {
-      return new Error("tag 가 비었습니다.");
-    }
-    const localTaglist = localStorage.getItem("tagList").split(",");
-    if (localTaglist.length > 4) {
-      showToast();
-      return;
-    }
-    if (!localTaglist.includes(addedTag)) {
-      setTagList((prevState) => [...prevState, addedTag]);
-    }
-  };
+  const makeTagList = useCallback(
+    (addedTag) => {
+      const localTaglist = localStorage.getItem("tagList").split(",");
+      if (addedTag === "") return new Error("tag 가 비었습니다.");
+      if (localTaglist.length > 4) return showToast();
+      if (!localTaglist.includes(addedTag))
+        return setTagList((prevState) => [...prevState, addedTag]);
+    },
+    [showToast]
+  );
 
   useEffect(() => {
+    inputRef.current.value = searchedTag || searchedTitle || searchedNickname;
     if (searchedTag !== null) {
       setSelectOption("tag");
-      inputRef.current.value = searchedTag;
-      searchedTag.split(",").map((item) => {
-        return makeTagList(item);
-      });
+      searchedTag.split(",").map((item) => makeTagList(item));
       inputRef.current.value = "";
-    } else if (searchedTitle !== null) {
-      setSelectOption("title");
-      inputRef.current.value = searchedTitle;
-    } else if (searchedNickname !== null) {
-      setSelectOption("nickname");
-      inputRef.current.value = searchedNickname;
     }
-  }, [inputRef, searchedTag, searchedTitle, searchedNickname]);
+    if (searchedTitle !== null) setSelectOption("title");
+    if (searchedNickname !== null) setSelectOption("nickname");
+  }, [inputRef, searchedTag, searchedTitle, searchedNickname, makeTagList]);
 
   const deleteSelectedTag = (deleteTagName) => {
     setTagList(tagList.filter((tag) => tag !== deleteTagName));
@@ -104,20 +86,14 @@ const SearchForm = ({ mainSearch, searchPageSearch, showToast }) => {
   useEffect(() => {
     inputRef.current.addEventListener("keydown", logKey);
     function logKey(event) {
-      if (event.code === "Backspace") {
-        if (inputRef?.current?.value === "") {
-          setTagList((prev) => prev.slice(0, prev.length - 1));
-        }
+      if (event.code === "Backspace" && !inputRef?.current?.value) {
+        setTagList((prev) => prev.slice(0, prev.length - 1));
       }
     }
   }, [inputRef]);
 
   return (
     <SearchContainer>
-      <span>
-        {loginNickname ? <LoginNickname>{loginNickname}</LoginNickname> : `반가운 손`}
-        님, 오늘의 식재료를 입력해보세요!
-      </span>
       <SearchBox>
         <Form>
           <InputBox>
@@ -158,15 +134,9 @@ const SearchContainer = styled.div`
   font-size: var(--font-semi-small);
 `;
 
-const LoginNickname = styled.span`
-  color: var(--color-main-dark-orange);
-  font-weight: var(--weight-semi-bold);
-`;
-
 const SearchBox = styled.div`
   display: flex;
   padding: 0 20px;
-  margin-top: 0.5rem;
   color: var(--color-real-light-orange);
 `;
 
@@ -190,6 +160,7 @@ const SelectBox = styled.select`
   outline: 0;
   background-color: transparent;
   font-size: var(--font-small);
+  color: var(--color-black);
   cursor: pointer;
   position: absolute;
 `;
@@ -218,16 +189,19 @@ const SearchIconDiv = styled.div`
   display: flex;
 `;
 
-const InputForm = styled.input`
+const InputForm = styled.textarea`
   width: 100%;
   height: 36px;
-  padding: 0.4rem;
+  line-height: 37px;
+  padding-left: 0.4rem;
   font-size: var(--font-small);
   outline: 0;
   border: 0;
   min-width: 80px;
   background-color: transparent;
   margin-right: 1.5rem;
+  resize: none;
+  white-space: nowrap;
 `;
 
 export default SearchForm;

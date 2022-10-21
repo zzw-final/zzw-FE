@@ -1,13 +1,15 @@
 import styled from "styled-components";
 import Button from "../UI/Button";
 import EditIcon from "@mui/icons-material/Edit";
+import useInput from "../../hooks/useInput";
 import { useNavigate } from "react-router-dom";
 import { getCookie, removeCookie } from "../../util/cookie";
 import { withdrawal } from "../../api/mypage";
 
-function Profile({ userData, editHandler, setModalIsOpen }) {
+function Profile({ userData, nicknameEditHandler, setModalIsOpen }) {
   const navigate = useNavigate();
   const { follow, grade, gradeList, follower, nickname, profile, postSize } = userData;
+  const [newNickname, nicknameHandler] = useInput(nickname);
 
   const msg1 = "정말 탈퇴하시겠어요? 😢 작성한 글은 모두 삭제되고 복구되지 않습니다.";
   const msg2 = "확인을 누르시면 탈퇴가 완료됩니다. 그동안 고마웠어요! 🥹";
@@ -48,7 +50,7 @@ function Profile({ userData, editHandler, setModalIsOpen }) {
               </Btn>
             </EditBox>
             <NicknameBox>
-              <Nickname>{nickname}</Nickname>
+              <Nickname defaultValue={nickname} onChange={nicknameHandler} maxLength="6" />
               <div>{grade}</div>
             </NicknameBox>
           </div>
@@ -74,9 +76,9 @@ function Profile({ userData, editHandler, setModalIsOpen }) {
             </BottomBox>
             <Dm>
               <Button
-                onClick={editHandler}
+                onClick={() => nicknameEditHandler(newNickname)}
                 name="DmBtn"
-                width="60%"
+                width="70%"
                 background="var(--color-dark-orange)"
               >
                 <span style={{ fontSize: "13px" }}>✍️</span> 프로필 저장
@@ -84,10 +86,10 @@ function Profile({ userData, editHandler, setModalIsOpen }) {
               <Button
                 onClick={deleteAccount}
                 name="DmBtn"
-                width="40%"
+                width="30%"
                 size="var(--font-semi-small)"
               >
-                😢 회원탈퇴
+                회원탈퇴
               </Button>
             </Dm>
           </div>
@@ -102,7 +104,7 @@ export default Profile;
 const Container = styled.div`
   background-color: var(--color-light-orange);
   margin: auto;
-  padding: 3% 2% 0 1.5%;
+  padding: 3% 1% 0 0;
   width: 100%;
   height: 230px;
   display: flex;
@@ -124,8 +126,8 @@ const EditBox = styled.div`
 
 const Img = styled.img`
   margin: 0.5rem 0.2rem;
-  width: 8.2rem;
-  height: 8.2rem;
+  width: 8.3rem;
+  height: 8.3rem;
   border-radius: 50%;
 `;
 
@@ -148,17 +150,19 @@ const Dm = styled.div`
 
 const NicknameBox = styled.div`
   text-align: center;
-  padding: 0.4rem;
+  padding: 0.3rem;
 `;
 
-const Nickname = styled.h3`
-  font-size: var(--font-medium-large);
+const Nickname = styled.input`
+  font-size: var(--font-medium);
+  text-align: center;
+  width: 8rem;
   margin-bottom: 5px;
 `;
 
 const FollowBox = styled.div`
   display: flex;
-  width: 14.5rem;
+  width: 14rem;
   justify-content: space-evenly;
 `;
 
@@ -176,12 +180,12 @@ const Num = styled.p`
 `;
 
 const BottomBox = styled.div`
-  height: 5rem;
+  height: 5.5rem;
   display: flex;
   gap: 5px;
   overflow-y: scroll;
   flex-wrap: wrap;
-  margin: 17px 0 20px 0;
+  margin: 15px 0;
   &::-webkit-scrollbar {
     display: none;
   }
