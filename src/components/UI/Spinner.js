@@ -1,7 +1,5 @@
 import styled, { keyframes } from "styled-components";
 
-import React from "react";
-
 function Spinner() {
   return (
     <SpinnerContainer>
