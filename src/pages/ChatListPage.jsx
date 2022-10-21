@@ -8,20 +8,31 @@ import { options } from "../api/options";
 import useInput from "../hooks/useInput";
 
 const ChatListPage = () => {
-  const { data: chatList } = useQuery("chatList", fetchChatList, options.nocache);
+  const { data: chatList } = useQuery(
+    "chatList",
+    fetchChatList,
+    options.nocache
+  );
   const [searchInput, searchInputHandler] = useInput();
 
-  const searchNickname = chatList?.filter((item) => item.nickname.includes(searchInput));
+  const searchNickname = chatList?.filter((item) =>
+    item.nickname.includes(searchInput)
+  );
 
   return (
     <LayoutPage headerTitle="DM" backBtnTypeArrow="true">
       <ChatListContainer>
         <SearchBox>
-          <Input placeholder=" 닉네임을 검색하세요." onChange={searchInputHandler}></Input>
+          <Input
+            placeholder=" 닉네임을 검색하세요."
+            onChange={searchInputHandler}
+          ></Input>
         </SearchBox>
         <ChatList>
           {searchNickname && searchNickname.length !== 0 ? (
-            searchNickname.map((listItem, idx) => <ChatListItem listItem={listItem} key={idx} />)
+            searchNickname.map((listItem, idx) => (
+              <ChatListItem listItem={listItem} key={idx} />
+            ))
           ) : (
             <ListText>채팅 리스트가 없습니다.</ListText>
           )}
@@ -31,7 +42,9 @@ const ChatListPage = () => {
   );
 };
 
-const ChatListContainer = styled.div``;
+const ChatListContainer = styled.div`
+  margin-bottom: 100px;
+`;
 
 const SearchBox = styled.div`
   text-align: center;
