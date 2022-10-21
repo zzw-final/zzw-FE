@@ -190,6 +190,7 @@ const SelectBox = styled.select`
   outline: 0;
   background-color: transparent;
   font-size: var(--font-small);
+  color: var(--color-black);
   cursor: pointer;
   position: absolute;
 `;

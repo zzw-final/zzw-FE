@@ -32,27 +32,27 @@ const Logo = () => {
         <Button
           name="commonBtn"
           position="absolute"
-          backgroundColor="var(--color-orange)"
+          backgroundColor="transparent"
           right="0"
           margin="0.5rem"
           width="3rem"
           fontSize="var(--font-small)"
           onClick={logIn}
         >
-          LogIn
+          로그인
         </Button>
       ) : (
         <Button
           name="commonBtn"
           position="absolute"
-          backgroundColor="var(--color-orange)"
+          backgroundColor="transparent"
           right="0"
           margin="0.5rem"
           width="3.5rem"
           fontSize="var(--font-small)"
           onClick={logOut}
         >
-          LogOut
+          로그아웃
         </Button>
       )}
     </LogoContainer>
