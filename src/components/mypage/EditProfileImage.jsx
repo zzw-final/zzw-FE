@@ -127,6 +127,7 @@ const Grades = styled.div`
 const Box = styled.div`
   display: flex;
   flex-direction: column;
+  text-align: center;
 `;
 
 const Img = styled.img`
