@@ -42,7 +42,11 @@ function WriteAddCard({ imgUpload, formValues, setFomvalues }) {
     newFormValues[i][e.target.name] = e.target.value;
     //page 추가 (0페이지부터 시작)
     newFormValues[i].page = i;
-    setFomvalues(newFormValues);
+    if (newFormValues[i].content.length < 256) {
+      setFomvalues(newFormValues);
+    } else {
+      alert("최대 255자 까지 입력가능합니다!");
+    }
   };
 
   //
@@ -113,6 +117,7 @@ function WriteAddCard({ imgUpload, formValues, setFomvalues }) {
               <Cardtextarea
                 type="text"
                 name="content"
+                placeholder="레시피를 단계별로 작성해주세요 ! 최대 255자 까지 입력가능합니다."
                 value={element.content || ""}
                 onChange={(e) => handleChange(index, e)}
               />
@@ -193,7 +198,7 @@ const Cardtextarea = styled.textarea`
   grid-row-start: 3;
   width: 90vw;
   /* max-width:95% */
-  margin: 0 5px 0 0;
+  margin: 1rem 1rem 0 0;
   background-color: var(--color-light-white);
   height: 30vh;
   box-sizing: border-box;
