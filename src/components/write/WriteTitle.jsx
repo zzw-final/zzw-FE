@@ -206,8 +206,9 @@ const TagBox = styled.div`
 `;
 const IngredintTag = styled.textarea`
   box-sizing: border-box;
-  /* display: inline-flex; */
-  min-width: 230px;
+  width: auto;
+  resize: none;
+  min-width: 50px;
   background: transparent;
   border: none;
   outline: none;
