@@ -50,13 +50,15 @@ const FormContainer = styled.div`
   /* background-color: red; */
 `;
 
-const CommentInput = styled.input`
+const CommentInput = styled.textarea`
   width: 100%;
   height: 4vh;
   margin: 0.5rem;
   padding: 0.2rem;
   border: 0.5px solid var(--color-orange);
   border-radius: 0.5rem;
+  resize: none;
+  line-height: 22px;
 `;
 
 export default CommentForm;

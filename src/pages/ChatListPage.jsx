@@ -31,7 +31,9 @@ const ChatListPage = () => {
   );
 };
 
-const ChatListContainer = styled.div``;
+const ChatListContainer = styled.div`
+  margin-bottom: 100px;
+`;
 
 const SearchBox = styled.div`
   text-align: center;

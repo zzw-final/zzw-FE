@@ -5,20 +5,40 @@ import TextAreaAutoResize from "react-textarea-autosize";
 import DeleteIcon from "@mui/icons-material/Delete";
 import KeyboardBackspaceIcon from "@mui/icons-material/KeyboardBackspace";
 
-function ChatLayout({ publish, msg, msgHandler, setMsg, location, children, out }) {
+function ChatLayout({
+  publish,
+  msg,
+  msgHandler,
+  setMsg,
+  location,
+  children,
+  out,
+}) {
+  // console.log("msg", msg.length);
   const navigate = useNavigate();
   const pub = () => {
-    if (msg.trim() !== "") {
-      publish(msg);
-      setMsg("");
+    if (msg.length < 256) {
+      if (msg.trim() !== "") {
+        publish(msg);
+        setMsg("");
+      }
+    } else {
+      alert("최대 255자 까지 입력 가능합니다 !");
     }
   };
 
   const onEnterPress = (e) => {
-    if (msg.trim() !== "" && e.key === "Enter") {
-      e.preventDefault();
-      pub();
-      setMsg("");
+    e.preventDefault();
+    if (msg.length < 256 && e.key === "Enter") {
+      console.log("여기1");
+      if (msg.trim() !== "" && e.key === "Enter") {
+        e.preventDefault();
+        console.log("여기22");
+        pub();
+        setMsg("");
+      } else {
+        alert("최대 255자 까지 입력 가능합니다 !");
+      }
     }
   };
 
@@ -34,7 +54,11 @@ function ChatLayout({ publish, msg, msgHandler, setMsg, location, children, out 
       </Header>
       {children}
       <Label style={{ position: "fixed" }}>
-        <TextAreaAutoResize value={msg} onKeyPress={onEnterPress} onChange={msgHandler} />
+        <TextAreaAutoResize
+          value={msg}
+          onKeyPress={onEnterPress}
+          onChange={msgHandler}
+        />
         <div onClick={pub}>전송</div>
       </Label>
     </Container>

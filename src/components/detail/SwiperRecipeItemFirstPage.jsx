@@ -23,8 +23,20 @@ const SwiperRecipeItemFirstPage = ({
   greyButton,
   followHandler,
 }) => {
-  const { postId, title, nickname, profile, grade, authorId, isLike, likeNum, foodImg, createAt, time, isFollow } =
-    postDetail;
+  const {
+    postId,
+    title,
+    nickname,
+    profile,
+    grade,
+    authorId,
+    isLike,
+    likeNum,
+    foodImg,
+    createAt,
+    time,
+    isFollow,
+  } = postDetail;
 
   const [cookies] = useCookies(["loginNickname"]);
   const navigate = useNavigate();
@@ -72,7 +84,12 @@ const SwiperRecipeItemFirstPage = ({
         </LikeBox>
         <ItemBox>
           <ItemInfo>
-            <Avatar alt="user_img" src={profile} sx={{ width: 40, height: 40, mr: 1 }} onClick={userPage} />
+            <Avatar
+              alt="user_img"
+              src={profile}
+              sx={{ width: 40, height: 40, mr: 1 }}
+              onClick={userPage}
+            />
             <NinknameCreatedAt>
               <Nickname onClick={userPage}>
                 {nickname}/{grade}
@@ -84,7 +101,11 @@ const SwiperRecipeItemFirstPage = ({
                 </ButtonDiv>
               ) : loninNickname ? (
                 <ButtonDiv>
-                  <Button onClick={followHandler} name="FollowBtn" isFollow={greyButton}>
+                  <Button
+                    onClick={followHandler}
+                    name="FollowBtn"
+                    isFollow={greyButton}
+                  >
                     {postDetail?.isFollow ? "팔로잉" : "팔로우"}
                   </Button>
                 </ButtonDiv>
@@ -101,7 +122,12 @@ const SwiperRecipeItemFirstPage = ({
         <ItemImgEdit type="file" accept="image/*" onChange={getImgUpload} />
         <ItemBox>
           <ItemInfo>
-            <Avatar alt="user_img" src={profile} sx={{ width: 40, height: 40, mr: 1 }} onClick={userPage} />
+            <Avatar
+              alt="user_img"
+              src={profile}
+              sx={{ width: 40, height: 40, mr: 1 }}
+              onClick={userPage}
+            />
             <NinknameCreatedAt>
               <Nickname onClick={userPage}>
                 {grade}/{nickname}
@@ -138,8 +164,8 @@ const TimeBox = styled.div`
   background-color: var(--color-white);
   color: var(--color-grey);
   position: absolute;
-  top: 3%;
-  left: 9%;
+  top: 2%;
+  left: 13%;
   border-radius: 15px;
   padding: 0.3rem;
   width: 25%;
@@ -147,7 +173,7 @@ const TimeBox = styled.div`
 
 const Time = styled.div`
   font-size: var(--font-regular);
-  margin-left: 0.3rem;
+  margin-left: 0.5rem;
   font-weight: var(--weight-bold);
   /* position: absolute;
   top: 3%;
@@ -155,8 +181,8 @@ const Time = styled.div`
 `;
 
 const ItemImg = styled.img`
-  width: 90%;
-  height: 63%;
+  width: 80%;
+  height: 50%;
   border-radius: 18px;
   padding: 0.2rem;
   margin: 0 auto 1rem auto;
@@ -179,8 +205,8 @@ const LikeBox = styled.div`
   padding: 0.3rem;
   width: 15%;
   position: absolute;
-  right: 9%;
-  top: 55%;
+  right: 13%;
+  top: 42%;
   font-size: var(--font-regular);
 `;
 

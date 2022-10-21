@@ -4,13 +4,10 @@ const useInputRef = (initialValue, submitAction) => {
   const ref = useRef(initialValue);
 
   useEffect(() => {
-    // ref.current.focus();
-  });
-
-  useEffect(() => {
     ref.current.addEventListener("keypress", logKey);
     function logKey(event) {
       if (event.code === "Enter") {
+        event.preventDefault();
         submitAction();
         ref.current.value = "";
       }
