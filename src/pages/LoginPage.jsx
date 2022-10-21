@@ -4,21 +4,17 @@ import GoogleLogin from "../components/login/google/GoogleLogin";
 import KakaoLogin from "../components/login/kakao/KakaoLogin";
 import NaverLogin from "../components/login/naver/NaverLogin";
 import loginbackground from "../assets/loginbackground.png";
+import { useEffect } from "react";
 
 const LoginPage = () => {
+  useEffect(() => {
+    if (navigator.userAgent.includes("KAKAO"))
+      alert("카카오 인앱 브라우저에서는 카카오 로그인만 가능해요!");
+  }, []);
+
   return (
     <Container>
-      {/* <LoginText>로그인하고 냉장고를 비워봐요!</LoginText> */}
-      {/* <EmojiBox>
-          <Emoji>
-            <span style={{ letterSpacing: "-0.1rem" }}>🥬 + 🥓</span> = 🍲
-          </Emoji>
-          <Emoji>
-            <span style={{ letterSpacing: "-0.1rem" }}>🧀 + 🍞</span> = 🥪
-          </Emoji>
-        </EmojiBox> */}
       <LoginBox>
-        {/* <Line>Login with</Line> */}
         <LoginSelect>
           <KakaoLogin />
           <NaverLogin />

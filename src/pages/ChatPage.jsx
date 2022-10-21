@@ -132,17 +132,11 @@ function ChatPage() {
       location={location}
       out={out}
     >
-      <div style={{ margin: "50px 0px 50px 0px", width: "95%", height: "90%" }}>
+      <div style={{ margin: "50px 0px 50px 0px", width: "95%" }}>
         {messages &&
           messages.map((mag, idx) =>
             loginNickname === messages[idx].sender ? (
-              <SendMsg
-                key={idx}
-                messages={messages}
-                mag={mag}
-                idx={idx}
-                scrollRef={scrollRef}
-              />
+              <SendMsg key={idx} messages={messages} mag={mag} idx={idx} scrollRef={scrollRef} />
             ) : (
               <GetMsg
                 key={idx}
