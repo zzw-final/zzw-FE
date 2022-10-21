@@ -117,12 +117,7 @@ const SearchForm = ({ mainSearch, searchPageSearch, showToast }) => {
                   />
                 ))}
               </TagList>
-              <InputForm
-                ref={inputRef}
-                placeholder={`${
-                  loginNickname ? loginNickname : `반가운 손`
-                }님, 오늘의 식재료를 입력해보세요!`}
-              />
+              <InputForm ref={inputRef} />
             </SearchInfo>
             <SearchIconDiv>
               <SearchIcon onClick={searchHandler} />
@@ -139,15 +134,9 @@ const SearchContainer = styled.div`
   font-size: var(--font-semi-small);
 `;
 
-const LoginNickname = styled.span`
-  color: var(--color-main-dark-orange);
-  font-weight: var(--weight-semi-bold);
-`;
-
 const SearchBox = styled.div`
   display: flex;
   padding: 0 20px;
-  margin-top: 0.5rem;
   color: var(--color-real-light-orange);
 `;
 
@@ -203,7 +192,8 @@ const SearchIconDiv = styled.div`
 const InputForm = styled.textarea`
   width: 100%;
   height: 36px;
-  padding: 0.4rem;
+  line-height: 37px;
+  padding-left: 0.4rem;
   font-size: var(--font-small);
   outline: 0;
   border: 0;
@@ -211,7 +201,7 @@ const InputForm = styled.textarea`
   background-color: transparent;
   margin-right: 1.5rem;
   resize: none;
-  line-height: 24px;
+  white-space: nowrap;
 `;
 
 export default SearchForm;
