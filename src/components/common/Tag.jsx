@@ -1,24 +1,11 @@
 import React from "react";
 import styled from "styled-components";
 
-const Tag = ({
-  tagName,
-  isFoodName,
-  onClickHandler,
-  isDelBtn,
-  delBtnClick,
-  ...props
-}) => {
-  const tagNameFormat = `${tagName.substr(0, 9)} ${
-    tagName.length > 9 ? ".." : ""
-  }`;
+const Tag = ({ tagName, isFoodName, onClickHandler, isDelBtn, delBtnClick, ...props }) => {
+  const tagNameFormat = `${tagName.substr(0, 9)} ${tagName.length > 9 ? ".." : ""}`;
 
   return (
-    <TagContainer
-      {...props}
-      color={randomColor(isFoodName)}
-      onClick={onClickHandler}
-    >
+    <TagContainer {...props} color={randomColor(isFoodName)} onClick={onClickHandler}>
       {tagNameFormat} {isDelBtn ? <DelBtn onClick={delBtnClick}>X</DelBtn> : ""}
     </TagContainer>
   );
