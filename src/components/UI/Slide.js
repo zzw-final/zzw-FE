@@ -38,7 +38,7 @@ const SlideBox = styled.div`
   height: auto;
   max-height: 70%;
   position: absolute;
-  bottom: 90px;
+  bottom: 60px;
   padding: 1rem 2rem 5rem 2rem;
   transition: all 600ms cubic-bezier(0.86, 0, 0.07, 1);
   z-index: 2;
@@ -64,7 +64,7 @@ const SlideBox = styled.div`
       bottom: 0px;
     }
     to {
-      bottom: 90px;
+      bottom: 60px;
     }
   }
 `;
