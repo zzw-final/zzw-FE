@@ -95,10 +95,12 @@ export default EditProfileImage;
 const Container = styled.div`
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(6rem, 1fr));
+  place-items: center;
 `;
 
 const FlexContainer = styled.div`
   display: flex;
+  flex-wrap: wrap;
 `;
 
 const Title = styled.div`
@@ -120,7 +122,6 @@ const Grades = styled.div`
     titleGrade === grade.gradeId ? "var(--color-orange)" : "var(--color-light-white)"};
   font-size: var(--font-small);
   border-radius: 10px;
-  flex-wrap: wrap;
 `;
 
 const Box = styled.div`
@@ -137,5 +138,6 @@ const Img = styled.img`
 const Radio = styled.input`
   width: 6rem;
   margin: 8px auto;
+  text-align: center;
   accent-color: green;
 `;
