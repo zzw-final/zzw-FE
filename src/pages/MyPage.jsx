@@ -7,6 +7,7 @@ import MyRecipes from "../components/posts/MyRecipes";
 import LikeRecipes from "../components/posts/LikeRecipes";
 import LayoutPage from "../components/common/LayoutPage";
 import useInfinity from "../hooks/useInfinity";
+import Spinner from "../components/UI/Spinner";
 import { useEffect, useState } from "react";
 import { options } from "../api/options";
 import { fetchProfile, fetchMyRecipes, fetchLikeRecipes } from "../api/mypage";
@@ -24,13 +25,22 @@ const MyPage = () => {
     data: likeRecipes,
     fetchNextPage,
     hasNextPage,
+    isLoading: loadingLikeRecipes,
   } = useInfinity(["mypage", "likeRecipes"], fetchLikeRecipes, {
     enabled: likeVisible,
   });
 
-  const { data: userData } = useQuery(["mypage", "profile"], fetchProfile, options.eternal);
+  const { data: userData, isLoading: loadingUserData } = useQuery(
+    ["mypage", "profile"],
+    fetchProfile,
+    options.eternal
+  );
 
-  const { data: myRecipes } = useQuery(["mypage", "myRecipes"], fetchMyRecipes, options.eternal);
+  const { data: myRecipes, isLoading: loadingMyRecipes } = useQuery(
+    ["mypage", "myRecipes"],
+    fetchMyRecipes,
+    options.eternal
+  );
 
   useEffect(() => {
     if (inView && hasNextPage && likeVisible) fetchNextPage();
@@ -49,6 +59,8 @@ const MyPage = () => {
   const editHandler = () => {
     setEditMode((prev) => !prev);
   };
+
+  if (loadingLikeRecipes || loadingUserData || loadingMyRecipes) return <Spinner />;
 
   return (
     <LayoutPage>

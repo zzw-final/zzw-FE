@@ -190,6 +190,7 @@ const SelectBox = styled.select`
   outline: 0;
   background-color: transparent;
   font-size: var(--font-small);
+  color: var(--color-black);
   cursor: pointer;
   position: absolute;
 `;
@@ -218,7 +219,7 @@ const SearchIconDiv = styled.div`
   display: flex;
 `;
 
-const InputForm = styled.input`
+const InputForm = styled.textarea`
   width: 100%;
   height: 36px;
   padding: 0.4rem;
@@ -228,6 +229,8 @@ const InputForm = styled.input`
   min-width: 80px;
   background-color: transparent;
   margin-right: 1.5rem;
+  resize: none;
+  line-height: 24px;
 `;
 
 export default SearchForm;

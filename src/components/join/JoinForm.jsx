@@ -102,11 +102,10 @@ const JoinForm = () => {
             required
             fullWidth
             value={nickname}
-            label="닉네임을 입력하세요."
+            label="닉네임은 한글로 최대 6글자까지 🥕"
             name="nickname"
             onChange={onChange}
             error={validation_nickname()}
-            helperText={validation_nickname() ? "닉네임은 한글로 최대 6글자까지만 입력할 수 있습니다." : ""}
           />
           <Button fullWidth type="submit" variant="contained" color="warning" endIcon={<ArrowForwardIcon />}>
             Sign Up
@@ -126,6 +125,7 @@ const BoxContainer = styled.div`
 const Boxs = styled.div`
   max-width: 600px;
   display: flex;
+  justify-content: space-between;
   align-items: center;
   margin: auto;
   padding: 2em;

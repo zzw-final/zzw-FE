@@ -53,7 +53,7 @@ const Container = styled.div`
 const AlignBox = styled.div`
   position: relative;
   text-align: center;
-  margin: 10rem 0;
+  margin: 7rem 0;
 `;
 
 const Text = styled.div`

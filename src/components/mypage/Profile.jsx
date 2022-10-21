@@ -1,46 +1,17 @@
-import axios from "axios";
 import styled from "styled-components";
 import Button from "../UI/Button";
-import LogoutIcon from "@mui/icons-material/Logout";
 import { useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import { instance } from "../../api/request";
 import { useMutation, useQueryClient } from "react-query";
-import { getCookie, removeCookie } from "../../util/cookie";
+import { getCookie } from "../../util/cookie";
 
 function Profile({ userData, DmRequest, profileRef, editHandler }) {
   const navigate = useNavigate();
   const { id } = useParams();
-  const { follow, follower, grade, gradeList, nickname, profile, isFollow, postSize } =
-    userData;
+  const { follow, follower, grade, gradeList, nickname, profile, isFollow, postSize } = userData;
   const [greyButton, setGreyButton] = useState(isFollow);
   const [followerNum, setFollowerNum] = useState(follower);
-
-  const logout = () => {
-    const alert = window.confirm("로그아웃 하시겠습니까?");
-    if (alert) {
-      if (getCookie("loginOauth") === "kakao") {
-        axios.get(`${process.env.REACT_APP_API}/api/member/kakao/logout`, {
-          headers: {
-            kakaoToken: getCookie("oauthToken"),
-            withCredentials: true,
-          },
-        });
-      }
-      removeCookie("loginNickname");
-      removeCookie("refreshToken");
-      removeCookie("loginUserId");
-      removeCookie("accessToken");
-      removeCookie("oauthToken");
-      removeCookie("loginGrade");
-      removeCookie("loginProfile");
-      removeCookie("loginOauth");
-      removeCookie("loginEmail");
-      removeCookie("tokenInvalidtime");
-      navigate("/");
-      window.location.reload();
-    }
-  };
 
   const followHandler = async () => {
     return await instance.post(`/api/auth/mypage/follow/${id}`);
@@ -122,27 +93,8 @@ function Profile({ userData, DmRequest, profileRef, editHandler }) {
             </BottomBox>
             {!getCookie("loginUserId") ? null : !id ? (
               <Dm>
-                <Button onClick={editHandler} name="DmBtn" width="60%">
+                <Button onClick={editHandler} name="DmBtn" width="100%">
                   <span style={{ fontSize: "13px" }}>✍️</span> 프로필 편집
-                </Button>
-                <Button
-                  onClick={logout}
-                  name="DmBtn"
-                  width="40%"
-                  size="var(--font-small)"
-                  background="var(--color-dark-orange)"
-                >
-                  <div style={{ display: "inline-flex" }}>
-                    <LogoutIcon fontSize="small" />
-                    <span
-                      style={{
-                        fontSize: "var(--font-semi-small)",
-                        margin: "1px 0 0 5px",
-                      }}
-                    >
-                      Logout
-                    </span>
-                  </div>
                 </Button>
               </Dm>
             ) : (
@@ -151,9 +103,7 @@ function Profile({ userData, DmRequest, profileRef, editHandler }) {
                   onClick={mutate}
                   name="DmBtn"
                   width="70%"
-                  background={
-                    greyButton ? "var(--color-dark-white)" : "var(--color-real-orange)"
-                  }
+                  background={greyButton ? "var(--color-dark-white)" : "var(--color-real-orange)"}
                 >
                   {greyButton ? "팔로잉" : "팔로우"}
                 </Button>
@@ -179,7 +129,7 @@ export default Profile;
 const Container = styled.div`
   background-color: var(--color-light-orange);
   margin: auto;
-  padding: 3% 2% 0 1.5%;
+  padding: 3% 1% 0 0;
   width: 100%;
   height: 230px;
   display: flex;
@@ -207,7 +157,7 @@ const Dm = styled.div`
 
 const NicknameBox = styled.div`
   text-align: center;
-  padding: 0.4rem;
+  padding: 0.3rem;
 `;
 
 const Nickname = styled.h3`
@@ -217,7 +167,7 @@ const Nickname = styled.h3`
 
 const FollowBox = styled.div`
   display: flex;
-  width: 14.5rem;
+  width: 14rem;
   justify-content: space-evenly;
 `;
 
@@ -235,12 +185,12 @@ const Num = styled.p`
 `;
 
 const BottomBox = styled.div`
-  height: 5rem;
+  height: 5.5rem;
   display: flex;
   gap: 5px;
   overflow-y: scroll;
   flex-wrap: wrap;
-  margin: 17px 0 20px 0;
+  margin: 15px 0;
   &::-webkit-scrollbar {
     display: none;
   }
