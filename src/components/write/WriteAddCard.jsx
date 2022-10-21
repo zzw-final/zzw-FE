@@ -42,7 +42,11 @@ function WriteAddCard({ imgUpload, formValues, setFomvalues }) {
     newFormValues[i][e.target.name] = e.target.value;
     //page 추가 (0페이지부터 시작)
     newFormValues[i].page = i;
-    setFomvalues(newFormValues);
+    if (newFormValues[i].content.length < 256) {
+      setFomvalues(newFormValues);
+    } else {
+      alert("최대 255자 까지 입력가능합니다!");
+    }
   };
 
   //
@@ -113,6 +117,7 @@ function WriteAddCard({ imgUpload, formValues, setFomvalues }) {
               <Cardtextarea
                 type="text"
                 name="content"
+                placeholder="레시피를 단계별로 작성해주세요 ! 최대 255자 까지 입력가능합니다."
                 value={element.content || ""}
                 onChange={(e) => handleChange(index, e)}
               />
@@ -193,7 +198,7 @@ const Cardtextarea = styled.textarea`
   grid-row-start: 3;
   width: 90vw;
   /* max-width:95% */
-  margin: 0 5px 0 0;
+  margin: 1rem 1rem 0 0;
   background-color: var(--color-light-white);
   height: 30vh;
   box-sizing: border-box;
@@ -213,6 +218,7 @@ const Addbutton = styled.button`
   width: 90vw;
   height: 5vh;
   border-radius: 10px;
+  margin-top: 1rem;
   margin-left: 6vw;
   &:hover {
     border: 2px white;
@@ -221,11 +227,11 @@ const Addbutton = styled.button`
 
 const Dletbutton = styled.button`
   grid-column-start: 2;
-  grid-row-start: 1;
+  grid-row-start: 2;
   background-color: none;
   width: 5vw;
   height: 2vh;
   border: 0;
   border-radius: 10px;
-  margin: 2rem 1rem 0rem 23rem;
+  margin: -0.7rem 1rem 1rem 8rem;
 `;
