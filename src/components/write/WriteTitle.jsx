@@ -91,7 +91,7 @@ const WriteTitle = ({
         })}
         <IngredintTag
           value={tagItem}
-          placeholder="재료를 입력 후 엔터를 눌러 태그를 생성해주세요."
+          placeholder="재료입력 후 엔터를 눌러 태그를 생성해주세요!"
           onChange={(e) => {
             setTagItem(e.target.value);
           }}
@@ -206,16 +206,20 @@ const TagBox = styled.div`
 `;
 const IngredintTag = styled.textarea`
   box-sizing: border-box;
-  width: auto;
+  width: 230px;
   resize: none;
-  min-width: 50px;
+  margin-left: 10px;
+  /* max-width: 230px; */
+  height: 3.5vh;
   background: transparent;
+  overflow-x: scroll;
   border: none;
   outline: none;
   cursor: text;
 `;
 const Tagdiv = styled.div`
   /* display: flex; */
+  white-space: nowrap;
   display: inline-flex;
   width: auto;
   height: 3.5vh;
