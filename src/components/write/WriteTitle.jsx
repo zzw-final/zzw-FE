@@ -192,7 +192,6 @@ const TagBox = styled.div`
   height: 6vh;
   max-height: 6vh;
   overflow-x: scroll;
-  overflow: auto;
   margin: 3rem 0rem 0px 0rem;
   padding: 0 10px;
   border: 0;
@@ -205,7 +204,7 @@ const TagBox = styled.div`
     border-color: var(--color-light-blue);
   }
 `;
-const IngredintTag = styled.input`
+const IngredintTag = styled.textarea`
   box-sizing: border-box;
   /* display: inline-flex; */
   min-width: 230px;
