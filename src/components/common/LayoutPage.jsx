@@ -49,9 +49,10 @@ const LayoutPage = ({
     fetchData();
   }, []);
 
+  console.log("pathName", pathName);
+
   const back = () => {
-    if (pathName === "chatlist") {
-      console.log("ㅎㅎㅎㅎㅎㅎㅎㅎㅎㅎㅎㅎㅎㅎ");
+    if (pathName === "/chatlist") {
       navigate("/");
     } else {
       navigate(-1);
@@ -67,24 +68,12 @@ const LayoutPage = ({
               {backBtnTypeArrow ? (
                 <KeyboardBackspaceIcon onClick={back} />
               ) : (
-                <ChevronLeftIcon
-                  onClick={back}
-                  color="warning"
-                  fontSize="large"
-                />
+                <ChevronLeftIcon onClick={back} color="warning" fontSize="large" />
               )}
             </BackBtn>
             {headerTitle}
             <AddBtn>
-              {isShare ? (
-                <IosShareIcon
-                  sx={{ marginRight: "9px" }}
-                  onClick={copyUrl}
-                  color="warning"
-                />
-              ) : (
-                ""
-              )}
+              {isShare ? <IosShareIcon sx={{ marginRight: "9px" }} onClick={copyUrl} color="warning" /> : ""}
               {isBtn ? (
                 <Button
                   name="commonBtn"
@@ -107,11 +96,7 @@ const LayoutPage = ({
       ) : (
         ""
       )}
-      <Wrapper
-        background={background}
-        backgroundMain={backgroundMain}
-        paddingTop={isHeader ? "80px" : ""}
-      >
+      <Wrapper background={background} backgroundMain={backgroundMain} paddingTop={isHeader ? "80px" : ""}>
         <div>{children}</div>
       </Wrapper>
       <Footer topTenTagList={topTenTagList} tagAllList={tagAllList} />
@@ -152,10 +137,7 @@ const Wrapper = styled.div`
   width: 100%;
   overflow: hidden;
   background-color: ${({ background }) => background || "white"};
-  background: linear-gradient(
-    var(${({ backgroundMain }) => backgroundMain}) 50%,
-    var(--color-white) 50%
-  );
+  background: linear-gradient(var(${({ backgroundMain }) => backgroundMain}) 50%, var(--color-white) 50%);
   padding-top: ${({ paddingTop }) => paddingTop || 0};
 `;
 
