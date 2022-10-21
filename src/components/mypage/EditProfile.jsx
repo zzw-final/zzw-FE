@@ -76,7 +76,7 @@ function Profile({ userData, editHandler, setModalIsOpen }) {
               <Button
                 onClick={editHandler}
                 name="DmBtn"
-                width="60%"
+                width="70%"
                 background="var(--color-dark-orange)"
               >
                 <span style={{ fontSize: "13px" }}>✍️</span> 프로필 저장
@@ -84,10 +84,10 @@ function Profile({ userData, editHandler, setModalIsOpen }) {
               <Button
                 onClick={deleteAccount}
                 name="DmBtn"
-                width="40%"
+                width="30%"
                 size="var(--font-semi-small)"
               >
-                😢 회원탈퇴
+                회원탈퇴
               </Button>
             </Dm>
           </div>
@@ -102,7 +102,7 @@ export default Profile;
 const Container = styled.div`
   background-color: var(--color-light-orange);
   margin: auto;
-  padding: 3% 2% 0 1.5%;
+  padding: 3% 1% 0 0;
   width: 100%;
   height: 230px;
   display: flex;
@@ -148,7 +148,7 @@ const Dm = styled.div`
 
 const NicknameBox = styled.div`
   text-align: center;
-  padding: 0.4rem;
+  padding: 0.3rem;
 `;
 
 const Nickname = styled.h3`
@@ -158,7 +158,7 @@ const Nickname = styled.h3`
 
 const FollowBox = styled.div`
   display: flex;
-  width: 14.5rem;
+  width: 14rem;
   justify-content: space-evenly;
 `;
 
@@ -176,12 +176,12 @@ const Num = styled.p`
 `;
 
 const BottomBox = styled.div`
-  height: 5rem;
+  height: 5.5rem;
   display: flex;
   gap: 5px;
   overflow-y: scroll;
   flex-wrap: wrap;
-  margin: 17px 0 20px 0;
+  margin: 15px 0;
   &::-webkit-scrollbar {
     display: none;
   }

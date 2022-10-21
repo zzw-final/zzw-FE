@@ -10,18 +10,11 @@ function EditProfileImage({ setModalIsOpen }) {
   const [char, setChar] = useState();
   const queryClient = useQueryClient();
 
-  const { data: profileImg } = useQuery(
-    ["mypage", "edit", "img"],
-    editImgList,
-    options.eternal
-  );
+  const { data: profileImg } = useQuery(["mypage", "edit", "img"], editImgList, options.eternal);
 
   const { mutate } = useMutation(() => editProfileImg(char), {
     onSuccess: () => {
-      setCookie(
-        "loginProfile",
-        profileImg.find((item) => item.profileId === +char).imageUrl
-      );
+      setCookie("loginProfile", profileImg.find((item) => item.profileId === +char).imageUrl);
       queryClient.invalidateQueries(["mypage", "profile"]);
     },
   });
@@ -78,6 +71,7 @@ const Img = styled.img`
 `;
 
 const Radio = styled.input`
+  text-align: center;
   width: 6rem;
   margin: 8px 7px;
   accent-color: green;
