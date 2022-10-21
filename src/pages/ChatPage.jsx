@@ -12,7 +12,7 @@ import { useLocation } from "react-router-dom";
 function ChatPage() {
   const client = useRef({});
   const { roomId } = useParams();
-  const [msg, msgHandler, setMsg] = useInput("");
+  const [msg, msgHandler, setMsg] = useInput();
   const [messages, setMessages] = useState([{}]);
   const { state: location } = useLocation();
   const navigate = useNavigate();
