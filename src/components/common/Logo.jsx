@@ -5,7 +5,6 @@ import { instance } from "../../api/request";
 import { getCookie, removeAllCookies } from "../../util/cookie";
 import Button from "../UI/Button";
 import HelpOutlineIcon from "@mui/icons-material/HelpOutline";
-import { Refresh } from "@mui/icons-material";
 
 const Logo = () => {
   const navigate = useNavigate();
@@ -30,9 +29,18 @@ const Logo = () => {
   return (
     <LogoContainer>
       <div onClick={refresh}>
-        <LogoImg src="/character1.png" alt="logoImg" />
-        <LogoImg src="/character2.png" alt="logoImg" />
-        <LogoImg src="/character3.png" alt="logoImg" />
+        <LogoImg
+          src="https://zzwimage.s3.ap-northeast-2.amazonaws.com/profile/noneback/7.png"
+          alt="logoImg"
+        />
+        <LogoImg
+          src="https://zzwimage.s3.ap-northeast-2.amazonaws.com/profile/noneback/8.png"
+          alt="logoImg"
+        />
+        <LogoImg
+          src="https://zzwimage.s3.ap-northeast-2.amazonaws.com/profile/noneback/9.png"
+          alt="logoImg"
+        />
       </div>
       <HelpIconBox onClick={onboarding}>
         <HelpOutlineIcon color="warning" />
