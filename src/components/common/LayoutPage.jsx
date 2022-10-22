@@ -8,6 +8,7 @@ import { useNavigate } from "react-router-dom";
 import ChevronLeftIcon from "@mui/icons-material/ChevronLeft";
 import Button from "../UI/Button";
 import IosShareIcon from "@mui/icons-material/IosShare";
+import PersonSearchIcon from "@mui/icons-material/PersonSearch";
 
 const LayoutPage = ({
   children,
@@ -20,6 +21,7 @@ const LayoutPage = ({
   buttonText,
   buttonEvent,
   copyUrl,
+  findUser,
 }) => {
   const [topTenTagList, setTopTenTagList] = useState();
   const [tagAllList, setTagAllList] = useState();
@@ -66,12 +68,33 @@ const LayoutPage = ({
               {backBtnTypeArrow ? (
                 <KeyboardBackspaceIcon onClick={back} />
               ) : (
-                <ChevronLeftIcon onClick={back} color="warning" fontSize="large" />
+                <ChevronLeftIcon
+                  onClick={back}
+                  color="warning"
+                  fontSize="large"
+                />
               )}
             </BackBtn>
             {headerTitle}
             <AddBtn>
-              {isShare ? <IosShareIcon sx={{ marginRight: "9px" }} onClick={copyUrl} color="warning" /> : ""}
+              {findUser ? (
+                <PersonSearchIcon
+                  onClick={() => {
+                    navigate("/finduser");
+                  }}
+                />
+              ) : (
+                ""
+              )}
+              {isShare ? (
+                <IosShareIcon
+                  sx={{ marginRight: "9px" }}
+                  onClick={copyUrl}
+                  color="warning"
+                />
+              ) : (
+                ""
+              )}
               {isBtn ? (
                 <Button
                   name="commonBtn"
@@ -94,7 +117,11 @@ const LayoutPage = ({
       ) : (
         ""
       )}
-      <Wrapper background={background} backgroundMain={backgroundMain} paddingTop={isHeader ? "80px" : ""}>
+      <Wrapper
+        background={background}
+        backgroundMain={backgroundMain}
+        paddingTop={isHeader ? "80px" : ""}
+      >
         <div>{children}</div>
       </Wrapper>
       <Footer topTenTagList={topTenTagList} tagAllList={tagAllList} />
@@ -135,7 +162,10 @@ const Wrapper = styled.div`
   width: 100%;
   overflow: hidden;
   background-color: ${({ background }) => background || "white"};
-  background: linear-gradient(var(${({ backgroundMain }) => backgroundMain}) 50%, var(--color-white) 50%);
+  background: linear-gradient(
+    var(${({ backgroundMain }) => backgroundMain}) 50%,
+    var(--color-white) 50%
+  );
   padding-top: ${({ paddingTop }) => paddingTop || 0};
 `;
 

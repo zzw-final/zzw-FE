@@ -12,6 +12,7 @@ import {
   WritePage,
   UserPage,
   ChatPage,
+  UserFindPage,
 } from "./pages";
 import KakaoRedirect from "./components/login/kakao/KakaoRedirect";
 import GoogleRedirect from "./components/login/google/GoogleRedirect";
@@ -36,7 +37,9 @@ const Mobile = ({ children }) => {
 const queryClient = new QueryClient();
 
 function App() {
-  const [isLogin, setIsLogin] = useState(getCookie("loginUserId") ? true : false);
+  const [isLogin, setIsLogin] = useState(
+    getCookie("loginUserId") ? true : false
+  );
 
   if (process.env.NODE_ENV === "production") {
     console.log = function no_console() {};
@@ -84,6 +87,7 @@ function App() {
             <Route path="/search" element={<SearchPage />} />
             <Route path="/chat/:roomId" element={<ChatPage />} />
             <Route path="/chatlist" element={<ChatListPage />} />
+            <Route path="/finduser" element={<UserFindPage />} />
             <Route path="*" element={<ErrorPage />} />
           </Routes>
         </Mobile>
