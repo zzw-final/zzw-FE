@@ -29,6 +29,7 @@ const WriteTitle = ({
 
   const onKeyPress = (e) => {
     if (e.target.value !== "" && e.key === "Enter") {
+      e.preventDefault();
       if (tagList.length < 11) {
         submitTag();
       } else {
@@ -219,7 +220,7 @@ const Tagdiv = styled.div`
   height: 3.5vh;
   align-items: center;
   justify-content: space-between;
-  margin: 5px;
+  margin: 0px 5px 17px 5px;
   padding: 5px;
   background-color: #ffb84e;
   border-radius: 5px;
