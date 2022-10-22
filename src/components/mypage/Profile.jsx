@@ -129,7 +129,7 @@ export default Profile;
 const Container = styled.div`
   background-color: var(--color-light-orange);
   margin: auto;
-  padding: 3% 1% 0 0;
+  padding: 3% 1% 0 2px;
   width: 100%;
   height: 230px;
   display: flex;
