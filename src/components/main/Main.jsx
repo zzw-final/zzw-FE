@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import styled from "styled-components";
 import List from "../common/List";
 import Tag from "../common/Tag";
@@ -9,9 +9,24 @@ import { getCookie } from "../../util/cookie";
 
 const Main = ({ tagList, bestPost, recentPost, search }) => {
   const loginNickname = getCookie("loginNickname");
+  const [isVerticalViewBest, setIsVerticalViewBest] = useState(false);
+  const [isVerticalViewRecent, setIsVerticalViewRecent] = useState(false);
 
   const onClickTagHandler = (tagName) => {
     search("tag", tagName);
+  };
+
+  const verticalView = (postName) => {
+    switch (postName) {
+      case "bestPost":
+        setIsVerticalViewBest(!isVerticalViewBest);
+        break;
+      case "recentPost":
+        setIsVerticalViewRecent(!isVerticalViewRecent);
+        break;
+      default:
+        throw new Error(`${postName} 은 사용할 수 없는 리스트입닌다.`);
+    }
   };
 
   return (
@@ -34,12 +49,22 @@ const Main = ({ tagList, bestPost, recentPost, search }) => {
       <ListBox>
         <Title>
           🍕 베스트 레시피
-          <ArrowSpan>
-            <KeyboardArrowRightIcon />
+          <ArrowSpan
+            onClick={() => {
+              verticalView("bestPost");
+            }}
+          >
+            {isVerticalViewBest ? <KeyboardArrowRightIcon /> : <KeyboardArrowDownIcon />}
           </ArrowSpan>
         </Title>
         <section>
-          <List list={bestPost} height="200px" margin="0 0.5rem 0 0.5rem" />
+          <List
+            list={bestPost}
+            display={isVerticalViewBest ? "grid" : ""}
+            gridHeight={isVerticalViewBest ? "auto" : ""}
+            height="200px"
+            margin="0 0.5rem"
+          />
         </section>
         {!loginNickname ? (
           <>
@@ -57,12 +82,22 @@ const Main = ({ tagList, bestPost, recentPost, search }) => {
           <>
             <Title>
               🍿 실시간 레시피
-              <ArrowSpan>
-                <KeyboardArrowRightIcon />
+              <ArrowSpan
+                onClick={() => {
+                  verticalView("recentPost");
+                }}
+              >
+                {isVerticalViewRecent ? <KeyboardArrowRightIcon /> : <KeyboardArrowDownIcon />}
               </ArrowSpan>
             </Title>
             <section>
-              <List list={recentPost} width="160px" height="200px" margin="0 0.5rem 0 0.5rem" />
+              <List
+                list={recentPost}
+                display={isVerticalViewRecent ? "grid" : ""}
+                gridHeight={isVerticalViewRecent ? "auto" : ""}
+                height="200px"
+                margin="0 0.5rem"
+              />
             </section>
             <Title>
               🥕 팔로우 레시피

@@ -15,8 +15,9 @@ const ListContainer = styled.section`
   grid-template-columns: repeat(auto-fill, minmax(175px, 1fr));
   grid-row-gap: 1rem;
   justify-items: center;
-  margin: ${(props) => props.margin};
-  height: 210px;
+  margin: ${(props) => props.margin || "0 0.5rem"};
+  /* height: ${(props) => props.gridHeight || "210px"}; */
+  height: ${(props) => props.gridHeight || "210px"};
   overflow-y: hidden;
 `;
 
