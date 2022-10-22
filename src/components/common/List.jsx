@@ -5,7 +5,7 @@ import Recipe from "../posts/Recipe";
 const List = ({ list, listName, ...props }) => {
   return (
     <ListContainer {...props}>
-      {list && list?.map((item) => <Recipe post={item} key={item.postId} {...props} />)}
+      {list && list.map((item) => <Recipe post={item} key={item.postId} {...props} />)}
     </ListContainer>
   );
 };

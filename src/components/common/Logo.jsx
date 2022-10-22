@@ -9,7 +9,6 @@ import { Swiper, SwiperSlide } from "swiper/react";
 import "swiper/css/bundle";
 import "swiper/css";
 import "swiper/css/navigation";
-import { Navigation } from "swiper";
 import Modal from "../UI/Modal";
 import onBoarding1 from "../../assets/onBoarding1.png";
 import onBoarding2 from "../../assets/onBoarding2.png";
@@ -18,6 +17,20 @@ const Logo = () => {
   const navigate = useNavigate();
   const loginUserId = getCookie("loginUserId");
   const [modalIsOpen, setModalIsOpen] = useState(false);
+  const LOGO_IMG = [
+    {
+      src: "https://zzwimage.s3.ap-northeast-2.amazonaws.com/profile/noneback/7.png",
+      alt: "logoImg",
+    },
+    {
+      src: "https://zzwimage.s3.ap-northeast-2.amazonaws.com/profile/noneback/8.png",
+      alt: "logoImg",
+    },
+    {
+      src: "https://zzwimage.s3.ap-northeast-2.amazonaws.com/profile/noneback/9.png",
+      alt: "logoImg",
+    },
+  ];
 
   const logIn = () => {
     navigate("/login");
@@ -26,13 +39,12 @@ const Logo = () => {
   const logOut = () => {
     const confirm = window.confirm("로그아웃 하시겠습니까?");
     if (!confirm) return;
-    console.log("loginOauth :>> ", getCookie("loginOauth"));
     if (getCookie("loginOauth") === "kakao") {
       kakaoLogoutInstance();
-      removeAllCookies();
-      navigate("/");
-      window.location.reload();
     }
+    removeAllCookies();
+    navigate("/");
+    window.location.reload();
   };
 
   const refresh = () => window.location.reload();
@@ -43,18 +55,9 @@ const Logo = () => {
   return (
     <LogoContainer>
       <div onClick={refresh}>
-        <LogoImg
-          src="https://zzwimage.s3.ap-northeast-2.amazonaws.com/profile/noneback/7.png"
-          alt="logoImg"
-        />
-        <LogoImg
-          src="https://zzwimage.s3.ap-northeast-2.amazonaws.com/profile/noneback/8.png"
-          alt="logoImg"
-        />
-        <LogoImg
-          src="https://zzwimage.s3.ap-northeast-2.amazonaws.com/profile/noneback/9.png"
-          alt="logoImg"
-        />
+        {LOGO_IMG.map((_, idx) => (
+          <LogoImg key={idx} src={LOGO_IMG[idx].src} alt={LOGO_IMG[idx].alt} />
+        ))}
       </div>
       <HelpIconBox onClick={onboarding}>
         <HelpOutlineIcon color="warning" />

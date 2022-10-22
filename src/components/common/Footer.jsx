@@ -1,6 +1,5 @@
 import React, { useRef, useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
-import { useCookies } from "react-cookie";
 import styled from "styled-components";
 import HomeIcon from "@mui/icons-material/Home";
 import CreateIcon from "@mui/icons-material/Create";
@@ -8,20 +7,19 @@ import PersonIcon from "@mui/icons-material/Person";
 import TagIcon from "@mui/icons-material/Tag";
 import TextsmsIcon from "@mui/icons-material/Textsms";
 import * as StompJs from "@stomp/stompjs";
-import { getCookie } from "../../util/cookie";
 import Badge from "@mui/material/Badge";
+import { getCookie } from "../../util/cookie";
 import { fetchAlarm } from "../../api/request";
 import TagSearch from "./TagSearch";
 import Slide from "../UI/Slide";
 
 const Footer = ({ topTenTagList, tagAllList }) => {
   const [newChatText, setNewChatText] = useState();
-  const [cookies] = useCookies(["loginNickname", "loginUserId"]);
   const [slideIsOpen, setSlideIsOpen] = useState(false);
 
   const pathName = window.location.pathname;
-  const loginNickname = cookies.loginNickname;
-  const loginUserId = cookies.loginUserId;
+  const loginNickname = getCookie("loginNickname");
+  const loginUserId = getCookie("loginUserId");
 
   const navigate = useNavigate();
 
@@ -85,10 +83,7 @@ const Footer = ({ topTenTagList, tagAllList }) => {
     const possibleNav = ["/chatlist", "/", "/write", "/mypage"];
     if (possibleNav.includes(pathName)) {
       const changeNav = pathName.split("/")[1];
-      if (changeNav === "") {
-        changeColor("home");
-        return;
-      }
+      if (changeNav === "") return changeColor("home");
       changeColor(changeNav);
     }
   }, [pathName]);
@@ -127,7 +122,7 @@ const Footer = ({ topTenTagList, tagAllList }) => {
         <FooterIcon onClick={toggleTagBox}>
           <TagIcon sx={{ fontSize: 30 }} />
         </FooterIcon>
-        <FooterIcon id="home" onClick={goHome}>
+        <FooterIcon id="home" name="home" onClick={goHome}>
           <HomeIcon sx={{ fontSize: 30 }} />
         </FooterIcon>
         <FooterIcon id="write" onClick={goWrite}>
