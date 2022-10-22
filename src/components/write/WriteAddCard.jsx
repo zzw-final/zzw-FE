@@ -7,6 +7,8 @@ function WriteAddCard({ imgUpload, formValues, setFomvalues }) {
   const [imageUrl, setImageUrl] = useState("");
   const [previews, setPreview] = useState([]);
 
+  console.log("formValues", formValues);
+
   //서버에서 이미지를 url로 받아옴
   const getImgUpload = async (i, e) => {
     const [file] = e.target.files;
@@ -22,9 +24,8 @@ function WriteAddCard({ imgUpload, formValues, setFomvalues }) {
 
   // 이미지 추가하기위한 핸들러
   let handleChangeIMG = (i, e) => {
-    console.log("i", i);
     let newFormValues = [...formValues];
-    if (!newFormValues[i].imageUrl) {
+    if (newFormValues[i].imageUrl === null) {
       newFormValues[i].imageUrl = window.localStorage.getItem("titleIMG");
     } else {
       newFormValues[i].imageUrl = window.sessionStorage.getItem(i);
@@ -39,6 +40,11 @@ function WriteAddCard({ imgUpload, formValues, setFomvalues }) {
   // content추가하기 위한 핸들러
   let handleChange = (i, e) => {
     let newFormValues = [...formValues];
+    if (newFormValues[i].imageUrl === null) {
+      newFormValues[i].imageUrl = window.localStorage.getItem("titleIMG");
+    } else {
+      newFormValues[i].imageUrl = window.sessionStorage.getItem(i);
+    }
     newFormValues[i][e.target.name] = e.target.value;
     //page 추가 (0페이지부터 시작)
     newFormValues[i].page = i;
