@@ -86,6 +86,7 @@ const SearchForm = ({ mainSearch, searchPageSearch, showToast }) => {
   useEffect(() => {
     inputRef.current.addEventListener("keydown", logKey);
     function logKey(event) {
+      event.preventDefault();
       if (event.code === "Backspace" && !inputRef?.current?.value) {
         setTagList((prev) => prev.slice(0, prev.length - 1));
       }
