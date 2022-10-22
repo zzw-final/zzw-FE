@@ -1,7 +1,7 @@
 import { React } from "react";
 import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
-import { instance } from "../../api/request";
+import { kakaoLogoutInstance } from "../../api/request";
 import { getCookie, removeAllCookies } from "../../util/cookie";
 import Button from "../UI/Button";
 import HelpOutlineIcon from "@mui/icons-material/HelpOutline";
@@ -17,10 +17,13 @@ const Logo = () => {
   const logOut = () => {
     const confirm = window.confirm("로그아웃 하시겠습니까?");
     if (!confirm) return;
-    if (getCookie("loginOauth") === "kakao") instance.kakaoLogoutInstance();
-    removeAllCookies();
-    navigate("/");
-    window.location.reload();
+    console.log("loginOauth :>> ", getCookie("loginOauth"));
+    if (getCookie("loginOauth") === "kakao") {
+      kakaoLogoutInstance();
+      removeAllCookies();
+      navigate("/");
+      window.location.reload();
+    }
   };
 
   const refresh = () => window.location.reload();
