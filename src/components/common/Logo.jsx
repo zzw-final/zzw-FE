@@ -144,6 +144,11 @@ const Onboarding = styled.div`
   .swiper-slide {
     text-align: center;
   }
+
+  img {
+    width: 100%;
+    height: 100%;
+  }
 `;
 
 const LogoImg = styled.img`
