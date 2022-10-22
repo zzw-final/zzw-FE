@@ -60,13 +60,13 @@ function DetailPage() {
   const delteMutate = useMutation((id) => fetchDelete(id), {
     onSuccess: () => {
       alert("삭제되었습니다.");
-      navigate(-1);
       queryClient.invalidateQueries(["mypage", "myRecipes"]);
       queryClient.invalidateQueries(["mypage", "likeRecipes"]);
       queryClient.invalidateQueries("bestPost");
       queryClient.invalidateQueries("recentPost");
       queryClient.invalidateQueries("followPost");
       queryClient.invalidateQueries("mainpage");
+      navigate(-1);
     },
   });
 
