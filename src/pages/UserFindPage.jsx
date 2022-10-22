@@ -7,6 +7,7 @@ import { useQuery } from "react-query";
 import { options } from "../api/options";
 import useInput from "../hooks/useInput";
 import FindUser from "../components/chat/FindUser";
+import DevlopUser from "../components/chat/DevlopUser";
 
 function UserFindPage() {
   const [searchInput, searchInputHandler] = useInput();
@@ -14,16 +15,29 @@ function UserFindPage() {
   const fetchUser = async (nickname) => {
     return await instance.get(`/api/chat/member?nickname=${nickname}`);
   };
+
+  const fetchDevlopUser = async () => {
+    return await instance.get(`api/chat/member`);
+  };
   const { data: serchUser, isLoading: loadingSerchUser } = useQuery(
     ["user", searchInput],
     () => fetchUser(searchInput),
     options.eternal
   );
+
+  const { data: delopUser } = useQuery(
+    ["devuser"],
+    () => fetchDevlopUser(),
+    options.eternal
+  );
+
+  //   console.log(delopUser);
+
   const searchNickname = serchUser?.filter((item) =>
     item.nickname.includes(searchInput)
   );
 
-  console.log(serchUser);
+  //   console.log(serchUser);
 
   return (
     <LayoutPage headerTitle="사용자 찾기" backBtnTypeArrow="true">
@@ -35,13 +49,12 @@ function UserFindPage() {
         ></Input>
       </SearchBox>
       <ChatList>
-        {searchNickname && searchNickname.length !== 0 ? (
-          searchNickname?.map((user, idx) => <FindUser user={user} key={idx} />)
-        ) : (
-          <div>채팅 리스트가 없습니다.</div>
-        )}
+        {searchNickname && searchNickname.length !== 0
+          ? searchNickname?.map((user, idx) => (
+              <FindUser user={user} key={idx} />
+            ))
+          : delopUser?.map((user, idx) => <DevlopUser user={user} key={idx} />)}
       </ChatList>
-      {/* <FindUser serchUser={serchUser} /> */}
     </LayoutPage>
   );
 }

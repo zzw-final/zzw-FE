@@ -6,7 +6,7 @@ import { getCookie } from "../../util/cookie";
 import Button from "../UI/Button";
 import { directMessage } from "../../api/userpage";
 
-function FindUser({ user }) {
+function DevlopUser({ user }) {
   const navigate = useNavigate();
   const cookies = getCookie("loginUserId");
 
@@ -51,7 +51,7 @@ function FindUser({ user }) {
   );
 }
 
-export default FindUser;
+export default DevlopUser;
 
 const Container = styled.div`
   display: flex;
