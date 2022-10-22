@@ -2,7 +2,7 @@ import React from "react";
 import Follow from "./Follow";
 import styled from "styled-components";
 import useInput from "../../hooks/useInput";
-import SearchIcon from "@mui/icons-material/Search";
+import Input from "../UI/Input";
 
 function FollowList({ followList, mutate }) {
   const [searchInput, searchInputHandler] = useInput();
@@ -15,12 +15,7 @@ function FollowList({ followList, mutate }) {
 
   return (
     <>
-      <SearchBox>
-        <span>
-          <SearchIcon color="warning" />
-        </span>
-        <Input placeholder="닉네임을 검색하세요." onChange={searchInputHandler}></Input>
-      </SearchBox>
+      <Input onChangeFn={searchInputHandler} />
       {searchFollowList?.map((follow) => (
         <Follow key={follow.userId} follow={follow} mutate={mutate} />
       ))}
@@ -34,40 +29,4 @@ const Div = styled.div`
   color: var(--color-grey);
   margin-top: 5rem;
   text-align: center;
-`;
-
-const SearchBox = styled.div`
-  text-align: center;
-  position: relative;
-  span {
-    position: absolute;
-    top: 7px;
-    left: 7.5%;
-  }
-`;
-
-const Input = styled.input`
-  width: 90%;
-  height: 2.3rem;
-  margin-bottom: 0.3rem;
-  padding: 1rem 0 1rem 2.7rem;
-  background-color: var(--color-white-orange);
-  border: none;
-  border-radius: 10px;
-  outline: none;
-  caret-color: lightgray;
-  font-weight: var(--weight-semi-bold);
-  font-size: var(--font-small);
-
-  &::placeholder {
-    color: #777777;
-    font-size: var(--font-semi-small);
-    font-weight: var(--weight-regular-thick);
-  }
-  &::-webkit-search-decoration,
-  &::--search-cancel-button,
-  &::-webkit-search-results-button,
-  &::-webkit-search-results-decoration {
-    display: none;
-  }
 `;

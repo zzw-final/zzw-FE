@@ -38,9 +38,7 @@ const Mobile = ({ children }) => {
 const queryClient = new QueryClient();
 
 function App() {
-  const [isLogin, setIsLogin] = useState(
-    getCookie("loginUserId") ? true : false
-  );
+  const [isLogin, setIsLogin] = useState(getCookie("loginUserId") ? true : false);
 
   if (process.env.NODE_ENV === "production") {
     console.log = function no_console() {};
@@ -92,7 +90,7 @@ function App() {
           </Routes>
         </Mobile>
       </BrowserRouter>
-      <ReactQueryDevtools initialIsOpen={false} />
+      {/* <ReactQueryDevtools initialIsOpen={false} /> */}
     </QueryClientProvider>
   );
 }
