@@ -122,7 +122,6 @@ const WriteTitle = ({
 export default WriteTitle;
 
 const WriteTitleContainer = styled.div`
-  /* background-color: green; */
   margin: auto auto;
   width: 98%;
   height: 80vh;
@@ -185,13 +184,12 @@ const TagNoti = styled.p`
 const TagBox = styled.div`
   display: flex;
   align-items: center;
-  /* flex-wrap: wrap; */
   width: 100%;
   height: 6vh;
   max-height: 6vh;
   overflow-x: scroll;
   margin: 3rem 0rem 0px 0rem;
-  padding: 0 10px;
+  padding: 15px 10px 0 0;
   border: 0;
   background-color: var(--color-light-white);
   box-sizing: border-box;
@@ -207,7 +205,6 @@ const IngredintTag = styled.textarea`
   width: 230px;
   resize: none;
   margin-left: 10px;
-  /* max-width: 230px; */
   height: 3.5vh;
   background: transparent;
   overflow-x: scroll;
@@ -216,7 +213,6 @@ const IngredintTag = styled.textarea`
   cursor: text;
 `;
 const Tagdiv = styled.div`
-  /* display: flex; */
   white-space: nowrap;
   display: inline-flex;
   width: auto;
