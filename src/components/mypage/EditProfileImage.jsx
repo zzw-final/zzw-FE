@@ -81,7 +81,7 @@ function EditProfileImage({ setModalIsOpen }) {
           </Box>
         ))}
       </Container>
-      <div style={{ textAlign: "center", marginTop: "15px" }}>
+      <div style={{ textAlign: "center", marginTop: "20px" }}>
         <Button onClick={changeProfile} name="DmBtn" width="45%" weight="bold">
           변경 사항 저장하기
         </Button>
@@ -95,10 +95,12 @@ export default EditProfileImage;
 const Container = styled.div`
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(6rem, 1fr));
+  place-items: center;
 `;
 
 const FlexContainer = styled.div`
   display: flex;
+  flex-wrap: wrap;
 `;
 
 const Title = styled.div`
@@ -135,8 +137,8 @@ const Img = styled.img`
 `;
 
 const Radio = styled.input`
-  text-align: center;
   width: 6rem;
-  margin: 8px 7px;
+  margin: 8px auto;
+  text-align: center;
   accent-color: green;
 `;
