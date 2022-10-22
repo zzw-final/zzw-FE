@@ -16,9 +16,9 @@ const ListContainer = styled.section`
   grid-row-gap: 1rem;
   justify-items: center;
   margin: ${(props) => props.margin || "0 0.5rem"};
-  /* height: ${(props) => props.gridHeight || "210px"}; */
   height: ${(props) => props.gridHeight || "210px"};
   overflow-y: hidden;
+  padding-bottom: 0.2rem;
 `;
 
 export default List;
