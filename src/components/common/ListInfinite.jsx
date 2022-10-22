@@ -30,9 +30,10 @@ const ListInfinite = ({ listName, resultSearch, ...props }) => {
     <ListContainer {...props}>
       {data?.map((item, pageIndex) => {
         const list = item.data.data.postList;
-        if (!list) {
-          return <SearchListText key={pageIndex}>😊 관심 있는 유저를 팔로우 해주세요!</SearchListText>;
-        }
+        if (!list)
+          return (
+            <SearchListText key={pageIndex}>😊 관심 있는 유저를 팔로우 해주세요!</SearchListText>
+          );
         return list?.map((item, itemIdx) => {
           if (data.length === pageIndex + 1 && list.length === itemIdx + 1) {
             return (

@@ -4,7 +4,6 @@ import styled from "styled-components";
 import useInputRef from "../../hooks/useInputRef";
 import Tag from "../common/Tag";
 import { useSearchParams } from "react-router-dom";
-import { getCookie } from "../../util/cookie";
 
 const SearchForm = ({ mainSearch, searchPageSearch, showToast }) => {
   const [selectOption, setSelectOption] = useState("tag");
@@ -16,7 +15,6 @@ const SearchForm = ({ mainSearch, searchPageSearch, showToast }) => {
   const searchedNickname = searchParams.get("nickname");
 
   const pathName = window.location.pathname;
-  const loginNickname = getCookie("loginNickname");
 
   const selectRef = useRef();
 
@@ -86,6 +84,7 @@ const SearchForm = ({ mainSearch, searchPageSearch, showToast }) => {
   useEffect(() => {
     inputRef.current.addEventListener("keydown", logKey);
     function logKey(event) {
+      event.preventDefault();
       if (event.code === "Backspace" && !inputRef?.current?.value) {
         setTagList((prev) => prev.slice(0, prev.length - 1));
       }

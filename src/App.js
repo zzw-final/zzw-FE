@@ -23,6 +23,7 @@ import ErrorPage from "./pages/ErrorPage";
 import { useState, useEffect } from "react";
 import { getCookie } from "./util/cookie";
 import styled from "styled-components";
+import browserImg from "./assets/browser.png";
 
 const Desktop = ({ children }) => {
   const isDesktop = useMediaQuery({ minWidth: 768 });
@@ -57,10 +58,9 @@ function App() {
     <QueryClientProvider client={queryClient}>
       <BrowserRouter>
         <Desktop>
-          <HelpText>
-            모바일 환경에서 이용해주세요 😅 <br />
-            (꿀팁: 화면을 줄여도 이용 가능합니다!)
-          </HelpText>
+          <BrowserImg />
+          {/* <HelpText> */}
+          {/* </HelpText> */}
         </Desktop>
         <Mobile>
           <Routes>
@@ -97,13 +97,13 @@ function App() {
   );
 }
 
-const HelpText = styled.div`
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  text-align: center;
+const BrowserImg = styled.div`
+  width: 100vw;
   height: 100vh;
-  font-size: var(--font-large);
+  background-image: url(${browserImg});
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: 80%;
 `;
 
 export default App;
