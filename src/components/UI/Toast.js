@@ -26,7 +26,7 @@ export default Toast;
 
 const Box = styled.div`
   margin: ${({ margin }) => margin || "auto"};
-  top: ${({ top }) => top || "15%"};
+  top: ${({ top }) => top || "16%"};
   left: ${({ left }) => left || "10%"};
   position: ${({ position }) => position || "absolute"};
   padding: 1rem 1.5rem;
@@ -41,8 +41,9 @@ const Box = styled.div`
   width: 80%;
 
   img {
-    width: 220px;
-    height: 220px;
+    width: 125px;
+    height: 125px;
+    padding: 0.5rem;
   }
 
   p {

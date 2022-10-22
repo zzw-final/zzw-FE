@@ -16,7 +16,11 @@ const MainPage = () => {
   const loginNickname = getCookie("loginNickname");
 
   const navigate = useNavigate();
-  const { data: tagList } = useQuery(["mainPage", "tagList"], fetchBestTagTopFive, options.eternal);
+  const { data: tagList } = useQuery(
+    ["mainPage", "tagList"],
+    fetchBestTagTopFive,
+    options.eternal
+  );
   const { data: bestPost } = useQuery(["mainPage", "bestPost"], fetchBestList, options.eternal);
   const { data: recentPost } = useQuery(
     ["mainPage", "recentPost"],
@@ -37,9 +41,7 @@ const MainPage = () => {
       <Logo />
       <SearchForm mainSearch={search} showToast={showToast} />
       <MainContainer>
-        {toast && (
-          <Toast setToast={setToast} text="태그는 5개까지 검색 가능합니다." margin="0.5rem" />
-        )}
+        {toast && <Toast setToast={setToast} text="태그는 5개까지 검색 가능합니다." />}
         <Main tagList={tagList} bestPost={bestPost} recentPost={recentPost} search={search} />
       </MainContainer>
     </LayoutPage>
