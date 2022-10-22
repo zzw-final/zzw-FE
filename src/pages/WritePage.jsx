@@ -91,6 +91,7 @@ function WritePage() {
     return outconfirm;
   }, []);
 
+  // 로딩 시 스피너
   if (postMutate.isLoading) return <Spinner />;
 
   return (

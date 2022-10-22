@@ -8,6 +8,7 @@ import { useNavigate } from "react-router-dom";
 import ChevronLeftIcon from "@mui/icons-material/ChevronLeft";
 import Button from "../UI/Button";
 import IosShareIcon from "@mui/icons-material/IosShare";
+import PersonSearchIcon from "@mui/icons-material/PersonSearch";
 
 const LayoutPage = ({
   children,
@@ -20,6 +21,7 @@ const LayoutPage = ({
   buttonText,
   buttonEvent,
   copyUrl,
+  findUser,
 }) => {
   const [topTenTagList, setTopTenTagList] = useState([]);
   const [tagAllList, setTagAllList] = useState([]);
@@ -52,6 +54,7 @@ const LayoutPage = ({
 
   return (
     <LayoutPageContainer>
+
       {isHeader && (
         <Header>
           <BackBtn onClick={back}>
@@ -63,6 +66,15 @@ const LayoutPage = ({
           </BackBtn>
           {headerTitle}
           <AddBtn>
+          {findUser ? (
+                <PersonSearchIcon
+                  onClick={() => {
+                    navigate("/finduser");
+                  }}
+                />
+              ) : (
+                ""
+              )}
             {isShare && (
               <IosShareIcon sx={{ marginRight: "9px" }} onClick={copyUrl} color="warning" />
             )}
@@ -127,7 +139,9 @@ const Header = styled.header`
 const Wrapper = styled.div`
   width: 100%;
   overflow: hidden;
+
   background-color: ${({ background }) => background || "var(--color-white)"};
+
   padding-top: ${({ paddingTop }) => paddingTop || 0};
 `;
 

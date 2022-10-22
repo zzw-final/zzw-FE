@@ -66,7 +66,6 @@ const WriteTitle = ({
       <TitleNoti>제목</TitleNoti>
       <Title
         placeholder="제목을 입력해주세요"
-        // ref={titleRef}
         onChange={(e) => {
           setTitle(e.target.value);
         }}
@@ -74,7 +73,6 @@ const WriteTitle = ({
       <FoodNameNoti>요리이름</FoodNameNoti>
       <FoodNameInput
         placeholder="요리이름 입력해주세요"
-        // ref={foodnameRef}
         onChange={(e) => {
           setFoodName(e.target.value);
         }}
