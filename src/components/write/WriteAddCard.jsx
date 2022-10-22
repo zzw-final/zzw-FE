@@ -193,7 +193,7 @@ const PreviewImg = styled.img`
   grid-row-start: 2;
   width: 55vw;
   height: 25vh;
-  margin: 2rem 0rem 0rem 0rem;
+  margin: 2rem 3rem 0rem 4.3rem;
   box-sizing: border-box;
   border: 0;
   border-radius: 10px;
