@@ -85,7 +85,7 @@ function WritePage() {
   };
 
   // 얘가 언디파인드이면 전부 다 비어있다는 뜻. -> 얼럿 실행
-  console.log(formValues.every((item) => !!item.content));
+  // console.log(formValues.every((item) => !!item.content));
 
   useEffect(() => {
     return outconfirm;
