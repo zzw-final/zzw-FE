@@ -139,7 +139,7 @@ const Footer = ({ topTenTagList, tagAllList }) => {
       </FooterContainer>
       {slideIsOpen && (
         <Slide setSlideIsOpen={setSlideIsOpen}>
-          <TagSearch setSlideIsOpen={setSlideIsOpen} topTenTagList={topTenTagList} tagAllList={tagAllList} />
+          <TagSearch topTenTagList={topTenTagList} tagAllList={tagAllList} />
         </Slide>
       )}
     </>

@@ -1,14 +1,23 @@
-import { React } from "react";
+import { React, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
 import { kakaoLogoutInstance } from "../../api/request";
 import { getCookie, removeAllCookies } from "../../util/cookie";
 import Button from "../UI/Button";
 import HelpOutlineIcon from "@mui/icons-material/HelpOutline";
+import { Swiper, SwiperSlide } from "swiper/react";
+import "swiper/css/bundle";
+import "swiper/css";
+import "swiper/css/navigation";
+import { Navigation } from "swiper";
+import Modal from "../UI/Modal";
+import onBoarding1 from "../../assets/onBoarding1.png";
+import onBoarding2 from "../../assets/onBoarding2.png";
 
 const Logo = () => {
   const navigate = useNavigate();
   const loginUserId = getCookie("loginUserId");
+  const [modalIsOpen, setModalIsOpen] = useState(false);
 
   const logIn = () => {
     navigate("/login");
@@ -27,7 +36,9 @@ const Logo = () => {
   };
 
   const refresh = () => window.location.reload();
-  const onboarding = () => {};
+  const onboarding = () => {
+    setModalIsOpen(true);
+  };
 
   return (
     <LogoContainer>
@@ -48,6 +59,22 @@ const Logo = () => {
       <HelpIconBox onClick={onboarding}>
         <HelpOutlineIcon color="warning" />
       </HelpIconBox>
+      {modalIsOpen && (
+        <OnboardingBox>
+          <Modal setModalIsOpen={setModalIsOpen} backgroundColor="transparent" padding="0">
+            <Onboarding>
+              <Swiper className="mySwiper">
+                <SwiperSlide>
+                  <img src={onBoarding1} alt="helpImg" />
+                </SwiperSlide>
+                <SwiperSlide>
+                  <img src={onBoarding2} alt="helpImg" />
+                </SwiperSlide>
+              </Swiper>
+            </Onboarding>
+          </Modal>
+        </OnboardingBox>
+      )}
       {!loginUserId ? (
         <Button
           name="commonBtn"
@@ -93,6 +120,27 @@ const LogoContainer = styled.div`
 const HelpIconBox = styled.div`
   position: absolute;
   left: 1.4rem;
+`;
+
+const OnboardingBox = styled.div`
+  height: 100%;
+  z-index: 3;
+`;
+
+const Onboarding = styled.div`
+  position: absolute;
+  height: 70vh;
+  width: 100%;
+  height: 100%;
+
+  .swiper {
+    width: 100%;
+    height: 100%;
+  }
+
+  .swiper-slide {
+    text-align: center;
+  }
 `;
 
 const LogoImg = styled.img`
