@@ -1,5 +1,6 @@
 import Button from "../UI/Button";
 import styled from "styled-components";
+import Spinner from "../UI/Spinner";
 import { useState } from "react";
 import { useQuery, useMutation, useQueryClient } from "react-query";
 import { editApi } from "../../api/mypage";
@@ -11,7 +12,7 @@ function EditProfileImage({ setModalIsOpen }) {
   const [char, setChar] = useState();
   const [titleGrade, setTitleGrade] = useState();
 
-  const { data: grades } = useQuery(
+  const { data: grades, isLoading: loadingGrades } = useQuery(
     ["mypage", "edit", "grade"],
     editApi.editGradeList,
     options.eternal
@@ -24,7 +25,7 @@ function EditProfileImage({ setModalIsOpen }) {
     },
   });
 
-  const { data: profileImg } = useQuery(
+  const { data: profileImg, isLoading: loadingProfileImg } = useQuery(
     ["mypage", "edit", "img"],
     editApi.editImgList,
     options.eternal
@@ -48,6 +49,8 @@ function EditProfileImage({ setModalIsOpen }) {
     }
     setModalIsOpen(false);
   };
+
+  if (loadingGrades || loadingProfileImg) return <Spinner />;
 
   return (
     <>
@@ -95,7 +98,7 @@ export default EditProfileImage;
 const Container = styled.div`
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(6rem, 1fr));
-  place-items: center;
+  place-items: center center;
 `;
 
 const FlexContainer = styled.div`
@@ -110,6 +113,7 @@ const Title = styled.div`
     font-size: var(--font-micro);
     color: var(--color-grey);
   }
+  margin: 5px 0;
 `;
 
 const Grades = styled.div`
@@ -117,7 +121,7 @@ const Grades = styled.div`
   padding: 0px 0.5rem;
   display: flex;
   align-items: center;
-  margin: 10px 0 10px 15px;
+  margin: 0 0 5px 15px;
   background-color: ${({ grade, titleGrade }) =>
     titleGrade === grade.gradeId ? "var(--color-orange)" : "var(--color-light-white)"};
   font-size: var(--font-small);
@@ -139,6 +143,5 @@ const Img = styled.img`
 const Radio = styled.input`
   width: 6rem;
   margin: 8px auto;
-  text-align: center;
   accent-color: green;
 `;
