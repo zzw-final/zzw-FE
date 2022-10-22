@@ -8,6 +8,7 @@ import { options } from "../api/options";
 import useInput from "../hooks/useInput";
 import FindUser from "../components/chat/FindUser";
 import DevlopUser from "../components/chat/DevlopUser";
+import Input from "../components/UI/Input";
 
 function UserFindPage() {
   const [searchInput, searchInputHandler] = useInput();
@@ -42,10 +43,10 @@ function UserFindPage() {
   return (
     <LayoutPage headerTitle="사용자 찾기" backBtnTypeArrow="true">
       <SearchBox>
-        <PersonSearchIcon />
+        {/* <PersonSearchIcon /> */}
         <Input
           placeholder=" 닉네임을 검색하세요."
-          onChange={searchInputHandler}
+          onChangeFn={searchInputHandler}
         ></Input>
       </SearchBox>
       <ChatList>
@@ -62,27 +63,15 @@ function UserFindPage() {
 export default UserFindPage;
 
 const SearchBox = styled.div`
-  text-align: left;
-  display: flex;
   margin: 1.4rem 1rem 1rem 1rem;
   width: 90%;
   height: 3.2rem;
   margin-bottom: 0.5rem;
-  padding: 1rem;
+  padding-top: 8px;
+  padding-left: -2px;
   background-color: var(--color-white-orange);
   border: none;
   border-radius: 10px;
-`;
-
-const Input = styled.input`
-  border: none;
-  margin-left: 10px;
-  background-color: transparent;
-  width: 90%;
-  height: 1.5rem;
-  outline: none;
-  font-weight: var(--weight-semi-bold);
-  font-size: var(--font-small);
 `;
 
 const ChatList = styled.div`
