@@ -64,12 +64,20 @@ imgInstance.interceptors.request.use(
   }
 );
 
-export const kakaoLoginInstance = async (code) => {
-  return await axios.get(`${process.env.REACT_APP_API}/api/member/login/kakao?code=${code}`, {
-    headers: {
-      "Content-Type": "application/json",
-    },
-  });
+export const login = async ({ code, pathName }) => {
+  const baseURL = process.env.REACT_APP_API;
+  switch (pathName) {
+    case "/authkakao":
+      return await axios.get(`${baseURL}/api/member/login/kakao?code=${code}`);
+    case "/authnaver":
+      return await axios.get(
+        `${baseURL}/api/member/login/naver?code=${code}&state=${process.env.NAVER_STATE}`
+      );
+    case "/authgoogle":
+      return await axios.get(`${baseURL}/api/member/login/google?code=${code}`);
+    default:
+      throw new Error(`${pathName} 는 올바른 경로가 아닙니다.`);
+  }
 };
 
 export const kakaoLogoutInstance = async () => {

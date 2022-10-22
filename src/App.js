@@ -1,7 +1,12 @@
+import { useState, useEffect } from "react";
 import { useMediaQuery } from "react-responsive";
 import { BrowserRouter, Route, Routes } from "react-router-dom";
 import { QueryClientProvider, QueryClient } from "react-query";
 import { ReactQueryDevtools } from "react-query/devtools";
+import { getCookie } from "./util/cookie";
+import styled from "styled-components";
+import browserImg from "./assets/browser.png";
+import LoginRedirect from "./components/login/LoginRedirect";
 import {
   MainPage,
   DetailPage,
@@ -13,17 +18,10 @@ import {
   UserPage,
   ChatPage,
   UserFindPage,
+  SearchPage,
+  ChatListPage,
+  ErrorPage,
 } from "./pages";
-import KakaoRedirect from "./components/login/kakao/KakaoRedirect";
-import GoogleRedirect from "./components/login/google/GoogleRedirect";
-import SearchPage from "./pages/SearchPage";
-import NaverRedirect from "./components/login/naver/NaverRedirect";
-import ChatListPage from "./pages/ChatListPage";
-import ErrorPage from "./pages/ErrorPage";
-import { useState, useEffect } from "react";
-import { getCookie } from "./util/cookie";
-import styled from "styled-components";
-import browserImg from "./assets/browser.png";
 
 const Desktop = ({ children }) => {
   const isDesktop = useMediaQuery({ minWidth: 768 });
@@ -38,9 +36,7 @@ const Mobile = ({ children }) => {
 const queryClient = new QueryClient();
 
 function App() {
-  const [isLogin, setIsLogin] = useState(
-    getCookie("loginUserId") ? true : false
-  );
+  const [isLogin, setIsLogin] = useState(getCookie("loginUserId") ? true : false);
 
   if (process.env.NODE_ENV === "production") {
     console.log = function no_console() {};
@@ -59,8 +55,6 @@ function App() {
       <BrowserRouter>
         <Desktop>
           <BrowserImg />
-          {/* <HelpText> */}
-          {/* </HelpText> */}
         </Desktop>
         <Mobile>
           <Routes>
@@ -81,9 +75,9 @@ function App() {
             <Route path="/detail/:id" element={<DetailPage />} />
             <Route path="/follow" element={<FollowPage />} />
             <Route path="/follow/:id" element={<FollowPage />} />
-            <Route path="/authkakao" element={<KakaoRedirect />} />
-            <Route path="/authgoogle" element={<GoogleRedirect />} />
-            <Route path="/authnaver" element={<NaverRedirect />} />
+            <Route path="/authkakao" element={<LoginRedirect />} />
+            <Route path="/authgoogle" element={<LoginRedirect />} />
+            <Route path="/authnaver" element={<LoginRedirect />} />
             <Route path="/search" element={<SearchPage />} />
             <Route path="/chat/:roomId" element={<ChatPage />} />
             <Route path="/chatlist" element={<ChatListPage />} />

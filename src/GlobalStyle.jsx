@@ -24,6 +24,7 @@ const GlobalStyle = createGlobalStyle`
   --color-pink: #ffa4a1;
   --color-dark-pink: #ff6863;
   --color-yellow: #fff7d1; 
+  --color-login-yellow: #FFE8C6; 
   --color-white-orange: #faeedd;
   --color-light-orange: #ffddab;
   --color-main-light-orange: #FFE8C6; // main light orange
