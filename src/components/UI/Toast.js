@@ -27,7 +27,7 @@ export default Toast;
 const Box = styled.div`
   margin: ${({ margin }) => margin || "auto"};
   top: ${({ top }) => top || "15%"};
-  left: ${({ left }) => left || "7.5%"};
+  left: ${({ left }) => left || "10%"};
   position: ${({ position }) => position || "absolute"};
   padding: 1rem 1.5rem;
   background-color: white;
@@ -38,7 +38,7 @@ const Box = styled.div`
   font-size: var(--font-regular);
   font-weight: var(--weight-semi-bold);
   z-index: 10;
-  width: 85%;
+  width: 80%;
 
   img {
     width: 220px;
@@ -47,8 +47,8 @@ const Box = styled.div`
 
   p {
     background-color: var(--color-light-orange);
-    color: var(--color-dark-orange);
+    color: var(--color-main-dark-orange);
     border-radius: 10px;
-    padding: 0.3rem 1rem;
+    padding: 0.5rem 0.5rem;
   }
 `;
