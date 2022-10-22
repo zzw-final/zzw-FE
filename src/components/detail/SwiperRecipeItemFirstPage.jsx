@@ -191,8 +191,8 @@ const ItemImg = styled.img`
 
 const ItemImgEdit = styled.input`
   position: absolute;
-  top: 350px;
-  left: 28px;
+  top: 45%;
+  left: 12%;
 `;
 
 const LikeBox = styled.div`
