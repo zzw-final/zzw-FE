@@ -48,6 +48,8 @@ function DetailPage() {
     () => fetchDetail(id),
     options.eternal
   );
+  // const { isFollow } = postDetail;
+  // console.log("isFollow", isFollow);
 
   //이미지 업로드 시 url 반환요청
   const imgUpload = async (file) => {
@@ -137,6 +139,7 @@ function DetailPage() {
   //디테일 페이지 내에서 팔로우 기능
   const postId = useParams().id;
 
+  console.log(postDetail?.isFollow);
   const [greyButton, setGreyButton] = useState(postDetail?.isFollow);
 
   const { mutate } = useMutation((postId) => fetchFollowDe(postId), {
