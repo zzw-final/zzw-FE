@@ -22,7 +22,7 @@ const SlideBack = styled.div`
   left: 0;
   width: 100%;
   height: 100vh;
-  background-color: rgba(0, 0, 0, 0.5);
+  /* background-color: rgba(0, 0, 0, 0.5); */
   display: flex;
   justify-content: center;
   align-items: center;
@@ -43,19 +43,6 @@ const SlideBox = styled.div`
   transition: all 600ms cubic-bezier(0.86, 0, 0.07, 1);
   z-index: 2;
   overflow: auto;
-
-  ::-webkit-scrollbar {
-    width: 0.3rem;
-  }
-  ::-webkit-scrollbar-thumb {
-    background-color: var(--color-orange);
-    border-radius: 10px;
-  }
-  ::-webkit-scrollbar-track {
-    margin-top: 1.3rem;
-    background-color: var(--color-white);
-  }
-
   animation-name: slideMotion;
   animation-duration: 1s;
 

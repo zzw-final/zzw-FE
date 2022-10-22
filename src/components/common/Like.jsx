@@ -1,14 +1,13 @@
-import React, { useState } from "react";
+import React from "react";
 import styled from "styled-components";
 import FavoriteIcon from "@mui/icons-material/Favorite";
 import FavoriteBorderIcon from "@mui/icons-material/FavoriteBorder";
-import { useCookies } from "react-cookie";
 import { likes } from "../../api/request";
 import { useMutation, useQueryClient } from "react-query";
+import { getCookie } from "../../util/cookie";
 
 const Like = ({ isLike, postId }) => {
-  const [cookies] = useCookies(["loginNickname"]);
-  const loginNickname = cookies.loginNickname;
+  const loginNickname = getCookie("loginNickname");
   const queryClient = useQueryClient();
 
   const likeMutate = useMutation((postId) => likes(postId), {
@@ -26,10 +25,7 @@ const Like = ({ isLike, postId }) => {
   });
 
   const like = async () => {
-    if (loginNickname === undefined) {
-      alert("로그인 유저만 사용 가능한 기능입니다.");
-      return;
-    }
+    if (loginNickname === undefined) return alert("로그인 유저만 사용 가능한 기능입니다.");
     likeMutate.mutate(postId);
   };
 
