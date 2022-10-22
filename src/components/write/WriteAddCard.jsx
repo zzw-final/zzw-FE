@@ -7,8 +7,6 @@ function WriteAddCard({ imgUpload, formValues, setFomvalues }) {
   const [imageUrl, setImageUrl] = useState("");
   const [previews, setPreview] = useState([]);
 
-  console.log("formValues", formValues);
-
   //서버에서 이미지를 url로 받아옴
   const getImgUpload = async (i, e) => {
     const [file] = e.target.files;
@@ -25,7 +23,10 @@ function WriteAddCard({ imgUpload, formValues, setFomvalues }) {
   // 이미지 추가하기위한 핸들러
   let handleChangeIMG = (i, e) => {
     let newFormValues = [...formValues];
-    if (newFormValues[i].imageUrl === null) {
+    if (
+      newFormValues[i].imageUrl === null ||
+      newFormValues[i].imageUrl === ""
+    ) {
       newFormValues[i].imageUrl = window.localStorage.getItem("titleIMG");
     } else {
       newFormValues[i].imageUrl = window.sessionStorage.getItem(i);
@@ -40,7 +41,10 @@ function WriteAddCard({ imgUpload, formValues, setFomvalues }) {
   // content추가하기 위한 핸들러
   let handleChange = (i, e) => {
     let newFormValues = [...formValues];
-    if (newFormValues[i].imageUrl === null) {
+    if (
+      newFormValues[i].imageUrl === null ||
+      newFormValues[i].imageUrl === ""
+    ) {
       newFormValues[i].imageUrl = window.localStorage.getItem("titleIMG");
     } else {
       newFormValues[i].imageUrl = window.sessionStorage.getItem(i);
@@ -193,7 +197,7 @@ const PreviewImg = styled.img`
   grid-row-start: 2;
   width: 55vw;
   height: 25vh;
-  margin: 2rem 0rem 0rem 0rem;
+  margin: 2rem 3rem 0rem 4.3rem;
   box-sizing: border-box;
   border: 0;
   border-radius: 10px;
