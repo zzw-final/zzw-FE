@@ -6,28 +6,15 @@ import { useQuery } from "react-query";
 import { options } from "../api/options";
 import useInput from "../hooks/useInput";
 import FindUser from "../components/chat/FindUser";
-import DevlopUser from "../components/chat/DevlopUser";
 import Input from "../components/UI/Input";
+import { fetchUser } from "../api/chatpage";
 
 function UserFindPage() {
   const [searchInput, searchInputHandler] = useInput();
 
-  const fetchUser = async (nickname) => {
-    return await instance.get(`/api/chat/member?nickname=${nickname}`);
-  };
-
-  const fetchDevlopUser = async () => {
-    return await instance.get(`api/chat/member`);
-  };
   const { data: serchUser, isLoading: loadingSerchUser } = useQuery(
     ["user", searchInput],
     () => fetchUser(searchInput),
-    options.eternal
-  );
-
-  const { data: delopUser } = useQuery(
-    ["devuser"],
-    () => fetchDevlopUser(),
     options.eternal
   );
 
