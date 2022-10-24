@@ -4,8 +4,9 @@ import Button from "../UI/Button";
 import { useCookies } from "react-cookie";
 import useInputRef from "../../hooks/useInputRef";
 import { Avatar } from "@mui/material";
+import { useEffect } from "react";
 
-const CommentForm = ({ postId, post }) => {
+const CommentForm = ({ postId, post, scrollRef }) => {
   const [cookies] = useCookies(["loginProfile", "loginNickname"]);
   const loginProfile = cookies.loginProfile;
   const loginNickname = cookies.loginNickname;
@@ -25,9 +26,14 @@ const CommentForm = ({ postId, post }) => {
       profile: loginProfile,
     };
     post(sendData);
+
     commentRef.current.value = "";
   };
   const commentRef = useInputRef("", postComment);
+
+  useEffect(() => {
+    scrollRef.current.scrollTop = scrollRef.current.scrollHeight;
+  });
 
   return (
     <FormContainer>
@@ -36,7 +42,13 @@ const CommentForm = ({ postId, post }) => {
         ref={commentRef}
         placeholder={loginNickname ? ` ${loginNickname}(으)로 댓글 달기` : `로그인하고 댓글 달기`}
       />
-      <Button name="commonBtn" onClick={postComment} width="5rem" height="2rem" backgroundColor="var(--color-orange)">
+      <Button
+        name="commonBtn"
+        onClick={postComment}
+        width="5rem"
+        height="2.3rem"
+        backgroundColor="var(--color-orange)"
+      >
         등록
       </Button>
     </FormContainer>
@@ -50,15 +62,17 @@ const FormContainer = styled.div`
   /* background-color: red; */
 `;
 
-const CommentInput = styled.textarea`
+const CommentInput = styled.input`
   width: 100%;
-  height: 4vh;
+  height: 2.3rem;
   margin: 0.5rem;
-  padding: 0.2rem;
+  padding: 1rem;
   border: 0.5px solid var(--color-orange);
   border-radius: 0.5rem;
+  font-weight: var(--weight-semi-bold);
+  font-size: var(--font-small);
   resize: none;
-  line-height: 22px;
+  line-height: 0.25rem;
 `;
 
 export default CommentForm;

@@ -1,18 +1,27 @@
-import React from "react";
+import React, { useCallback, useEffect, useRef } from "react";
 import styled from "styled-components";
 import CommentForm from "./CommentForm";
 import CommentItem from "./CommentItem";
 
 const CommentList = ({ postId, post, remove, update, commentList }) => {
+  const scrollRef = useRef();
+
   return (
     <>
-      <CommentsConatiner>
+      <CommentsConatiner ref={scrollRef}>
         {commentList &&
           Array.from(commentList).map((comment) => {
-            return <CommentItem commentItem={comment} key={comment.commentId} remove={remove} update={update} />;
+            return (
+              <CommentItem
+                commentItem={comment}
+                key={comment.commentId}
+                remove={remove}
+                update={update}
+              />
+            );
           })}
       </CommentsConatiner>
-      {postId && <CommentForm postId={postId} post={post} />}
+      {postId && <CommentForm postId={postId} post={post} scrollRef={scrollRef} />}
     </>
   );
 };
@@ -21,18 +30,8 @@ const CommentsConatiner = styled.div`
   text-align: left;
   height: 100%;
   margin-top: 1.2rem;
-
-  ::-webkit-scrollbar {
-    width: 0.3rem;
-  }
-  ::-webkit-scrollbar-thumb {
-    background-color: var(--color-orange);
-    border-radius: 10px;
-  }
-  ::-webkit-scrollbar-track {
-    margin-top: 1.3rem;
-    background-color: var(--color-white);
-  }
+  overflow: auto;
+  max-height: 400px;
 `;
 
 export default CommentList;

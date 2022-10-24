@@ -108,7 +108,6 @@ function DetailPage() {
         setEditedFoodname(data);
         break;
       case "ingredient":
-        console.log("Detail page editForm ", data);
         setEditedIngredient(data);
         break;
       case "imageUrl":
