@@ -44,11 +44,14 @@ function UserFindPage() {
         ></Input>
       </SearchBox>
       <ChatList>
-        {searchNickname && searchNickname.length !== 0
-          ? searchNickname?.map((user, idx) => (
-              <FindUser user={user} key={idx} />
-            ))
-          : delopUser?.map((user, idx) => <DevlopUser user={user} key={idx} />)}
+        {searchNickname && searchNickname.length !== 0 ? (
+          searchNickname?.map((user, idx) => <FindUser user={user} key={idx} />)
+        ) : (
+          <Notice>
+            "{searchInput}"와(과)
+            <br /> 일치하는 유저를 찾을 수 없습니다.😅{" "}
+          </Notice>
+        )}
       </ChatList>
     </LayoutPage>
   );
@@ -64,4 +67,10 @@ const ChatList = styled.div`
   padding: 0rem 1rem;
   text-align: left;
   margin-bottom: 80px;
+`;
+
+const Notice = styled.div`
+  text-align: center;
+  margin: 10rem auto 10rem auto;
+  font-size: var(--font-regular);
 `;
