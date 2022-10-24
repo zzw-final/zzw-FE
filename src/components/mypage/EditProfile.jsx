@@ -26,6 +26,7 @@ function Profile({ userData, nicknameEditHandler, setModalIsOpen }) {
     removeCookie("loginEmail");
     removeCookie("tokenInvalidtime");
     navigate("/");
+    window.location.reload();
   };
 
   const deleteAccount = async () => {
