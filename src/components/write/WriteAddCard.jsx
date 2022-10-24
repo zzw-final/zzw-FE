@@ -238,10 +238,10 @@ const Addbutton = styled.button`
 const Dletbutton = styled.button`
   grid-column-start: 2;
   grid-row-start: 2;
-  background-color: none;
+  background-color: transparent;
   width: 5vw;
   height: 2vh;
   border: 0;
   border-radius: 10px;
-  margin: -0.7rem 1rem 1rem 8rem;
+  margin: -0.5rem 1rem 1rem 8rem;
 `;
