@@ -8,6 +8,7 @@ import { useNavigate } from "react-router-dom";
 import ChevronLeftIcon from "@mui/icons-material/ChevronLeft";
 import Button from "../UI/Button";
 import IosShareIcon from "@mui/icons-material/IosShare";
+import PersonSearchIcon from "@mui/icons-material/PersonSearch";
 
 const LayoutPage = ({
   children,
@@ -20,21 +21,18 @@ const LayoutPage = ({
   buttonText,
   buttonEvent,
   copyUrl,
+  findUser,
 }) => {
-  const [topTenTagList, setTopTenTagList] = useState();
-  const [tagAllList, setTagAllList] = useState();
+  const [topTenTagList, setTopTenTagList] = useState([]);
+  const [tagAllList, setTagAllList] = useState([]);
   const [isHeader, setIsHeader] = useState(true);
   const pathName = window.location.pathname;
   const navigate = useNavigate();
 
   useEffect(() => {
-    if (pathName === "/") {
-      setIsHeader(false);
-    } else if (pathName.includes("search")) {
-      setIsHeader(false);
-    } else if (pathName.includes("mypage")) {
-      setIsHeader(false);
-    }
+    if (pathName === "/") setIsHeader(false);
+    else if (pathName.includes("search")) setIsHeader(false);
+    else if (pathName.includes("mypage")) setIsHeader(false);
   }, [pathName]);
 
   useEffect(() => {
@@ -50,51 +48,58 @@ const LayoutPage = ({
   }, []);
 
   const back = () => {
-    if (pathName === "/chatlist") {
-      navigate("/");
-    } else {
-      navigate(-1);
-    }
+    if (pathName === "/chatlist") navigate("/");
+    else navigate(-1);
   };
 
   return (
     <LayoutPageContainer>
-      {isHeader ? (
-        <>
-          <Header>
-            <BackBtn>
-              {backBtnTypeArrow ? (
-                <KeyboardBackspaceIcon onClick={back} />
-              ) : (
-                <ChevronLeftIcon onClick={back} color="warning" fontSize="large" />
-              )}
-            </BackBtn>
-            {headerTitle}
-            <AddBtn>
-              {isShare ? <IosShareIcon sx={{ marginRight: "9px" }} onClick={copyUrl} color="warning" /> : ""}
-              {isBtn ? (
-                <Button
-                  name="commonBtn"
-                  width="4rem"
-                  height="2rem"
-                  fontSize="var(--font-regular)"
-                  fontWeight="var(--weight-semi-bold)"
-                  color="var(--color-white)"
-                  backgroundColor="var(--color-real-light-orange)"
-                  onClick={buttonEvent}
-                >
-                  {buttonText}
-                </Button>
+
+      {isHeader && (
+        <Header>
+          <BackBtn onClick={back}>
+            {backBtnTypeArrow ? (
+              <KeyboardBackspaceIcon />
+            ) : (
+              <ChevronLeftIcon color="warning" fontSize="large" />
+            )}
+          </BackBtn>
+          {headerTitle}
+          <AddBtn>
+          {findUser ? (
+                <PersonSearchIcon
+                  onClick={() => {
+                    navigate("/finduser");
+                  }}
+                />
               ) : (
                 ""
               )}
-            </AddBtn>
-          </Header>
-        </>
-      ) : (
-        ""
+            {isShare && (
+              <IosShareIcon sx={{ marginRight: "9px" }} onClick={copyUrl} color="warning" />
+            )}
+            {isBtn && (
+              <Button
+                name="commonBtn"
+                width="4rem"
+                height="2rem"
+                fontSize="var(--font-regular)"
+                fontWeight="var(--weight-semi-bold)"
+                color="var(--color-white)"
+                backgroundColor="var(--color-real-light-orange)"
+                onClick={buttonEvent}
+              >
+                {buttonText}
+              </Button>
+            )}
+          </AddBtn>
+        </Header>
       )}
-      <Wrapper background={background} backgroundMain={backgroundMain} paddingTop={isHeader ? "80px" : ""}>
+      <Wrapper
+        background={background}
+        backgroundMain={backgroundMain}
+        paddingTop={isHeader ? "80px" : ""}
+      >
         <div>{children}</div>
       </Wrapper>
       <Footer topTenTagList={topTenTagList} tagAllList={tagAllList} />
@@ -134,8 +139,9 @@ const Header = styled.header`
 const Wrapper = styled.div`
   width: 100%;
   overflow: hidden;
-  background-color: ${({ background }) => background || "white"};
-  background: linear-gradient(var(${({ backgroundMain }) => backgroundMain}) 50%, var(--color-white) 50%);
+
+  background-color: ${({ background }) => background || "var(--color-white)"};
+
   padding-top: ${({ paddingTop }) => paddingTop || 0};
 `;
 

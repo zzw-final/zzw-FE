@@ -104,7 +104,8 @@ const SwiperRecipeItemFirstPage = ({
                   <Button
                     onClick={followHandler}
                     name="FollowBtn"
-                    isFollow={greyButton}
+                    // isFollow={greyButton}
+                    isFollow={postDetail?.isFollow}
                   >
                     {postDetail?.isFollow ? "팔로잉" : "팔로우"}
                   </Button>
@@ -190,8 +191,8 @@ const ItemImg = styled.img`
 
 const ItemImgEdit = styled.input`
   position: absolute;
-  top: 350px;
-  left: 28px;
+  top: 45%;
+  left: 12%;
 `;
 
 const LikeBox = styled.div`

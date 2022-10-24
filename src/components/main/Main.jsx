@@ -1,20 +1,33 @@
-import React from "react";
+import React, { useState } from "react";
 import styled from "styled-components";
 import List from "../common/List";
 import Tag from "../common/Tag";
-import { useCookies } from "react-cookie";
 import ListInfinite from "../common/ListInfinite";
 import KeyboardArrowRightIcon from "@mui/icons-material/KeyboardArrowRight";
 import KeyboardArrowDownIcon from "@mui/icons-material/KeyboardArrowDown";
+import { getCookie } from "../../util/cookie";
 
 const Main = ({ tagList, bestPost, recentPost, search }) => {
+  const loginNickname = getCookie("loginNickname");
+  const [isVerticalViewBest, setIsVerticalViewBest] = useState(false);
+  const [isVerticalViewRecent, setIsVerticalViewRecent] = useState(false);
+
   const onClickTagHandler = (tagName) => {
     search("tag", tagName);
   };
 
-  const [cookies] = useCookies(["loginNickname"]);
-
-  const loginNickname = cookies.loginNickname;
+  const verticalView = (postName) => {
+    switch (postName) {
+      case "bestPost":
+        setIsVerticalViewBest(!isVerticalViewBest);
+        break;
+      case "recentPost":
+        setIsVerticalViewRecent(!isVerticalViewRecent);
+        break;
+      default:
+        throw new Error(`${postName} 은 사용할 수 없는 리스트입닌다.`);
+    }
+  };
 
   return (
     <MainContainer>
@@ -36,14 +49,23 @@ const Main = ({ tagList, bestPost, recentPost, search }) => {
       <ListBox>
         <Title>
           🍕 베스트 레시피
-          <ArrowSpan>
-            <KeyboardArrowRightIcon />
+          <ArrowSpan
+            onClick={() => {
+              verticalView("bestPost");
+            }}
+          >
+            {isVerticalViewBest ? <KeyboardArrowRightIcon /> : <KeyboardArrowDownIcon />}
           </ArrowSpan>
         </Title>
-        <BestRecipeContainer>
-          <List list={bestPost} height="200px" margin="0 0.5rem 0 0.5rem" />
-        </BestRecipeContainer>
-        {loginNickname === undefined ? (
+        <section>
+          <List
+            list={bestPost}
+            display={isVerticalViewBest ? "grid" : ""}
+            gridHeight={isVerticalViewBest ? "auto" : ""}
+            margin="0 0.5rem"
+          />
+        </section>
+        {!loginNickname ? (
           <>
             <Title>
               🍿 실시간 레시피
@@ -51,33 +73,40 @@ const Main = ({ tagList, bestPost, recentPost, search }) => {
                 <KeyboardArrowDownIcon />
               </ArrowSpan>
             </Title>
-            <NewRecipeScrollContainer>
+            <section>
               <ListInfinite listName="recentPost" />
-            </NewRecipeScrollContainer>
+            </section>
           </>
         ) : (
           <>
             <Title>
               🍿 실시간 레시피
-              <ArrowSpan>
-                <KeyboardArrowRightIcon />
+              <ArrowSpan
+                onClick={() => {
+                  verticalView("recentPost");
+                }}
+              >
+                {isVerticalViewRecent ? <KeyboardArrowRightIcon /> : <KeyboardArrowDownIcon />}
               </ArrowSpan>
             </Title>
-            <NewRecipeContainer>
-              <List list={recentPost} width="160px" height="200px" margin="0 0.5rem 0 0.5rem" />
-            </NewRecipeContainer>
+            <section>
+              <List
+                list={recentPost}
+                display={isVerticalViewRecent ? "grid" : ""}
+                gridHeight={isVerticalViewRecent ? "auto" : ""}
+                margin="0 0.5rem"
+              />
+            </section>
             <Title>
               🥕 팔로우 레시피
               <ArrowSpan>
                 <KeyboardArrowDownIcon />
               </ArrowSpan>
             </Title>
-            {loginNickname ? (
-              <FollowContainer>
+            {loginNickname && (
+              <section>
                 <ListInfinite listName="followPost" />
-              </FollowContainer>
-            ) : (
-              ""
+              </section>
             )}
           </>
         )}
@@ -87,8 +116,7 @@ const Main = ({ tagList, bestPost, recentPost, search }) => {
 };
 
 const MainContainer = styled.div`
-  /* text-align: center; */
-  padding-bottom: 95px;
+  margin-bottom: 60px;
 `;
 
 const TagsContainer = styled.section`
@@ -115,47 +143,5 @@ const ListBox = styled.div`
   border-radius: 1.5rem 1.5rem 0 0;
   padding-top: 0.4rem;
 `;
-
-const BestRecipeContainer = styled.section`
-  overflow-x: scroll;
-
-  ::-webkit-scrollbar {
-    height: 0.3rem;
-  }
-
-  ::-webkit-scrollbar-thumb {
-    background-color: var(--color-orange);
-    border-radius: 10px;
-  }
-
-  ::-webkit-scrollbar-track {
-    background-color: var(--color-white);
-    /* background-color: var(--color-light-orange); */
-  }
-`;
-
-const NewRecipeScrollContainer = styled.section`
-  /* height: 40vh; */
-`;
-
-const NewRecipeContainer = styled.section`
-  overflow-x: scroll;
-  overflow-y: auto;
-
-  ::-webkit-scrollbar {
-    height: 0.3rem;
-  }
-
-  ::-webkit-scrollbar-thumb {
-    background-color: var(--color-orange);
-    border-radius: 10px;
-  }
-
-  ::-webkit-scrollbar-track {
-    background-color: var(--color-white);
-  }
-`;
-
-const FollowContainer = styled.section``;
 
 export default Main;

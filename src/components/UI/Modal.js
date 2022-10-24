@@ -1,7 +1,7 @@
 import { useEffect } from "react";
 import styled from "styled-components";
 
-function Modal({ children, setModalIsOpen }) {
+function Modal({ children, setModalIsOpen, ...props }) {
   useEffect(() => {
     document.body.style = `overflow: hidden`;
     return () => (document.body.style = `overflow: auto`);
@@ -9,7 +9,9 @@ function Modal({ children, setModalIsOpen }) {
 
   return (
     <ModalBack onClick={() => setModalIsOpen(false)}>
-      <ModalBox onClick={(e) => e.stopPropagation()}>{children}</ModalBox>
+      <ModalBox {...props} onClick={(e) => e.stopPropagation()}>
+        {children}
+      </ModalBox>
     </ModalBack>
   );
 }
@@ -30,14 +32,14 @@ let ModalBack = styled.div`
 
 let ModalBox = styled.div`
   border-radius: 10px;
-  background-color: white;
+  background-color: ${({ backgroundColor }) => backgroundColor || "var(--color-white)"};
   width: 22rem;
   min-height: 35rem;
   position: absolute;
   top: 45%;
   left: 50%;
   transform: translate(-50%, -50%);
-  padding: 15px 10px;
+  padding: ${({ padding }) => padding || "15px 10px"};
   z-index: 1;
   overflow-y: scroll;
   bottom: 1px;

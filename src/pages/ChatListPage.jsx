@@ -14,7 +14,7 @@ const ChatListPage = () => {
   const searchNickname = chatList?.filter((item) => item.nickname.includes(searchInput));
 
   return (
-    <LayoutPage headerTitle="DM" backBtnTypeArrow="true">
+    <LayoutPage headerTitle="DM" backBtnTypeArrow="true" findUser="true">
       <ChatListContainer>
         <SearchBox>
           <Input placeholder=" 닉네임을 검색하세요." onChange={searchInputHandler}></Input>

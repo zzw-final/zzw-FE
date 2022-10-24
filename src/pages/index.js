@@ -7,3 +7,7 @@ export { default as MyPage } from "./MyPage";
 export { default as WritePage } from "./WritePage";
 export { default as UserPage } from "./UserPage";
 export { default as ChatPage } from "./ChatPage";
+export { default as UserFindPage } from "./UserFindPage";
+export { default as SearchPage } from "./SearchPage";
+export { default as ChatListPage } from "./ChatListPage";
+export { default as ErrorPage } from "./ErrorPage";

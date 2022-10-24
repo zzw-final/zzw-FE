@@ -13,7 +13,7 @@ export const dateFormat = (date) => {
   return dayjs(getDate).calendar(null, {
     sameDay: "[오늘] h:mm A",
     lastDay: "[어제] h:mm A",
-    lastWeek: "DD/MM/YYYY",
-    sameElse: "DD/MM/YYYY",
+    lastWeek: "YYYY년 MM월 DD일",
+    sameElse: "YYYY년 MM월 DD일",
   });
 };

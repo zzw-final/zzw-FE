@@ -1,7 +1,12 @@
+import { useState, useEffect } from "react";
 import { useMediaQuery } from "react-responsive";
 import { BrowserRouter, Route, Routes } from "react-router-dom";
 import { QueryClientProvider, QueryClient } from "react-query";
 import { ReactQueryDevtools } from "react-query/devtools";
+import { getCookie } from "./util/cookie";
+import styled from "styled-components";
+import browserImg from "./assets/browser.png";
+import LoginRedirect from "./components/login/LoginRedirect";
 import {
   MainPage,
   DetailPage,
@@ -12,16 +17,11 @@ import {
   WritePage,
   UserPage,
   ChatPage,
+  UserFindPage,
+  SearchPage,
+  ChatListPage,
+  ErrorPage,
 } from "./pages";
-import KakaoRedirect from "./components/login/kakao/KakaoRedirect";
-import GoogleRedirect from "./components/login/google/GoogleRedirect";
-import SearchPage from "./pages/SearchPage";
-import NaverRedirect from "./components/login/naver/NaverRedirect";
-import ChatListPage from "./pages/ChatListPage";
-import ErrorPage from "./pages/ErrorPage";
-import { useState, useEffect } from "react";
-import { getCookie } from "./util/cookie";
-import styled from "styled-components";
 
 const Desktop = ({ children }) => {
   const isDesktop = useMediaQuery({ minWidth: 768 });
@@ -54,10 +54,7 @@ function App() {
     <QueryClientProvider client={queryClient}>
       <BrowserRouter>
         <Desktop>
-          <HelpText>
-            모바일 환경에서 이용해주세요 😅 <br />
-            (꿀팁: 화면을 줄여도 이용 가능합니다!)
-          </HelpText>
+          <BrowserImg />
         </Desktop>
         <Mobile>
           <Routes>
@@ -78,28 +75,29 @@ function App() {
             <Route path="/detail/:id" element={<DetailPage />} />
             <Route path="/follow" element={<FollowPage />} />
             <Route path="/follow/:id" element={<FollowPage />} />
-            <Route path="/authkakao" element={<KakaoRedirect />} />
-            <Route path="/authgoogle" element={<GoogleRedirect />} />
-            <Route path="/authnaver" element={<NaverRedirect />} />
+            <Route path="/authkakao" element={<LoginRedirect />} />
+            <Route path="/authgoogle" element={<LoginRedirect />} />
+            <Route path="/authnaver" element={<LoginRedirect />} />
             <Route path="/search" element={<SearchPage />} />
             <Route path="/chat/:roomId" element={<ChatPage />} />
             <Route path="/chatlist" element={<ChatListPage />} />
+            <Route path="/finduser" element={<UserFindPage />} />
             <Route path="*" element={<ErrorPage />} />
           </Routes>
         </Mobile>
       </BrowserRouter>
-      <ReactQueryDevtools initialIsOpen={false} />
+      {/* <ReactQueryDevtools initialIsOpen={false} /> */}
     </QueryClientProvider>
   );
 }
 
-const HelpText = styled.div`
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  text-align: center;
+const BrowserImg = styled.div`
+  width: 100vw;
   height: 100vh;
-  font-size: var(--font-large);
+  background-image: url(${browserImg});
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: 80%;
 `;
 
 export default App;

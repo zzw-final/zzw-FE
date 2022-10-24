@@ -24,9 +24,7 @@ function WritePage() {
   const queryClient = useQueryClient();
 
   // WriteAddCard에서 값을 받을 state
-  const [formValues, setFomvalues] = useState([
-    { imageUrl: "", content: "", page: 0 },
-  ]);
+  const [formValues, setFomvalues] = useState([{ imageUrl: "", content: "", page: 0 }]);
 
   //받은값 전부를 post => mutate로 리팩토링
   const postMutate = useMutation((data) => fetchpostWrite(data), {
@@ -34,7 +32,7 @@ function WritePage() {
       queryClient.invalidateQueries(["mypage", "myRecipes"]);
       queryClient.invalidateQueries(["mypage", "likeRecipes"]);
       queryClient.invalidateQueries("recentPost");
-      if (data.data.data.isGet) alert("새로운 칭호를 획득했습니다!");
+      if (data.data.data.isGet) alert("🎉 새로운 칭호를 획득했습니다! 마이페이지에서 확인하세요.");
       alert("게시글 등록이 완료되었습니다!");
       navigate(`/detail/${data.data.data.postId}`);
       window.sessionStorage.clear();
@@ -85,12 +83,13 @@ function WritePage() {
   };
 
   // 얘가 언디파인드이면 전부 다 비어있다는 뜻. -> 얼럿 실행
-  console.log(formValues.every((item) => !!item.content));
+  // console.log(formValues.every((item) => !!item.content));
 
   useEffect(() => {
     return outconfirm;
   }, []);
 
+  // 로딩 시 스피너
   if (postMutate.isLoading) return <Spinner />;
 
   return (
@@ -110,11 +109,7 @@ function WritePage() {
         imgUpload={imgUpload}
         setImageURL={setImageURL}
       />
-      <WriteAddCard
-        imgUpload={imgUpload}
-        formValues={formValues}
-        setFomvalues={setFomvalues}
-      />
+      <WriteAddCard imgUpload={imgUpload} formValues={formValues} setFomvalues={setFomvalues} />
     </LayoutPage>
   );
 }

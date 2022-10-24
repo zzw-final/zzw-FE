@@ -1,19 +1,18 @@
-import React, { useState } from "react";
+import React from "react";
 import styled from "styled-components";
 import FavoriteIcon from "@mui/icons-material/Favorite";
 import FavoriteBorderIcon from "@mui/icons-material/FavoriteBorder";
-import { useCookies } from "react-cookie";
 import { likes } from "../../api/request";
 import { useMutation, useQueryClient } from "react-query";
+import { getCookie } from "../../util/cookie";
 
 const Like = ({ isLike, postId }) => {
-  const [cookies] = useCookies(["loginNickname"]);
-  const loginNickname = cookies.loginNickname;
+  const loginNickname = getCookie("loginNickname");
   const queryClient = useQueryClient();
 
   const likeMutate = useMutation((postId) => likes(postId), {
     onSuccess: (list, value) => {
-      if (list.data.data.isGet) alert("새로운 칭호를 획득했습니다!");
+      if (list.data.data.isGet) alert("🎉 새로운 칭호를 획득했습니다! 마이페이지에서 확인하세요.");
       queryClient.invalidateQueries(["detail", "" + value]);
       queryClient.invalidateQueries(["mainPage"]);
       queryClient.invalidateQueries(["follow"]);
@@ -26,10 +25,7 @@ const Like = ({ isLike, postId }) => {
   });
 
   const like = async () => {
-    if (loginNickname === undefined) {
-      alert("로그인 유저만 사용 가능한 기능입니다.");
-      return;
-    }
+    if (loginNickname === undefined) return alert("로그인 유저만 사용 가능한 기능입니다.");
     likeMutate.mutate(postId);
   };
 

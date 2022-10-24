@@ -168,8 +168,8 @@ const ItemImg = styled.img`
 
 const ItemImgEdit = styled.input`
   position: absolute;
-  top: 350px;
-  left: 30px;
+  top: 45%;
+  left: 12%;
 `;
 
 const ItemBox = styled.div`
