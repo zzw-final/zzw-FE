@@ -61,12 +61,12 @@ function Profile({ userData, nicknameEditHandler, setModalIsOpen }) {
                 <Num>{postSize}</Num>
               </Follow>
               <Follow>
-                <p>팔로우</p>
-                <Num>{follow}</Num>
-              </Follow>
-              <Follow>
                 <p>팔로워</p>
                 <Num>{follower}</Num>
+              </Follow>
+              <Follow>
+                <p>팔로우</p>
+                <Num>{follow}</Num>
               </Follow>
             </FollowBox>
             <BottomBox>

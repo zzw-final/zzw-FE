@@ -77,13 +77,13 @@ function Profile({ userData, DmRequest, profileRef, editHandler }) {
                 <p>레시피</p>
                 <Num>{postSize}</Num>
               </Follow>
-              <Follow onClick={followClick}>
-                <p>팔로우</p>
-                <Num>{follow}</Num>
-              </Follow>
               <Follow onClick={followerClick}>
                 <p>팔로워</p>
                 <Num>{followerNum}</Num>
+              </Follow>
+              <Follow onClick={followClick}>
+                <p>팔로우</p>
+                <Num>{follow}</Num>
               </Follow>
             </FollowBox>
             <BottomBox>
