@@ -1,7 +1,6 @@
 import React from "react";
 import LayoutPage from "../components/common/LayoutPage";
 import styled from "styled-components";
-import PersonSearchIcon from "@mui/icons-material/PersonSearch";
 import { instance } from "../api/request";
 import { useQuery } from "react-query";
 import { options } from "../api/options";
@@ -32,18 +31,13 @@ function UserFindPage() {
     options.eternal
   );
 
-  //   console.log(delopUser);
-
   const searchNickname = serchUser?.filter((item) =>
     item.nickname.includes(searchInput)
   );
 
-  //   console.log(serchUser);
-
   return (
     <LayoutPage headerTitle="사용자 찾기" backBtnTypeArrow="true">
       <SearchBox>
-        {/* <PersonSearchIcon /> */}
         <Input
           placeholder=" 닉네임을 검색하세요."
           onChangeFn={searchInputHandler}
@@ -63,15 +57,7 @@ function UserFindPage() {
 export default UserFindPage;
 
 const SearchBox = styled.div`
-  margin: 1.4rem 1rem 1rem 1rem;
-  width: 90%;
-  height: 3.2rem;
-  margin-bottom: 0.5rem;
-  padding-top: 8px;
-  padding-left: -2px;
-  background-color: var(--color-white-orange);
-  border: none;
-  border-radius: 10px;
+  margin-top: 1.3rem;
 `;
 
 const ChatList = styled.div`
