@@ -34,9 +34,7 @@ function Detail({
   const navigate = useNavigate();
 
   const foodIngredientList = postDetail?.ingredient
-    .map((ingredient) =>
-      !ingredient.isName ? ingredient.ingredientName : undefined
-    )
+    .map((ingredient) => (!ingredient.isName ? ingredient.ingredientName : undefined))
     .filter((ingredient) => ingredient !== undefined);
 
   const [foodName, setFoodName] = useState();
@@ -48,9 +46,7 @@ function Detail({
   };
 
   useEffect(() => {
-    const foodName = postDetail?.ingredient?.find(
-      (item) => item.isName === true
-    )?.ingredientName;
+    const foodName = postDetail?.ingredient?.find((item) => item.isName === true)?.ingredientName;
     setFoodName(foodName);
   }, [postDetail]);
 
@@ -120,15 +116,13 @@ function Detail({
         <CreatedAt>{dateFormat(postDetail?.createAt)}</CreatedAt>
         {slideIsOpen && (
           <Slide setSlideIsOpen={setSlideIsOpen}>
-            <CommentBox>
-              <CommentList
-                postId={postDetail?.postId}
-                post={post}
-                remove={remove}
-                update={update}
-                commentList={commentList}
-              />
-            </CommentBox>
+            <CommentList
+              postId={postDetail?.postId}
+              post={post}
+              remove={remove}
+              update={update}
+              commentList={commentList}
+            />
           </Slide>
         )}
       </Footer>
@@ -183,13 +177,6 @@ const Comment = styled.div`
   border-radius: 14px;
   font-weight: var(--weight-bold);
   width: 17vw;
-`;
-
-const CommentBox = styled.div`
-  width: 100%;
-  height: 100%;
-  max-height: 400px;
-  overflow: auto;
 `;
 
 export default Detail;

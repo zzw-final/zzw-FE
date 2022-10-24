@@ -6,7 +6,7 @@ import Box from "@mui/material/Box";
 import ArrowForwardIcon from "@mui/icons-material/ArrowForward";
 import { useNavigate } from "react-router-dom";
 import { join } from "../../api/request";
-import { useCookies } from "react-cookie";
+import { forLoginSetCookies, getCookie } from "../../util/cookie";
 
 const JoinForm = () => {
   const REGEX_NICKNAME = /^(?=.*[가-힣])[가-힣]{1,6}$/;
@@ -14,62 +14,30 @@ const JoinForm = () => {
   const [nickname, setNickname] = useState("");
   const [isNickname, setIsNickname] = useState(false);
   const [signup, setSignup] = useState(false);
-  const [cookies, setCookies] = useCookies(["loginEmail", "loginOauth"]);
+  const email = getCookie("loginEmail");
+  const oauth = getCookie("loginOauth");
 
   const navigate = useNavigate();
 
   const handleSubmit = async (event) => {
     event.preventDefault();
-    if (signup === false) {
-      return;
-    }
+    if (!signup) return;
 
-    const loginEmail = cookies.loginEmail;
-    const loginOauth = cookies.loginOauth;
     const result = await join({
-      email: loginEmail,
-      oauth: loginOauth,
+      email,
+      oauth,
       nickname,
     });
 
-    if (result.data.error === "DUPLICATE_NICKNAME") {
-      alert("이미 등록된 닉네임입니다 🥲");
-    }
-
-    const onLogin = (result) => {
-      const ACCESS_TOKEN = `Bearer ${result.headers["authorization"]}`;
-      const REFRESH_TOKEN = result.headers["refresh-token"];
-      const OAUTH_TOKEN = result.data.data.oauthToken;
-      const EMAIL = result.data.data.email;
-      const NICKNAME = result.data.data.nickname;
-      const PROFILE = result.data.data.profile;
-      const USERID = result.data.data.userId;
-      const GRADE = result.data.data.grade;
-      setCookies("accessToken", ACCESS_TOKEN);
-      setCookies("refreshToken", REFRESH_TOKEN);
-      setCookies("oauthToken", OAUTH_TOKEN);
-      setCookies("loginEmail", EMAIL);
-      setCookies("loginNickname", NICKNAME);
-      setCookies("loginProfile", PROFILE);
-      setCookies("loginUserId", USERID);
-      setCookies("loginGrade", GRADE);
-    };
+    if (result.data.error === "DUPLICATE_NICKNAME") alert("이미 등록된 닉네임입니다 🥲");
 
     if (result.data.success && result.data.error === null) {
-      onLogin(result);
-      navigate("/");
+      forLoginSetCookies(result).then(navigate("/"));
     }
   };
 
   const onChange = (event) => {
-    const {
-      target: { name, value },
-    } = event;
-    switch (name) {
-      case "nickname":
-        return setNickname(value);
-      default:
-    }
+    return setNickname(event.target.value);
   };
 
   const validation = (text, regex) => {
@@ -82,15 +50,12 @@ const JoinForm = () => {
   }, [nickname, REGEX_NICKNAME]);
 
   useEffect(() => {
-    nickname && validation_nickname() === false ? setIsNickname(true) : setIsNickname(false);
+    nickname && !validation_nickname() ? setIsNickname(true) : setIsNickname(false);
   }, [nickname, validation_nickname]);
 
   useEffect(() => {
-    if (isNickname) {
-      setSignup(true);
-    } else {
-      setSignup(false);
-    }
+    if (isNickname) setSignup(true);
+    else setSignup(false);
   }, [isNickname]);
 
   return (
@@ -107,7 +72,14 @@ const JoinForm = () => {
             onChange={onChange}
             error={validation_nickname()}
           />
-          <Button fullWidth type="submit" variant="contained" color="warning" endIcon={<ArrowForwardIcon />}>
+          <Button
+            fullWidth
+            type="submit"
+            variant="contained"
+            color="warning"
+            endIcon={<ArrowForwardIcon />}
+            disabled={validation_nickname()}
+          >
             Sign Up
           </Button>
         </Box>

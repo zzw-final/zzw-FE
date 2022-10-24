@@ -62,7 +62,6 @@ const Main = ({ tagList, bestPost, recentPost, search }) => {
             list={bestPost}
             display={isVerticalViewBest ? "grid" : ""}
             gridHeight={isVerticalViewBest ? "auto" : ""}
-            height="200px"
             margin="0 0.5rem"
           />
         </section>
@@ -95,7 +94,6 @@ const Main = ({ tagList, bestPost, recentPost, search }) => {
                 list={recentPost}
                 display={isVerticalViewRecent ? "grid" : ""}
                 gridHeight={isVerticalViewRecent ? "auto" : ""}
-                height="200px"
                 margin="0 0.5rem"
               />
             </section>

@@ -16,11 +16,7 @@ const MainPage = () => {
   const loginNickname = getCookie("loginNickname");
 
   const navigate = useNavigate();
-  const { data: tagList } = useQuery(
-    ["mainPage", "tagList"],
-    fetchBestTagTopFive,
-    options.eternal
-  );
+  const { data: tagList } = useQuery(["mainPage", "tagList"], fetchBestTagTopFive, options.eternal);
   const { data: bestPost } = useQuery(["mainPage", "bestPost"], fetchBestList, options.eternal);
   const { data: recentPost } = useQuery(
     ["mainPage", "recentPost"],
