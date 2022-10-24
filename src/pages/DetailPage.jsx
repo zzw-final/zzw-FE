@@ -59,13 +59,13 @@ function DetailPage() {
   //게시글 삭제
   const delteMutate = useMutation((id) => fetchDelete(id), {
     onSuccess: () => {
-      alert("삭제되었습니다.");
       queryClient.invalidateQueries(["mypage", "myRecipes"]);
       queryClient.invalidateQueries(["mypage", "likeRecipes"]);
       queryClient.invalidateQueries("bestPost");
       queryClient.invalidateQueries("recentPost");
       queryClient.invalidateQueries("followPost");
-      queryClient.invalidateQueries("mainpage");
+      queryClient.invalidateQueries(["mainpage"]);
+      alert("삭제되었습니다.");
       navigate(-1);
     },
   });
@@ -123,7 +123,9 @@ function DetailPage() {
 
   //재료만 뽑아줌
   const foodIngredientList = postDetail?.ingredient
-    ?.map((ingredient) => (ingredient.isName !== true ? ingredient.ingredientName : undefined))
+    ?.map((ingredient) =>
+      ingredient.isName !== true ? ingredient.ingredientName : undefined
+    )
     .filter((ingredient) => ingredient !== undefined);
 
   // 2p~10p 데이터
@@ -152,7 +154,11 @@ function DetailPage() {
   };
 
   //댓글 데이터 가져오는 useQuery
-  const { data: commentList } = useQuery(["comment", id], () => commentFetch(id), options.eternal);
+  const { data: commentList } = useQuery(
+    ["comment", id],
+    () => commentFetch(id),
+    options.eternal
+  );
 
   //댓글 작성
   const commentPostMutate = useMutation((postInfo) => commentPost(postInfo), {
@@ -169,27 +175,34 @@ function DetailPage() {
   };
 
   //댓글 삭제
-  const commentDeleteMutate = useMutation((commentId) => commentDelete(commentId), {
-    onSuccess: () => {
-      queryClient.invalidateQueries("comment", id);
-    },
-  });
+  const commentDeleteMutate = useMutation(
+    (commentId) => commentDelete(commentId),
+    {
+      onSuccess: () => {
+        queryClient.invalidateQueries("comment", id);
+      },
+    }
+  );
   const remove = (commentId) => {
     commentDeleteMutate.mutate(commentId);
   };
 
   //댓글 수정
 
-  const commentUpdateMutate = useMutation((updateInfo) => commentUpdate(updateInfo), {
-    onSuccess: () => {
-      queryClient.invalidateQueries("comment", id);
-    },
-  });
+  const commentUpdateMutate = useMutation(
+    (updateInfo) => commentUpdate(updateInfo),
+    {
+      onSuccess: () => {
+        queryClient.invalidateQueries("comment", id);
+      },
+    }
+  );
   const update = (updateInfo) => {
     commentUpdateMutate.mutate(updateInfo);
   };
 
-  if (loadingDetailData || delteMutate.isLoading || editMutate.isLoading) return <Spinner />;
+  if (loadingDetailData || delteMutate.isLoading || editMutate.isLoading)
+    return <Spinner />;
 
   return (
     <LayoutPage
