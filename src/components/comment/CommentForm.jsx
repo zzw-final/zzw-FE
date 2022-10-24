@@ -1,10 +1,9 @@
-import React from "react";
+import React, { useEffect } from "react";
 import styled from "styled-components";
 import Button from "../UI/Button";
 import { useCookies } from "react-cookie";
 import useInputRef from "../../hooks/useInputRef";
 import { Avatar } from "@mui/material";
-import { useEffect } from "react";
 
 const CommentForm = ({ postId, post, scrollRef }) => {
   const [cookies] = useCookies(["loginProfile", "loginNickname"]);
@@ -59,7 +58,6 @@ const FormContainer = styled.div`
   display: flex;
   align-items: center;
   width: 100%;
-  /* background-color: red; */
 `;
 
 const CommentInput = styled.input`

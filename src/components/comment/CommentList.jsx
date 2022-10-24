@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect, useRef } from "react";
+import React, { useRef } from "react";
 import styled from "styled-components";
 import CommentForm from "./CommentForm";
 import CommentItem from "./CommentItem";
