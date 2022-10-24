@@ -6,7 +6,6 @@ import DeleteIcon from "@mui/icons-material/Delete";
 import KeyboardBackspaceIcon from "@mui/icons-material/KeyboardBackspace";
 
 function ChatLayout({ publish, msg, msgHandler, setMsg, location, children, out }) {
-  // console.log("msg", msg.length);
   const navigate = useNavigate();
   const pub = () => {
     if (msg.length < 256) {
