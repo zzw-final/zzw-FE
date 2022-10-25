@@ -22,6 +22,41 @@ function UserFindPage() {
     item.nickname.includes(searchInput)
   );
 
+  console.log(serchUser);
+  if (searchNickname && searchNickname.length !== 0)
+    return (
+      <LayoutPage headerTitle="사용자 찾기" backBtnTypeArrow="true">
+        <SearchBox>
+          <Input
+            placeholder=" 닉네임을 검색하세요."
+            onChangeFn={searchInputHandler}
+          ></Input>
+        </SearchBox>
+        <ChatList>
+          {searchNickname?.map((user, idx) => (
+            <FindUser user={user} key={idx} />
+          ))}
+        </ChatList>
+      </LayoutPage>
+    );
+  if (searchNickname && searchNickname.length == 0)
+    return (
+      <LayoutPage headerTitle="사용자 찾기" backBtnTypeArrow="true">
+        <SearchBox>
+          <Input
+            placeholder=" 닉네임을 검색하세요."
+            onChangeFn={searchInputHandler}
+          ></Input>
+        </SearchBox>
+        <ChatList>
+          <Notice>
+            "{searchInput}"와(과)
+            <br /> 일치하는 유저를 찾을 수 없습니다.😅{" "}
+          </Notice>
+        </ChatList>
+      </LayoutPage>
+    );
+
   return (
     <LayoutPage headerTitle="사용자 찾기" backBtnTypeArrow="true">
       <SearchBox>
@@ -31,14 +66,14 @@ function UserFindPage() {
         ></Input>
       </SearchBox>
       <ChatList>
-        {searchNickname && searchNickname.length !== 0 ? (
+        {/* {searchNickname && searchNickname.length !== 0 ? (
           searchNickname?.map((user, idx) => <FindUser user={user} key={idx} />)
         ) : (
           <Notice>
             "{searchInput}"와(과)
             <br /> 일치하는 유저를 찾을 수 없습니다.😅{" "}
           </Notice>
-        )}
+        )} */}
       </ChatList>
     </LayoutPage>
   );
