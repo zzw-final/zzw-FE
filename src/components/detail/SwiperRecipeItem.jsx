@@ -97,7 +97,8 @@ const SwiperRecipeItem = ({
                   <Button
                     onClick={followHandler}
                     name="FollowBtn"
-                    isFollow={greyButton}
+                    // isFollow={greyButton}
+                    isFollow={postDetail?.isFollow}
                   >
                     {postDetail?.isFollow ? "팔로잉" : "팔로우"}
                   </Button>
