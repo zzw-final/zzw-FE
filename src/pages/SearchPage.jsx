@@ -8,6 +8,7 @@ import styled from "styled-components";
 import { useInView } from "react-intersection-observer";
 import Toast from "../components/UI/Toast";
 import Recipe from "../components/posts/Recipe";
+import Spinner from "../components/UI/Spinner";
 
 const SearchPage = () => {
   const [searchResultList, setSearchResultList] = useState([]);
@@ -65,13 +66,17 @@ const SearchPage = () => {
     setToast(true);
   };
 
+  // if (searchResultList.length === 0) return <Spinner />;
+
   return (
     <LayoutPage>
       <SearchBox>
         <SearchForm searchPageSearch={search} showToast={showToast} />
       </SearchBox>
       <SearchListBox>
-        {toast && <Toast setToast={setToast} text="태그는 5개까지 검색 가능합니다." margin="0.5rem" />}
+        {toast && (
+          <Toast setToast={setToast} text="태그는 5개까지 검색 가능합니다." margin="0.5rem" />
+        )}
         {searchResultList?.length !== 0 ? (
           <ListContainer>
             {searchResultList &&

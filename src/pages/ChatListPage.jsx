@@ -6,18 +6,22 @@ import { useQuery } from "react-query";
 import { fetchChatList } from "../api/chatList";
 import { options } from "../api/options";
 import useInput from "../hooks/useInput";
+import Input from "../components/UI/Input";
+import Spinner from "../components/UI/Spinner";
 
 const ChatListPage = () => {
-  const { data: chatList } = useQuery("chatList", fetchChatList, options.nocache);
+  const { data: chatList, isLoading } = useQuery("chatList", fetchChatList, options.nocache);
   const [searchInput, searchInputHandler] = useInput();
 
   const searchNickname = chatList?.filter((item) => item.nickname.includes(searchInput));
+
+  if (isLoading) return <Spinner />;
 
   return (
     <LayoutPage headerTitle="DM" backBtnTypeArrow="true" findUser="true">
       <ChatListContainer>
         <SearchBox>
-          <Input placeholder=" 닉네임을 검색하세요." onChange={searchInputHandler}></Input>
+          <Input onChangeFn={searchInputHandler} />
         </SearchBox>
         <ChatList>
           {searchNickname && searchNickname.length !== 0 ? (
@@ -39,19 +43,6 @@ const SearchBox = styled.div`
   text-align: center;
   position: relative;
   margin-top: 1.4rem;
-`;
-
-const Input = styled.input`
-  width: 90%;
-  height: 2.3rem;
-  margin-bottom: 0.5rem;
-  padding: 1rem;
-  background-color: var(--color-white-orange);
-  border: none;
-  border-radius: 10px;
-  outline: none;
-  font-weight: var(--weight-semi-bold);
-  font-size: var(--font-small);
 `;
 
 const ChatList = styled.div`
