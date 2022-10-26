@@ -34,24 +34,12 @@ instance.interceptors.request.use(
   }
 );
 
-instance.interceptors.response.use(
-  function (response) {
-    // 2xx 범위에 있는 상태 코드는 이 함수를 트리거 합니다.
-    // 응답 데이터가 있는 작업 수행
-    return response;
-  },
-  function (error) {
-    // 2xx 외의 범위에 있는 상태 코드는 이 함수를 트리거 합니다.
-    // 응답 오류가 있는 작업 수행
-    return Promise.reject(error);
-  }
-);
-
 imgInstance.interceptors.request.use(
   function (config) {
     const accessToken = getCookie("accessToken");
     const refreshToken = getCookie("refreshToken");
     const oauth = getCookie("loginOauth");
+
     if (accessToken && refreshToken) {
       config.headers.common["Authorization"] = `${accessToken}`;
       config.headers.common["Refresh-Token"] = `${refreshToken}`;
@@ -60,6 +48,17 @@ imgInstance.interceptors.request.use(
     return config;
   },
   function (error) {
+    return Promise.reject(error);
+  }
+);
+
+instance.interceptors.response.use(
+  function (response) {
+    if (response.data.error) console.log("에러를 확인해주세요.", response);
+    return response;
+  },
+  function (error) {
+    console.log(error);
     return Promise.reject(error);
   }
 );
