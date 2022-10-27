@@ -21,16 +21,13 @@ export const editApi = {
   editImgList: async () => {
     return await instance.get(`/api/member/profile`);
   },
-  editProfileImg: async (profileId) => {
-    return await instance.put(`/api/member/profile/${profileId}`);
-  },
   editGradeList: async () => {
     return await instance.get(`/api/member/grade`);
   },
-  editGrade: async (gradeId) => {
-    return await instance.put(`/api/member/grade/${gradeId}`);
-  },
   editNickname: async (nickname) => {
     return await instance.put(`/api/auth/mypage/nickname`, { nickname });
+  },
+  editProfile: async (profileId, gradeId) => {
+    return await instance.put(`api/member/update`, { profileId, gradeId });
   },
 };
