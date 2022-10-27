@@ -1,21 +1,27 @@
-import React, { useEffect, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import styled from "styled-components";
 import Avatar from "@mui/material/Avatar";
-import { useCookies } from "react-cookie";
 import useInputRef from "../../hooks/useInputRef";
 import { useNavigate } from "react-router-dom";
 import { dateFormat } from "../../util/dateFormat";
 import Button from "../UI/Button";
+import { DetailContext } from "../../context/DetailContext";
+import { getCookie } from "../../util/cookie";
 
-const CommentItem = ({ commentItem, remove, update }) => {
+const CommentItem = ({ commentItem }) => {
+  const data = useContext(DetailContext);
+
+  const { remove, update } = data;
   const { commentId, userId, profile, nickname, comment, grade, createdAt } = commentItem;
+
   const [updatedComment] = useState(comment);
   const [visibleEditBtns, setVisibleEditBtns] = useState("block");
   const [visibleEditCommentBox, setVisibleEditCommentBox] = useState("none");
-  const [cookies] = useCookies(["loginNickname"]);
-  const navigate = useNavigate();
 
-  const loginNickname = cookies.loginNickname;
+  const loginNickname = getCookie("loginNickname");
+  const loginUserId = getCookie("loginUserId");
+
+  const navigate = useNavigate();
 
   const openUpdateForm = () => {
     setVisibleEditCommentBox("block");
@@ -24,10 +30,6 @@ const CommentItem = ({ commentItem, remove, update }) => {
     updateCommentRef.current.value = comment;
   };
 
-  useEffect(() => {
-    updateCommentRef.current.value = updatedComment;
-  }, [updatedComment]);
-
   const cancleEdit = () => {
     setVisibleEditCommentBox("none");
     setVisibleEditBtns("block");
@@ -35,9 +37,7 @@ const CommentItem = ({ commentItem, remove, update }) => {
   };
 
   const removeComment = () => {
-    if (window.confirm("삭제 하시겠습니까?")) {
-      remove(commentId);
-    }
+    if (window.confirm("삭제 하시겠습니까?")) remove(commentId);
   };
 
   const updateComment = () => {
@@ -52,14 +52,23 @@ const CommentItem = ({ commentItem, remove, update }) => {
 
   const updateCommentRef = useInputRef("", updateComment);
 
+  useEffect(() => {
+    updateCommentRef.current.value = updatedComment;
+  }, [updatedComment, updateCommentRef]);
+
   const userPage = () => {
-    if (+cookies.loginUserId === userId) navigate(`/mypage`);
+    if (loginUserId === userId) navigate(`/mypage`);
     else navigate(`/mypage/${userId}`);
   };
 
   return (
     <ItemContainer>
-      <Avatar alt="user_img" src={profile} sx={{ width: 38, height: 38, mr: 1 }} onClick={userPage} />
+      <Avatar
+        alt="user_img"
+        src={profile}
+        sx={{ width: 38, height: 38, mr: 1 }}
+        onClick={userPage}
+      />
       <Info>
         <InfoAvatar>
           <div>
@@ -139,7 +148,6 @@ const ItemContainer = styled.div`
   display: flex;
   flex-direction: row;
   padding: 0.3rem 0rem;
-  /* background-color: red; */
 `;
 
 const Info = styled.div`
@@ -148,7 +156,6 @@ const Info = styled.div`
   flex-direction: column;
   width: 100%;
   position: relative;
-  /* background-color: aqua; */
   height: auto;
   padding: 0.2rem;
 `;
@@ -156,7 +163,6 @@ const Info = styled.div`
 const InfoAvatar = styled.div`
   display: flex;
   align-items: center;
-  /* background-color: red; */
   margin-bottom: 0.2rem;
 `;
 

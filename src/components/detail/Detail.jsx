@@ -1,43 +1,27 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useContext } from "react";
 import styled from "styled-components";
 import Tag from "../common/Tag";
 import CommentList from "../comment/CommentList";
-import { getCookie } from "../../util/cookie";
 import { useNavigate } from "react-router-dom";
 import TagList from "./TagList";
 import SwiperRecipe from "./SwiperRecipe";
 import { dateFormat } from "../../util/dateFormat";
 import Slide from "../UI/Slide";
+import { DetailContext } from "../../context/DetailContext";
 
-function Detail({
-  postDetail,
-  // tagList,
-  id,
-  post,
-  remove,
-  update,
-  commentList,
-  onDelete,
-  likeToggle,
-  imgUpload,
-  editedValues,
-  setEditedValues,
-  onSubmitHandler,
-  editForm,
-  setEditedIngredient,
-  greyButton,
-  followHandler,
-}) {
-  const nickname = getCookie("loginNickname");
+function Detail() {
   const [isEditMode, setIsEditMode] = useState(false);
   const [slideIsOpen, setSlideIsOpen] = useState(false);
   const navigate = useNavigate();
+
+  const data = useContext(DetailContext);
+  const { commentList, postDetail, setEditedIngredient } = data;
 
   const foodIngredientList = postDetail?.ingredient
     .map((ingredient) => (!ingredient.isName ? ingredient.ingredientName : undefined))
     .filter((ingredient) => ingredient !== undefined);
 
-  const [foodName, setFoodName] = useState();
+  const [, setFoodName] = useState();
 
   const commentListCnt = commentList?.length;
 
@@ -50,18 +34,17 @@ function Detail({
     setFoodName(foodName);
   }, [postDetail]);
 
-  const onCancle = () => {
-    setIsEditMode(!isEditMode);
-  };
-
   const tagSearch = (tagName) => {
     navigate(`/search?tag=${tagName}`);
+  };
+
+  const slideOpenHandler = () => {
+    setSlideIsOpen(true);
   };
 
   return (
     <DetailContainer>
       <Header></Header>
-
       {!isEditMode ? (
         <Tags>
           {foodIngredientList?.map((ingredient, i) => (
@@ -77,52 +60,24 @@ function Detail({
         </Tags>
       ) : (
         <Tags>
-          <TagList
-            postDetail={postDetail}
-            editForm={editForm}
-            setEditedIngredient={setEditedIngredient}
-          />
+          <TagList postDetail={postDetail} setEditedIngredient={setEditedIngredient} />
         </Tags>
       )}
-
       <Content>
         {postDetail && (
           <SwiperRecipe
-            postDetail={postDetail}
-            likeToggle={likeToggle}
             isEditMode={isEditMode}
             setIsEditMode={setIsEditMode}
-            imgUpload={imgUpload}
-            editedValues={editedValues}
-            setEditedValues={setEditedValues}
-            editForm={editForm}
             onEditPage={onEditPage}
-            onCancle={onCancle}
-            onSubmitHandler={onSubmitHandler}
-            onDelete={onDelete}
-            greyButton={greyButton}
-            followHandler={followHandler}
           />
         )}
       </Content>
       <Footer>
-        <Comment
-          onClick={() => {
-            setSlideIsOpen(true);
-          }}
-        >
-          💬 {commentListCnt}
-        </Comment>
+        <Comment onClick={slideOpenHandler}>💬 {commentListCnt}</Comment>
         <CreatedAt>{dateFormat(postDetail?.createAt)}</CreatedAt>
         {slideIsOpen && (
           <Slide setSlideIsOpen={setSlideIsOpen}>
-            <CommentList
-              postId={postDetail?.postId}
-              post={post}
-              remove={remove}
-              update={update}
-              commentList={commentList}
-            />
+            <CommentList />
           </Slide>
         )}
       </Footer>

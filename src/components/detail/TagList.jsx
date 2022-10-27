@@ -1,11 +1,9 @@
 import React, { useEffect, useState } from "react";
 import styled from "styled-components";
 
-const TagList = ({ postDetail, editForm, setEditedIngredient }) => {
+const TagList = ({ postDetail, setEditedIngredient }) => {
   const foodIngredientList = postDetail?.ingredient
-    .map((ingredient) =>
-      !ingredient.isName ? ingredient.ingredientName : undefined
-    )
+    .map((ingredient) => (!ingredient.isName ? ingredient.ingredientName : undefined))
     .filter((ingredient) => ingredient !== undefined);
   const [tagItem, setTagItem] = useState("");
   const [tagList, setTagList] = useState(foodIngredientList);
