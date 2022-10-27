@@ -87,7 +87,7 @@ const SwiperRecipeItem = ({ idx, contentList, isEditMode, setIsEditMode, onEditP
                 </ButtonDiv>
               ) : loninNickname ? (
                 <ButtonDiv>
-                  <Button onClick={followHandler} name="FollowBtn" isFollow={greyButton}>
+                  <Button onClick={followHandler} name="FollowBtn" isFollow={postDetail?.isFollow}>
                     {postDetail?.isFollow ? "팔로잉" : "팔로우"}
                   </Button>
                 </ButtonDiv>
