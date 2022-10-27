@@ -148,8 +148,8 @@ const ItemContainer = styled.div`
 `;
 
 const ItemImg = styled.img`
-  width: 80%;
-  height: 50%;
+  width: 78%;
+  height: 53%;
   border-radius: 18px;
   padding: 0.2rem;
   margin: 0 auto 1rem auto;
@@ -157,8 +157,8 @@ const ItemImg = styled.img`
 
 const ItemImgEdit = styled.input`
   position: absolute;
-  top: 350px;
-  left: 30px;
+  top: 47%;
+  left: 12%;
 `;
 
 const ItemBox = styled.div`

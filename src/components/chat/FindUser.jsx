@@ -38,8 +38,8 @@ function FindUser({ user }) {
           onClick={onClickGoToProfile}
         />
         <div>
-          <Nickname>{user?.nickname}</Nickname>
-          <Grade>{user?.grade}</Grade>
+          <Nickname onClick={onClickGoToProfile}>{user?.nickname}</Nickname>
+          <Grade onClick={onClickGoToProfile}>{user?.grade}</Grade>
         </div>
         <BtnDiv>
           <Button onClick={DmRequest} name="FollowBtn" isFollow={false}>

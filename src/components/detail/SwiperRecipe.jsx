@@ -65,8 +65,8 @@ const SwiperBox = styled.div`
   z-index: 0;
 
   .swiper {
-    width: 400px;
-    height: 600px;
+    width: 380px;
+    height: 500px;
     margin: auto;
     border: 0;
   }

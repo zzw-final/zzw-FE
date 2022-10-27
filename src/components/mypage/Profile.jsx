@@ -2,9 +2,9 @@ import styled from "styled-components";
 import Button from "../UI/Button";
 import { useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
-import { instance } from "../../api/request";
 import { useMutation, useQueryClient } from "react-query";
 import { getCookie } from "../../util/cookie";
+import { followHandler } from "../../api/followpage";
 
 function Profile({ userData, DmRequest, profileRef, editHandler }) {
   const navigate = useNavigate();
@@ -13,19 +13,19 @@ function Profile({ userData, DmRequest, profileRef, editHandler }) {
   const [greyButton, setGreyButton] = useState(isFollow);
   const [followerNum, setFollowerNum] = useState(follower);
 
-  const followHandler = async () => {
-    return await instance.post(`/api/auth/mypage/follow/${id}`);
-  };
-
   const queryClient = useQueryClient();
 
-  const { mutate } = useMutation(followHandler, {
-    onSuccess: (result) => {
+  const { mutate } = useMutation(() => followHandler(id), {
+    onSuccess: (res) => {
       setGreyButton((prev) => !prev);
-      if (result.data.data === "follow success") {
+      console.log(res);
+      if (res.data.data.isGet) {
+        alert("🎉 새로운 칭호를 획득했습니다! 마이페이지에서 확인하세요.");
+      }
+      if (res.data.data.isFollow) {
         setFollowerNum((prev) => prev + 1);
       }
-      if (result.data.data === "unfollow success") {
+      if (!res.data.data.isFollow) {
         setFollowerNum((prev) => prev - 1);
       }
       queryClient.invalidateQueries(["userpage", "profile"]);
@@ -77,13 +77,13 @@ function Profile({ userData, DmRequest, profileRef, editHandler }) {
                 <p>레시피</p>
                 <Num>{postSize}</Num>
               </Follow>
-              <Follow onClick={followClick}>
-                <p>팔로우</p>
-                <Num>{follow}</Num>
-              </Follow>
               <Follow onClick={followerClick}>
                 <p>팔로워</p>
                 <Num>{followerNum}</Num>
+              </Follow>
+              <Follow onClick={followClick}>
+                <p>팔로우</p>
+                <Num>{follow}</Num>
               </Follow>
             </FollowBox>
             <BottomBox>

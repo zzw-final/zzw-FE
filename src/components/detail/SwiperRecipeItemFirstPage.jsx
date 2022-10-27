@@ -137,22 +137,22 @@ const TimeBox = styled.div`
   background-color: var(--color-white);
   color: var(--color-grey);
   position: absolute;
-  top: 2%;
-  left: 13%;
+  top: 3%;
+  left: 14%;
   border-radius: 15px;
   padding: 0.3rem;
-  width: 25%;
+  width: 27%;
 `;
 
 const Time = styled.div`
-  font-size: var(--font-regular);
+  font-size: var(--font-semi-small);
   margin-left: 0.5rem;
   font-weight: var(--weight-bold);
 `;
 
 const ItemImg = styled.img`
-  width: 80%;
-  height: 50%;
+  width: 78%;
+  height: 53%;
   border-radius: 18px;
   padding: 0.2rem;
   margin: 0 auto 1rem auto;
@@ -160,8 +160,8 @@ const ItemImg = styled.img`
 
 const ItemImgEdit = styled.input`
   position: absolute;
-  top: 350px;
-  left: 28px;
+  top: 47%;
+  left: 12%;
 `;
 
 const LikeBox = styled.div`
@@ -174,8 +174,8 @@ const LikeBox = styled.div`
   padding: 0.3rem;
   width: 15%;
   position: absolute;
-  right: 13%;
-  top: 42%;
+  right: 15%;
+  top: 44%;
   font-size: var(--font-regular);
 `;
 
