@@ -1,41 +1,41 @@
-import { React, useState } from "react";
+import { React, useContext, useState } from "react";
 import styled from "styled-components";
 import imageCompression from "browser-image-compression";
 import { getCookie } from "../../util/cookie";
 import { useNavigate } from "react-router-dom";
-import { useCookies } from "react-cookie";
 import Avatar from "@mui/material/Avatar";
 import Button from "../UI/Button";
+import { DetailContext } from "../../context/DetailContext";
 
-const SwiperRecipeItem = ({
-  contentList,
-  isEditMode,
-  setIsEditMode,
-  imgUpload,
-  editedValues,
-  setEditedValues,
-  idx,
-  postDetail,
-  onEditPage,
-  onCancle,
-  onSubmitHandler,
-  onDelete,
-  greyButton,
-  followHandler,
-}) => {
-  const { imageUrl, content, page } = contentList;
+const SwiperRecipeItem = ({ idx, contentList, isEditMode, setIsEditMode, onEditPage }) => {
+  const { imageUrl, content } = contentList;
   const [imgContentUrlEdited, setImgContentUrlEdited] = useState(imageUrl);
+
+  const data = useContext(DetailContext);
+  const {
+    postDetail,
+    imgUpload,
+    onSubmitHandler,
+    onDelete,
+    editedValues,
+    setEditedValues,
+    greyButton,
+    followHandler,
+  } = data;
+
+  const loninNickname = getCookie("loginNickname");
+  const loginUserId = getCookie("loginUserId");
+
+  const navigate = useNavigate();
 
   const getImgUpload = async (e) => {
     const file = e.target.files[0];
-    console.log("file", file);
     const newFile = await imageCompression(file, {
       maxSizeMB: 1,
       maxWidthOrHeight: 1920,
     });
     const resizingFile = new File([newFile], file.name, { type: file.type });
     const result = await imgUpload(resizingFile);
-    console.log("수정이미지", result);
     setImgContentUrlEdited(result.data.data.imageUrl);
   };
 
@@ -52,15 +52,8 @@ const SwiperRecipeItem = ({
     setEditedValues(newFormValues);
   };
 
-  const getImgContentUpload = async (e) => {
-    const result = await imgUpload(e.target.files[0]);
-    setImgContentUrlEdited(result.data.data.imageUrl);
-  };
-  const loninNickname = getCookie("loginNickname");
-  const [cookies] = useCookies(["loginNickname"]);
-  const navigate = useNavigate();
   const userPage = () => {
-    if (+cookies.loginUserId === postDetail?.authorId) navigate(`/mypage`);
+    if (loginUserId === postDetail?.authorId) navigate(`/mypage`);
     else navigate(`/mypage/${postDetail?.authorId}`);
   };
 
@@ -94,12 +87,7 @@ const SwiperRecipeItem = ({
                 </ButtonDiv>
               ) : loninNickname ? (
                 <ButtonDiv>
-                  <Button
-                    onClick={followHandler}
-                    name="FollowBtn"
-                    // isFollow={greyButton}
-                    isFollow={postDetail?.isFollow}
-                  >
+                  <Button onClick={followHandler} name="FollowBtn" isFollow={greyButton}>
                     {postDetail?.isFollow ? "팔로잉" : "팔로우"}
                   </Button>
                 </ButtonDiv>
@@ -134,7 +122,7 @@ const SwiperRecipeItem = ({
               </Nickname>
               <ButtonDiv>
                 <ButtonEdit onClick={onSubmit}>수정완료</ButtonEdit>
-                <ButtonEdit onClick={onCancle}>수정취소</ButtonEdit>
+                <ButtonEdit onClick={onEditPage}>수정취소</ButtonEdit>
               </ButtonDiv>
             </NinknameCreatedAt>
           </ItemInfo>
@@ -227,13 +215,6 @@ const ButtonEdit = styled.button`
   box-shadow: 2px 2px 5px #bebebe;
   margin-top: 2px;
   border: none;
-`;
-
-const ItemStep = styled.div`
-  font-size: var(--font-medium);
-  color: var(--color-dark-orange);
-  font-weight: bold;
-  margin-bottom: 1rem;
 `;
 
 const ItemContent = styled.div`

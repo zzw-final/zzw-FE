@@ -12,41 +12,32 @@ function EditProfileImage({ setModalIsOpen }) {
   const [char, setChar] = useState();
   const [titleGrade, setTitleGrade] = useState();
 
-  const { data: grades, isLoading: loadingGrades } = useQuery(
-    ["mypage", "edit", "grade"],
-    editApi.editGradeList,
-    options.eternal
-  );
-
-  const { mutate: gradeMutate } = useMutation(() => editApi.editGrade(titleGrade), {
-    onSuccess: () => {
-      setCookie("loginGrade", grades.find((item) => item.gradeId === +titleGrade).gradeName);
-      queryClient.invalidateQueries(["mypage", "profile"]);
-    },
-  });
-
   const { data: profileImg, isLoading: loadingProfileImg } = useQuery(
     ["mypage", "edit", "img"],
     editApi.editImgList,
     options.eternal
   );
 
-  const { mutate: imgMutate } = useMutation(() => editApi.editProfileImg(char), {
+  const { data: grades, isLoading: loadingGrades } = useQuery(
+    ["mypage", "edit", "grade"],
+    editApi.editGradeList,
+    options.eternal
+  );
+
+  const { mutate: profileMutate } = useMutation(() => editApi.editProfile(char, titleGrade), {
     onSuccess: () => {
-      setCookie("loginProfile", profileImg.find((item) => item.profileId === +char).imageUrl);
+      if (titleGrade)
+        setCookie("loginGrade", grades.find((item) => item.gradeId === +titleGrade).gradeName);
+      if (char)
+        setCookie("loginProfile", profileImg.find((item) => item.profileId === +char).imageUrl);
       queryClient.invalidateQueries(["mypage", "profile"]);
     },
   });
 
   const changeProfile = () => {
-    if (char && titleGrade) {
-      gradeMutate(titleGrade);
-      imgMutate(char);
-    } else if (char && !titleGrade) {
-      imgMutate(char);
-    } else if (!char && titleGrade) {
-      gradeMutate(titleGrade);
-    }
+    if (char && titleGrade) profileMutate(char, titleGrade);
+    else if (!char && titleGrade) profileMutate(null, titleGrade);
+    else if (char && !titleGrade) profileMutate(char, null);
     setModalIsOpen(false);
   };
 
