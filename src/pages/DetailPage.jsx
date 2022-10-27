@@ -40,8 +40,7 @@ function DetailPage() {
       case "delete":
         queryClient.invalidateQueries(["mypage", "myRecipes"]);
         queryClient.invalidateQueries(["mypage", "likeRecipes"]);
-        queryClient.invalidateQueries("followPost");
-        queryClient.invalidateQueries("mainpage");
+        queryClient.invalidateQueries(["mainPage"]);
         break;
       case "edit":
         queryClient.invalidateQueries(["mypage", "myRecipes"]);

@@ -31,7 +31,7 @@ function WritePage() {
     onSuccess: (data) => {
       queryClient.invalidateQueries(["mypage", "myRecipes"]);
       queryClient.invalidateQueries(["mypage", "likeRecipes"]);
-      queryClient.invalidateQueries("recentPost");
+      queryClient.invalidateQueries(["mainPage", "recentPost"]);
       if (data.data.data.isGet) {
         alert("🎉 새로운 칭호를 획득했습니다! 마이페이지에서 확인하세요.");
         queryClient.invalidateQueries(["mypage", "profile"]);
