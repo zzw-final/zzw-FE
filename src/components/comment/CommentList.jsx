@@ -1,9 +1,13 @@
-import React, { useRef } from "react";
+import React, { useContext, useRef } from "react";
 import styled from "styled-components";
+import { DetailContext } from "../../context/DetailContext";
 import CommentForm from "./CommentForm";
 import CommentItem from "./CommentItem";
 
-const CommentList = ({ postId, post, remove, update, commentList }) => {
+const CommentList = () => {
+  const data = useContext(DetailContext);
+  const { id: postId, commentList } = data;
+
   const scrollRef = useRef();
 
   return (
@@ -11,17 +15,10 @@ const CommentList = ({ postId, post, remove, update, commentList }) => {
       <CommentsConatiner ref={scrollRef}>
         {commentList &&
           Array.from(commentList).map((comment) => {
-            return (
-              <CommentItem
-                commentItem={comment}
-                key={comment.commentId}
-                remove={remove}
-                update={update}
-              />
-            );
+            return <CommentItem commentItem={comment} key={comment.commentId} />;
           })}
       </CommentsConatiner>
-      {postId && <CommentForm postId={postId} post={post} scrollRef={scrollRef} />}
+      {postId && <CommentForm scrollRef={scrollRef} />}
     </>
   );
 };

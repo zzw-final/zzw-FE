@@ -1,52 +1,31 @@
-import React from "react";
-import { useCookies } from "react-cookie";
+import React, { useContext, useState, useEffect } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import styled from "styled-components";
 import Avatar from "@mui/material/Avatar";
 import Like from "../common/Like";
-import { useState } from "react";
-import { useEffect } from "react";
 import imageCompression from "browser-image-compression";
 import { getCookie } from "../../util/cookie";
 import Button from "../UI/Button";
+import { DetailContext } from "../../context/DetailContext";
 
-const SwiperRecipeItemFirstPage = ({
-  postDetail,
-  isEditMode,
-  setIsEditMode,
-  imgUpload,
-  editForm,
-  onEditPage,
-  onCancle,
-  onSubmitHandler,
-  onDelete,
-  greyButton,
-  followHandler,
-}) => {
-  const {
-    postId,
-    title,
-    nickname,
-    profile,
-    grade,
-    authorId,
-    isLike,
-    likeNum,
-    foodImg,
-    createAt,
-    time,
-    isFollow,
-  } = postDetail;
+const SwiperRecipeItemFirstPage = ({ isEditMode, setIsEditMode, onEditPage }) => {
+  const data = useContext(DetailContext);
 
-  const [cookies] = useCookies(["loginNickname"]);
-  const navigate = useNavigate();
+  const { postDetail, imgUpload, onSubmitHandler, onDelete, editForm, followHandler } = data;
+  const { title, nickname, profile, grade, authorId, isLike, likeNum, foodImg } = postDetail;
 
   const [imgFoodUrlEdited, setImgFoodUrlEdited] = useState(foodImg);
 
+  const loninNickname = getCookie("loginNickname");
+  const loginUserId = getCookie("loginUserId");
+
+  const navigate = useNavigate();
+
   const userPage = () => {
-    if (+cookies.loginUserId === authorId) navigate(`/mypage`);
+    if (loginUserId === authorId) navigate(`/mypage`);
     else navigate(`/mypage/${authorId}`);
   };
+
   //좋아요 수정해보자
   const { id } = useParams();
 
@@ -64,8 +43,6 @@ const SwiperRecipeItemFirstPage = ({
     const result = await imgUpload(resizingFile);
     setImgFoodUrlEdited(result.data.data.imageUrl);
   };
-
-  const loninNickname = getCookie("loginNickname");
 
   const onSubmit = () => {
     onSubmitHandler();
@@ -101,12 +78,7 @@ const SwiperRecipeItemFirstPage = ({
                 </ButtonDiv>
               ) : loninNickname ? (
                 <ButtonDiv>
-                  <Button
-                    onClick={followHandler}
-                    name="FollowBtn"
-                    // isFollow={greyButton}
-                    isFollow={postDetail?.isFollow}
-                  >
+                  <Button onClick={followHandler} name="FollowBtn" isFollow={postDetail?.isFollow}>
                     {postDetail?.isFollow ? "팔로잉" : "팔로우"}
                   </Button>
                 </ButtonDiv>
@@ -135,7 +107,7 @@ const SwiperRecipeItemFirstPage = ({
               </Nickname>
               <ButtonDiv>
                 <ButtonEdit onClick={onSubmit}>수정완료</ButtonEdit>
-                <ButtonEdit onClick={onCancle}>수정취소</ButtonEdit>
+                <ButtonEdit onClick={onEditPage}>수정취소</ButtonEdit>
               </ButtonDiv>
             </NinknameCreatedAt>
           </ItemInfo>
@@ -176,9 +148,6 @@ const Time = styled.div`
   font-size: var(--font-regular);
   margin-left: 0.5rem;
   font-weight: var(--weight-bold);
-  /* position: absolute;
-  top: 3%;
-  left: 5%; */
 `;
 
 const ItemImg = styled.img`
@@ -201,7 +170,6 @@ const LikeBox = styled.div`
   color: var(--color-grey);
   align-items: center;
   justify-content: center;
-  /* box-shadow: 0px 0px 5px #dcdcdc; */
   border-radius: 15px;
   padding: 0.3rem;
   width: 15%;
@@ -213,7 +181,6 @@ const LikeBox = styled.div`
 
 const ItemBox = styled.div`
   padding: 0 1rem;
-  /* background-color: lavender; */
 `;
 
 const ItemInfo = styled.div`

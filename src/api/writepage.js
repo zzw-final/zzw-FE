@@ -33,10 +33,7 @@ export const commentFetch = async (id) => {
 
 export const commentPost = async (postInfo) => {
   const comment = { comment: postInfo.comment };
-  return await instance.post(
-    `/api/auth/post/${postInfo.postId}/comment`,
-    comment
-  );
+  return await instance.post(`/api/auth/post/${postInfo.postId}/comment`, comment);
 };
 
 export const commentDelete = async (commentId) => {
@@ -47,10 +44,7 @@ export const commentUpdate = async (updatedInfo) => {
   const comment = {
     comment: updatedInfo.comment,
   };
-  return await instance.put(
-    `/api/auth/post/comment/${updatedInfo.commentId}`,
-    comment
-  );
+  return await instance.put(`/api/auth/post/comment/${updatedInfo.commentId}`, comment);
 };
 
 //좋아요

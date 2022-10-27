@@ -1,29 +1,28 @@
-import React, { useEffect } from "react";
+import React, { useContext, useEffect } from "react";
 import styled from "styled-components";
 import Button from "../UI/Button";
-import { useCookies } from "react-cookie";
 import useInputRef from "../../hooks/useInputRef";
 import { Avatar } from "@mui/material";
+import { DetailContext } from "../../context/DetailContext";
+import { getCookie } from "../../util/cookie";
 
-const CommentForm = ({ postId, post, scrollRef }) => {
-  const [cookies] = useCookies(["loginProfile", "loginNickname"]);
-  const loginProfile = cookies.loginProfile;
-  const loginNickname = cookies.loginNickname;
+const CommentForm = ({ scrollRef }) => {
+  const data = useContext(DetailContext);
+  const { id: postId, post } = data;
+
+  const loginProfile = getCookie("loginProfile");
+  const loginNickname = getCookie("loginNickname");
 
   const postComment = () => {
-    if (loginProfile === undefined) {
-      alert("로그인 유저만 댓글을 달 수 있습니다.");
-      return;
-    }
-    if (commentRef.current.value === "") {
-      alert("빈 값은 입력할 수 없습니다.");
-      return;
-    }
+    if (loginProfile === undefined) return alert("로그인 유저만 댓글을 달 수 있습니다.");
+    if (commentRef.current.value === "") return alert("빈 값은 입력할 수 없습니다.");
+
     const sendData = {
       postId: postId,
       comment: commentRef.current.value,
       profile: loginProfile,
     };
+
     post(sendData);
 
     commentRef.current.value = "";

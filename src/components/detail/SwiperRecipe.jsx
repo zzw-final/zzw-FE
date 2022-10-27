@@ -1,34 +1,19 @@
-import React from "react";
+import React, { useContext } from "react";
 import { Swiper, SwiperSlide } from "swiper/react";
 import styled from "styled-components";
 import "swiper/css/bundle";
 import "swiper/css";
 import "swiper/css/effect-cards";
 import "swiper/css/pagination";
-// import { EffectCards } from "swiper";
 import { Pagination } from "swiper";
 import SwiperRecipeItem from "./SwiperRecipeItem";
 import SwiperRecipeItemFirstPage from "./SwiperRecipeItemFirstPage";
+import { DetailContext } from "../../context/DetailContext";
 
-const SwiperRecipe = ({
-  postDetail,
-  likeToggle,
-  isEditMode,
-  setIsEditMode,
-  imgUpload,
-  editedValues,
-  setEditedValues,
-  editForm,
-  toggleTagList,
-  setToggleTagList,
-  openTagBox,
-  onEditPage,
-  onCancle,
-  onSubmitHandler,
-  onDelete,
-  greyButton,
-  followHandler,
-}) => {
+const SwiperRecipe = ({ isEditMode, setIsEditMode, onEditPage }) => {
+  const data = useContext(DetailContext);
+  const { postDetail } = data;
+
   const contentList = postDetail.contentList;
 
   return (
@@ -39,26 +24,13 @@ const SwiperRecipe = ({
           grabCursor={true}
           pagination={true}
           modules={[Pagination]}
-          // modules={[EffectCards]}
           className="mySwiper"
         >
           <SwiperSlide>
             <SwiperRecipeItemFirstPage
-              postDetail={postDetail}
-              likeToggle={likeToggle}
               isEditMode={isEditMode}
               setIsEditMode={setIsEditMode}
-              imgUpload={imgUpload}
-              editForm={editForm}
-              toggleTagList={toggleTagList}
-              setToggleTagList={setToggleTagList}
-              openTagBox={openTagBox}
               onEditPage={onEditPage}
-              onCancle={onCancle}
-              onSubmitHandler={onSubmitHandler}
-              onDelete={onDelete}
-              greyButton={greyButton}
-              followHandler={followHandler}
             />
           </SwiperSlide>
           {contentList.map((content, idx) => (
@@ -69,16 +41,7 @@ const SwiperRecipe = ({
                 contentList={content}
                 isEditMode={isEditMode}
                 setIsEditMode={setIsEditMode}
-                imgUpload={imgUpload}
-                editedValues={editedValues}
-                setEditedValues={setEditedValues}
-                postDetail={postDetail}
                 onEditPage={onEditPage}
-                onCancle={onCancle}
-                onSubmitHandler={onSubmitHandler}
-                onDelete={onDelete}
-                greyButton={greyButton}
-                followHandler={followHandler}
               />
             </SwiperSlide>
           ))}
@@ -113,11 +76,6 @@ const SwiperBox = styled.div`
     align-items: center;
     justify-content: center;
     border-radius: 18px;
-  }
-
-  .swiper-slide {
-    /* background-color: var(--color-white);
-    box-shadow: 0px 0px 10px #dcdcdc; */
   }
 `;
 
