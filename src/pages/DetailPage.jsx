@@ -60,6 +60,9 @@ function DetailPage() {
       case "comment":
         queryClient.invalidateQueries(["comment", id]);
         break;
+      case "profile":
+        queryClient.invalidateQueries(["mypage", "profile"]);
+        break;
       default:
         throw new Error(`${action} 에 해당하는 캐시무효화 작업이 없습니다.`);
     }
@@ -185,7 +188,10 @@ function DetailPage() {
 
   const commentPostMutate = useMutation((postInfo) => commentPost(postInfo), {
     onSuccess: (res) => {
-      if (res.data.data.isGet) alert("🎉 새로운 칭호를 획득했습니다! 마이페이지에서 확인하세요.");
+      if (res.data.data.isGet) {
+        alert("🎉 새로운 칭호를 획득했습니다! 마이페이지에서 확인하세요.");
+        setInvalidateQueries("profile");
+      }
       setInvalidateQueries("comment");
     },
   });
