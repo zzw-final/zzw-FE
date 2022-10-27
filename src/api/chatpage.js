@@ -8,6 +8,6 @@ export const read = async (newdata) => {
   return await instance.put("/api/chat/newmessage", newdata);
 };
 
-export const fetchUser = async (nickname) => {
-  return await instance.get(`/api/chat/member?nickname=${nickname}`);
+export const fetchAllUser = async () => {
+  return await instance.get(`/api/member`);
 };

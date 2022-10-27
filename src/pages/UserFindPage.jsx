@@ -6,71 +6,38 @@ import { options } from "../api/options";
 import useInput from "../hooks/useInput";
 import FindUser from "../components/chat/FindUser";
 import Input from "../components/UI/Input";
-import { fetchUser } from "../api/chatpage";
-import Spinner from "../components/UI/Spinner";
+import { fetchAllUser } from "../api/chatpage";
+
 
 function UserFindPage() {
   const [searchInput, searchInputHandler] = useInput();
 
-  const { data: serchUser, isLoading: loadingSearchUser } = useQuery(
-    ["user", searchInput],
-    () => fetchUser(searchInput),
+
+  const { data: serchUser, isLoading: loadingSerchUser } = useQuery(
+    ["user"],
+    () => fetchAllUser(),
     options.eternal
   );
 
   const searchNickname = serchUser?.filter((item) => item.nickname.includes(searchInput));
 
-  if (loadingSearchUser) return <Spinner />;
-
-  console.log(serchUser);
-  if (searchNickname && searchNickname.length !== 0)
-    return (
-      <LayoutPage headerTitle="사용자 찾기" backBtnTypeArrow="true">
-        <SearchBox>
-          <Input
-            placeholder=" 닉네임을 검색하세요."
-            onChangeFn={searchInputHandler}
-          ></Input>
-        </SearchBox>
-        <ChatList>
-          {searchNickname?.map((user, idx) => (
-            <FindUser user={user} key={idx} />
-          ))}
-        </ChatList>
-      </LayoutPage>
-    );
-  if (searchNickname && searchNickname.length == 0)
-    return (
-      <LayoutPage headerTitle="사용자 찾기" backBtnTypeArrow="true">
-        <SearchBox>
-          <Input
-            placeholder=" 닉네임을 검색하세요."
-            onChangeFn={searchInputHandler}
-          ></Input>
-        </SearchBox>
-        <ChatList>
-          <Notice>
-            "{searchInput}"와(과)
-            <br /> 일치하는 유저를 찾을 수 없습니다.😅{" "}
-          </Notice>
-        </ChatList>
-      </LayoutPage>
-    );
 
   return (
     <LayoutPage headerTitle="사용자 찾기" backBtnTypeArrow="true">
       <SearchBox>
-        <Input onChangeFn={searchInputHandler}></Input>
+        <Input placeholder=" 닉네임을 검색하세요." onChangeFn={searchInputHandler}></Input>
+
+
       </SearchBox>
       <ChatList>
-        {/* {searchNickname && searchNickname.length !== 0 ? (
+        {searchNickname && searchNickname.length !== 0 ? (
           searchNickname?.map((user, idx) => <FindUser user={user} key={idx} />)
         ) : (
           <Notice>
             "{searchInput}"와(과)
             <br /> 일치하는 유저를 찾을 수 없습니다.😅{" "}
           </Notice>
-        )} */}
+        )}
       </ChatList>
     </LayoutPage>
   );
